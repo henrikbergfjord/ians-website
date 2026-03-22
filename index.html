@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IANS – Hjem</title>
-  <meta name="description" content="IANS nettside med oversikt og familiekalender." />
+  <meta name="description" content="IANS startside med vær, kalender og smart oversikt." />
   <style>
     :root{
       --bg:#0b1220;
@@ -15,17 +15,19 @@
       --accent:#5aa9ff;
       --accent-2:#7c5cff;
       --line:rgba(255,255,255,0.08);
-      --ok:#22c55e;
       --shadow:0 20px 50px rgba(0,0,0,.35);
       --radius:22px;
       --max:1200px;
+      --ok:#22c55e;
+      --warn:#f59e0b;
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
+
     body{
       margin:0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
         radial-gradient(circle at top left, rgba(124,92,255,.20), transparent 32%),
         radial-gradient(circle at top right, rgba(90,169,255,.20), transparent 28%),
@@ -51,6 +53,7 @@
       justify-content:space-between;
       min-height:74px;
       gap:20px;
+      flex-wrap:wrap;
     }
 
     .brand{
@@ -94,7 +97,7 @@
       align-items:center;
       justify-content:center;
       gap:10px;
-      padding:14px 18px;
+      padding:13px 17px;
       border-radius:14px;
       font-weight:700;
       border:1px solid transparent;
@@ -114,25 +117,23 @@
     }
 
     .hero{
-      padding:72px 0 36px;
+      padding:68px 0 24px;
     }
 
     .hero-grid{
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:26px;
-      align-items:stretch;
+      grid-template-columns:1.2fr .8fr;
+      gap:24px;
     }
 
-    .hero-card,
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
       border:1px solid var(--line);
-      border-radius:var(--radius);
+      border-radius:24px;
       box-shadow:var(--shadow);
     }
 
-    .hero-card{
+    .hero-main{
       padding:34px;
     }
 
@@ -151,18 +152,18 @@
     }
 
     h1{
-      font-size:clamp(2.4rem, 5vw, 4.5rem);
+      font-size:clamp(2.4rem, 5vw, 4.3rem);
       line-height:1.02;
-      margin:0 0 18px;
-      letter-spacing:-1.8px;
+      margin:0 0 14px;
+      letter-spacing:-1.7px;
     }
 
     .lead{
       color:var(--muted);
-      font-size:clamp(1.04rem, 1.7vw, 1.18rem);
+      font-size:clamp(1.03rem, 1.7vw, 1.15rem);
       line-height:1.7;
       margin:0 0 24px;
-      max-width:60ch;
+      max-width:62ch;
     }
 
     .hero-actions{
@@ -173,32 +174,40 @@
     }
 
     .hero-side{
-      padding:26px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      gap:18px;
-    }
-
-    .stat{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
+      padding:24px;
+      display:grid;
       gap:16px;
-      padding:18px 0;
-      border-bottom:1px solid var(--line);
+      align-content:start;
     }
 
-    .stat:last-child{border-bottom:0}
-    .stat strong{
-      display:block;
-      font-size:1.8rem;
-      margin-bottom:4px;
+    .mini-weather{
+      padding:18px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
     }
-    .stat span{color:var(--muted)}
+
+    .mini-weather .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .mini-weather .temp{
+      font-size:2.1rem;
+      font-weight:800;
+      line-height:1;
+    }
+
+    .mini-weather .meta{
+      color:var(--muted);
+      line-height:1.5;
+    }
 
     .section{
-      padding:18px 0 64px;
+      padding:18px 0 52px;
     }
 
     .section-head{
@@ -206,7 +215,8 @@
       align-items:end;
       justify-content:space-between;
       gap:20px;
-      margin-bottom:20px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
     }
 
     .section-head h2{
@@ -221,111 +231,148 @@
       max-width:60ch;
     }
 
-    .grid-3{
+    .forecast-grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
       gap:18px;
+      margin-bottom:20px;
     }
 
-    .card{
+    .forecast-card{
+      padding:22px;
+    }
+
+    .forecast-card h3{
+      margin:0 0 8px;
+      font-size:1.1rem;
+    }
+
+    .forecast-temp{
+      font-size:1.9rem;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+
+    .forecast-card p{
+      color:var(--muted);
+      margin:0;
+      line-height:1.55;
+    }
+
+    .dashboard-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:18px;
+    }
+
+    .dash-card{
+      padding:22px;
+      min-height:180px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .dash-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .dash-icon{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      font-size:22px;
+    }
+
+    .dash-status{
+      font-size:.8rem;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      background:rgba(255,255,255,.04);
+      white-space:nowrap;
+    }
+
+    .dash-card h3{
+      margin:0 0 8px;
+      font-size:1.08rem;
+    }
+
+    .dash-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .dash-link{
+      margin-top:16px;
+      color:var(--text);
+      font-weight:700;
+      opacity:.95;
+    }
+
+    .today-card{
       padding:24px;
     }
 
-    .card h3{
-      margin:0 0 10px;
-      font-size:1.15rem;
-    }
-
-    .card p{
-      color:var(--muted);
-      line-height:1.65;
-      margin:0;
-    }
-
-    .mini-list{
-      display:grid;
-      gap:10px;
-      margin-top:16px;
-    }
-
-    .mini-item{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      padding:12px 14px;
-      border-radius:14px;
-      background:rgba(255,255,255,.035);
-      border:1px solid var(--line);
-    }
-
-    .mini-item .dot{
-      width:10px;
-      height:10px;
-      margin-top:7px;
-      border-radius:999px;
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      flex:0 0 auto;
-    }
-
-    .calendar-preview{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:18px;
-      align-items:stretch;
-    }
-
-    .month-box{
-      padding:22px;
-      border-radius:20px;
-      background:var(--panel);
-      border:1px solid var(--line);
-    }
-
-    .month-box h3{
-      margin:0 0 8px;
-      font-size:1.3rem;
-    }
-
-    .month-box p{
-      margin:0 0 18px;
-      color:var(--muted);
-    }
-
-    .upcoming{
+    .today-list{
       display:grid;
       gap:12px;
+      margin-top:14px;
     }
 
-    .event{
+    .today-item{
       padding:14px 16px;
       border-radius:16px;
       background:rgba(255,255,255,.04);
       border:1px solid var(--line);
     }
 
-    .event strong{display:block;margin-bottom:4px}
-    .event span{color:var(--muted);font-size:.96rem}
+    .today-item strong{
+      display:block;
+      margin-bottom:4px;
+    }
+
+    .today-item span{
+      color:var(--muted);
+    }
 
     footer{
       border-top:1px solid var(--line);
       color:var(--muted);
-      padding:22px 0 38px;
+      padding:24px 0 38px;
+      margin-top:20px;
     }
 
-    @media (max-width: 960px){
+    @media (max-width:1100px){
+      .dashboard-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+    }
+
+    @media (max-width:960px){
       .hero-grid,
-      .calendar-preview,
-      .grid-3{
+      .forecast-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:760px){
+      .dashboard-grid{
         grid-template-columns:1fr;
       }
 
       .nav{
-        flex-wrap:wrap;
         padding:12px 0;
-      }
-
-      .nav-links{
-        width:100%;
       }
     }
   </style>
@@ -339,8 +386,7 @@
       </a>
 
       <nav class="nav-links">
-        <a href="#oversikt">Oversikt</a>
-        <a href="#tjenester">Innhold</a>
+        <a href="index.html">Forside</a>
         <a href="kalender.html">Kalender</a>
       </nav>
 
@@ -351,120 +397,170 @@
   <main>
     <section class="hero">
       <div class="container hero-grid">
-        <div class="hero-card">
-          <div class="eyebrow">✅ Live på Azure Static Web Apps</div>
-          <h1>IANS Website<br>med egen kalender</h1>
+        <div class="card hero-main">
+          <div class="eyebrow">✅ Live dashboard startside</div>
+          <h1 id="todayHeadline">I dag</h1>
           <p class="lead">
-            En enkel, rask og moderne nettside bygget med ren HTML, CSS og JavaScript.
-            Dette er en god startside for informasjon, snarveier og familiens kalender på eget domene.
+            En enkel og nyttig startside med vær, kalender og hurtigoversikt.
+            Dette er en god base for å bygge videre med strømforbruk, elbil og smarthus senere.
           </p>
 
           <div class="hero-actions">
-            <a class="cta cta-primary" href="kalender.html">Se kalender</a>
-            <a class="cta cta-secondary" href="#oversikt">Les mer</a>
+            <a class="cta cta-primary" href="kalender.html">Se familiekalender</a>
+            <a class="cta cta-secondary" href="#dashboard">Åpne oversikt</a>
           </div>
         </div>
 
-        <aside class="hero-card hero-side">
-          <div class="stat">
-            <div>
-              <strong>Azure</strong>
-              <span>Hosting og automatisk deploy</span>
+        <aside class="card hero-side">
+          <div class="mini-weather">
+            <div class="top">
+              <strong>Oslo akkurat nå</strong>
+              <span>☀️</span>
             </div>
-            <div>☁️</div>
+            <div class="temp">4°C</div>
+            <div class="meta">
+              Sol<br>
+              Søndag 22. mars 2026
+            </div>
           </div>
-          <div class="stat">
-            <div>
-              <strong>GitHub</strong>
-              <span>Versjonskontroll og CI/CD</span>
+
+          <div class="mini-weather">
+            <div class="top">
+              <strong>Dagens fokus</strong>
+              <span>📌</span>
             </div>
-            <div>🔄</div>
-          </div>
-          <div class="stat">
-            <div>
-              <strong>Kalender</strong>
-              <span>Egen underside med månedsvisning</span>
+            <div class="meta">
+              Kalender, vær og enkel familieside i én visning.
             </div>
-            <div>📅</div>
           </div>
         </aside>
       </div>
     </section>
 
-    <section class="section" id="oversikt">
+    <section class="section">
       <div class="container">
         <div class="section-head">
           <div>
-            <h2>Oversikt</h2>
-            <p>Forsiden kan brukes som hub for familie, prosjekter, snarveier og fremtidig innhold.</p>
+            <h2>3-dagers værprognose</h2>
+            <p>Rask oversikt for de nærmeste dagene i Oslo.</p>
           </div>
         </div>
 
-        <div class="grid-3">
-          <article class="card">
-            <h3>Rask og enkel</h3>
-            <p>
-              Ingen komplisert backend. Alt er lett å vedlikeholde og fungerer fint direkte i GitHub og Azure.
-            </p>
+        <div class="forecast-grid">
+          <article class="card forecast-card">
+            <h3>Søndag 22.03</h3>
+            <div class="forecast-temp">6° / 3° 🌤️</div>
+            <p>Litt vind og en blanding av sol og skyer.</p>
           </article>
 
-          <article class="card">
-            <h3>Mobilvennlig</h3>
-            <p>
-              Layouten er responsiv og fungerer godt både på mobil, nettbrett og PC.
-            </p>
+          <article class="card forecast-card">
+            <h3>Mandag 23.03</h3>
+            <div class="forecast-temp">11° / 2° ☀️</div>
+            <p>Stort sett sol og ganske behagelig.</p>
           </article>
 
-          <article class="card">
-            <h3>Klar for videre utbygging</h3>
-            <p>
-              Du kan senere legge til kontaktinfo, profiler, dokumenter, prosjekter og innlogging.
-            </p>
+          <article class="card forecast-card">
+            <h3>Tirsdag 24.03</h3>
+            <div class="forecast-temp">9° / 4° 🌥️</div>
+            <p>Mer skyet og vind, med mulighet for litt regn.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="tjenester">
+    <section class="section" id="dashboard">
       <div class="container">
         <div class="section-head">
           <div>
-            <h2>Kalenderoversikt</h2>
-            <p>Undersiden viser valgt måned og arrangementer i en ryddig, enkel visning.</p>
+            <h2>Hurtigoversikt</h2>
+            <p>Start enkelt nå, og fyll på med live-data senere.</p>
           </div>
         </div>
 
-        <div class="calendar-preview">
-          <div class="card month-box">
-            <h3>Mars 2026</h3>
-            <p>Eksempeldata hentet fra familiens kalenderoppsett.</p>
-
-            <div class="mini-list">
-              <div class="mini-item">
-                <span class="dot"></span>
-                <div>
-                  <strong>17. mars</strong>
-                  <div style="color:var(--muted)">test (Henrik)</div>
-                </div>
+        <div class="dashboard-grid">
+          <article class="card dash-card">
+            <div>
+              <div class="dash-top">
+                <div class="dash-icon">🔋</div>
+                <span class="dash-status">Kommer senere</span>
               </div>
+              <h3>Strømforbruk</h3>
+              <p>Plassholder for strømforbruk, pris eller energidata.</p>
             </div>
-          </div>
+            <div class="dash-link">Legg til senere →</div>
+          </article>
 
-          <div class="card">
-            <h3>Underside klar</h3>
-            <p>
-              Kalenderen ligger på egen side og kan enkelt bygges ut med flere måneder, filtrering og flere avtaler.
-            </p>
+          <article class="card dash-card">
+            <div>
+              <div class="dash-top">
+                <div class="dash-icon">🚗</div>
+                <span class="dash-status">Kommer senere</span>
+              </div>
+              <h3>Elbil status</h3>
+              <p>Plassholder for batteri, rekkevidde eller ladeinfo.</p>
+            </div>
+            <div class="dash-link">Legg til senere →</div>
+          </article>
 
-            <div class="upcoming">
-              <div class="event">
-                <strong>kalender.html</strong>
-                <span>Månedsvisning med avtaler og markering av dagens dato.</span>
+          <article class="card dash-card">
+            <div>
+              <div class="dash-top">
+                <div class="dash-icon">🏠</div>
+                <span class="dash-status">Kommer senere</span>
               </div>
-              <div class="event">
-                <strong>Neste steg</strong>
-                <span>Senere kan vi koble kalenderdata automatisk fra JSON eller API.</span>
+              <h3>Smarthus status</h3>
+              <p>Plassholder for lys, sensorer, kamera eller alarmstatus.</p>
+            </div>
+            <div class="dash-link">Legg til senere →</div>
+          </article>
+
+          <article class="card dash-card">
+            <div>
+              <div class="dash-top">
+                <div class="dash-icon">📅</div>
+                <span class="dash-status">Klar nå</span>
               </div>
+              <h3>Kalender</h3>
+              <p>Åpne familiekalenderen og se avtaler direkte fra Google Calendar.</p>
+            </div>
+            <a class="dash-link" href="kalender.html">Åpne kalender →</a>
+          </article>
+
+          <article class="card dash-card">
+            <div>
+              <div class="dash-top">
+                <div class="dash-icon">🌦️</div>
+                <span class="dash-status">Klar nå</span>
+              </div>
+              <h3>Vær</h3>
+              <p>Viser dagens vær og en enkel 3-dagers prognose for Oslo.</p>
+            </div>
+            <div class="dash-link">Aktiv nå →</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="card today-card">
+          <h2 style="margin:0 0 8px;">I dag</h2>
+          <p style="margin:0;color:var(--muted);line-height:1.6;">
+            Dette kan bli startsiden du åpner hver morgen.
+          </p>
+
+          <div class="today-list">
+            <div class="today-item">
+              <strong>📅 Søndag 22. mars 2026</strong>
+              <span>Dagens dato vises tydelig på forsiden.</span>
+            </div>
+            <div class="today-item">
+              <strong>☀️ Oslo – 4 °C nå</strong>
+              <span>Enkel væroversikt med 3-dagers prognose.</span>
+            </div>
+            <div class="today-item">
+              <strong>📆 Kalender</strong>
+              <span>Åpne kalenderen for å se oppdateringer fra Google Calendar.</span>
             </div>
           </div>
         </div>
@@ -474,8 +570,20 @@
 
   <footer>
     <div class="container">
-      IANS Website • Bygget for Azure Static Web Apps • Oppdatert med kalenderunderside
+      IANS • Azure Static Web Apps • GitHub deploy • Vær, kalender og dashboard
     </div>
   </footer>
+
+  <script>
+    const headline = document.getElementById("todayHeadline");
+    const now = new Date();
+    const weekday = now.toLocaleDateString("nb-NO", { weekday: "long" });
+    const day = now.getDate();
+    const month = now.toLocaleDateString("nb-NO", { month: "long" });
+    const year = now.getFullYear();
+
+    const prettyWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+    headline.textContent = `${prettyWeekday} ${day}. ${month} ${year}`;
+  </script>
 </body>
 </html>
