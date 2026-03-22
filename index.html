@@ -15,7 +15,7 @@
       --line:rgba(255,255,255,.08);
       --accent:#79a9ff;
       --accent2:#8b7cff;
-      --shadow:0 14px 30px rgba(0,0,0,.22);
+      --shadow:0 12px 28px rgba(0,0,0,.22);
       --radius:16px;
       --max:1240px;
     }
@@ -28,7 +28,7 @@
       font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at top left, rgba(139,124,255,.12), transparent 28%),
+        radial-gradient(circle at top left, rgba(139,124,255,.10), transparent 28%),
         radial-gradient(circle at top right, rgba(121,169,255,.08), transparent 24%),
         linear-gradient(180deg, var(--bg), var(--bg2));
     }
@@ -36,7 +36,7 @@
     a{color:inherit;text-decoration:none}
 
     .container{
-      width:min(var(--max), calc(100% - 32px));
+      width:min(var(--max), calc(100% - 28px));
       margin:0 auto;
     }
 
@@ -45,16 +45,16 @@
       top:0;
       z-index:30;
       backdrop-filter: blur(10px);
-      background:rgba(7,17,31,.82);
+      background:rgba(7,17,31,.84);
       border-bottom:1px solid var(--line);
     }
 
     .nav{
-      min-height:68px;
+      min-height:64px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:16px;
+      gap:14px;
       flex-wrap:wrap;
     }
 
@@ -67,14 +67,14 @@
     }
 
     .brand-badge{
-      width:36px;
-      height:36px;
-      border-radius:12px;
+      width:34px;
+      height:34px;
+      border-radius:11px;
       display:grid;
       place-items:center;
       background:linear-gradient(135deg, var(--accent), var(--accent2));
       box-shadow:var(--shadow);
-      font-size:14px;
+      font-size:13px;
       font-weight:900;
     }
 
@@ -86,8 +86,8 @@
 
     .nav-links a{
       color:var(--muted);
-      padding:9px 13px;
-      border-radius:11px;
+      padding:8px 12px;
+      border-radius:10px;
       font-weight:600;
     }
 
@@ -108,11 +108,11 @@
       background:linear-gradient(135deg, var(--accent), var(--accent2));
       color:#fff;
       box-shadow:var(--shadow);
-      font-size:.93rem;
+      font-size:.92rem;
     }
 
     .hero{
-      padding:18px 0 10px;
+      padding:14px 0 8px;
     }
 
     .clock-grid{
@@ -125,70 +125,145 @@
     .hero-grid{
       display:grid;
       grid-template-columns:1.35fr .65fr;
-      gap:14px;
+      gap:12px;
     }
 
     .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));
       border:1px solid var(--line);
       border-radius:18px;
       box-shadow:var(--shadow);
     }
 
     .clock-card{
-      padding:14px 16px;
+      padding:12px 14px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-height:96px;
+    }
+
+    .clock-face{
+      width:66px;
+      height:66px;
+      border-radius:50%;
+      position:relative;
+      flex:0 0 auto;
+      border:2px solid rgba(255,255,255,.12);
+      background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow:inset 0 0 20px rgba(255,255,255,.02);
+    }
+
+    .clock-center{
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:8px;
+      height:8px;
+      margin:-4px 0 0 -4px;
+      border-radius:50%;
+      background:#fff;
+      z-index:5;
+    }
+
+    .hand{
+      position:absolute;
+      left:50%;
+      bottom:50%;
+      transform-origin:bottom center;
+      border-radius:999px;
+    }
+
+    .hour-hand{
+      width:4px;
+      height:18px;
+      margin-left:-2px;
+      background:#edf4ff;
+      z-index:3;
+    }
+
+    .minute-hand{
+      width:3px;
+      height:24px;
+      margin-left:-1.5px;
+      background:#c7d8f7;
+      z-index:4;
+    }
+
+    .second-hand{
+      width:2px;
+      height:28px;
+      margin-left:-1px;
+      background:#8b7cff;
+      z-index:4;
+    }
+
+    .clock-mark{
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:2px;
+      height:6px;
+      background:rgba(255,255,255,.25);
+      transform-origin:center -28px;
+      border-radius:999px;
+    }
+
+    .clock-info{
+      min-width:0;
     }
 
     .clock-label{
       color:var(--muted);
-      font-size:.86rem;
-      margin-bottom:6px;
+      font-size:.84rem;
+      margin-bottom:4px;
       font-weight:600;
     }
 
     .clock-time{
-      font-size:1.45rem;
+      font-size:1.35rem;
       font-weight:800;
       line-height:1.1;
-      letter-spacing:-.5px;
-      margin-bottom:4px;
+      margin-bottom:3px;
+      letter-spacing:-.4px;
     }
 
     .clock-date{
       color:var(--muted);
-      font-size:.9rem;
+      font-size:.86rem;
     }
 
     .hero-main{
-      padding:22px 24px;
+      padding:18px 20px;
+      min-height:180px;
     }
 
     .eyebrow{
       display:inline-flex;
       align-items:center;
-      padding:6px 10px;
+      padding:5px 10px;
       border-radius:999px;
       background:rgba(121,169,255,.10);
       border:1px solid rgba(121,169,255,.20);
       color:#cde3ff;
-      font-size:12px;
+      font-size:11px;
       font-weight:700;
-      margin-bottom:12px;
+      margin-bottom:10px;
     }
 
     h1{
       margin:0 0 8px;
-      font-size:clamp(1.9rem, 4.2vw, 3.2rem);
+      font-size:clamp(1.8rem, 4vw, 3rem);
       line-height:1.02;
-      letter-spacing:-1.2px;
+      letter-spacing:-1px;
     }
 
     .lead{
       margin:0;
       color:var(--muted);
-      font-size:.98rem;
-      line-height:1.55;
-      max-width:58ch;
+      font-size:.95rem;
+      line-height:1.5;
+      max-width:56ch;
     }
 
     .hero-actions{
@@ -206,13 +281,13 @@
     }
 
     .hero-side{
-      padding:14px;
+      padding:12px;
       display:grid;
-      gap:12px;
+      gap:10px;
     }
 
     .mini-card{
-      padding:14px;
+      padding:12px;
       border-radius:14px;
       background:rgba(255,255,255,.035);
       border:1px solid var(--line);
@@ -222,98 +297,98 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:10px;
+      gap:8px;
       margin-bottom:6px;
     }
 
     .mini-top strong{
-      font-size:.94rem;
+      font-size:.9rem;
     }
 
     .mini-icon{
-      font-size:.9rem;
+      font-size:.85rem;
       opacity:.85;
     }
 
     .mini-value{
-      font-size:1.55rem;
+      font-size:1.4rem;
       font-weight:800;
       line-height:1;
       margin:6px 0 4px;
-      letter-spacing:-.8px;
     }
 
     .mini-text{
       color:var(--muted);
-      line-height:1.5;
-      font-size:.9rem;
+      line-height:1.45;
+      font-size:.88rem;
     }
 
     .section{
-      padding:10px 0 22px;
+      padding:8px 0 18px;
     }
 
     .section-head{
       display:flex;
       align-items:end;
       justify-content:space-between;
-      gap:14px;
-      margin-bottom:12px;
+      gap:12px;
+      margin-bottom:10px;
       flex-wrap:wrap;
     }
 
     .section-head h2{
       margin:0;
-      font-size:clamp(1.35rem, 2.5vw, 1.85rem);
-      letter-spacing:-.4px;
+      font-size:clamp(1.3rem, 2.5vw, 1.7rem);
+      letter-spacing:-.3px;
     }
 
     .section-head p{
       margin:4px 0 0;
       color:var(--muted);
       max-width:62ch;
-      line-height:1.5;
-      font-size:.92rem;
+      line-height:1.45;
+      font-size:.88rem;
     }
 
     .forecast-grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
-      gap:12px;
+      gap:10px;
     }
 
     .forecast-card{
-      padding:15px;
+      padding:13px;
+      min-height:96px;
     }
 
     .forecast-day{
       color:var(--muted);
-      font-size:.86rem;
-      margin-bottom:6px;
+      font-size:.82rem;
+      margin-bottom:5px;
       font-weight:600;
     }
 
     .forecast-temp{
-      font-size:1.35rem;
+      font-size:1.25rem;
       font-weight:800;
       margin-bottom:4px;
     }
 
     .forecast-desc{
       color:var(--muted);
-      line-height:1.45;
-      font-size:.88rem;
+      line-height:1.35;
+      font-size:.84rem;
     }
 
     .dashboard-grid{
       display:grid;
       grid-template-columns:repeat(5,1fr);
-      gap:12px;
+      gap:10px;
     }
 
     .dash-card{
-      padding:15px;
-      min-height:150px;
+      padding:13px;
+      min-height:132px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
@@ -324,24 +399,24 @@
       align-items:center;
       justify-content:space-between;
       gap:8px;
-      margin-bottom:10px;
+      margin-bottom:8px;
     }
 
     .dash-icon{
-      width:30px;
-      height:30px;
-      border-radius:10px;
+      width:28px;
+      height:28px;
+      border-radius:9px;
       display:grid;
       place-items:center;
       background:rgba(255,255,255,.04);
       border:1px solid var(--line);
-      font-size:.85rem;
+      font-size:.8rem;
     }
 
     .dash-status{
-      padding:4px 8px;
+      padding:4px 7px;
       border-radius:999px;
-      font-size:.7rem;
+      font-size:.68rem;
       color:var(--muted);
       background:rgba(255,255,255,.04);
       border:1px solid var(--line);
@@ -350,45 +425,45 @@
     }
 
     .dash-card h3{
-      margin:0 0 6px;
-      font-size:.96rem;
+      margin:0 0 5px;
+      font-size:.92rem;
     }
 
     .dash-card p{
       margin:0;
       color:var(--muted);
-      line-height:1.45;
-      font-size:.88rem;
+      line-height:1.38;
+      font-size:.84rem;
     }
 
     .dash-link{
-      margin-top:12px;
+      margin-top:10px;
       font-weight:800;
-      font-size:.88rem;
+      font-size:.84rem;
       color:var(--text);
     }
 
     .split-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:12px;
+      gap:10px;
     }
 
     .feed-card{
-      padding:16px;
-      min-height:220px;
+      padding:14px;
+      min-height:200px;
     }
 
     .feed-card h3{
       margin:0 0 4px;
-      font-size:1rem;
+      font-size:.96rem;
     }
 
     .feed-card p{
-      margin:0 0 12px;
+      margin:0 0 10px;
       color:var(--muted);
-      line-height:1.45;
-      font-size:.9rem;
+      line-height:1.38;
+      font-size:.84rem;
     }
 
     .news-list,
@@ -399,7 +474,7 @@
 
     .news-item,
     .price-item{
-      padding:10px 12px;
+      padding:9px 11px;
       border-radius:12px;
       background:rgba(255,255,255,.04);
       border:1px solid var(--line);
@@ -408,20 +483,20 @@
     .news-item a{
       display:block;
       font-weight:700;
-      margin-bottom:4px;
-      line-height:1.35;
-      font-size:.9rem;
+      margin-bottom:3px;
+      line-height:1.3;
+      font-size:.86rem;
     }
 
     .news-item span,
     .price-item span{
       color:var(--muted);
-      font-size:.84rem;
-      line-height:1.4;
+      font-size:.8rem;
+      line-height:1.35;
     }
 
     .price-main{
-      font-size:1.28rem;
+      font-size:1.14rem;
       font-weight:800;
       margin-bottom:2px;
     }
@@ -429,15 +504,15 @@
     .loading{
       color:var(--muted);
       padding:8px 0;
-      font-size:.9rem;
+      font-size:.86rem;
     }
 
     footer{
       border-top:1px solid var(--line);
       color:var(--muted);
-      padding:18px 0 28px;
+      padding:16px 0 24px;
       margin-top:8px;
-      font-size:.88rem;
+      font-size:.84rem;
     }
 
     @media (max-width:1150px){
@@ -465,7 +540,12 @@
       }
 
       .hero-main{
-        padding:18px;
+        padding:16px;
+      }
+
+      .clock-card{
+        flex-direction:column;
+        align-items:flex-start;
       }
     }
   </style>
@@ -491,15 +571,31 @@
     <section class="hero">
       <div class="container clock-grid">
         <div class="card clock-card">
-          <div class="clock-label">Norge • Oslo</div>
-          <div class="clock-time" id="clockOslo">--:--:--</div>
-          <div class="clock-date" id="dateOslo">Laster dato...</div>
+          <div class="clock-face" id="clockFaceOslo">
+            <div class="clock-center"></div>
+            <div class="hand hour-hand" id="osloHour"></div>
+            <div class="hand minute-hand" id="osloMinute"></div>
+            <div class="hand second-hand" id="osloSecond"></div>
+          </div>
+          <div class="clock-info">
+            <div class="clock-label">Norge • Oslo</div>
+            <div class="clock-time" id="clockOslo">--:--:--</div>
+            <div class="clock-date" id="dateOslo">Laster dato...</div>
+          </div>
         </div>
 
         <div class="card clock-card">
-          <div class="clock-label">Filippinene • Sogod / Tabaco</div>
-          <div class="clock-time" id="clockManila">--:--:--</div>
-          <div class="clock-date" id="dateManila">Laster dato...</div>
+          <div class="clock-face" id="clockFaceManila">
+            <div class="clock-center"></div>
+            <div class="hand hour-hand" id="manilaHour"></div>
+            <div class="hand minute-hand" id="manilaMinute"></div>
+            <div class="hand second-hand" id="manilaSecond"></div>
+          </div>
+          <div class="clock-info">
+            <div class="clock-label">Filippinene • Sogod / Tabaco</div>
+            <div class="clock-time" id="clockManila">--:--:--</div>
+            <div class="clock-date" id="dateManila">Laster dato...</div>
+          </div>
         </div>
       </div>
 
@@ -681,14 +777,46 @@
     const prettyWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
     headline.textContent = `${prettyWeekday} ${day}. ${month} ${year}`;
 
+    function setAnalogClock(date, prefix) {
+      const hours = date.getHours() % 12;
+      const minutes = date.getMinutes();
+      const seconds = date.getSeconds();
+
+      const hourDeg = (hours * 30) + (minutes * 0.5);
+      const minuteDeg = minutes * 6;
+      const secondDeg = seconds * 6;
+
+      document.getElementById(prefix + "Hour").style.transform = `rotate(${hourDeg}deg)`;
+      document.getElementById(prefix + "Minute").style.transform = `rotate(${minuteDeg}deg)`;
+      document.getElementById(prefix + "Second").style.transform = `rotate(${secondDeg}deg)`;
+    }
+
+    function createClockMarks(faceId) {
+      const face = document.getElementById(faceId);
+      for (let i = 0; i < 12; i++) {
+        const mark = document.createElement("div");
+        mark.className = "clock-mark";
+        mark.style.transform = `rotate(${i * 30}deg) translateY(-28px)`;
+        face.appendChild(mark);
+      }
+    }
+
+    createClockMarks("clockFaceOslo");
+    createClockMarks("clockFaceManila");
+
     function updateClocks() {
+      const now = new Date();
+
+      const osloDateObj = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Oslo" }));
+      const manilaDateObj = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+
       const osloTime = new Intl.DateTimeFormat("nb-NO", {
         timeZone: "Europe/Oslo",
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
         hour12: false
-      }).format(new Date());
+      }).format(now);
 
       const osloDate = new Intl.DateTimeFormat("nb-NO", {
         timeZone: "Europe/Oslo",
@@ -696,7 +824,7 @@
         day: "2-digit",
         month: "long",
         year: "numeric"
-      }).format(new Date());
+      }).format(now);
 
       const manilaTime = new Intl.DateTimeFormat("en-PH", {
         timeZone: "Asia/Manila",
@@ -704,7 +832,7 @@
         minute: "2-digit",
         second: "2-digit",
         hour12: false
-      }).format(new Date());
+      }).format(now);
 
       const manilaDate = new Intl.DateTimeFormat("en-PH", {
         timeZone: "Asia/Manila",
@@ -712,12 +840,15 @@
         day: "2-digit",
         month: "long",
         year: "numeric"
-      }).format(new Date());
+      }).format(now);
 
       document.getElementById("clockOslo").textContent = osloTime;
       document.getElementById("dateOslo").textContent = osloDate;
       document.getElementById("clockManila").textContent = manilaTime;
       document.getElementById("dateManila").textContent = manilaDate;
+
+      setAnalogClock(osloDateObj, "oslo");
+      setAnalogClock(manilaDateObj, "manila");
     }
 
     updateClocks();
