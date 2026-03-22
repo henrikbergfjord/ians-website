@@ -1,665 +1,106 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IANS – Kalender</title>
-  <meta name="description" content="Familiekalender for IANS." />
+
   <style>
-    :root{
-      --bg:#0b1220;
-      --panel:#111a2b;
-      --panel-2:#17233a;
-      --text:#eaf1ff;
-      --muted:#9db0d0;
-      --accent:#5aa9ff;
-      --accent-2:#7c5cff;
-      --line:rgba(255,255,255,0.08);
-      --shadow:0 20px 50px rgba(0,0,0,.35);
-      --radius:22px;
-      --max:1200px;
-      --today:#2563eb;
-      --today-soft:rgba(37,99,235,.16);
-      --event-bg:rgba(255,255,255,.05);
-      --event-border:rgba(90,169,255,.28);
-      --success:#22c55e;
-      --warning:#f59e0b;
-      --danger:#ef4444;
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+      background: linear-gradient(135deg, #0b1220, #0f1b3a);
+      color: white;
     }
 
-    *{box-sizing:border-box}
-
-    html{scroll-behavior:smooth}
-
-    body{
-      margin:0;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(124,92,255,.20), transparent 32%),
-        radial-gradient(circle at top right, rgba(90,169,255,.20), transparent 28%),
-        var(--bg);
-      color:var(--text);
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
     }
 
-    a{color:inherit;text-decoration:none}
-
-    .container{
-      width:min(var(--max), calc(100% - 32px));
-      margin:0 auto;
+    .logo {
+      font-weight: 600;
+      font-size: 18px;
     }
 
-    header{
-      position:sticky;
-      top:0;
-      z-index:20;
-      backdrop-filter: blur(14px);
-      background:rgba(11,18,32,.65);
-      border-bottom:1px solid var(--line);
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #cbd5e1;
+      padding: 8px 14px;
+      border-radius: 10px;
     }
 
-    .nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      min-height:74px;
-      gap:18px;
-      flex-wrap:wrap;
+    nav a.active {
+      background: rgba(255,255,255,0.1);
+      color: white;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      font-weight:800;
-      letter-spacing:.2px;
+    .btn {
+      background: linear-gradient(135deg, #6ea8ff, #8b5cf6);
+      padding: 10px 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
     }
 
-    .brand-badge{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow:var(--shadow);
-      font-size:20px;
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
     }
 
-    .nav-links{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
+    h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
     }
 
-    .nav-links a{
-      color:var(--muted);
-      padding:10px 14px;
-      border-radius:12px;
+    p {
+      color: #94a3b8;
+      margin-bottom: 30px;
     }
 
-    .nav-links a:hover{
-      background:rgba(255,255,255,.05);
-      color:var(--text);
+    .calendar-box {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      background: #111827;
     }
 
-    .cta{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:12px 16px;
-      border-radius:14px;
-      font-weight:700;
-      border:1px solid transparent;
-      transition:.2s ease;
-    }
-
-    .cta-primary{
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      color:white;
-      box-shadow:var(--shadow);
-    }
-
-    .wrap{
-      padding:34px 0 60px;
-    }
-
-    .hero-card,
-    .panel{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--line);
-      border-radius:24px;
-      box-shadow:var(--shadow);
-    }
-
-    .hero-card{
-      padding:24px;
-      margin-bottom:22px;
-    }
-
-    .top-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:18px;
-      flex-wrap:wrap;
-    }
-
-    h1{
-      margin:0;
-      font-size:clamp(2rem, 4vw, 3.2rem);
-      line-height:1.05;
-      letter-spacing:-1px;
-    }
-
-    .lead{
-      color:var(--muted);
-      margin:12px 0 0;
-      line-height:1.65;
-      max-width:65ch;
-    }
-
-    .hero-meta{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:18px;
-    }
-
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:rgba(255,255,255,.05);
-      border:1px solid var(--line);
-      color:var(--muted);
-      font-size:.92rem;
-      font-weight:700;
-    }
-
-    .toolbar{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-
-    button{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      color:var(--text);
-      border-radius:14px;
-      padding:12px 16px;
-      cursor:pointer;
-      font-weight:700;
-      transition:.2s ease;
-    }
-
-    button:hover{
-      background:rgba(255,255,255,.08);
-    }
-
-    .month-title{
-      font-size:1.15rem;
-      font-weight:800;
-      padding:0 6px;
-      min-width:190px;
-      text-align:center;
-    }
-
-    .layout{
-      display:grid;
-      grid-template-columns: 1.3fr .7fr;
-      gap:22px;
-    }
-
-    .panel{
-      overflow:hidden;
-    }
-
-    .calendar-grid{
-      display:grid;
-      grid-template-columns:repeat(7,1fr);
-    }
-
-    .dow,
-    .day{
-      border-right:1px solid var(--line);
-      border-bottom:1px solid var(--line);
-      padding:12px;
-    }
-
-    .dow{
-      min-height:auto;
-      padding:14px 12px;
-      background:rgba(255,255,255,.03);
-      font-weight:800;
-      color:var(--muted);
-      text-align:center;
-    }
-
-    .day{
-      min-height:134px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      background:transparent;
-    }
-
-    .calendar-grid > :nth-child(7n){
-      border-right:none;
-    }
-
-    .day.muted{
-      background:rgba(255,255,255,.02);
-      color:#7a8fb3;
-    }
-
-    .day.today{
-      background:linear-gradient(180deg, var(--today-soft), rgba(37,99,235,.06));
-      outline:1px solid rgba(96,165,250,.45);
-      outline-offset:-1px;
-    }
-
-    .day-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:8px;
-    }
-
-    .day-number{
-      font-size:1rem;
-      font-weight:800;
-    }
-
-    .badge{
-      font-size:.75rem;
-      padding:4px 8px;
-      border-radius:999px;
-      background:rgba(255,255,255,.08);
-      color:var(--muted);
-      white-space:nowrap;
-    }
-
-    .events{
-      display:grid;
-      gap:8px;
-    }
-
-    .event{
-      padding:8px 10px;
-      border-radius:12px;
-      background:var(--event-bg);
-      border:1px solid var(--event-border);
-      font-size:.88rem;
-      line-height:1.35;
-    }
-
-    .event strong{
-      display:block;
-      margin-bottom:3px;
-      font-size:.9rem;
-      color:var(--text);
-    }
-
-    .event span{
-      color:var(--muted);
-    }
-
-    .side{
-      padding:20px;
-    }
-
-    .side h2{
-      margin:0 0 14px;
-      font-size:1.18rem;
-    }
-
-    .side-sub{
-      color:var(--muted);
-      margin:0 0 18px;
-      line-height:1.6;
-      font-size:.96rem;
-    }
-
-    .month-events{
-      display:grid;
-      gap:12px;
-    }
-
-    .month-item{
-      padding:14px;
-      border-radius:16px;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-    }
-
-    .month-item strong{
-      display:block;
-      margin-bottom:5px;
-    }
-
-    .month-item span{
-      color:var(--muted);
-      font-size:.95rem;
-      line-height:1.5;
-    }
-
-    .legend{
-      margin-top:18px;
-      padding-top:18px;
-      border-top:1px solid var(--line);
-      display:grid;
-      gap:10px;
-    }
-
-    .legend-item{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color:var(--muted);
-      font-size:.95rem;
-    }
-
-    .legend-color{
-      width:14px;
-      height:14px;
-      border-radius:999px;
-      flex:0 0 auto;
-    }
-
-    .empty{
-      color:var(--muted);
-      padding:10px 0;
-    }
-
-    footer{
-      border-top:1px solid var(--line);
-      color:var(--muted);
-      padding:24px 0 38px;
-      margin-top:40px;
-    }
-
-    @media (max-width: 980px){
-      .layout{
-        grid-template-columns:1fr;
-      }
-
-      .day{
-        min-height:115px;
-      }
-    }
-
-    @media (max-width: 760px){
-      .calendar-grid{
-        font-size:.92rem;
-      }
-
-      .day,.dow{
-        min-height:96px;
-        padding:8px;
-      }
-
-      .event{
-        font-size:.8rem;
-        padding:6px 8px;
-      }
-
-      .month-title{
-        min-width:auto;
-      }
-
-      .nav{
-        padding:12px 0;
-      }
+    iframe {
+      width: 100%;
+      height: 800px;
+      border: none;
     }
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="container nav">
-      <a class="brand" href="index.html">
-        <span class="brand-badge">📅</span>
-        <span>IANS</span>
-      </a>
 
-      <nav class="nav-links">
-        <a href="index.html">Forside</a>
-        <a href="kalender.html">Kalender</a>
-      </nav>
+<header>
+  <div class="logo">📅 IANS</div>
 
-      <a class="cta cta-primary" href="index.html">Til forsiden</a>
-    </div>
-  </header>
+  <nav>
+    <a href="/">Forside</a>
+    <a href="/kalender.html" class="active">Kalender</a>
+  </nav>
 
-  <main class="wrap">
-    <div class="container">
-      <section class="hero-card">
-        <div class="top-row">
-          <div>
-            <h1>Familiekalender</h1>
-            <p class="lead">
-              Dette er første versjon av kalenderundersiden. Den viser måned for måned
-              og kan senere kobles til JSON eller annen datakilde for automatisk oppdatering.
-            </p>
+  <a href="/" class="btn">Til forsiden</a>
+</header>
 
-            <div class="hero-meta">
-              <span class="chip">☁️ Azure Static Web Apps</span>
-              <span class="chip">🔄 Automatisk deploy via GitHub</span>
-              <span class="chip">📆 Egen kalenderunderside</span>
-            </div>
-          </div>
+<div class="container">
+  <h1>Familiekalender</h1>
+  <p>Alle avtaler oppdateres automatisk fra Google Calendar.</p>
 
-          <div class="toolbar">
-            <button id="prevBtn">← Forrige</button>
-            <div class="month-title" id="monthTitle">Mars 2026</div>
-            <button id="nextBtn">Neste →</button>
-          </div>
-        </div>
-      </section>
+  <div class="calendar-box">
+    <iframe src="https://calendar.google.com/calendar/embed?src=c_dcka70q9qgpskub2e84t57qj5g%40group.calendar.google.com&ctz=Europe%2FOslo"></iframe>
+  </div>
+</div>
 
-      <section class="layout">
-        <div class="panel">
-          <div class="calendar-grid" id="calendarGrid"></div>
-        </div>
-
-        <aside class="panel side">
-          <h2>Avtaler i valgt måned</h2>
-          <p class="side-sub">
-            Oversikten oppdateres når du bytter måned. Denne versjonen bruker
-            hendelser som ligger direkte i koden.
-          </p>
-
-          <div id="monthEvents" class="month-events"></div>
-
-          <div class="legend">
-            <div class="legend-item">
-              <span class="legend-color" style="background: rgba(90,169,255,.9);"></span>
-              <span>Vanlig avtale</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-color" style="background: rgba(37,99,235,.9);"></span>
-              <span>Dagens dato</span>
-            </div>
-          </div>
-        </aside>
-      </section>
-    </div>
-  </main>
-
-  <footer>
-    <div class="container">
-      IANS Kalender • Bygget som egen underside for nettstedet
-    </div>
-  </footer>
-
-  <script>
-    const monthNames = [
-      "Januar","Februar","Mars","April","Mai","Juni",
-      "Juli","August","September","Oktober","November","Desember"
-    ];
-
-    const dayNames = ["Man", "Tir", "Ons", "Tor", "Fre", "Lør", "Søn"];
-
-    const events = [
-      {
-        date: "2026-03-17",
-        title: "test",
-        person: "Henrik",
-        category: "Jobb",
-        note: "AZ-104"
-      }
-    ];
-
-    let currentYear = 2026;
-    let currentMonth = 2;
-
-    const monthTitle = document.getElementById("monthTitle");
-    const calendarGrid = document.getElementById("calendarGrid");
-    const monthEvents = document.getElementById("monthEvents");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-
-    function formatDateKey(year, month, day){
-      const mm = String(month + 1).padStart(2, "0");
-      const dd = String(day).padStart(2, "0");
-      return `${year}-${mm}-${dd}`;
-    }
-
-    function getEventsForDate(year, month, day){
-      const key = formatDateKey(year, month, day);
-      return events.filter(event => event.date === key);
-    }
-
-    function getEventsForMonth(year, month){
-      const key = `${year}-${String(month + 1).padStart(2, "0")}`;
-      return events.filter(event => event.date.startsWith(key));
-    }
-
-    function formatNiceDate(dateString){
-      const d = new Date(dateString + "T00:00:00");
-      return `${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")}.${d.getFullYear()}`;
-    }
-
-    function renderCalendar(){
-      calendarGrid.innerHTML = "";
-      monthEvents.innerHTML = "";
-      monthTitle.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-
-      dayNames.forEach(day => {
-        const el = document.createElement("div");
-        el.className = "dow";
-        el.textContent = day;
-        calendarGrid.appendChild(el);
-      });
-
-      const firstDay = new Date(currentYear, currentMonth, 1);
-      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-      let startWeekday = firstDay.getDay();
-      startWeekday = startWeekday === 0 ? 6 : startWeekday - 1;
-
-      const prevMonthDays = new Date(currentYear, currentMonth, 0).getDate();
-
-      const today = new Date();
-      const todayKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
-
-      for(let i = 0; i < startWeekday; i++){
-        const dayNum = prevMonthDays - startWeekday + i + 1;
-        const cell = document.createElement("div");
-        cell.className = "day muted";
-        cell.innerHTML = `
-          <div class="day-header">
-            <div class="day-number">${dayNum}</div>
-          </div>
-        `;
-        calendarGrid.appendChild(cell);
-      }
-
-      for(let day = 1; day <= daysInMonth; day++){
-        const key = formatDateKey(currentYear, currentMonth, day);
-        const dayEvents = getEventsForDate(currentYear, currentMonth, day);
-        const cell = document.createElement("div");
-        cell.className = "day";
-
-        if(key === todayKey){
-          cell.classList.add("today");
-        }
-
-        const badge = dayEvents.length
-          ? `<span class="badge">${dayEvents.length} avtale${dayEvents.length > 1 ? "r" : ""}</span>`
-          : "";
-
-        cell.innerHTML = `
-          <div class="day-header">
-            <div class="day-number">${day}</div>
-            ${badge}
-          </div>
-          <div class="events">
-            ${dayEvents.map(event => `
-              <div class="event">
-                <strong>${event.title}</strong>
-                <span>${event.person}${event.category ? " · " + event.category : ""}</span>
-              </div>
-            `).join("")}
-          </div>
-        `;
-
-        calendarGrid.appendChild(cell);
-      }
-
-      const totalCells = dayNames.length + startWeekday + daysInMonth;
-      const remainder = totalCells % 7;
-      const trailing = remainder === 0 ? 0 : 7 - remainder;
-
-      for(let i = 1; i <= trailing; i++){
-        const cell = document.createElement("div");
-        cell.className = "day muted";
-        cell.innerHTML = `
-          <div class="day-header">
-            <div class="day-number">${i}</div>
-          </div>
-        `;
-        calendarGrid.appendChild(cell);
-      }
-
-      const items = getEventsForMonth(currentYear, currentMonth)
-        .sort((a, b) => a.date.localeCompare(b.date));
-
-      if(items.length === 0){
-        monthEvents.innerHTML = `<div class="empty">Ingen avtaler registrert i denne måneden.</div>`;
-      } else {
-        monthEvents.innerHTML = items.map(item => `
-          <div class="month-item">
-            <strong>${formatNiceDate(item.date)} – ${item.title}</strong>
-            <span>${item.person}${item.category ? " · " + item.category : ""}${item.note ? " · " + item.note : ""}</span>
-          </div>
-        `).join("");
-      }
-    }
-
-    prevBtn.addEventListener("click", () => {
-      currentMonth--;
-      if(currentMonth < 0){
-        currentMonth = 11;
-        currentYear--;
-      }
-      renderCalendar();
-    });
-
-    nextBtn.addEventListener("click", () => {
-      currentMonth++;
-      if(currentMonth > 11){
-        currentMonth = 0;
-        currentYear++;
-      }
-      renderCalendar();
-    });
-
-    renderCalendar();
-  </script>
 </body>
 </html>
