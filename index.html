@@ -10,14 +10,13 @@
       --bg:#07111f;
       --bg2:#0b1628;
       --panel:#0f1b2d;
-      --panel2:#12223a;
       --text:#edf4ff;
       --muted:#93a7c7;
       --line:rgba(255,255,255,.08);
       --accent:#79a9ff;
       --accent2:#8b7cff;
-      --shadow:0 16px 40px rgba(0,0,0,.28);
-      --radius:18px;
+      --shadow:0 14px 30px rgba(0,0,0,.22);
+      --radius:16px;
       --max:1240px;
     }
 
@@ -29,8 +28,8 @@
       font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at top left, rgba(139,124,255,.14), transparent 28%),
-        radial-gradient(circle at top right, rgba(121,169,255,.10), transparent 24%),
+        radial-gradient(circle at top left, rgba(139,124,255,.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(121,169,255,.08), transparent 24%),
         linear-gradient(180deg, var(--bg), var(--bg2));
     }
 
@@ -45,31 +44,31 @@
       position:sticky;
       top:0;
       z-index:30;
-      backdrop-filter: blur(12px);
-      background:rgba(7,17,31,.78);
+      backdrop-filter: blur(10px);
+      background:rgba(7,17,31,.82);
       border-bottom:1px solid var(--line);
     }
 
     .nav{
-      min-height:72px;
+      min-height:68px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:18px;
+      gap:16px;
       flex-wrap:wrap;
     }
 
     .brand{
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:10px;
       font-weight:800;
       letter-spacing:.2px;
     }
 
     .brand-badge{
-      width:38px;
-      height:38px;
+      width:36px;
+      height:36px;
       border-radius:12px;
       display:grid;
       place-items:center;
@@ -87,8 +86,8 @@
 
     .nav-links a{
       color:var(--muted);
-      padding:10px 14px;
-      border-radius:12px;
+      padding:9px 13px;
+      border-radius:11px;
       font-weight:600;
     }
 
@@ -102,69 +101,100 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:11px 15px;
-      border-radius:13px;
+      padding:10px 14px;
+      border-radius:12px;
       font-weight:700;
       border:1px solid transparent;
       background:linear-gradient(135deg, var(--accent), var(--accent2));
       color:#fff;
       box-shadow:var(--shadow);
-      font-size:.95rem;
+      font-size:.93rem;
     }
 
     .hero{
-      padding:28px 0 14px;
+      padding:18px 0 10px;
+    }
+
+    .clock-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:12px;
     }
 
     .hero-grid{
       display:grid;
       grid-template-columns:1.35fr .65fr;
-      gap:18px;
+      gap:14px;
     }
 
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
       border:1px solid var(--line);
-      border-radius:22px;
+      border-radius:18px;
       box-shadow:var(--shadow);
     }
 
+    .clock-card{
+      padding:14px 16px;
+    }
+
+    .clock-label{
+      color:var(--muted);
+      font-size:.86rem;
+      margin-bottom:6px;
+      font-weight:600;
+    }
+
+    .clock-time{
+      font-size:1.45rem;
+      font-weight:800;
+      line-height:1.1;
+      letter-spacing:-.5px;
+      margin-bottom:4px;
+    }
+
+    .clock-date{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
     .hero-main{
-      padding:26px 28px;
+      padding:22px 24px;
     }
 
     .eyebrow{
       display:inline-flex;
       align-items:center;
-      padding:7px 11px;
+      padding:6px 10px;
       border-radius:999px;
       background:rgba(121,169,255,.10);
       border:1px solid rgba(121,169,255,.20);
       color:#cde3ff;
       font-size:12px;
       font-weight:700;
-      margin-bottom:14px;
+      margin-bottom:12px;
     }
 
     h1{
-      margin:0 0 10px;
-      font-size:clamp(2.1rem, 4.6vw, 3.8rem);
+      margin:0 0 8px;
+      font-size:clamp(1.9rem, 4.2vw, 3.2rem);
       line-height:1.02;
-      letter-spacing:-1.5px;
+      letter-spacing:-1.2px;
     }
 
     .lead{
       margin:0;
       color:var(--muted);
-      font-size:1rem;
-      line-height:1.65;
-      max-width:60ch;
+      font-size:.98rem;
+      line-height:1.55;
+      max-width:58ch;
     }
 
     .hero-actions{
-      margin-top:18px;
+      margin-top:14px;
       display:flex;
-      gap:12px;
+      gap:10px;
       flex-wrap:wrap;
     }
 
@@ -176,14 +206,14 @@
     }
 
     .hero-side{
-      padding:18px;
+      padding:14px;
       display:grid;
-      gap:14px;
+      gap:12px;
     }
 
     .mini-card{
-      padding:16px;
-      border-radius:16px;
+      padding:14px;
+      border-radius:14px;
       background:rgba(255,255,255,.035);
       border:1px solid var(--line);
     }
@@ -193,98 +223,97 @@
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      margin-bottom:8px;
+      margin-bottom:6px;
     }
 
     .mini-top strong{
-      font-size:.98rem;
+      font-size:.94rem;
     }
 
     .mini-icon{
-      font-size:.95rem;
+      font-size:.9rem;
       opacity:.85;
     }
 
     .mini-value{
-      font-size:1.8rem;
+      font-size:1.55rem;
       font-weight:800;
       line-height:1;
-      margin:8px 0 4px;
-      letter-spacing:-1px;
+      margin:6px 0 4px;
+      letter-spacing:-.8px;
     }
 
     .mini-text{
       color:var(--muted);
-      line-height:1.55;
-      font-size:.94rem;
+      line-height:1.5;
+      font-size:.9rem;
     }
 
     .section{
-      padding:16px 0 28px;
+      padding:10px 0 22px;
     }
 
     .section-head{
       display:flex;
       align-items:end;
       justify-content:space-between;
-      gap:16px;
-      margin-bottom:14px;
+      gap:14px;
+      margin-bottom:12px;
       flex-wrap:wrap;
     }
 
     .section-head h2{
       margin:0;
-      font-size:clamp(1.45rem, 2.8vw, 2rem);
-      letter-spacing:-.5px;
+      font-size:clamp(1.35rem, 2.5vw, 1.85rem);
+      letter-spacing:-.4px;
     }
 
     .section-head p{
-      margin:6px 0 0;
+      margin:4px 0 0;
       color:var(--muted);
       max-width:62ch;
-      line-height:1.6;
-      font-size:.96rem;
+      line-height:1.5;
+      font-size:.92rem;
     }
 
     .forecast-grid{
       display:grid;
       grid-template-columns:repeat(3,1fr);
-      gap:14px;
+      gap:12px;
     }
 
     .forecast-card{
-      padding:18px;
+      padding:15px;
     }
 
     .forecast-day{
       color:var(--muted);
-      font-size:.9rem;
-      margin-bottom:8px;
+      font-size:.86rem;
+      margin-bottom:6px;
       font-weight:600;
     }
 
     .forecast-temp{
-      font-size:1.55rem;
+      font-size:1.35rem;
       font-weight:800;
-      margin-bottom:6px;
-      letter-spacing:-.5px;
+      margin-bottom:4px;
     }
 
     .forecast-desc{
       color:var(--muted);
-      line-height:1.55;
-      font-size:.92rem;
+      line-height:1.45;
+      font-size:.88rem;
     }
 
     .dashboard-grid{
       display:grid;
       grid-template-columns:repeat(5,1fr);
-      gap:14px;
+      gap:12px;
     }
 
     .dash-card{
-      padding:18px;
-      min-height:180px;
+      padding:15px;
+      min-height:150px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
@@ -294,26 +323,25 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:10px;
-      margin-bottom:12px;
+      gap:8px;
+      margin-bottom:10px;
     }
 
     .dash-icon{
-      width:34px;
-      height:34px;
-      border-radius:11px;
+      width:30px;
+      height:30px;
+      border-radius:10px;
       display:grid;
       place-items:center;
       background:rgba(255,255,255,.04);
       border:1px solid var(--line);
-      font-size:.92rem;
-      font-weight:700;
+      font-size:.85rem;
     }
 
     .dash-status{
-      padding:5px 9px;
+      padding:4px 8px;
       border-radius:999px;
-      font-size:.74rem;
+      font-size:.7rem;
       color:var(--muted);
       background:rgba(255,255,255,.04);
       border:1px solid var(--line);
@@ -322,58 +350,57 @@
     }
 
     .dash-card h3{
-      margin:0 0 8px;
-      font-size:1rem;
-      letter-spacing:-.2px;
+      margin:0 0 6px;
+      font-size:.96rem;
     }
 
     .dash-card p{
       margin:0;
       color:var(--muted);
-      line-height:1.58;
-      font-size:.93rem;
+      line-height:1.45;
+      font-size:.88rem;
     }
 
     .dash-link{
-      margin-top:14px;
+      margin-top:12px;
       font-weight:800;
-      font-size:.93rem;
+      font-size:.88rem;
       color:var(--text);
     }
 
     .split-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:14px;
+      gap:12px;
     }
 
     .feed-card{
-      padding:20px;
-      min-height:260px;
+      padding:16px;
+      min-height:220px;
     }
 
     .feed-card h3{
-      margin:0 0 6px;
-      font-size:1.08rem;
+      margin:0 0 4px;
+      font-size:1rem;
     }
 
     .feed-card p{
-      margin:0 0 14px;
+      margin:0 0 12px;
       color:var(--muted);
-      line-height:1.55;
-      font-size:.94rem;
+      line-height:1.45;
+      font-size:.9rem;
     }
 
     .news-list,
     .price-list{
       display:grid;
-      gap:10px;
+      gap:8px;
     }
 
     .news-item,
     .price-item{
-      padding:12px 13px;
-      border-radius:14px;
+      padding:10px 12px;
+      border-radius:12px;
       background:rgba(255,255,255,.04);
       border:1px solid var(--line);
     }
@@ -381,37 +408,36 @@
     .news-item a{
       display:block;
       font-weight:700;
-      margin-bottom:5px;
-      line-height:1.45;
-      font-size:.94rem;
+      margin-bottom:4px;
+      line-height:1.35;
+      font-size:.9rem;
     }
 
     .news-item span,
     .price-item span{
       color:var(--muted);
-      font-size:.88rem;
-      line-height:1.5;
+      font-size:.84rem;
+      line-height:1.4;
     }
 
     .price-main{
-      font-size:1.5rem;
+      font-size:1.28rem;
       font-weight:800;
-      margin-bottom:3px;
-      letter-spacing:-.5px;
+      margin-bottom:2px;
     }
 
     .loading{
       color:var(--muted);
-      padding:10px 0;
-      font-size:.94rem;
+      padding:8px 0;
+      font-size:.9rem;
     }
 
     footer{
       border-top:1px solid var(--line);
       color:var(--muted);
-      padding:22px 0 34px;
+      padding:18px 0 28px;
       margin-top:8px;
-      font-size:.92rem;
+      font-size:.88rem;
     }
 
     @media (max-width:1150px){
@@ -421,6 +447,7 @@
     }
 
     @media (max-width:960px){
+      .clock-grid,
       .hero-grid,
       .forecast-grid,
       .split-grid{
@@ -434,11 +461,11 @@
       }
 
       .nav{
-        padding:12px 0;
+        padding:10px 0;
       }
 
       .hero-main{
-        padding:22px;
+        padding:18px;
       }
     }
   </style>
@@ -462,6 +489,20 @@
 
   <main>
     <section class="hero">
+      <div class="container clock-grid">
+        <div class="card clock-card">
+          <div class="clock-label">Norge • Oslo</div>
+          <div class="clock-time" id="clockOslo">--:--:--</div>
+          <div class="clock-date" id="dateOslo">Laster dato...</div>
+        </div>
+
+        <div class="card clock-card">
+          <div class="clock-label">Filippinene • Sogod / Tabaco</div>
+          <div class="clock-time" id="clockManila">--:--:--</div>
+          <div class="clock-date" id="dateManila">Laster dato...</div>
+        </div>
+      </div>
+
       <div class="container hero-grid">
         <div class="card hero-main">
           <div class="eyebrow">Live dashboard</div>
@@ -639,6 +680,48 @@
     const year = now.getFullYear();
     const prettyWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
     headline.textContent = `${prettyWeekday} ${day}. ${month} ${year}`;
+
+    function updateClocks() {
+      const osloTime = new Intl.DateTimeFormat("nb-NO", {
+        timeZone: "Europe/Oslo",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).format(new Date());
+
+      const osloDate = new Intl.DateTimeFormat("nb-NO", {
+        timeZone: "Europe/Oslo",
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      }).format(new Date());
+
+      const manilaTime = new Intl.DateTimeFormat("en-PH", {
+        timeZone: "Asia/Manila",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).format(new Date());
+
+      const manilaDate = new Intl.DateTimeFormat("en-PH", {
+        timeZone: "Asia/Manila",
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      }).format(new Date());
+
+      document.getElementById("clockOslo").textContent = osloTime;
+      document.getElementById("dateOslo").textContent = osloDate;
+      document.getElementById("clockManila").textContent = manilaTime;
+      document.getElementById("dateManila").textContent = manilaDate;
+    }
+
+    updateClocks();
+    setInterval(updateClocks, 1000);
 
     const lat = 60.3619;
     const lon = 5.1216;
