@@ -1,11 +1,481 @@
 <!DOCTYPE html>
-<html>
+<html lang="no">
 <head>
-    <meta charset="UTF-8">
-    <title>IANS Website</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IANS – Hjem</title>
+  <meta name="description" content="IANS nettside med oversikt og familiekalender." />
+  <style>
+    :root{
+      --bg:#0b1220;
+      --panel:#111a2b;
+      --panel-2:#17233a;
+      --text:#eaf1ff;
+      --muted:#9db0d0;
+      --accent:#5aa9ff;
+      --accent-2:#7c5cff;
+      --line:rgba(255,255,255,0.08);
+      --ok:#22c55e;
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+      --radius:22px;
+      --max:1200px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124,92,255,.20), transparent 32%),
+        radial-gradient(circle at top right, rgba(90,169,255,.20), transparent 28%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    a{color:inherit;text-decoration:none}
+    .container{width:min(var(--max), calc(100% - 32px)); margin:0 auto}
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter: blur(14px);
+      background:rgba(11,18,32,.65);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      min-height:74px;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      font-weight:800;
+      letter-spacing:.3px;
+    }
+
+    .brand-badge{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow:var(--shadow);
+      font-size:20px;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .nav-links a{
+      color:var(--muted);
+      padding:10px 14px;
+      border-radius:12px;
+    }
+
+    .nav-links a:hover{
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+    }
+
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 18px;
+      border-radius:14px;
+      font-weight:700;
+      border:1px solid transparent;
+      transition:.2s ease;
+    }
+
+    .cta-primary{
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      color:white;
+      box-shadow:var(--shadow);
+    }
+
+    .cta-secondary{
+      background:rgba(255,255,255,.04);
+      border-color:var(--line);
+      color:var(--text);
+    }
+
+    .hero{
+      padding:72px 0 36px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:26px;
+      align-items:stretch;
+    }
+
+    .hero-card,
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .hero-card{
+      padding:34px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(34,197,94,.12);
+      color:#b9f7c9;
+      border:1px solid rgba(34,197,94,.25);
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:18px;
+    }
+
+    h1{
+      font-size:clamp(2.4rem, 5vw, 4.5rem);
+      line-height:1.02;
+      margin:0 0 18px;
+      letter-spacing:-1.8px;
+    }
+
+    .lead{
+      color:var(--muted);
+      font-size:clamp(1.04rem, 1.7vw, 1.18rem);
+      line-height:1.7;
+      margin:0 0 24px;
+      max-width:60ch;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    .hero-side{
+      padding:26px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .stat{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      padding:18px 0;
+      border-bottom:1px solid var(--line);
+    }
+
+    .stat:last-child{border-bottom:0}
+    .stat strong{
+      display:block;
+      font-size:1.8rem;
+      margin-bottom:4px;
+    }
+    .stat span{color:var(--muted)}
+
+    .section{
+      padding:18px 0 64px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:20px;
+    }
+
+    .section-head h2{
+      font-size:clamp(1.5rem, 3vw, 2.2rem);
+      margin:0;
+      letter-spacing:-.6px;
+    }
+
+    .section-head p{
+      margin:8px 0 0;
+      color:var(--muted);
+      max-width:60ch;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .card{
+      padding:24px;
+    }
+
+    .card h3{
+      margin:0 0 10px;
+      font-size:1.15rem;
+    }
+
+    .card p{
+      color:var(--muted);
+      line-height:1.65;
+      margin:0;
+    }
+
+    .mini-list{
+      display:grid;
+      gap:10px;
+      margin-top:16px;
+    }
+
+    .mini-item{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:12px 14px;
+      border-radius:14px;
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--line);
+    }
+
+    .mini-item .dot{
+      width:10px;
+      height:10px;
+      margin-top:7px;
+      border-radius:999px;
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      flex:0 0 auto;
+    }
+
+    .calendar-preview{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .month-box{
+      padding:22px;
+      border-radius:20px;
+      background:var(--panel);
+      border:1px solid var(--line);
+    }
+
+    .month-box h3{
+      margin:0 0 8px;
+      font-size:1.3rem;
+    }
+
+    .month-box p{
+      margin:0 0 18px;
+      color:var(--muted);
+    }
+
+    .upcoming{
+      display:grid;
+      gap:12px;
+    }
+
+    .event{
+      padding:14px 16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+    }
+
+    .event strong{display:block;margin-bottom:4px}
+    .event span{color:var(--muted);font-size:.96rem}
+
+    footer{
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      padding:22px 0 38px;
+    }
+
+    @media (max-width: 960px){
+      .hero-grid,
+      .calendar-preview,
+      .grid-3{
+        grid-template-columns:1fr;
+      }
+
+      .nav{
+        flex-wrap:wrap;
+        padding:12px 0;
+      }
+
+      .nav-links{
+        width:100%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>🚀 IANS Website is LIVE</h1>
-    <p>Henrik sin Azure Static Web App fungerer!</p>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">🚀</span>
+        <span>IANS</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#oversikt">Oversikt</a>
+        <a href="#tjenester">Innhold</a>
+        <a href="kalender.html">Kalender</a>
+      </nav>
+
+      <a class="cta cta-primary" href="kalender.html">Åpne kalender</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-card">
+          <div class="eyebrow">✅ Live på Azure Static Web Apps</div>
+          <h1>IANS Website<br>med egen kalender</h1>
+          <p class="lead">
+            En enkel, rask og moderne nettside bygget med ren HTML, CSS og JavaScript.
+            Dette er en god startside for informasjon, snarveier og familiens kalender på eget domene.
+          </p>
+
+          <div class="hero-actions">
+            <a class="cta cta-primary" href="kalender.html">Se kalender</a>
+            <a class="cta cta-secondary" href="#oversikt">Les mer</a>
+          </div>
+        </div>
+
+        <aside class="hero-card hero-side">
+          <div class="stat">
+            <div>
+              <strong>Azure</strong>
+              <span>Hosting og automatisk deploy</span>
+            </div>
+            <div>☁️</div>
+          </div>
+          <div class="stat">
+            <div>
+              <strong>GitHub</strong>
+              <span>Versjonskontroll og CI/CD</span>
+            </div>
+            <div>🔄</div>
+          </div>
+          <div class="stat">
+            <div>
+              <strong>Kalender</strong>
+              <span>Egen underside med månedsvisning</span>
+            </div>
+            <div>📅</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="oversikt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Oversikt</h2>
+            <p>Forsiden kan brukes som hub for familie, prosjekter, snarveier og fremtidig innhold.</p>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <h3>Rask og enkel</h3>
+            <p>
+              Ingen komplisert backend. Alt er lett å vedlikeholde og fungerer fint direkte i GitHub og Azure.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Mobilvennlig</h3>
+            <p>
+              Layouten er responsiv og fungerer godt både på mobil, nettbrett og PC.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Klar for videre utbygging</h3>
+            <p>
+              Du kan senere legge til kontaktinfo, profiler, dokumenter, prosjekter og innlogging.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tjenester">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Kalenderoversikt</h2>
+            <p>Undersiden viser valgt måned og arrangementer i en ryddig, enkel visning.</p>
+          </div>
+        </div>
+
+        <div class="calendar-preview">
+          <div class="card month-box">
+            <h3>Mars 2026</h3>
+            <p>Eksempeldata hentet fra familiens kalenderoppsett.</p>
+
+            <div class="mini-list">
+              <div class="mini-item">
+                <span class="dot"></span>
+                <div>
+                  <strong>17. mars</strong>
+                  <div style="color:var(--muted)">test (Henrik)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Underside klar</h3>
+            <p>
+              Kalenderen ligger på egen side og kan enkelt bygges ut med flere måneder, filtrering og flere avtaler.
+            </p>
+
+            <div class="upcoming">
+              <div class="event">
+                <strong>kalender.html</strong>
+                <span>Månedsvisning med avtaler og markering av dagens dato.</span>
+              </div>
+              <div class="event">
+                <strong>Neste steg</strong>
+                <span>Senere kan vi koble kalenderdata automatisk fra JSON eller API.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      IANS Website • Bygget for Azure Static Web Apps • Oppdatert med kalenderunderside
+    </div>
+  </footer>
 </body>
 </html>
