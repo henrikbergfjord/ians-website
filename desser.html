@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IANS – Desserts</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Inter, sans-serif;
+  background:linear-gradient(135deg,#07111f,#0b1628);
+  color:white;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+
+h1{
+  font-size:2.5rem;
+}
+
+.card{
+  background:rgba(255,255,255,0.05);
+  padding:20px;
+  border-radius:20px;
+  margin-top:20px;
+}
+
+button{
+  margin:8px;
+  padding:10px 16px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.primary{background:#4fa3ff;color:white;}
+.secondary{background:#222;color:white;}
+.print{background:#28a745;color:white;}
+
+img{
+  width:100%;
+  border-radius:15px;
+  margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🍰 Dessert Generator</h1>
+
+<div class="card">
+  <img id="image">
+  <h2 id="title"></h2>
+  <p id="desc"></p>
+
+  <h3>⏱️ Time</h3>
+  <p id="time"></p>
+
+  <h3>🛒 Ingredients</h3>
+  <ul id="ingredients"></ul>
+
+  <h3>👨‍🍳 Instructions</h3>
+  <ol id="instructions"></ol>
+
+  <h3>📜 History</h3>
+  <p id="history"></p>
+</div>
+
+<button class="primary" onclick="generate()">Generate dessert</button>
+<button class="print" onclick="window.print()">Print</button>
+<button class="secondary" onclick="location.href='index.html'">⬅ Back</button>
+<button class="secondary" onclick="location.href='middag.html'">🍽 Dinner</button>
+<button class="secondary" onclick="location.href='boller.html'">🥐 Boller</button>
+
+</div>
+
+<script>
+const desserts = [
+
+/* 🇳🇴 NORWAY */
+
+{
+title:"Vaffel",
+time:"20 min",
+image:"https://images.unsplash.com/photo-1551024709-8f23befc6f87",
+desc:"Norwegian waffles, soft and heart-shaped.",
+ingredients:["Flour","Milk","Eggs","Sugar","Butter"],
+instructions:["Mix ingredients","Pour in waffle iron","Cook until golden"],
+history:"Traditional Norwegian treat served with brown cheese or jam."
+},
+
+{
+title:"Riskrem",
+time:"30 min",
+image:"https://images.unsplash.com/photo-1514516870926-205989b5c5c9",
+desc:"Rice cream dessert served at Christmas.",
+ingredients:["Rice porridge","Whipped cream","Sugar"],
+instructions:["Mix porridge with whipped cream","Chill","Serve with berry sauce"],
+history:"Popular Norwegian Christmas dessert."
+},
+
+{
+title:"Kvæfjordkake",
+time:"1 hour",
+image:"https://images.unsplash.com/photo-1601972599720-36938d4ecd31",
+desc:"Norway’s national cake.",
+ingredients:["Eggs","Sugar","Almonds","Butter"],
+instructions:["Bake layers","Add cream","Assemble"],
+history:"Called 'Verdens beste'."
+},
+
+{
+title:"Tilslørte bondepiker",
+time:"20 min",
+image:"https://images.unsplash.com/photo-1604908177522-4721a9ffea1e",
+desc:"Layered apple dessert.",
+ingredients:["Apples","Sugar","Breadcrumbs","Cream"],
+instructions:["Cook apples","Layer with crumbs and cream"],
+history:"Old Norwegian farmhouse dessert."
+},
+
+{
+title:"Multekrem",
+time:"15 min",
+image:"https://images.unsplash.com/photo-1505253758473-96b7015fcd40",
+desc:"Cloudberries with whipped cream.",
+ingredients:["Cloudberries","Cream","Sugar"],
+instructions:["Whip cream","Mix berries","Serve"],
+history:"Luxury dessert in Norway."
+},
+
+/* 🇵🇭 PHILIPPINES */
+
+{
+title:"Halo-Halo",
+time:"15 min",
+image:"https://images.unsplash.com/photo-1627308595180-8b30d8a1c7b5",
+desc:"Colorful shaved ice dessert.",
+ingredients:["Ice","Milk","Beans","Jelly","Ice cream"],
+instructions:["Layer ingredients","Add ice","Top with milk"],
+history:"Popular Filipino summer dessert."
+},
+
+{
+title:"Leche Flan",
+time:"1 hour",
+image:"https://images.unsplash.com/photo-1589302168068-964664d93dc0",
+desc:"Creamy caramel custard.",
+ingredients:["Egg yolks","Milk","Sugar"],
+instructions:["Make caramel","Mix ingredients","Steam"],
+history:"Spanish influence dessert."
+},
+
+{
+title:"Bibingka",
+time:"45 min",
+image:"https://images.unsplash.com/photo-1604908554180-95a0b4a2c9ff",
+desc:"Rice cake baked in banana leaves.",
+ingredients:["Rice flour","Coconut milk","Sugar"],
+instructions:["Mix","Bake","Serve warm"],
+history:"Traditional Christmas food."
+},
+
+{
+title:"Turon",
+time:"25 min",
+image:"https://images.unsplash.com/photo-1625944525643-5b8df6f1d233",
+desc:"Fried banana rolls.",
+ingredients:["Banana","Sugar","Wrapper"],
+instructions:["Wrap banana","Fry until crispy"],
+history:"Street food dessert."
+},
+
+{
+title:"Ube Cake",
+time:"1 hour",
+image:"https://images.unsplash.com/photo-1605478522626-3e6e2c8a8b7f",
+desc:"Purple yam cake.",
+ingredients:["Ube","Flour","Sugar","Eggs"],
+instructions:["Mix batter","Bake","Add frosting"],
+history:"Modern Filipino favorite."
+}
+
+];
+
+function generate(){
+  const d = desserts[Math.floor(Math.random()*desserts.length)];
+
+  document.getElementById("title").textContent = d.title;
+  document.getElementById("desc").textContent = d.desc;
+  document.getElementById("time").textContent = d.time;
+  document.getElementById("image").src = d.image;
+
+  document.getElementById("ingredients").innerHTML =
+    d.ingredients.map(i=>`<li>${i}</li>`).join("");
+
+  document.getElementById("instructions").innerHTML =
+    d.instructions.map(i=>`<li>${i}</li>`).join("");
+
+  document.getElementById("history").textContent = d.history;
+}
+
+// LOAD FIRST
+generate();
+</script>
+
+</body>
+</html>
