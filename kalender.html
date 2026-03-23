@@ -27,10 +27,10 @@
     html, body {
       margin: 0;
       padding: 0;
+      min-height: 100%;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
       color: var(--text);
-      min-height: 100%;
     }
 
     body {
@@ -241,10 +241,6 @@
     <nav>
       <a href="/">Forside</a>
       <a href="/kalender.html" class="active">Kalender</a>
-      <a href="/strom.html">Strøm</a>
-      <a href="/volvo-c40.html">Volvo C40</a>
-      <a href="/maimyra.html">Maimyra</a>
-      <a href="/galleri.html">Galleri</a>
     </nav>
 
     <a href="/" class="btn">Til forsiden</a>
@@ -252,40 +248,40 @@
 
   <main class="container">
     <section class="hero">
-      <div class="eyebrow">Google Calendar integrasjon</div>
+      <div class="eyebrow">Live Google Calendar</div>
       <h1>Familiekalender</h1>
       <p class="lead">
-        Her vises familiekalenderen samlet med norske helligdager. Kalenderen oppdateres automatisk fra Google Calendar, slik at du får én felles oversikt over planer, merkedager og fridager.
+        Her vises Ians Kalender sammen med norske helligdager. Nye avtaler du legger inn i Google Calendar skal vises automatisk her.
       </p>
     </section>
 
     <section class="info-grid">
       <div class="info-card">
+        <h3>Ians Kalender</h3>
+        <p>
+          Din delte familiekalender er koblet direkte til nettsiden med korrekt embed-lenke.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <h3>Helligdager i Norge</h3>
+        <p>
+          Norske røde dager er lagt til i samme visning, slik at du får full oversikt.
+        </p>
+      </div>
+
+      <div class="info-card">
         <h3>Automatisk oppdatert</h3>
         <p>
-          Alle endringer i Google Calendar vises direkte her uten at siden må bygges om på nytt.
-        </p>
-      </div>
-
-      <div class="info-card">
-        <h3>Røde dager inkludert</h3>
-        <p>
-          Kalenderen er satt opp med norske helligdager i tillegg til familiekalenderen.
-        </p>
-      </div>
-
-      <div class="info-card">
-        <h3>Én samlet oversikt</h3>
-        <p>
-          Praktisk for familie, skole, fritid og planlegging gjennom hele året.
+          Når du lager eller endrer avtaler i Google Calendar, vil de komme frem her etter oppdatering.
         </p>
       </div>
     </section>
 
     <section class="calendar-box">
       <iframe
-        src="https://calendar.google.com/calendar/embed?src=c_dcka70q9qgpskub2e84t57qj5g%40group.calendar.google.com&src=no.norwegian%23holiday%40group.v.calendar.google.com&ctz=Europe%2FOslo"
-        title="IANS Familiekalender">
+        src="https://calendar.google.com/calendar/embed?src=4a857abc20217086fb7a9398a1af29ecb64ca61485322a6ba8edb0b060690623%40group.calendar.google.com&src=no.norwegian%23holiday%40group.v.calendar.google.com&ctz=Europe%2FOslo"
+        title="IANS Kalender">
       </iframe>
     </section>
   </main>
