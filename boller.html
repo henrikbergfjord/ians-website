@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IANS – Boller</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Inter, sans-serif;
+  background:linear-gradient(135deg,#07111f,#0b1628);
+  color:white;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+
+h1{
+  font-size:2.5rem;
+}
+
+.card{
+  background:rgba(255,255,255,0.05);
+  padding:20px;
+  border-radius:20px;
+  margin-top:20px;
+}
+
+button{
+  margin:8px;
+  padding:10px 16px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.primary{background:#4fa3ff;color:white;}
+.secondary{background:#222;color:white;}
+.print{background:#28a745;color:white;}
+
+img{
+  width:100%;
+  border-radius:15px;
+  margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🥐 Boller Generator</h1>
+
+<div class="card">
+  <img id="image">
+  <h2 id="title"></h2>
+  <p id="desc"></p>
+
+  <h3>⏱️ Time</h3>
+  <p id="time"></p>
+
+  <h3>🛒 Ingredients</h3>
+  <ul id="ingredients"></ul>
+
+  <h3>👨‍🍳 Instructions</h3>
+  <ol id="instructions"></ol>
+
+  <h3>📜 History</h3>
+  <p id="history"></p>
+</div>
+
+<button class="primary" onclick="generate()">Generate boller</button>
+<button class="print" onclick="window.print()">Print</button>
+<button class="secondary" onclick="location.href='index.html'">⬅ Back</button>
+<button class="secondary" onclick="location.href='middag.html'">🍽 Dinner</button>
+<button class="secondary" onclick="location.href='desser.html'">🍰 Desserts</button>
+
+</div>
+
+<script>
+const boller = [
+
+/* 🇳🇴 NORWAY */
+
+{
+title:"Hveteboller",
+time:"2 hours",
+image:"https://images.unsplash.com/photo-1509440159596-0249088772ff",
+desc:"Classic Norwegian sweet buns.",
+ingredients:["Flour","Milk","Yeast","Sugar","Butter","Cardamom"],
+instructions:["Make dough","Let rise","Shape buns","Bake until golden"],
+history:"Traditional buns enjoyed in Norway for generations."
+},
+
+{
+title:"Skillingsboller",
+time:"2 hours",
+image:"https://images.unsplash.com/photo-1519915028121-7d3463d20b5f",
+desc:"Cinnamon swirls from Bergen.",
+ingredients:["Flour","Butter","Sugar","Cinnamon","Yeast"],
+instructions:["Make dough","Roll flat","Spread filling","Roll and bake"],
+history:"Very famous in Bergen and western Norway."
+},
+
+{
+title:"Fastelavnsboller",
+time:"2 hours",
+image:"https://images.unsplash.com/photo-1551024709-8f23befc6f87",
+desc:"Cream-filled buns.",
+ingredients:["Buns","Cream","Jam","Sugar"],
+instructions:["Bake buns","Slice","Fill with cream and jam"],
+history:"Served around Fastelavn."
+},
+
+{
+title:"Rosinboller",
+time:"2 hours",
+image:"https://images.unsplash.com/photo-1604908177522-4721a9ffea1e",
+desc:"Sweet buns with raisins.",
+ingredients:["Flour","Milk","Yeast","Sugar","Butter","Raisins"],
+instructions:["Make dough","Add raisins","Rise","Bake"],
+history:"Common homemade bun in Norway."
+},
+
+{
+title:"Skoleboller",
+time:"2 hours",
+image:"https://images.unsplash.com/photo-1601972599720-36938d4ecd31",
+desc:"Custard buns with coconut icing.",
+ingredients:["Bun dough","Custard","Icing","Coconut"],
+instructions:["Shape dough","Add custard","Bake","Decorate"],
+history:"Popular school and bakery bun in Norway."
+},
+
+/* 🇵🇭 PHILIPPINES */
+
+{
+title:"Pandesal",
+time:"2 hours",
+image:"https://images.unsplash.com/photo-1509440159596-0249088772ff",
+desc:"Soft Filipino bread rolls.",
+ingredients:["Flour","Yeast","Milk","Sugar","Butter","Breadcrumbs"],
+instructions:["Make dough","Shape rolls","Coat in crumbs","Bake"],
+history:"One of the most common breads in the Philippines."
+},
+
+{
+title:"Ensaymada",
+time:"2.5 hours",
+image:"https://images.unsplash.com/photo-1605478522626-3e6e2c8a8b7f",
+desc:"Sweet buttery Filipino buns with cheese.",
+ingredients:["Flour","Milk","Butter","Sugar","Cheese"],
+instructions:["Make soft dough","Bake","Top with butter and cheese"],
+history:"Spanish influence adapted in Filipino baking."
+},
+
+{
+title:"Spanish Bread",
+time:"2 hours",
+image:"https://images.unsplash.com/photo-1627308595180-8b30d8a1c7b5",
+desc:"Sweet rolls with buttery breadcrumb filling.",
+ingredients:["Flour","Yeast","Butter","Sugar","Breadcrumbs"],
+instructions:["Make dough","Fill and roll","Bake"],
+history:"Popular Filipino bakery favorite."
+},
+
+{
+title:"Cheese Bread",
+time:"2 hours",
+image:"https://images.unsplash.com/photo-1625944525643-5b8df6f1d233",
+desc:"Sweet soft bread with cheesy topping or filling.",
+ingredients:["Flour","Milk","Butter","Cheese","Sugar"],
+instructions:["Make dough","Shape","Bake","Add cheese"],
+history:"Modern Filipino bakery classic."
+},
+
+{
+title:"Ube Cheese Pandesal",
+time:"2.5 hours",
+image:"https://images.unsplash.com/photo-1589302168068-964664d93dc0",
+desc:"Purple yam bread rolls with cheese filling.",
+ingredients:["Flour","Ube","Yeast","Milk","Cheese"],
+instructions:["Make ube dough","Shape with cheese inside","Bake"],
+history:"Modern trendy bakery item in the Philippines."
+}
+
+];
+
+function generate(){
+  const d = boller[Math.floor(Math.random()*boller.length)];
+
+  document.getElementById("title").textContent = d.title;
+  document.getElementById("desc").textContent = d.desc;
+  document.getElementById("time").textContent = d.time;
+  document.getElementById("image").src = d.image;
+
+  document.getElementById("ingredients").innerHTML =
+    d.ingredients.map(i=>`<li>${i}</li>`).join("");
+
+  document.getElementById("instructions").innerHTML =
+    d.instructions.map(i=>`<li>${i}</li>`).join("");
+
+  document.getElementById("history").textContent = d.history;
+}
+
+generate();
+</script>
+
+</body>
+</html>
