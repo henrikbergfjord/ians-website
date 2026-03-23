@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IANS – Dashboard</title>
-  <meta name="description" content="IANS dashboard med vær, kalender, strømpris, nyheter og Volvo C40." />
+  <meta name="description" content="IANS dashboard med vær, kalender, strømpris, lokalnyheter, middagstips og Volvo C40." />
   <style>
     :root{
       --bg:#07111f;
@@ -382,7 +382,7 @@
 
     .dashboard-grid{
       display:grid;
-      grid-template-columns:repeat(5,1fr);
+      grid-template-columns:repeat(6,1fr);
       gap:10px;
     }
 
@@ -561,6 +561,7 @@
       <nav class="nav-links">
         <a href="index.html" class="active">Forside</a>
         <a href="kalender.html">Kalender</a>
+        <a href="middag.html">Dinner</a>
       </nav>
 
       <a class="cta" href="kalender.html">Åpne kalender</a>
@@ -609,6 +610,7 @@
 
           <div class="hero-actions">
             <a class="cta" href="kalender.html">Se familiekalender</a>
+            <a class="cta ghost" href="middag.html">Dinner ideas</a>
             <a class="cta ghost" href="#oversikt">Åpne oversikt</a>
           </div>
         </div>
@@ -728,6 +730,18 @@
           <article class="card dash-card">
             <div>
               <div class="dash-top">
+                <div class="dash-icon">🍽️</div>
+                <span class="dash-status">Ny</span>
+              </div>
+              <h3>Dinner ideas</h3>
+              <p>Get Norwegian and Filipino dinner inspiration with recipes and images.</p>
+            </div>
+            <a class="dash-link" href="middag.html">Open dinner page →</a>
+          </article>
+
+          <article class="card dash-card">
+            <div>
+              <div class="dash-top">
                 <div class="dash-icon">☁️</div>
                 <span class="dash-status">Aktiv</span>
               </div>
@@ -763,7 +777,7 @@
 
   <footer>
     <div class="container">
-      IANS • Dashboard • Kalender, vær, strømpris, lokalnyheter og Volvo C40
+      IANS • Dashboard • Kalender, vær, strømpris, lokalnyheter, middagstips og Volvo C40
     </div>
   </footer>
 
