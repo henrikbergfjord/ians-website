@@ -28,6 +28,7 @@ h1{
   padding:20px;
   border-radius:20px;
   margin-top:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 
 button{
@@ -45,8 +46,48 @@ button{
 
 img{
   width:100%;
+  max-height:420px;
+  object-fit:cover;
   border-radius:15px;
   margin-bottom:10px;
+  background:#111827;
+}
+
+p, li{
+  line-height:1.6;
+}
+
+.toplinks{
+  margin-top:8px;
+  margin-bottom:10px;
+}
+
+.navbtn{
+  margin:8px;
+  padding:10px 16px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+  text-decoration:none;
+  display:inline-block;
+  color:white;
+  background:#222;
+}
+
+@media print{
+  button, .navbtn, .toplinks{
+    display:none !important;
+  }
+  body{
+    background:#fff;
+    color:#000;
+  }
+  .card{
+    background:#fff;
+    box-shadow:none;
+    border:1px solid #ddd;
+  }
 }
 </style>
 </head>
@@ -56,9 +97,16 @@ img{
 <div class="container">
 
 <h1>🍰 Dessert Generator</h1>
+<p>Norwegian 🇳🇴 + Filipino 🇵🇭 sweet favorites</p>
+
+<div class="toplinks">
+  <a class="navbtn" href="index.html">⬅ Back</a>
+  <a class="navbtn" href="middag.html">🍽 Dinner</a>
+  <a class="navbtn" href="boller.html">🥐 Boller</a>
+</div>
 
 <div class="card">
-  <img id="image">
+  <img id="image" alt="Dessert image">
   <h2 id="title"></h2>
   <p id="desc"></p>
 
@@ -77,9 +125,7 @@ img{
 
 <button class="primary" onclick="generate()">Generate dessert</button>
 <button class="print" onclick="window.print()">Print</button>
-<button class="secondary" onclick="location.href='index.html'">⬅ Back</button>
-<button class="secondary" onclick="location.href='middag.html'">🍽 Dinner</button>
-<button class="secondary" onclick="location.href='boller.html'">🥐 Boller</button>
+<button class="secondary" onclick="location.href='index.html'">Dashboard</button>
 
 </div>
 
@@ -89,108 +135,262 @@ const desserts = [
 /* 🇳🇴 NORWAY */
 
 {
-title:"Vaffel",
-time:"20 min",
-image:"https://images.unsplash.com/photo-1551024709-8f23befc6f87",
-desc:"Norwegian waffles, soft and heart-shaped.",
-ingredients:["Flour","Milk","Eggs","Sugar","Butter"],
-instructions:["Mix ingredients","Pour in waffle iron","Cook until golden"],
-history:"Traditional Norwegian treat served with brown cheese or jam."
+title:"Vafler",
+time:"20–25 min",
+image:"https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1400&q=80",
+desc:"Classic Norwegian waffles, soft and heart-shaped, often served with brown cheese, jam, or sour cream.",
+ingredients:[
+  "4 dl wheat flour",
+  "1 dl sugar",
+  "1 tsp baking powder",
+  "1 tsp vanilla sugar",
+  "4 dl milk",
+  "3 eggs",
+  "100 g melted butter"
+],
+instructions:[
+  "Mix flour, sugar, baking powder, and vanilla sugar in a bowl.",
+  "Add milk little by little while whisking.",
+  "Whisk in the eggs.",
+  "Add melted butter and mix until smooth.",
+  "Let the batter rest for 10 minutes.",
+  "Bake in a waffle iron until golden."
+],
+history:"Waffles are deeply rooted in Scandinavian food culture and became especially popular in Norway as an easy homemade sweet treat."
 },
 
 {
 title:"Riskrem",
-time:"30 min",
-image:"https://images.unsplash.com/photo-1514516870926-205989b5c5c9",
-desc:"Rice cream dessert served at Christmas.",
-ingredients:["Rice porridge","Whipped cream","Sugar"],
-instructions:["Mix porridge with whipped cream","Chill","Serve with berry sauce"],
-history:"Popular Norwegian Christmas dessert."
+time:"25–30 min + chilling",
+image:"https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1400&q=80",
+desc:"A creamy rice dessert traditionally served at Christmas with red berry sauce.",
+ingredients:[
+  "5 dl cold rice porridge",
+  "3 dl whipping cream",
+  "2 tbsp sugar",
+  "1 tsp vanilla sugar",
+  "Berry sauce for serving"
+],
+instructions:[
+  "Whip the cream with sugar and vanilla sugar until soft peaks form.",
+  "Fold the whipped cream gently into the cold rice porridge.",
+  "Chill until serving.",
+  "Serve with raspberry or strawberry sauce."
+],
+history:"Riskrem grew out of Norwegian Christmas porridge traditions and became a festive dessert favorite."
 },
 
 {
 title:"Kvæfjordkake",
-time:"1 hour",
-image:"https://images.unsplash.com/photo-1601972599720-36938d4ecd31",
-desc:"Norway’s national cake.",
-ingredients:["Eggs","Sugar","Almonds","Butter"],
-instructions:["Bake layers","Add cream","Assemble"],
-history:"Called 'Verdens beste'."
+time:"1.5–2 hours",
+image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
+desc:"Known as ‘Verdens beste’ in Norway, this cake has soft sponge, meringue, vanilla cream, and almonds.",
+ingredients:[
+  "125 g butter",
+  "125 g sugar",
+  "4 egg yolks",
+  "125 g flour",
+  "1 tsp baking powder",
+  "4 tbsp milk",
+  "4 egg whites",
+  "200 g sugar for meringue",
+  "50 g sliced almonds",
+  "3 dl vanilla cream",
+  "2 dl whipped cream"
+],
+instructions:[
+  "Cream butter and sugar.",
+  "Add egg yolks one at a time.",
+  "Mix in flour, baking powder, and milk.",
+  "Spread the batter in a baking tray.",
+  "Whisk egg whites and sugar into meringue and spread on top.",
+  "Sprinkle with almonds.",
+  "Bake at 175°C for about 30 minutes.",
+  "Cool completely, then fill with vanilla cream and whipped cream."
+],
+history:"This cake is strongly associated with Northern Norway and became famous nationwide as ‘the world’s best cake’."
 },
 
 {
 title:"Tilslørte bondepiker",
-time:"20 min",
-image:"https://images.unsplash.com/photo-1604908177522-4721a9ffea1e",
-desc:"Layered apple dessert.",
-ingredients:["Apples","Sugar","Breadcrumbs","Cream"],
-instructions:["Cook apples","Layer with crumbs and cream"],
-history:"Old Norwegian farmhouse dessert."
+time:"20–30 min",
+image:"https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
+desc:"A layered dessert with stewed apples, whipped cream, and crispy sweet crumbs.",
+ingredients:[
+  "4 apples",
+  "2 tbsp sugar",
+  "1 tsp cinnamon",
+  "100 g breadcrumbs or crushed biscuits",
+  "2 tbsp butter",
+  "3 dl whipping cream"
+],
+instructions:[
+  "Peel and slice the apples.",
+  "Cook them with sugar and cinnamon until soft.",
+  "Toast breadcrumbs in butter until golden.",
+  "Whip the cream lightly.",
+  "Layer apples, crumbs, and cream in glasses or bowls."
+],
+history:"An old Norwegian farmhouse dessert built from simple ingredients and clever layering."
 },
 
 {
 title:"Multekrem",
 time:"15 min",
-image:"https://images.unsplash.com/photo-1505253758473-96b7015fcd40",
-desc:"Cloudberries with whipped cream.",
-ingredients:["Cloudberries","Cream","Sugar"],
-instructions:["Whip cream","Mix berries","Serve"],
-history:"Luxury dessert in Norway."
+image:"https://images.unsplash.com/photo-1505253758473-96b7015fcd40?auto=format&fit=crop&w=1400&q=80",
+desc:"A rich cloudberry cream dessert, simple but luxurious.",
+ingredients:[
+  "300 g cloudberries",
+  "3 dl whipping cream",
+  "2 tbsp sugar"
+],
+instructions:[
+  "Whip the cream lightly with sugar.",
+  "Fold in most of the cloudberries.",
+  "Serve chilled with extra berries on top."
+],
+history:"Cloudberries are highly prized in Norway, and multekrem became a special dessert for celebrations and holidays."
 },
 
 /* 🇵🇭 PHILIPPINES */
 
 {
 title:"Halo-Halo",
-time:"15 min",
-image:"https://images.unsplash.com/photo-1627308595180-8b30d8a1c7b5",
-desc:"Colorful shaved ice dessert.",
-ingredients:["Ice","Milk","Beans","Jelly","Ice cream"],
-instructions:["Layer ingredients","Add ice","Top with milk"],
-history:"Popular Filipino summer dessert."
+time:"15–20 min",
+image:"https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1400&q=80",
+desc:"A colorful shaved ice dessert with milk, sweet beans, jelly, fruits, and ice cream.",
+ingredients:[
+  "4 cups shaved ice",
+  "2 dl evaporated milk",
+  "1 dl sweet beans",
+  "1 dl nata de coco or jelly",
+  "1 banana, sliced",
+  "1 dl sweet jackfruit",
+  "4 scoops ube or vanilla ice cream"
+],
+instructions:[
+  "Divide the sweet ingredients into tall glasses.",
+  "Top with shaved ice.",
+  "Pour evaporated milk over the ice.",
+  "Add a scoop of ice cream on top.",
+  "Serve immediately and mix before eating."
+],
+history:"Halo-halo became one of the most iconic Filipino desserts as a cooling treat for hot weather."
 },
 
 {
 title:"Leche Flan",
-time:"1 hour",
-image:"https://images.unsplash.com/photo-1589302168068-964664d93dc0",
-desc:"Creamy caramel custard.",
-ingredients:["Egg yolks","Milk","Sugar"],
-instructions:["Make caramel","Mix ingredients","Steam"],
-history:"Spanish influence dessert."
+time:"1–1.5 hours",
+image:"https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1400&q=80",
+desc:"A rich and smooth Filipino caramel custard, often served at parties and holidays.",
+ingredients:[
+  "10 egg yolks",
+  "1 can condensed milk",
+  "1 can evaporated milk",
+  "1 tsp vanilla",
+  "150 g sugar for caramel"
+],
+instructions:[
+  "Heat sugar in a pan until it turns into caramel.",
+  "Pour caramel into molds.",
+  "Mix egg yolks, condensed milk, evaporated milk, and vanilla gently.",
+  "Pour into molds.",
+  "Steam or bake in a water bath until set.",
+  "Cool completely before serving."
+],
+history:"Leche flan reflects Spanish colonial dessert influence and became a beloved Filipino classic."
 },
 
 {
 title:"Bibingka",
-time:"45 min",
-image:"https://images.unsplash.com/photo-1604908554180-95a0b4a2c9ff",
-desc:"Rice cake baked in banana leaves.",
-ingredients:["Rice flour","Coconut milk","Sugar"],
-instructions:["Mix","Bake","Serve warm"],
-history:"Traditional Christmas food."
+time:"35–45 min",
+image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
+desc:"A soft Filipino rice cake often served warm during the Christmas season.",
+ingredients:[
+  "2 cups rice flour",
+  "1 cup sugar",
+  "1 tbsp baking powder",
+  "2 eggs",
+  "4 dl coconut milk",
+  "50 g melted butter",
+  "Cheese or salted egg for topping"
+],
+instructions:[
+  "Mix rice flour, sugar, and baking powder.",
+  "Add eggs, coconut milk, and butter.",
+  "Pour into a greased baking pan.",
+  "Top with cheese or salted egg if desired.",
+  "Bake at 180°C for 25–30 minutes until set."
+],
+history:"Bibingka is part of the long Filipino rice-cake tradition and is especially tied to Christmas food culture."
 },
 
 {
 title:"Turon",
-time:"25 min",
-image:"https://images.unsplash.com/photo-1625944525643-5b8df6f1d233",
-desc:"Fried banana rolls.",
-ingredients:["Banana","Sugar","Wrapper"],
-instructions:["Wrap banana","Fry until crispy"],
-history:"Street food dessert."
+time:"20–25 min",
+image:"https://images.unsplash.com/photo-1488477304112-4944851de03d?auto=format&fit=crop&w=1400&q=80",
+desc:"Crispy fried banana rolls with caramelized sugar, very popular as merienda or dessert.",
+ingredients:[
+  "4 bananas",
+  "1 dl brown sugar",
+  "8 spring roll wrappers",
+  "Oil for frying",
+  "Optional jackfruit strips"
+],
+instructions:[
+  "Cut bananas in half lengthwise.",
+  "Roll each banana piece in brown sugar.",
+  "Place in wrapper with optional jackfruit.",
+  "Roll tightly and seal.",
+  "Fry in oil until golden and caramelized."
+],
+history:"Turon is a classic Filipino snack-dessert that became popular through home kitchens and street food culture."
 },
 
 {
 title:"Ube Cake",
-time:"1 hour",
-image:"https://images.unsplash.com/photo-1605478522626-3e6e2c8a8b7f",
-desc:"Purple yam cake.",
-ingredients:["Ube","Flour","Sugar","Eggs"],
-instructions:["Mix batter","Bake","Add frosting"],
-history:"Modern Filipino favorite."
+time:"1–1.5 hours",
+image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
+desc:"A soft purple yam cake with a sweet, creamy ube flavor.",
+ingredients:[
+  "250 g flour",
+  "200 g sugar",
+  "1 tbsp baking powder",
+  "4 eggs",
+  "1 dl oil",
+  "2 dl milk",
+  "200 g ube halaya or ube jam",
+  "Ube frosting if desired"
+],
+instructions:[
+  "Mix dry ingredients in one bowl.",
+  "Whisk eggs, oil, milk, and ube in another bowl.",
+  "Combine everything into a smooth batter.",
+  "Pour into a greased cake pan.",
+  "Bake at 175°C for 30–40 minutes.",
+  "Cool and frost if desired."
+],
+history:"Ube desserts became increasingly popular as Filipino flavors gained broader recognition both locally and internationally."
 }
 
 ];
+
+function fallbackImage(title){
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+      <defs>
+        <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+          <stop stop-color="#07111f" offset="0"/>
+          <stop stop-color="#0b1628" offset="1"/>
+        </linearGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#g)"/>
+      <text x="50%" y="42%" text-anchor="middle" fill="#ffffff" font-size="86" font-family="Arial">🍰</text>
+      <text x="50%" y="56%" text-anchor="middle" fill="#dbeafe" font-size="34" font-family="Arial">${title}</text>
+      <text x="50%" y="64%" text-anchor="middle" fill="#93a7c7" font-size="22" font-family="Arial">Image placeholder</text>
+    </svg>
+  `)}`;
+}
 
 function generate(){
   const d = desserts[Math.floor(Math.random()*desserts.length)];
@@ -198,7 +398,10 @@ function generate(){
   document.getElementById("title").textContent = d.title;
   document.getElementById("desc").textContent = d.desc;
   document.getElementById("time").textContent = d.time;
-  document.getElementById("image").src = d.image;
+
+  const img = document.getElementById("image");
+  img.onerror = () => { img.src = fallbackImage(d.title); };
+  img.src = d.image;
 
   document.getElementById("ingredients").innerHTML =
     d.ingredients.map(i=>`<li>${i}</li>`).join("");
@@ -209,7 +412,6 @@ function generate(){
   document.getElementById("history").textContent = d.history;
 }
 
-// LOAD FIRST
 generate();
 </script>
 
