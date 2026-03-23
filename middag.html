@@ -1,124 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dinner Generator</title>
+  <meta charset="UTF-8">
+  <title>🍽️ Dinner Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    color: white;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
+  <style>
+    body{
+      margin:0;
+      font-family:Inter, sans-serif;
+      background:linear-gradient(135deg,#0b1628,#07111f);
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      text-align:center;
+    }
 
-.container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-}
+    .container{
+      max-width:800px;
+      padding:20px;
+    }
 
-h1 {
-    font-size: 2.5em;
-}
+    h1{
+      font-size:2.5rem;
+      margin-bottom:10px;
+    }
 
-.card {
-    background: #1e293b;
-    border-radius: 15px;
-    padding: 20px;
-    margin-top: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
+    .card{
+      background:rgba(255,255,255,0.05);
+      padding:25px;
+      border-radius:20px;
+      margin-top:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
 
-button {
-    margin-top: 20px;
-    padding: 12px 25px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    background: #38bdf8;
-    color: black;
-    cursor: pointer;
-}
+    button{
+      margin:10px;
+      padding:12px 20px;
+      border:none;
+      border-radius:10px;
+      font-weight:bold;
+      cursor:pointer;
+      font-size:1rem;
+    }
 
-button:hover {
-    background: #0ea5e9;
-}
+    .primary{
+      background:#4fa3ff;
+      color:white;
+    }
 
-</style>
+    .secondary{
+      background:#222;
+      color:white;
+    }
+
+    .print{
+      background:#28a745;
+      color:white;
+    }
+
+    h2{margin-top:10px}
+    p{line-height:1.5}
+  </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h1>🍽️ Dinner Generator</h1>
-    <p>Get a random Norwegian or Filipino dinner idea!</p>
 
-    <div class="card">
-        <h2 id="dish">Click the button 🍳</h2>
-        <p id="description"></p>
-        <h3>Ingredients</h3>
-        <p id="ingredients"></p>
-        <h3>Instructions</h3>
-        <p id="instructions"></p>
-    </div>
+  <h1>🍽️ Dinner Generator</h1>
+  <p>Norwegian 🇳🇴 + Filipino 🇵🇭 dinner inspiration</p>
 
-    <button onclick="generateDinner()">Generate New Dinner</button>
+  <div class="card" id="mealCard">
+    <h2 id="title">Loading...</h2>
+    <p id="desc"></p>
+
+    <h3>Ingredients</h3>
+    <p id="ingredients"></p>
+
+    <h3>Instructions</h3>
+    <p id="instructions"></p>
+
+    <h3>History</h3>
+    <p id="history"></p>
+  </div>
+
+  <button class="primary" onclick="generateMeal()">Generate New Dinner</button>
+  <button class="print" onclick="window.print()">🖨️ Print</button>
+  <button class="secondary" onclick="window.location.href='index.html'">⬅ Back</button>
+
 </div>
 
 <script>
+const meals = [
 
-const dinners = [
 {
-    name: "Fårikål (Norwegian Lamb Stew)",
-    description: "Norway’s national dish. Simple, rustic, and full of flavor.",
-    ingredients: "Lamb, cabbage, pepper, salt, water",
-    instructions: "Layer lamb and cabbage in a pot, add water and pepper. Simmer for 2-3 hours."
+  title:"Kjøttkaker (Norwegian Meatballs)",
+  desc:"Classic Norwegian comfort food with brown sauce.",
+  ingredients:"Ground beef, onion, milk, flour, salt, pepper",
+  instructions:"Mix ingredients, form balls, fry, and serve with brown sauce, potatoes and lingonberry jam.",
+  history:"Kjøttkaker has been a staple in Norway since the 1800s. It evolved from European meatball traditions and became popular as a hearty, affordable family meal."
 },
+
 {
-    name: "Kjøttkaker (Norwegian Meatballs)",
-    description: "Classic Norwegian comfort food with brown sauce.",
-    ingredients: "Ground beef, onion, milk, flour, salt, pepper",
-    instructions: "Mix ingredients, form balls, fry, and serve with brown sauce and potatoes."
+  title:"Sinigang",
+  desc:"Filipino sour soup, rich and comforting.",
+  ingredients:"Pork, tamarind, tomato, onion, vegetables",
+  instructions:"Boil meat, add vegetables and tamarind broth, simmer until tender.",
+  history:"Sinigang dates back centuries in the Philippines. It reflects local ingredients and the Filipino love for sour flavors."
 },
+
 {
-    name: "Adobo (Filipino)",
-    description: "One of the most famous Filipino dishes.",
-    ingredients: "Chicken/pork, soy sauce, vinegar, garlic, bay leaves",
-    instructions: "Marinate meat, then simmer in sauce until tender."
+  title:"Fårikål",
+  desc:"Norway’s national dish.",
+  ingredients:"Lamb, cabbage, pepper, salt",
+  instructions:"Layer lamb and cabbage, boil slowly for hours.",
+  history:"Fårikål became Norway’s national dish in the 1970s, but has been eaten for generations, especially in autumn."
 },
+
 {
-    name: "Sinigang (Filipino Sour Soup)",
-    description: "A delicious sour soup with tamarind flavor.",
-    ingredients: "Pork, tamarind mix, vegetables, fish sauce",
-    instructions: "Boil meat, add vegetables and souring agent, simmer."
+  title:"Adobo",
+  desc:"Philippines’ most famous dish.",
+  ingredients:"Chicken or pork, soy sauce, vinegar, garlic",
+  instructions:"Marinate and simmer until tender.",
+  history:"Adobo was influenced by Spanish colonization, but adapted into a uniquely Filipino cooking method."
 },
+
 {
-    name: "Pancit (Filipino Noodles)",
-    description: "A festive noodle dish symbolizing long life.",
-    ingredients: "Noodles, chicken, vegetables, soy sauce",
-    instructions: "Stir-fry everything together and season well."
+  title:"Lapskaus",
+  desc:"Hearty Norwegian stew.",
+  ingredients:"Beef, potatoes, carrots",
+  instructions:"Cook everything slowly into a thick stew.",
+  history:"Lapskaus comes from sailor food traditions and was common on ships and in working-class homes."
 },
+
 {
-    name: "Lapskaus (Norwegian Stew)",
-    description: "Hearty Norwegian stew perfect for cold days.",
-    ingredients: "Potatoes, carrots, meat, onion",
-    instructions: "Cook everything together until soft and thick."
+  title:"Pancit",
+  desc:"Filipino noodle dish symbolizing long life.",
+  ingredients:"Noodles, vegetables, meat",
+  instructions:"Stir fry everything together.",
+  history:"Pancit was introduced by Chinese traders and became a key part of Filipino celebrations."
 }
+
 ];
 
-function generateDinner() {
-    const random = dinners[Math.floor(Math.random() * dinners.length)];
+function generateMeal(){
+  const meal = meals[Math.floor(Math.random()*meals.length)];
 
-    document.getElementById("dish").innerText = random.name;
-    document.getElementById("description").innerText = random.description;
-    document.getElementById("ingredients").innerText = random.ingredients;
-    document.getElementById("instructions").innerText = random.instructions;
+  document.getElementById("title").textContent = meal.title;
+  document.getElementById("desc").textContent = meal.desc;
+  document.getElementById("ingredients").textContent = meal.ingredients;
+  document.getElementById("instructions").textContent = meal.instructions;
+  document.getElementById("history").textContent = meal.history;
 }
 
+// load first
+generateMeal();
 </script>
 
 </body>
