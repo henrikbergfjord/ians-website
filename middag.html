@@ -95,57 +95,173 @@
 
 <script>
 const meals = [
+const meals = [
+
+/* 🇳🇴 NORWEGIAN */
 
 {
-  title:"Kjøttkaker (Norwegian Meatballs)",
-  desc:"Classic Norwegian comfort food with brown sauce.",
-  ingredients:"Ground beef, onion, milk, flour, salt, pepper",
-  instructions:"Mix ingredients, form balls, fry, and serve with brown sauce, potatoes and lingonberry jam.",
-  history:"Kjøttkaker has been a staple in Norway since the 1800s. It evolved from European meatball traditions and became popular as a hearty, affordable family meal."
+title:"Kjøttkaker",
+desc:"Classic Norwegian comfort food.",
+ingredients:"600g ground beef, 1 onion, 1 egg, 1 dl milk, 2 tbsp flour, salt, pepper",
+instructions:"Mix everything well. Form large meatballs. Fry in butter until browned. Add brown sauce and simmer 10–15 minutes. Serve with potatoes and vegetables.",
+history:"Traditional Norwegian home cooking from the 1800s. Inspired by European meat dishes but adapted locally."
 },
 
 {
-  title:"Sinigang",
-  desc:"Filipino sour soup, rich and comforting.",
-  ingredients:"Pork, tamarind, tomato, onion, vegetables",
-  instructions:"Boil meat, add vegetables and tamarind broth, simmer until tender.",
-  history:"Sinigang dates back centuries in the Philippines. It reflects local ingredients and the Filipino love for sour flavors."
+title:"Fårikål",
+desc:"Norway’s national dish.",
+ingredients:"1.5 kg lamb, 1 cabbage, 2 tsp pepper, salt",
+instructions:"Layer lamb and cabbage in pot. Add pepper and salt. Add water. Simmer 2–3 hours. Serve with potatoes.",
+history:"Traditional autumn dish. Became Norway’s national dish in the 1970s."
 },
 
 {
-  title:"Fårikål",
-  desc:"Norway’s national dish.",
-  ingredients:"Lamb, cabbage, pepper, salt",
-  instructions:"Layer lamb and cabbage, boil slowly for hours.",
-  history:"Fårikål became Norway’s national dish in the 1970s, but has been eaten for generations, especially in autumn."
+title:"Lapskaus",
+desc:"Hearty stew.",
+ingredients:"500g beef, 6 potatoes, 3 carrots, 1 onion",
+instructions:"Cut everything. Boil together 1–2 hours until thick. Season well.",
+history:"Originally sailor food, later common in Norwegian homes."
 },
 
 {
-  title:"Adobo",
-  desc:"Philippines’ most famous dish.",
-  ingredients:"Chicken or pork, soy sauce, vinegar, garlic",
-  instructions:"Marinate and simmer until tender.",
-  history:"Adobo was influenced by Spanish colonization, but adapted into a uniquely Filipino cooking method."
+title:"Raspeballer (Komle)",
+desc:"Potato dumplings.",
+ingredients:"1kg potatoes, 200g flour, 1 tsp salt",
+instructions:"Grate potatoes, mix with flour and salt. Form balls. Boil 45–60 min.",
+history:"Western Norway traditional dish, especially on Thursdays."
 },
 
 {
-  title:"Lapskaus",
-  desc:"Hearty Norwegian stew.",
-  ingredients:"Beef, potatoes, carrots",
-  instructions:"Cook everything slowly into a thick stew.",
-  history:"Lapskaus comes from sailor food traditions and was common on ships and in working-class homes."
+title:"Fiskekaker",
+desc:"Fish patties.",
+ingredients:"500g white fish, 1 egg, milk, flour",
+instructions:"Blend fish, mix ingredients, fry into patties.",
+history:"Popular coastal dish from fishing communities."
 },
 
 {
-  title:"Pancit",
-  desc:"Filipino noodle dish symbolizing long life.",
-  ingredients:"Noodles, vegetables, meat",
-  instructions:"Stir fry everything together.",
-  history:"Pancit was introduced by Chinese traders and became a key part of Filipino celebrations."
+title:"Taco Friday",
+desc:"Modern Norwegian favorite.",
+ingredients:"400g minced meat, taco spice, tortillas, salad",
+instructions:"Cook meat with spices. Serve in tortillas with toppings.",
+history:"Imported from Mexico via USA – now a Norwegian tradition."
+},
+
+{
+title:"Pølse i lompe",
+desc:"Simple and loved.",
+ingredients:"Hotdogs, lompe, mustard",
+instructions:"Heat sausages. Serve in lompe.",
+history:"Quick Norwegian street food."
+},
+
+{
+title:"Stekt laks",
+desc:"Healthy dinner.",
+ingredients:"4 salmon fillets, salt, pepper, butter",
+instructions:"Fry salmon 3–4 min each side. Serve with vegetables.",
+history:"Norway’s seafood tradition."
+},
+
+{
+title:"Kylling i ovn",
+desc:"Family favorite chicken dish.",
+ingredients:"1 whole chicken, spices, potatoes",
+instructions:"Bake at 200°C for 1–1.5 hours.",
+history:"Common Sunday dinner."
+},
+
+{
+title:"Grøt (Rice porridge)",
+desc:"Comfort food.",
+ingredients:"Rice, milk, sugar, cinnamon",
+instructions:"Cook slowly until creamy.",
+history:"Traditional Christmas dish."
+},
+
+/* 🇵🇭 FILIPINO */
+
+{
+title:"Chicken Adobo",
+desc:"Most famous Filipino dish.",
+ingredients:"1kg chicken, soy sauce, vinegar, garlic, bay leaf",
+instructions:"Marinate 30 min. Simmer 30–40 min until tender.",
+history:"Pre-colonial cooking style, later named by Spanish."
+},
+
+{
+title:"Sinigang",
+desc:"Sour soup.",
+ingredients:"Pork, tamarind, vegetables",
+instructions:"Boil meat. Add vegetables and tamarind. Simmer.",
+history:"Ancient Filipino dish using natural sour flavors."
+},
+
+{
+title:"Pancit",
+desc:"Noodle dish.",
+ingredients:"Rice noodles, vegetables, chicken",
+instructions:"Stir fry everything together.",
+history:"Influenced by Chinese traders."
+},
+
+{
+title:"Tinola",
+desc:"Chicken soup.",
+ingredients:"Chicken, ginger, garlic, papaya",
+instructions:"Boil chicken with ginger. Add vegetables.",
+history:"Traditional home comfort food."
+},
+
+{
+title:"Kare-Kare",
+desc:"Peanut stew.",
+ingredients:"Beef, peanut sauce, vegetables",
+instructions:"Cook meat until tender. Add sauce.",
+history:"Rich Filipino stew often served at celebrations."
+},
+
+{
+title:"Lechon Kawali",
+desc:"Crispy pork belly.",
+ingredients:"Pork belly, salt, oil",
+instructions:"Boil, then deep fry until crispy.",
+history:"Popular party dish."
+},
+
+{
+title:"Bistek Tagalog",
+desc:"Beef with soy and onion.",
+ingredients:"Beef, soy sauce, calamansi, onions",
+instructions:"Marinate beef. Fry with onions.",
+history:"Spanish influence adapted locally."
+},
+
+{
+title:"Longganisa",
+desc:"Sweet garlic sausage.",
+ingredients:"Ground pork, garlic, sugar, vinegar",
+instructions:"Mix and fry.",
+history:"Filipino sausage tradition."
+},
+
+{
+title:"Bangus (Milkfish)",
+desc:"Fried fish dish.",
+ingredients:"Milkfish, salt, oil",
+instructions:"Fry until crispy.",
+history:"National fish of the Philippines."
+},
+
+{
+title:"Fried Chicken Filipino style",
+desc:"Crispy juicy chicken.",
+ingredients:"Chicken, garlic, soy, flour",
+instructions:"Marinate, coat, deep fry.",
+history:"Adapted from American influence."
 }
 
 ];
-
 function generateMeal(){
   const meal = meals[Math.floor(Math.random()*meals.length)];
 
