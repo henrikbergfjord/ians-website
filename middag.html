@@ -1,280 +1,1195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>🍽️ Dinner Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IANS – Dinner Generator</title>
+  <meta name="description" content="Norwegian and Filipino dinner inspiration with recipe, time, shopping list, favorites, and weekly meal planning." />
   <style>
+    :root{
+      --bg:#07111f;
+      --bg2:#0b1628;
+      --panel:#0f1b2d;
+      --panel2:#14233a;
+      --text:#edf4ff;
+      --muted:#93a7c7;
+      --line:rgba(255,255,255,.08);
+      --accent:#79a9ff;
+      --accent2:#8b7cff;
+      --shadow:0 14px 34px rgba(0,0,0,.28);
+      --radius:18px;
+      --max:1240px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
     body{
       margin:0;
-      font-family:Inter, sans-serif;
-      background:linear-gradient(135deg,#0b1628,#07111f);
-      color:white;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      min-height:100vh;
-      text-align:center;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(139,124,255,.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(121,169,255,.08), transparent 24%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
     }
+
+    a{color:inherit;text-decoration:none}
 
     .container{
-      max-width:800px;
-      padding:20px;
+      width:min(var(--max), calc(100% - 28px));
+      margin:0 auto;
     }
 
-    h1{
-      font-size:2.5rem;
+    header{
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter: blur(10px);
+      background:rgba(7,17,31,.84);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav{
+      min-height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+
+    .brand-badge{
+      width:34px;
+      height:34px;
+      border-radius:11px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow:var(--shadow);
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .nav-links a{
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:10px;
+      font-weight:600;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover{
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:11px 16px;
+      border-radius:12px;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,.08);
+      background:#000;
+      color:#fff;
+      box-shadow:var(--shadow);
+      font-size:.94rem;
+      cursor:pointer;
+    }
+
+    .btn:hover{background:#111}
+    .btn.secondary{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      box-shadow:none;
+    }
+
+    .hero{
+      padding:18px 0 14px;
+    }
+
+    .hero-card{
+      overflow:hidden;
+      border-radius:22px;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));
+      margin-bottom:14px;
+    }
+
+    .hero-image{
+      position:relative;
+      min-height:320px;
+      background-size:cover;
+      background-position:center;
+    }
+
+    .hero-overlay{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(7,17,31,.18), rgba(7,17,31,.78)),
+        radial-gradient(circle at top left, rgba(121,169,255,.18), transparent 35%);
+    }
+
+    .hero-content{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      padding:28px 24px 24px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      color:#dfe9ff;
+      font-size:.78rem;
+      font-weight:800;
       margin-bottom:10px;
     }
 
-    .card{
-      background:rgba(255,255,255,0.05);
-      padding:25px;
-      border-radius:20px;
-      margin-top:20px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(2rem, 5vw, 4rem);
+      line-height:1.02;
+      letter-spacing:-1px;
     }
 
-    button{
-      margin:10px;
-      padding:12px 20px;
-      border:none;
-      border-radius:10px;
-      font-weight:bold;
-      cursor:pointer;
+    .lead{
+      margin:0;
+      color:#d2def4;
+      max-width:60ch;
+      font-size:1rem;
+      line-height:1.55;
+    }
+
+    .hero-actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .page-grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:14px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .main-card{
+      overflow:hidden;
+    }
+
+    .dish-image{
+      height:320px;
+      background-size:cover;
+      background-position:center;
+      position:relative;
+    }
+
+    .dish-image::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(7,17,31,.10), rgba(7,17,31,.55));
+    }
+
+    .main-inner{
+      padding:20px;
+    }
+
+    .dish-meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.76rem;
+      font-weight:800;
+      color:#dfe9ff;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.09);
+    }
+
+    .dish-title{
+      margin:0 0 8px;
+      font-size:clamp(1.8rem, 3vw, 2.6rem);
+      line-height:1.08;
+      letter-spacing:-.6px;
+    }
+
+    .dish-desc{
+      margin:0 0 18px;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:.98rem;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .inner-card{
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .inner-card h3{
+      margin:0 0 10px;
+      font-size:1rem;
+      letter-spacing:-.2px;
+    }
+
+    .inner-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:.94rem;
+    }
+
+    .inner-card ul,
+    .inner-card ol{
+      margin:0;
+      padding-left:18px;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:.94rem;
+    }
+
+    .inner-card li + li{
+      margin-top:4px;
+    }
+
+    .side-card{
+      padding:18px;
+      display:grid;
+      gap:12px;
+      align-content:start;
+    }
+
+    .small-card{
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--line);
+    }
+
+    .small-card h3{
+      margin:0 0 8px;
       font-size:1rem;
     }
 
-    .primary{
-      background:#4fa3ff;
-      color:white;
+    .small-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.58;
+      font-size:.92rem;
     }
 
-    .secondary{
-      background:#222;
-      color:white;
+    .history-note{
+      font-size:.86rem;
+      color:#c8d6f0;
+      background:rgba(121,169,255,.08);
+      border:1px solid rgba(121,169,255,.18);
+      border-radius:14px;
+      padding:12px 14px;
+      line-height:1.55;
     }
 
-    .print{
-      background:#28a745;
-      color:white;
+    .shopping-list{
+      display:grid;
+      gap:8px;
     }
 
-    h2{margin-top:10px}
-    p{line-height:1.5}
+    .shopping-item{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding:8px 10px;
+      border-radius:12px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.45;
+    }
+
+    .shopping-item input{
+      margin-top:2px;
+      accent-color:#79a9ff;
+    }
+
+    .week-grid{
+      display:grid;
+      gap:8px;
+    }
+
+    .week-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+    }
+
+    .week-day{
+      color:#dce8ff;
+      font-weight:700;
+      min-width:84px;
+    }
+
+    .week-meal{
+      color:var(--muted);
+      text-align:right;
+      font-size:.92rem;
+    }
+
+    .coming-soon{
+      margin:18px 0 28px;
+      padding:18px;
+      border-radius:18px;
+      border:1px dashed rgba(255,255,255,.14);
+      background:rgba(255,255,255,.03);
+    }
+
+    .coming-soon h3{
+      margin:0 0 8px;
+      font-size:1rem;
+    }
+
+    .coming-soon p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    footer{
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      padding:16px 0 24px;
+      font-size:.84rem;
+    }
+
+    @media print{
+      header,
+      .hero-actions,
+      .side-card,
+      .coming-soon,
+      footer{
+        display:none !important;
+      }
+
+      body{
+        background:#fff;
+        color:#000;
+      }
+
+      .card,
+      .inner-card{
+        box-shadow:none;
+        border:1px solid #ddd;
+        background:#fff;
+      }
+
+      .dish-desc,
+      .inner-card p,
+      .inner-card li{
+        color:#222;
+      }
+
+      .main-card{
+        border:none;
+      }
+    }
+
+    @media (max-width:980px){
+      .page-grid{
+        grid-template-columns:1fr;
+      }
+
+      .content-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:760px){
+      .nav{
+        padding:10px 0;
+      }
+
+      .hero-content{
+        padding:20px 16px 16px;
+      }
+
+      .main-inner,
+      .side-card{
+        padding:16px;
+      }
+
+      .dish-image{
+        height:230px;
+      }
+    }
   </style>
 </head>
-
 <body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">IA</span>
+        <span>IANS</span>
+      </a>
 
-<div class="container">
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="kalender.html">Calendar</a>
+        <a href="middag.html" class="active">Dinner</a>
+      </nav>
 
-  <h1>🍽️ Dinner Generator</h1>
-  <p>Norwegian 🇳🇴 + Filipino 🇵🇭 dinner inspiration</p>
+      <button class="btn" id="generateTop">Generate new dinner</button>
+    </div>
+  </header>
 
-  <div class="card" id="mealCard">
-    <h2 id="title">Loading...</h2>
-    <p id="desc"></p>
+  <main>
+    <section class="hero">
+      <div class="container hero-card">
+        <div class="hero-image" id="heroImage">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <div class="eyebrow">🍽️ Norwegian + Filipino inspiration</div>
+            <h1>Dinner Generator</h1>
+            <p class="lead">
+              Discover a new dinner idea with image, cooking time, ingredients, method, cultural background, and a short historical note. Traditional dishes often come from long food traditions, so the history here is written as general background rather than claiming a single exact inventor when that is uncertain.
+            </p>
+            <div class="hero-actions">
+              <button class="btn" id="generateHero">Generate dinner</button>
+              <button class="btn secondary" onclick="window.print()">🖨️ Print recipe</button>
+              <a class="btn secondary" href="index.html">⬅ Back to dashboard</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <h3>Ingredients</h3>
-    <p id="ingredients"></p>
+      <div class="container page-grid">
+        <section class="card main-card" id="dinner-card">
+          <div class="dish-image" id="dishImage"></div>
+          <div class="main-inner">
+            <div class="dish-meta">
+              <span class="pill" id="dishOrigin">Origin</span>
+              <span class="pill" id="dishType">Type</span>
+              <span class="pill" id="dishTime">Time</span>
+            </div>
 
-    <h3>Instructions</h3>
-    <p id="instructions"></p>
+            <h2 class="dish-title" id="dishName">Dinner idea loading...</h2>
+            <p class="dish-desc" id="dishDescription">A cozy dinner suggestion will appear here.</p>
 
-    <h3>History</h3>
-    <p id="history"></p>
-  </div>
+            <div class="content-grid">
+              <article class="inner-card">
+                <h3>Ingredients for a family of 4</h3>
+                <ul id="ingredientsList"></ul>
+              </article>
 
-  <button class="primary" onclick="generateMeal()">Generate New Dinner</button>
-  <button class="print" onclick="window.print()">🖨️ Print</button>
-  <button class="secondary" onclick="window.location.href='index.html'">⬅ Back</button>
+              <article class="inner-card">
+                <h3>How to make it</h3>
+                <ol id="instructionsList"></ol>
+              </article>
 
-</div>
+              <article class="inner-card">
+                <h3>About the dish</h3>
+                <p id="dishStory"></p>
+              </article>
 
-<script>
-const meals = [
-const meals = [
+              <article class="inner-card">
+                <h3>History</h3>
+                <p id="dishHistory"></p>
+              </article>
+            </div>
+          </div>
+        </section>
 
-/* 🇳🇴 NORWEGIAN */
+        <aside class="card side-card">
+          <div class="small-card">
+            <h3>Quick actions</h3>
+            <p>
+              Generate a new dinner, print the recipe, save it as a favorite, or make a simple weekly meal plan.
+            </p>
+          </div>
 
-{
-title:"Kjøttkaker",
-desc:"Classic Norwegian comfort food.",
-ingredients:"600g ground beef, 1 onion, 1 egg, 1 dl milk, 2 tbsp flour, salt, pepper",
-instructions:"Mix everything well. Form large meatballs. Fry in butter until browned. Add brown sauce and simmer 10–15 minutes. Serve with potatoes and vegetables.",
-history:"Traditional Norwegian home cooking from the 1800s. Inspired by European meat dishes but adapted locally."
-},
+          <div class="small-card">
+            <h3>Favorite</h3>
+            <p id="favoriteText">No favorite selected yet.</p>
+            <div style="margin-top:12px;">
+              <button class="btn secondary" id="favoriteBtn">❤️ Save current as favorite</button>
+            </div>
+          </div>
 
-{
-title:"Fårikål",
-desc:"Norway’s national dish.",
-ingredients:"1.5 kg lamb, 1 cabbage, 2 tsp pepper, salt",
-instructions:"Layer lamb and cabbage in pot. Add pepper and salt. Add water. Simmer 2–3 hours. Serve with potatoes.",
-history:"Traditional autumn dish. Became Norway’s national dish in the 1970s."
-},
+          <div class="history-note" id="historyNote">
+            Many famous dishes are part of a broader food tradition rather than the invention of one clearly documented person.
+          </div>
 
-{
-title:"Lapskaus",
-desc:"Hearty stew.",
-ingredients:"500g beef, 6 potatoes, 3 carrots, 1 onion",
-instructions:"Cut everything. Boil together 1–2 hours until thick. Season well.",
-history:"Originally sailor food, later common in Norwegian homes."
-},
+          <div class="small-card">
+            <h3>Serving idea</h3>
+            <p id="servingTip">A serving tip will appear here.</p>
+          </div>
 
-{
-title:"Raspeballer (Komle)",
-desc:"Potato dumplings.",
-ingredients:"1kg potatoes, 200g flour, 1 tsp salt",
-instructions:"Grate potatoes, mix with flour and salt. Form balls. Boil 45–60 min.",
-history:"Western Norway traditional dish, especially on Thursdays."
-},
+          <div class="small-card">
+            <h3>Shopping list</h3>
+            <div class="shopping-list" id="shoppingList"></div>
+          </div>
 
-{
-title:"Fiskekaker",
-desc:"Fish patties.",
-ingredients:"500g white fish, 1 egg, milk, flour",
-instructions:"Blend fish, mix ingredients, fry into patties.",
-history:"Popular coastal dish from fishing communities."
-},
+          <div class="small-card">
+            <h3>Weekly meal plan</h3>
+            <div style="margin-bottom:12px;">
+              <button class="btn secondary" id="generateWeekBtn">📅 Generate week plan</button>
+            </div>
+            <div class="week-grid" id="weekPlan">
+              <div class="week-item">
+                <span class="week-day">Monday</span>
+                <span class="week-meal">Coming soon</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-{
-title:"Taco Friday",
-desc:"Modern Norwegian favorite.",
-ingredients:"400g minced meat, taco spice, tortillas, salad",
-instructions:"Cook meat with spices. Serve in tortillas with toppings.",
-history:"Imported from Mexico via USA – now a Norwegian tradition."
-},
+    <section class="container">
+      <div class="coming-soon">
+        <h3>Shopping list coming later</h3>
+        <p>
+          A future version can include auto-grouped groceries, weekly planning by cuisine, budget mode, and a family-friendly filter for quick dinners.
+        </p>
+      </div>
+    </section>
+  </main>
 
-{
-title:"Pølse i lompe",
-desc:"Simple and loved.",
-ingredients:"Hotdogs, lompe, mustard",
-instructions:"Heat sausages. Serve in lompe.",
-history:"Quick Norwegian street food."
-},
+  <footer>
+    <div class="container">
+      IANS • Dinner Generator • Norwegian and Filipino food inspiration
+    </div>
+  </footer>
 
-{
-title:"Stekt laks",
-desc:"Healthy dinner.",
-ingredients:"4 salmon fillets, salt, pepper, butter",
-instructions:"Fry salmon 3–4 min each side. Serve with vegetables.",
-history:"Norway’s seafood tradition."
-},
+  <script>
+    const dinners = [
+      {
+        name: "Fårikål",
+        origin: "🇳🇴 Norway",
+        type: "Traditional lamb stew",
+        time: "⏱️ 2.5–3 hours",
+        description: "A classic Norwegian one-pot dinner made with lamb, cabbage, black pepper, and time. It is simple, hearty, and strongly associated with autumn and family meals.",
+        image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "1.5 kg lamb pieces with bone",
+          "1 large green cabbage",
+          "2 tsp whole black pepper",
+          "2 tsp salt",
+          "2 tbsp flour",
+          "3 dl water"
+        ],
+        instructions: [
+          "Cut the cabbage into wedges.",
+          "Layer lamb and cabbage in a large pot and season with salt and black pepper.",
+          "Sprinkle a little flour between some of the layers.",
+          "Add the water so the dish can steam and simmer gently.",
+          "Cook on low heat for around 2.5 to 3 hours until the meat is tender.",
+          "Serve with boiled potatoes."
+        ],
+        story: "Fårikål is often described as Norway’s national dish. It is known for being straightforward, rural, and deeply connected to seasonal cooking traditions.",
+        history: "This dish developed as part of older Norwegian farmhouse cooking, and it became especially established in the 19th century. The exact inventor is not known; it is considered a traditional dish that emerged from everyday home cooking rather than one named chef.",
+        serving: "Best served hot with boiled potatoes and a spoon to catch the broth."
+      },
+      {
+        name: "Kjøttkaker",
+        origin: "🇳🇴 Norway",
+        type: "Comfort food / meatballs",
+        time: "⏱️ 45–60 minutes",
+        description: "Norwegian meat cakes served with brown sauce are a well-loved comfort dish, often eaten with potatoes, peas, carrots, or lingonberry.",
+        image: "https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "600 g ground beef",
+          "1 small onion, grated",
+          "1 egg",
+          "1 dl milk",
+          "2 tbsp flour or breadcrumbs",
+          "1 tsp salt",
+          "0.5 tsp pepper",
+          "Butter for frying"
+        ],
+        instructions: [
+          "Mix the ground meat with onion, egg, milk, seasoning, and flour or breadcrumbs.",
+          "Shape into oval meat cakes.",
+          "Brown them in a frying pan with butter.",
+          "Finish cooking them through on lower heat or in brown sauce.",
+          "Serve with potatoes and vegetables."
+        ],
+        story: "Kjøttkaker are one of the most familiar home dinners in Norway and are closely linked to family meals and traditional cooking.",
+        history: "Like many regional meatball dishes in Europe, Norwegian kjøttkaker developed gradually in home kitchens. There is no single documented inventor. The dish became common as ground meat cooking spread through household traditions in the 18th and 19th centuries.",
+        serving: "Serve with brown gravy, potatoes, carrots, peas, and maybe a spoon of lingonberry."
+      },
+      {
+        name: "Lapskaus",
+        origin: "🇳🇴 Norway",
+        type: "Hearty stew",
+        time: "⏱️ 1.5–2 hours",
+        description: "A thick and warming Norwegian stew made with potatoes, root vegetables, and meat. It is practical, filling, and perfect for colder days.",
+        image: "https://images.unsplash.com/photo-1608500218808-84761e4cbf4c?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "500 g beef or lamb",
+          "6 potatoes",
+          "3 carrots",
+          "1 onion",
+          "1 small leek",
+          "8 dl stock or water",
+          "Salt and pepper"
+        ],
+        instructions: [
+          "Cut vegetables and meat into bite-sized pieces.",
+          "Place everything in a pot with stock or water.",
+          "Simmer slowly until the vegetables soften and the stew thickens naturally.",
+          "Season to taste and serve warm."
+        ],
+        story: "Lapskaus is practical family food with many variations. It is often made from what is already available in the kitchen.",
+        history: "The name is linked to older European sailor and stew traditions, but Norwegian lapskaus became its own household classic over time. There is no reliable single inventor; it is part of a long cooking tradition shaped by everyday life.",
+        serving: "Serve with flatbread and a little chopped parsley on top."
+      },
+      {
+        name: "Raspeballer / Komle",
+        origin: "🇳🇴 Norway",
+        type: "Potato dumplings",
+        time: "⏱️ 1–1.5 hours",
+        description: "A filling western Norwegian classic made from potatoes and flour, often served with salted meat, sausage, bacon, and melted butter.",
+        image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "1 kg potatoes",
+          "250 g flour",
+          "1 tsp salt",
+          "Optional small bacon cubes in the center",
+          "Butter for serving"
+        ],
+        instructions: [
+          "Peel and finely grate the potatoes.",
+          "Squeeze out some liquid if needed.",
+          "Mix with flour and salt until you get a firm dough.",
+          "Shape into balls, with bacon in the center if you like.",
+          "Boil gently for 45 to 60 minutes.",
+          "Serve with butter and salted meat or sausage."
+        ],
+        story: "Komle is a very traditional western Norwegian dinner and still feels like true everyday heritage food.",
+        history: "Potato dumplings became important in Nordic cooking after the potato was established in Europe. This dish evolved regionally, so there is no single known inventor.",
+        serving: "Serve with bacon butter, sausage, salted lamb, or rutabaga mash."
+      },
+      {
+        name: "Fiskekaker",
+        origin: "🇳🇴 Norway",
+        type: "Fish patties",
+        time: "⏱️ 35–45 minutes",
+        description: "Soft fish cakes made from white fish, often served with potatoes, carrots, remoulade, or simply in a sandwich.",
+        image: "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "500 g white fish",
+          "1 egg",
+          "1 dl milk",
+          "2 tbsp flour",
+          "1 tsp salt",
+          "0.5 tsp pepper",
+          "Butter for frying"
+        ],
+        instructions: [
+          "Blend the fish until smooth.",
+          "Mix with egg, milk, flour, salt, and pepper.",
+          "Shape into round patties with a spoon.",
+          "Fry gently in butter until golden and cooked through.",
+          "Serve warm."
+        ],
+        story: "Fiskekaker are strongly tied to Norway’s coastal food culture and are still a very common family dinner.",
+        history: "They developed naturally in fishing communities where white fish was plentiful. The exact original creator is not documented.",
+        serving: "Great with potatoes and carrots, or cold in bread the next day."
+      },
+      {
+        name: "Stekt laks",
+        origin: "🇳🇴 Norway",
+        type: "Pan-fried salmon",
+        time: "⏱️ 25–30 minutes",
+        description: "A simple and healthy dinner based on salmon, one of Norway’s best-known ingredients.",
+        image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "4 salmon fillets",
+          "Salt",
+          "Pepper",
+          "Butter or oil",
+          "Lemon",
+          "Vegetables or potatoes for serving"
+        ],
+        instructions: [
+          "Pat the salmon dry and season with salt and pepper.",
+          "Heat butter or oil in a frying pan.",
+          "Cook the salmon 3 to 4 minutes on each side.",
+          "Check that it flakes easily.",
+          "Serve with lemon and your chosen sides."
+        ],
+        story: "This is a go-to weeknight dinner that highlights the quality of Norwegian salmon.",
+        history: "The method is simple rather than historically fixed; the cultural importance comes from Norway’s long fishing and seafood tradition.",
+        serving: "Serve with boiled potatoes, rice, or roasted vegetables."
+      },
+      {
+        name: "Kylling i ovn",
+        origin: "🇳🇴 Norway",
+        type: "Oven-baked chicken",
+        time: "⏱️ 1–1.5 hours",
+        description: "A family-style chicken dinner that is easy to prepare and perfect for weekends or a calm weekday meal.",
+        image: "https://images.unsplash.com/photo-1518492104633-130d0cc84637?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "1 whole chicken",
+          "Salt",
+          "Pepper",
+          "Paprika",
+          "Butter or oil",
+          "Potatoes",
+          "Garlic",
+          "Onion"
+        ],
+        instructions: [
+          "Season the chicken well.",
+          "Place it in a roasting tray with potatoes, onion, and garlic.",
+          "Bake at 200°C for about 60 to 90 minutes.",
+          "Baste once or twice during cooking.",
+          "Serve when the juices run clear."
+        ],
+        story: "This is a reliable family dinner that feels generous and cozy without being complicated.",
+        history: "Roast-style chicken dinners became widespread through household cooking rather than one identifiable invention.",
+        serving: "Serve with roasted potatoes, pan juices, and a fresh salad."
+      },
+      {
+        name: "Grøt",
+        origin: "🇳🇴 Norway",
+        type: "Rice porridge",
+        time: "⏱️ 40–50 minutes",
+        description: "Creamy rice porridge is a comfort dish in Norway, especially common during winter and the Christmas season.",
+        image: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "2 dl porridge rice",
+          "1 liter milk",
+          "Pinch of salt",
+          "Sugar to taste",
+          "Cinnamon",
+          "Butter"
+        ],
+        instructions: [
+          "Bring the rice and a little water to a short boil first if desired.",
+          "Add milk and simmer on low heat.",
+          "Stir often so it does not stick.",
+          "Cook until the rice is soft and the porridge is creamy.",
+          "Serve with sugar, cinnamon, and butter."
+        ],
+        story: "Simple, warm, and nostalgic, grøt is strongly associated with family traditions and winter comfort.",
+        history: "Porridge traditions are ancient across Northern Europe. Norwegian rice porridge became especially linked to Christmas customs over time.",
+        serving: "Top with sugar, cinnamon, and a little melting butter."
+      },
+      {
+        name: "Taco Friday",
+        origin: "🇳🇴 Norway",
+        type: "Modern family favorite",
+        time: "⏱️ 25–30 minutes",
+        description: "Not originally Norwegian, but now such a strong part of weekly family life in Norway that it deserves a place here.",
+        image: "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "400 g minced meat",
+          "1 packet taco seasoning",
+          "Tortillas or taco shells",
+          "Lettuce",
+          "Tomato",
+          "Cheese",
+          "Salsa"
+        ],
+        instructions: [
+          "Cook the minced meat until browned.",
+          "Add taco seasoning and a little water.",
+          "Prepare toppings while it simmers.",
+          "Serve in tortillas or shells."
+        ],
+        story: "Friday taco has become a cultural phenomenon in Norway and is one of the most recognizable weekly family meals.",
+        history: "The dish came through international food influence, especially Tex-Mex products, and was adopted into Norwegian home culture in the late 20th century.",
+        serving: "Put everything on the table so everyone can build their own tacos."
+      },
+      {
+        name: "Chicken Adobo",
+        origin: "🇵🇭 Philippines",
+        type: "Classic braised dish",
+        time: "⏱️ 45–60 minutes",
+        description: "Adobo is one of the best known Filipino dishes, combining soy sauce, vinegar, garlic, and black pepper into a savory, tangy, and deeply comforting meal.",
+        image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "1 kg chicken",
+          "120 ml soy sauce",
+          "120 ml vinegar",
+          "6 cloves garlic",
+          "3 bay leaves",
+          "1 tsp whole peppercorns",
+          "1 dl water"
+        ],
+        instructions: [
+          "Marinate the chicken in soy sauce, garlic, and pepper for 30 minutes if possible.",
+          "Place the chicken in a pot with vinegar, bay leaves, and water.",
+          "Simmer gently until the chicken is tender.",
+          "Reduce the sauce slightly until rich and glossy.",
+          "Serve with steamed rice."
+        ],
+        story: "Adobo is widely loved for its bold yet balanced flavor and for being both everyday food and a dish served proudly to guests.",
+        history: "Adobo existed in the Philippines before Spanish colonization, though the Spanish later used the word adobo to describe the local marinating and braising style they encountered. The exact inventor is unknown because it is a long-standing traditional preparation rather than a single documented invention.",
+        serving: "Serve with hot rice and spoon extra sauce over the top."
+      },
+      {
+        name: "Sinigang na Baboy",
+        origin: "🇵🇭 Philippines",
+        type: "Sour soup",
+        time: "⏱️ 1–1.5 hours",
+        description: "Sinigang is a Filipino sour soup often made with pork and vegetables. Its signature flavor usually comes from tamarind or another souring ingredient.",
+        image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "800 g pork",
+          "1 onion",
+          "2 tomatoes",
+          "1 radish",
+          "1 small eggplant",
+          "Green beans",
+          "Leafy greens",
+          "Tamarind mix",
+          "Fish sauce"
+        ],
+        instructions: [
+          "Boil the pork with onion and tomatoes until tender.",
+          "Add tamarind for the sour base.",
+          "Add the vegetables in stages depending on cooking time.",
+          "Season with fish sauce.",
+          "Serve hot with rice."
+        ],
+        story: "Sinigang is known for its fresh sourness and comforting broth, making it one of the most recognizable soups in Filipino home cooking.",
+        history: "The dish is rooted in older Filipino sour-broth traditions and likely predates modern written recipes. It has no single known inventor and is better understood as part of a broader culinary tradition shaped by local ingredients and regional practice.",
+        serving: "Best with steamed rice and maybe chili on the side for extra heat."
+      },
+      {
+        name: "Pancit Bihon",
+        origin: "🇵🇭 Philippines",
+        type: "Noodle stir-fry",
+        time: "⏱️ 35–45 minutes",
+        description: "A festive noodle dish that is popular at gatherings and birthdays, often associated with good luck and long life.",
+        image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "250 g rice noodles",
+          "300 g chicken",
+          "2 carrots",
+          "1/4 cabbage",
+          "Green beans",
+          "3 tbsp soy sauce",
+          "3 cloves garlic",
+          "5 dl stock"
+        ],
+        instructions: [
+          "Soften the noodles according to package directions.",
+          "Cook garlic and meat first.",
+          "Add vegetables and stir-fry briefly.",
+          "Pour in stock and soy sauce.",
+          "Add noodles and toss until everything is well combined."
+        ],
+        story: "Pancit is often served during celebrations and is one of the easiest Filipino dishes to scale up for a larger group.",
+        history: "Filipino pancit dishes reflect Chinese influence on local food culture, especially in noodle cooking. The exact person who first created pancit bihon in the Philippines is not documented; it developed over time through cultural exchange and local adaptation.",
+        serving: "Serve with calamansi or lemon on the side for brightness."
+      },
+      {
+        name: "Tinola",
+        origin: "🇵🇭 Philippines",
+        type: "Chicken ginger soup",
+        time: "⏱️ 45–60 minutes",
+        description: "Tinola is a clean and comforting chicken soup flavored with ginger, garlic, onion, and vegetables such as green papaya or chayote.",
+        image: "https://images.unsplash.com/photo-1604908554027-1a92dfc2c5d0?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "1 kg chicken pieces",
+          "1 onion",
+          "4 cloves garlic",
+          "1 large ginger piece",
+          "1 green papaya or chayote",
+          "Leafy greens",
+          "Fish sauce",
+          "Water or stock"
+        ],
+        instructions: [
+          "Sauté onion, garlic, and ginger until fragrant.",
+          "Add chicken and cook briefly.",
+          "Pour in water or stock and simmer until the chicken is tender.",
+          "Add papaya or chayote and cook until soft.",
+          "Finish with leafy greens and fish sauce."
+        ],
+        story: "Tinola is one of the gentlest and most comforting dishes in Filipino home cooking.",
+        history: "It is an old Filipino soup tradition, widely recognized in literature and food culture. The exact inventor is not known.",
+        serving: "Serve hot with rice, especially on rainy days."
+      },
+      {
+        name: "Kare-Kare",
+        origin: "🇵🇭 Philippines",
+        type: "Peanut stew",
+        time: "⏱️ 2 hours",
+        description: "Kare-kare is a rich and savory stew with peanut sauce, commonly paired with vegetables and bagoong on the side.",
+        image: "https://images.unsplash.com/photo-1604908177075-9bcd0c2e6d77?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "800 g beef",
+          "2 tbsp peanut butter",
+          "2 tbsp ground peanuts",
+          "1 eggplant",
+          "Green beans",
+          "Bok choy or similar greens",
+          "Onion",
+          "Garlic",
+          "Stock"
+        ],
+        instructions: [
+          "Cook the beef until tender.",
+          "Prepare the peanut-based sauce with stock and peanut butter.",
+          "Add vegetables and simmer until just cooked.",
+          "Serve with rice and bagoong on the side if desired."
+        ],
+        story: "Kare-kare is rich, festive, and often connected to special family meals and gatherings.",
+        history: "There are multiple theories about its origins, including links to older local stew traditions and cross-cultural influence. No single inventor is firmly documented.",
+        serving: "Serve with plain rice and a little bagoong for contrast."
+      },
+      {
+        name: "Lechon Kawali",
+        origin: "🇵🇭 Philippines",
+        type: "Crispy pork belly",
+        time: "⏱️ 1.5–2 hours",
+        description: "Lechon kawali is crispy pork belly, first boiled until tender and then fried until golden and crunchy.",
+        image: "https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "1 kg pork belly",
+          "Salt",
+          "Pepper",
+          "Bay leaves",
+          "Water",
+          "Oil for frying"
+        ],
+        instructions: [
+          "Boil the pork belly with salt, pepper, and bay leaves until tender.",
+          "Let it cool and dry slightly.",
+          "Deep-fry carefully until crispy and golden.",
+          "Slice and serve."
+        ],
+        story: "It is a popular sharing dish with strong appeal because of the crispy texture and rich flavor.",
+        history: "Lechon kawali belongs to the broader Filipino tradition of celebratory pork dishes. It is best understood as an evolved home version of roast pork culture rather than one inventor’s creation.",
+        serving: "Serve with rice and dipping sauce."
+      },
+      {
+        name: "Bistek Tagalog",
+        origin: "🇵🇭 Philippines",
+        type: "Beef and onion dish",
+        time: "⏱️ 40–50 minutes",
+        description: "Thin beef slices marinated in soy and citrus, then cooked with lots of onion for a deeply savory dinner.",
+        image: "https://images.unsplash.com/photo-1543332164-6e82f355badc?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "600 g beef slices",
+          "4 tbsp soy sauce",
+          "Juice of 2 lemons or calamansi",
+          "2 onions",
+          "Black pepper",
+          "Oil"
+        ],
+        instructions: [
+          "Marinate the beef in soy sauce, citrus juice, and pepper.",
+          "Fry the onions separately until softened.",
+          "Cook the beef quickly in a pan.",
+          "Return onions to the pan and combine everything.",
+          "Serve with rice."
+        ],
+        story: "Bistek Tagalog is simple, savory, and one of the most practical beef dinners in Filipino home cooking.",
+        history: "The dish reflects outside culinary influence adapted into a Filipino flavor profile. The exact original inventor is not documented.",
+        serving: "Best with lots of rice to balance the soy and citrus flavors."
+      },
+      {
+        name: "Longganisa",
+        origin: "🇵🇭 Philippines",
+        type: "Sweet garlic sausage",
+        time: "⏱️ 35–45 minutes",
+        description: "Longganisa is a Filipino sausage with regional variations, often sweet, garlicky, and perfect for breakfast-for-dinner.",
+        image: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "600 g ground pork",
+          "6 cloves garlic",
+          "2 tbsp sugar",
+          "2 tbsp vinegar",
+          "Salt",
+          "Pepper"
+        ],
+        instructions: [
+          "Mix the pork with garlic, sugar, vinegar, salt, and pepper.",
+          "Shape into small sausage portions or cook loose.",
+          "Fry gently until cooked through and caramelized."
+        ],
+        story: "Longganisa is flavorful, flexible, and strongly tied to regional food identity in the Philippines.",
+        history: "The name reflects Iberian sausage influence, but Filipino versions evolved separately over time. There is no single inventor.",
+        serving: "Serve with garlic rice and fried egg."
+      },
+      {
+        name: "Bangus",
+        origin: "🇵🇭 Philippines",
+        type: "Fried milkfish",
+        time: "⏱️ 25–30 minutes",
+        description: "Milkfish is one of the best-known fish in the Philippines and is often fried until crisp outside and tender inside.",
+        image: "https://images.unsplash.com/photo-1559847844-d721426d6edc?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "1 large milkfish, cleaned",
+          "Salt",
+          "Pepper",
+          "Oil for frying"
+        ],
+        instructions: [
+          "Season the fish well with salt and pepper.",
+          "Heat oil in a pan.",
+          "Fry the fish carefully on both sides until cooked and crisp.",
+          "Drain and serve."
+        ],
+        story: "Bangus is a proud staple in Filipino fish cooking and widely recognized as a national favorite.",
+        history: "Its importance comes from widespread cultivation and use rather than one invented recipe. The fried version is a common household preparation.",
+        serving: "Serve with rice and a dipping sauce of vinegar, garlic, and chili."
+      },
+      {
+        name: "Filipino Fried Chicken",
+        origin: "🇵🇭 Philippines",
+        type: "Crispy family dinner",
+        time: "⏱️ 45–60 minutes",
+        description: "A crispy and juicy fried chicken dinner with a Filipino-style marinade and seasoning profile.",
+        image: "https://images.unsplash.com/photo-1562967916-eb82221dfb36?auto=format&fit=crop&w=1400&q=80",
+        ingredients: [
+          "1 kg chicken pieces",
+          "4 cloves garlic",
+          "3 tbsp soy sauce",
+          "1 egg",
+          "Flour",
+          "Salt",
+          "Pepper",
+          "Oil for frying"
+        ],
+        instructions: [
+          "Marinate the chicken with garlic, soy sauce, salt, and pepper.",
+          "Coat lightly with flour, with egg if desired.",
+          "Deep-fry or pan-fry until golden and fully cooked.",
+          "Drain and serve hot."
+        ],
+        story: "Filipino-style fried chicken is both familiar and highly adaptable, making it a practical family favorite.",
+        history: "It reflects a combination of local seasoning and later American influence. It is part of a broader evolving food tradition rather than a single invention.",
+        serving: "Serve with rice and gravy or banana ketchup."
+      }
+    ];
 
-{
-title:"Kylling i ovn",
-desc:"Family favorite chicken dish.",
-ingredients:"1 whole chicken, spices, potatoes",
-instructions:"Bake at 200°C for 1–1.5 hours.",
-history:"Common Sunday dinner."
-},
+    function renderDish(dish){
+      document.getElementById("dishName").textContent = dish.name;
+      document.getElementById("dishOrigin").textContent = dish.origin;
+      document.getElementById("dishType").textContent = dish.type;
+      document.getElementById("dishTime").textContent = dish.time;
+      document.getElementById("dishDescription").textContent = dish.description;
+      document.getElementById("dishStory").textContent = dish.story;
+      document.getElementById("dishHistory").textContent = dish.history;
+      document.getElementById("servingTip").textContent = dish.serving;
+      document.getElementById("historyNote").textContent = dish.history;
 
-{
-title:"Grøt (Rice porridge)",
-desc:"Comfort food.",
-ingredients:"Rice, milk, sugar, cinnamon",
-instructions:"Cook slowly until creamy.",
-history:"Traditional Christmas dish."
-},
+      const imageStyle = `linear-gradient(180deg, rgba(7,17,31,.08), rgba(7,17,31,.25)), url('${dish.image}') center/cover no-repeat`;
+      document.getElementById("dishImage").style.background = imageStyle;
+      document.getElementById("heroImage").style.background = imageStyle;
 
-/* 🇵🇭 FILIPINO */
+      const ingredientsList = document.getElementById("ingredientsList");
+      ingredientsList.innerHTML = dish.ingredients.map(item => `<li>${item}</li>`).join("");
 
-{
-title:"Chicken Adobo",
-desc:"Most famous Filipino dish.",
-ingredients:"1kg chicken, soy sauce, vinegar, garlic, bay leaf",
-instructions:"Marinate 30 min. Simmer 30–40 min until tender.",
-history:"Pre-colonial cooking style, later named by Spanish."
-},
+      const instructionsList = document.getElementById("instructionsList");
+      instructionsList.innerHTML = dish.instructions.map(item => `<li>${item}</li>`).join("");
 
-{
-title:"Sinigang",
-desc:"Sour soup.",
-ingredients:"Pork, tamarind, vegetables",
-instructions:"Boil meat. Add vegetables and tamarind. Simmer.",
-history:"Ancient Filipino dish using natural sour flavors."
-},
+      const shoppingList = document.getElementById("shoppingList");
+      shoppingList.innerHTML = dish.ingredients.map((item, index) => `
+        <label class="shopping-item">
+          <input type="checkbox" id="shop-${index}">
+          <span>${item}</span>
+        </label>
+      `).join("");
+    }
 
-{
-title:"Pancit",
-desc:"Noodle dish.",
-ingredients:"Rice noodles, vegetables, chicken",
-instructions:"Stir fry everything together.",
-history:"Influenced by Chinese traders."
-},
+    function generateDinner(){
+      const randomDish = dinners[Math.floor(Math.random() * dinners.length)];
+      renderDish(randomDish);
+    }
 
-{
-title:"Tinola",
-desc:"Chicken soup.",
-ingredients:"Chicken, ginger, garlic, papaya",
-instructions:"Boil chicken with ginger. Add vegetables.",
-history:"Traditional home comfort food."
-},
+    function saveFavorite(){
+      const current = document.getElementById("dishName").textContent;
+      localStorage.setItem("iansFavoriteDinner", current);
+      document.getElementById("favoriteText").textContent = `${current} saved as favorite.`;
+    }
 
-{
-title:"Kare-Kare",
-desc:"Peanut stew.",
-ingredients:"Beef, peanut sauce, vegetables",
-instructions:"Cook meat until tender. Add sauce.",
-history:"Rich Filipino stew often served at celebrations."
-},
+    function loadFavorite(){
+      const favorite = localStorage.getItem("iansFavoriteDinner");
+      if (favorite) {
+        document.getElementById("favoriteText").textContent = `Favorite: ${favorite}`;
+      }
+    }
 
-{
-title:"Lechon Kawali",
-desc:"Crispy pork belly.",
-ingredients:"Pork belly, salt, oil",
-instructions:"Boil, then deep fry until crispy.",
-history:"Popular party dish."
-},
+    function generateWeekPlan(){
+      const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+      const shuffled = [...dinners].sort(() => 0.5 - Math.random()).slice(0, 7);
 
-{
-title:"Bistek Tagalog",
-desc:"Beef with soy and onion.",
-ingredients:"Beef, soy sauce, calamansi, onions",
-instructions:"Marinate beef. Fry with onions.",
-history:"Spanish influence adapted locally."
-},
+      document.getElementById("weekPlan").innerHTML = days.map((day, index) => `
+        <div class="week-item">
+          <span class="week-day">${day}</span>
+          <span class="week-meal">${shuffled[index].name}</span>
+        </div>
+      `).join("");
+    }
 
-{
-title:"Longganisa",
-desc:"Sweet garlic sausage.",
-ingredients:"Ground pork, garlic, sugar, vinegar",
-instructions:"Mix and fry.",
-history:"Filipino sausage tradition."
-},
+    document.getElementById("generateTop").addEventListener("click", generateDinner);
+    document.getElementById("generateHero").addEventListener("click", generateDinner);
+    document.getElementById("favoriteBtn").addEventListener("click", saveFavorite);
+    document.getElementById("generateWeekBtn").addEventListener("click", generateWeekPlan);
 
-{
-title:"Bangus (Milkfish)",
-desc:"Fried fish dish.",
-ingredients:"Milkfish, salt, oil",
-instructions:"Fry until crispy.",
-history:"National fish of the Philippines."
-},
-
-{
-title:"Fried Chicken Filipino style",
-desc:"Crispy juicy chicken.",
-ingredients:"Chicken, garlic, soy, flour",
-instructions:"Marinate, coat, deep fry.",
-history:"Adapted from American influence."
-}
-
-];
-function generateMeal(){
-  const meal = meals[Math.floor(Math.random()*meals.length)];
-
-  document.getElementById("title").textContent = meal.title;
-  document.getElementById("desc").textContent = meal.desc;
-  document.getElementById("ingredients").textContent = meal.ingredients;
-  document.getElementById("instructions").textContent = meal.instructions;
-  document.getElementById("history").textContent = meal.history;
-}
-
-// load first
-generateMeal();
-</script>
-
+    loadFavorite();
+    generateDinner();
+    generateWeekPlan();
+  </script>
 </body>
 </html>
