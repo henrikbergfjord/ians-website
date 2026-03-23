@@ -1,22 +1,4 @@
 {
-  "routes": [
-    {
-      "route": "/*",
-      "redirect": "https://www.ians.no",
-      "statusCode": 301,
-      "conditions": {
-        "host": ["ians.no"]
-      }
-    },
-    {
-      "route": "/*",
-      "redirect": "https://www.sogod.no",
-      "statusCode": 301,
-      "conditions": {
-        "host": ["sogod.no"]
-      }
-    }
-  ],
   "globalHeaders": {
     "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload"
   }
