@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IANS – Dashboard</title>
-  <meta name="description" content="IANS dashboard med vær, kalender, strømpris, lokalnyheter, middagstips og Volvo C40." />
+  <title>Henrik Bergfjord | Portal</title>
+  <meta
+    name="description"
+    content="Moderne portal med oversikt over strøm, DNS-sjekk, Volvo C40, Maimyra, galleri og SameieNett."
+  />
   <style>
     :root{
       --bg:#07111f;
@@ -56,6 +59,7 @@
       justify-content:space-between;
       gap:14px;
       flex-wrap:wrap;
+      padding:8px 0;
     }
 
     .brand{
@@ -111,20 +115,20 @@
       font-size:.92rem;
     }
 
-    .hero{
-      padding:14px 0 8px;
+    .ghost{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      color:var(--text);
+      box-shadow:none;
     }
 
-    .clock-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-bottom:12px;
+    .hero{
+      padding:18px 0 10px;
     }
 
     .hero-grid{
       display:grid;
-      grid-template-columns:1.35fr .65fr;
+      grid-template-columns:1.2fr .8fr;
       gap:12px;
     }
 
@@ -135,107 +139,9 @@
       box-shadow:var(--shadow);
     }
 
-    .clock-card{
-      padding:12px 14px;
-      display:flex;
-      align-items:center;
-      gap:14px;
-      min-height:96px;
-    }
-
-    .clock-face{
-      width:66px;
-      height:66px;
-      border-radius:50%;
-      position:relative;
-      flex:0 0 auto;
-      border:2px solid rgba(255,255,255,.12);
-      background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      box-shadow:inset 0 0 20px rgba(255,255,255,.02);
-    }
-
-    .clock-center{
-      position:absolute;
-      top:50%;
-      left:50%;
-      width:8px;
-      height:8px;
-      margin:-4px 0 0 -4px;
-      border-radius:50%;
-      background:#fff;
-      z-index:5;
-    }
-
-    .hand{
-      position:absolute;
-      left:50%;
-      bottom:50%;
-      transform-origin:bottom center;
-      border-radius:999px;
-    }
-
-    .hour-hand{
-      width:4px;
-      height:18px;
-      margin-left:-2px;
-      background:#edf4ff;
-      z-index:3;
-    }
-
-    .minute-hand{
-      width:3px;
-      height:24px;
-      margin-left:-1.5px;
-      background:#c7d8f7;
-      z-index:4;
-    }
-
-    .second-hand{
-      width:2px;
-      height:28px;
-      margin-left:-1px;
-      background:#8b7cff;
-      z-index:4;
-    }
-
-    .clock-mark{
-      position:absolute;
-      top:50%;
-      left:50%;
-      width:2px;
-      height:6px;
-      background:rgba(255,255,255,.25);
-      transform-origin:center -28px;
-      border-radius:999px;
-    }
-
-    .clock-info{
-      min-width:0;
-    }
-
-    .clock-label{
-      color:var(--muted);
-      font-size:.84rem;
-      margin-bottom:4px;
-      font-weight:600;
-    }
-
-    .clock-time{
-      font-size:1.35rem;
-      font-weight:800;
-      line-height:1.1;
-      margin-bottom:3px;
-      letter-spacing:-.4px;
-    }
-
-    .clock-date{
-      color:var(--muted);
-      font-size:.86rem;
-    }
-
     .hero-main{
-      padding:18px 20px;
-      min-height:180px;
+      padding:22px;
+      min-height:220px;
     }
 
     .eyebrow{
@@ -248,12 +154,12 @@
       color:#cde3ff;
       font-size:11px;
       font-weight:700;
-      margin-bottom:10px;
+      margin-bottom:12px;
     }
 
     h1{
-      margin:0 0 8px;
-      font-size:clamp(1.8rem, 4vw, 3rem);
+      margin:0 0 10px;
+      font-size:clamp(2rem, 4vw, 3.3rem);
       line-height:1.02;
       letter-spacing:-1px;
     }
@@ -261,23 +167,16 @@
     .lead{
       margin:0;
       color:var(--muted);
-      font-size:.95rem;
-      line-height:1.5;
-      max-width:56ch;
+      font-size:.97rem;
+      line-height:1.55;
+      max-width:60ch;
     }
 
     .hero-actions{
-      margin-top:14px;
+      margin-top:16px;
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-    }
-
-    .ghost{
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      color:var(--text);
-      box-shadow:none;
     }
 
     .hero-side{
@@ -287,7 +186,7 @@
     }
 
     .mini-card{
-      padding:12px;
+      padding:14px;
       border-radius:14px;
       background:rgba(255,255,255,.035);
       border:1px solid var(--line);
@@ -298,23 +197,18 @@
       align-items:center;
       justify-content:space-between;
       gap:8px;
-      margin-bottom:6px;
+      margin-bottom:8px;
     }
 
     .mini-top strong{
-      font-size:.9rem;
-    }
-
-    .mini-icon{
-      font-size:.85rem;
-      opacity:.85;
+      font-size:.95rem;
     }
 
     .mini-value{
-      font-size:1.4rem;
+      font-size:1.45rem;
       font-weight:800;
-      line-height:1;
-      margin:6px 0 4px;
+      line-height:1.1;
+      margin-bottom:5px;
     }
 
     .mini-text{
@@ -324,7 +218,7 @@
     }
 
     .section{
-      padding:8px 0 18px;
+      padding:10px 0 20px;
     }
 
     .section-head{
@@ -332,13 +226,13 @@
       align-items:end;
       justify-content:space-between;
       gap:12px;
-      margin-bottom:10px;
+      margin-bottom:12px;
       flex-wrap:wrap;
     }
 
     .section-head h2{
       margin:0;
-      font-size:clamp(1.3rem, 2.5vw, 1.7rem);
+      font-size:clamp(1.3rem, 2.5vw, 1.8rem);
       letter-spacing:-.3px;
     }
 
@@ -347,48 +241,18 @@
       color:var(--muted);
       max-width:62ch;
       line-height:1.45;
-      font-size:.88rem;
-    }
-
-    .forecast-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-    }
-
-    .forecast-card{
-      padding:13px;
-      min-height:96px;
-    }
-
-    .forecast-day{
-      color:var(--muted);
-      font-size:.82rem;
-      margin-bottom:5px;
-      font-weight:600;
-    }
-
-    .forecast-temp{
-      font-size:1.25rem;
-      font-weight:800;
-      margin-bottom:4px;
-    }
-
-    .forecast-desc{
-      color:var(--muted);
-      line-height:1.35;
-      font-size:.84rem;
+      font-size:.9rem;
     }
 
     .dashboard-grid{
       display:grid;
-      grid-template-columns:repeat(6,1fr);
-      gap:10px;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
     }
 
     .dash-card{
-      padding:13px;
-      min-height:132px;
+      padding:15px;
+      min-height:170px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
@@ -399,22 +263,22 @@
       align-items:center;
       justify-content:space-between;
       gap:8px;
-      margin-bottom:8px;
+      margin-bottom:10px;
     }
 
     .dash-icon{
-      width:28px;
-      height:28px;
-      border-radius:9px;
+      width:30px;
+      height:30px;
+      border-radius:10px;
       display:grid;
       place-items:center;
       background:rgba(255,255,255,.04);
       border:1px solid var(--line);
-      font-size:.8rem;
+      font-size:.85rem;
     }
 
     .dash-status{
-      padding:4px 7px;
+      padding:4px 8px;
       border-radius:999px;
       font-size:.68rem;
       color:var(--muted);
@@ -425,127 +289,46 @@
     }
 
     .dash-card h3{
-      margin:0 0 5px;
-      font-size:.92rem;
+      margin:0 0 6px;
+      font-size:1rem;
     }
 
     .dash-card p{
       margin:0;
       color:var(--muted);
-      line-height:1.38;
-      font-size:.84rem;
+      line-height:1.45;
+      font-size:.87rem;
     }
 
     .dash-link{
-      margin-top:10px;
+      margin-top:12px;
       font-weight:800;
-      font-size:.84rem;
+      font-size:.86rem;
       color:var(--text);
-    }
-
-    .split-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-
-    .feed-card{
-      padding:14px;
-      min-height:200px;
-    }
-
-    .feed-card h3{
-      margin:0 0 4px;
-      font-size:.96rem;
-    }
-
-    .feed-card p{
-      margin:0 0 10px;
-      color:var(--muted);
-      line-height:1.38;
-      font-size:.84rem;
-    }
-
-    .news-list,
-    .price-list{
-      display:grid;
-      gap:8px;
-    }
-
-    .news-item,
-    .price-item{
-      padding:9px 11px;
-      border-radius:12px;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-    }
-
-    .news-item a{
-      display:block;
-      font-weight:700;
-      margin-bottom:3px;
-      line-height:1.3;
-      font-size:.86rem;
-    }
-
-    .news-item span,
-    .price-item span{
-      color:var(--muted);
-      font-size:.8rem;
-      line-height:1.35;
-    }
-
-    .price-main{
-      font-size:1.14rem;
-      font-weight:800;
-      margin-bottom:2px;
-    }
-
-    .loading{
-      color:var(--muted);
-      padding:8px 0;
-      font-size:.86rem;
     }
 
     footer{
       border-top:1px solid var(--line);
       color:var(--muted);
-      padding:16px 0 24px;
+      padding:18px 0 24px;
       margin-top:8px;
       font-size:.84rem;
     }
 
-    @media (max-width:1150px){
-      .dashboard-grid{
-        grid-template-columns:repeat(3,1fr);
-      }
-    }
-
-    @media (max-width:960px){
-      .clock-grid,
+    @media (max-width:980px){
       .hero-grid,
-      .forecast-grid,
-      .split-grid{
+      .dashboard-grid{
         grid-template-columns:1fr;
       }
     }
 
     @media (max-width:760px){
-      .dashboard-grid{
-        grid-template-columns:1fr;
-      }
-
       .nav{
         padding:10px 0;
       }
 
       .hero-main{
-        padding:16px;
-      }
-
-      .clock-card{
-        flex-direction:column;
-        align-items:flex-start;
+        padding:18px;
       }
     }
   </style>
@@ -554,118 +337,65 @@
   <header>
     <div class="container nav">
       <a class="brand" href="index.html">
-        <span class="brand-badge">IA</span>
-        <span>IANS</span>
+        <span class="brand-badge">HB</span>
+        <span>Henrik Bergfjord</span>
       </a>
 
       <nav class="nav-links">
-        <a href="index.html" class="active">Forside</a>
-        <a href="kalender.html">Kalender</a>
-        <a href="middag.html">Dinner</a>
+        <a href="index.html" class="active">Hjem</a>
+        <a href="strom.html">Strøm</a>
+        <a href="dns-sjekk.html">DNS</a>
+        <a href="volvo-c40.html">Volvo C40</a>
+        <a href="maimyra.html">Maimyra</a>
+        <a href="galleri.html">Galleri</a>
+        <a href="SameieNett.html">SameieNett</a>
       </nav>
 
-      <a class="cta" href="kalender.html">Åpne kalender</a>
+      <a class="cta" href="dns-sjekk.html">Åpne DNS-sjekk</a>
     </div>
   </header>
 
   <main>
     <section class="hero">
-      <div class="container clock-grid">
-        <div class="card clock-card">
-          <div class="clock-face" id="clockFaceOslo">
-            <div class="clock-center"></div>
-            <div class="hand hour-hand" id="osloHour"></div>
-            <div class="hand minute-hand" id="osloMinute"></div>
-            <div class="hand second-hand" id="osloSecond"></div>
-          </div>
-          <div class="clock-info">
-            <div class="clock-label">Norge • Oslo</div>
-            <div class="clock-time" id="clockOslo">--:--:--</div>
-            <div class="clock-date" id="dateOslo">Laster dato...</div>
-          </div>
-        </div>
-
-        <div class="card clock-card">
-          <div class="clock-face" id="clockFaceManila">
-            <div class="clock-center"></div>
-            <div class="hand hour-hand" id="manilaHour"></div>
-            <div class="hand minute-hand" id="manilaMinute"></div>
-            <div class="hand second-hand" id="manilaSecond"></div>
-          </div>
-          <div class="clock-info">
-            <div class="clock-label">Filippinene • Sogod / Tabaco</div>
-            <div class="clock-time" id="clockManila">--:--:--</div>
-            <div class="clock-date" id="dateManila">Laster dato...</div>
-          </div>
-        </div>
-      </div>
-
       <div class="container hero-grid">
         <div class="card hero-main">
-          <div class="eyebrow">Live dashboard</div>
-          <h1 id="todayHeadline">I dag</h1>
+          <div class="eyebrow">Digital portal</div>
+          <h1>En moderne og teknisk forside</h1>
           <p class="lead">
-            En samlet oversikt over kalender, vær, strømpris, lokalnyheter og bilstatus.
+            Her samles de viktigste delene av prosjektet i én ryddig portal:
+            strømoversikt, DNS-sjekk, Volvo C40, Maimyra, galleri og SameieNett.
+            Siden er bygget for å være enkel å oppdatere videre fra Visual Studio Code og GitHub.
           </p>
 
           <div class="hero-actions">
-            <a class="cta" href="kalender.html">Se familiekalender</a>
-            <a class="cta ghost" href="middag.html">Dinner ideas</a>
-            <a class="cta ghost" href="#oversikt">Åpne oversikt</a>
+            <a class="cta" href="#oversikt">Se oversikt</a>
+            <a class="cta ghost" href="strom.html">Gå til strøm</a>
+            <a class="cta ghost" href="SameieNett.html">Se SameieNett</a>
           </div>
         </div>
 
         <aside class="card hero-side">
           <div class="mini-card">
             <div class="mini-top">
-              <strong>Vær – Straume / Øygarden</strong>
-              <span class="mini-icon">☼</span>
+              <strong>Status</strong>
+              <span>Live</span>
             </div>
-            <div class="mini-value" id="weatherNow">Laster...</div>
-            <div class="mini-text" id="weatherMeta">Henter værdata.</div>
+            <div class="mini-value">Klar for videre bygging</div>
+            <div class="mini-text">
+              Strukturen er nå samlet slik at du kan gjøre endringer lokalt i VS Code og pushe direkte til GitHub.
+            </div>
           </div>
 
           <div class="mini-card">
             <div class="mini-top">
-              <strong>Volvo C40</strong>
-              <span class="mini-icon">EV</span>
+              <strong>Fokus</strong>
+              <span>Portal</span>
             </div>
             <div class="mini-text">
-              Bilstatus er tilgjengelig som egen del av dashboardet og kan senere utvides med lading, batteri og rekkevidde.
+              Neste naturlige steg er å standardisere menyen på alle undersider og bruke samme toppmeny over hele nettstedet.
             </div>
           </div>
         </aside>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Korttidsprognose</h2>
-            <p>En kompakt 3-dagers oversikt for nærområdet.</p>
-          </div>
-        </div>
-
-        <div class="forecast-grid">
-          <article class="card forecast-card">
-            <div class="forecast-day" id="f1day">Dag 1</div>
-            <div class="forecast-temp" id="f1temp">--</div>
-            <div class="forecast-desc" id="f1desc">Laster værprognose.</div>
-          </article>
-
-          <article class="card forecast-card">
-            <div class="forecast-day" id="f2day">Dag 2</div>
-            <div class="forecast-temp" id="f2temp">--</div>
-            <div class="forecast-desc" id="f2desc">Laster værprognose.</div>
-          </article>
-
-          <article class="card forecast-card">
-            <div class="forecast-day" id="f3day">Dag 3</div>
-            <div class="forecast-temp" id="f3temp">--</div>
-            <div class="forecast-desc" id="f3desc">Laster værprognose.</div>
-          </article>
-        </div>
       </div>
     </section>
 
@@ -674,7 +404,7 @@
         <div class="section-head">
           <div>
             <h2>Hurtigoversikt</h2>
-            <p>De viktigste områdene er samlet i en kompakt og ryddig visning.</p>
+            <p>Her er snarveier til de viktigste sidene i den nye strukturen.</p>
           </div>
         </div>
 
@@ -683,296 +413,82 @@
             <div>
               <div class="dash-top">
                 <div class="dash-icon">⚡</div>
-                <span class="dash-status">Klar for data</span>
+                <span class="dash-status">Aktiv</span>
               </div>
-              <h3>Strømforbruk</h3>
-              <p>Oversikt over energidata, forbruk og eventuelle målepunkter.</p>
+              <h3>Strøm</h3>
+              <p>Oversikt over strømdata, strømvisning og videre energiinformasjon.</p>
             </div>
-            <div class="dash-link">Integreres ved behov →</div>
+            <a class="dash-link" href="strom.html">Åpne strøm →</a>
+          </article>
+
+          <article class="card dash-card">
+            <div>
+              <div class="dash-top">
+                <div class="dash-icon">🌐</div>
+                <span class="dash-status">Verktøy</span>
+              </div>
+              <h3>DNS-sjekk</h3>
+              <p>Sjekk domener og DNS-poster fra en egen side med teknisk profil.</p>
+            </div>
+            <a class="dash-link" href="dns-sjekk.html">Åpne DNS-sjekk →</a>
           </article>
 
           <article class="card dash-card">
             <div>
               <div class="dash-top">
                 <div class="dash-icon">🚗</div>
-                <span class="dash-status">Volvo C40</span>
+                <span class="dash-status">Bil</span>
               </div>
-              <h3>Bilstatus</h3>
-              <p>Statuskort for lading, batteri, rekkevidde og relaterte bildata.</p>
+              <h3>Volvo C40</h3>
+              <p>Egen side for bil, lading, status og videre ideer rundt EV-oversikt.</p>
             </div>
-            <div class="dash-link">Utvides senere →</div>
+            <a class="dash-link" href="volvo-c40.html">Åpne Volvo C40 →</a>
           </article>
 
           <article class="card dash-card">
             <div>
               <div class="dash-top">
                 <div class="dash-icon">🏠</div>
-                <span class="dash-status">Klar for data</span>
+                <span class="dash-status">Prosjekt</span>
               </div>
-              <h3>Smarthus</h3>
-              <p>Samlet oversikt over hjem, lys, sensorer, kamera og status.</p>
+              <h3>Maimyra</h3>
+              <p>Samlet visning for hus, planer, ideer og videre utvikling rundt prosjektet.</p>
             </div>
-            <div class="dash-link">Utvides senere →</div>
+            <a class="dash-link" href="maimyra.html">Åpne Maimyra →</a>
           </article>
 
           <article class="card dash-card">
             <div>
               <div class="dash-top">
-                <div class="dash-icon">📅</div>
-                <span class="dash-status">Aktiv</span>
+                <div class="dash-icon">🖼️</div>
+                <span class="dash-status">Media</span>
               </div>
-              <h3>Kalender</h3>
-              <p>Familiekalender synkronisert med Google Calendar.</p>
+              <h3>Galleri</h3>
+              <p>En egen side for bilder, visuelle inntrykk og fremtidige presentasjoner.</p>
             </div>
-            <a class="dash-link" href="kalender.html">Åpne kalender →</a>
+            <a class="dash-link" href="galleri.html">Åpne galleri →</a>
           </article>
 
           <article class="card dash-card">
             <div>
               <div class="dash-top">
-                <div class="dash-icon">🍽️</div>
-                <span class="dash-status">Ny</span>
+                <div class="dash-icon">🏢</div>
+                <span class="dash-status">Teaser</span>
               </div>
-              <h3>Dinner ideas</h3>
-              <p>Get Norwegian and Filipino dinner inspiration with recipes and images.</p>
+              <h3>SameieNett</h3>
+              <p>Teaser-side for nettverk, infrastruktur og en mer helhetlig leveransemodell.</p>
             </div>
-            <a class="dash-link" href="middag.html">Open dinner page →</a>
-          </article>
-
-          <article class="card dash-card">
-            <div>
-              <div class="dash-top">
-                <div class="dash-icon">☁️</div>
-                <span class="dash-status">Aktiv</span>
-              </div>
-              <h3>Vær</h3>
-              <p>Dagens vær og korttidsprognose for Straume / Øygarden.</p>
-            </div>
-            <div class="dash-link">Oppdateres automatisk →</div>
+            <a class="dash-link" href="SameieNett.html">Åpne SameieNett →</a>
           </article>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container split-grid">
-        <article class="card feed-card">
-          <h3>Strømpris NO5</h3>
-          <p>Viser gjeldende timepris og et lite utvalg av timer for Vest-Norge.</p>
-          <div id="powerFeed" class="price-list">
-            <div class="loading">Laster strømpriser...</div>
-          </div>
-        </article>
-
-        <article class="card feed-card">
-          <h3>NRK Hordaland</h3>
-          <p>Siste lokale nyheter presentert i en kompakt feed.</p>
-          <div id="newsFeed" class="news-list">
-            <div class="loading">Laster nyheter...</div>
-          </div>
-        </article>
       </div>
     </section>
   </main>
 
   <footer>
     <div class="container">
-      IANS • Dashboard • Kalender, vær, strømpris, lokalnyheter, middagstips og Volvo C40
+      Henrik Bergfjord • Portal • Strøm, DNS, Volvo C40, Maimyra, Galleri og SameieNett
     </div>
   </footer>
-
-  <script>
-    const headline = document.getElementById("todayHeadline");
-    const now = new Date();
-    const weekday = now.toLocaleDateString("nb-NO", { weekday: "long" });
-    const day = now.getDate();
-    const month = now.toLocaleDateString("nb-NO", { month: "long" });
-    const year = now.getFullYear();
-    const prettyWeekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
-    headline.textContent = `${prettyWeekday} ${day}. ${month} ${year}`;
-
-    function setAnalogClock(date, prefix) {
-      const hours = date.getHours() % 12;
-      const minutes = date.getMinutes();
-      const seconds = date.getSeconds();
-
-      const hourDeg = (hours * 30) + (minutes * 0.5);
-      const minuteDeg = minutes * 6;
-      const secondDeg = seconds * 6;
-
-      document.getElementById(prefix + "Hour").style.transform = `rotate(${hourDeg}deg)`;
-      document.getElementById(prefix + "Minute").style.transform = `rotate(${minuteDeg}deg)`;
-      document.getElementById(prefix + "Second").style.transform = `rotate(${secondDeg}deg)`;
-    }
-
-    function createClockMarks(faceId) {
-      const face = document.getElementById(faceId);
-      for (let i = 0; i < 12; i++) {
-        const mark = document.createElement("div");
-        mark.className = "clock-mark";
-        mark.style.transform = `rotate(${i * 30}deg) translateY(-28px)`;
-        face.appendChild(mark);
-      }
-    }
-
-    createClockMarks("clockFaceOslo");
-    createClockMarks("clockFaceManila");
-
-    function updateClocks() {
-      const now = new Date();
-
-      const osloDateObj = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Oslo" }));
-      const manilaDateObj = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
-
-      const osloTime = new Intl.DateTimeFormat("nb-NO", {
-        timeZone: "Europe/Oslo",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false
-      }).format(now);
-
-      const osloDate = new Intl.DateTimeFormat("nb-NO", {
-        timeZone: "Europe/Oslo",
-        weekday: "long",
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-      }).format(now);
-
-      const manilaTime = new Intl.DateTimeFormat("en-PH", {
-        timeZone: "Asia/Manila",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false
-      }).format(now);
-
-      const manilaDate = new Intl.DateTimeFormat("en-PH", {
-        timeZone: "Asia/Manila",
-        weekday: "long",
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-      }).format(now);
-
-      document.getElementById("clockOslo").textContent = osloTime;
-      document.getElementById("dateOslo").textContent = osloDate;
-      document.getElementById("clockManila").textContent = manilaTime;
-      document.getElementById("dateManila").textContent = manilaDate;
-
-      setAnalogClock(osloDateObj, "oslo");
-      setAnalogClock(manilaDateObj, "manila");
-    }
-
-    updateClocks();
-    setInterval(updateClocks, 1000);
-
-    const lat = 60.3619;
-    const lon = 5.1216;
-
-    function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
-
-    function niceForecastLabel(offset){
-      const d = new Date();
-      d.setDate(d.getDate() + offset);
-      return d.toLocaleDateString("nb-NO", { weekday: "long", day: "2-digit", month: "2-digit" });
-    }
-
-    fetch(`https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`, {
-      headers: { "User-Agent": "IANS Dashboard" }
-    })
-    .then(r => r.json())
-    .then(data => {
-      const series = data.properties.timeseries;
-      const current = series[0].data.instant.details.air_temperature;
-      document.getElementById("weatherNow").textContent = `${Math.round(current)}°C`;
-      document.getElementById("weatherMeta").textContent = `Oppdatert vær for Straume / Øygarden`;
-
-      const d1 = series[0].data.instant.details.air_temperature;
-      const d2 = series[24]?.data.instant.details.air_temperature ?? d1;
-      const d3 = series[48]?.data.instant.details.air_temperature ?? d1;
-
-      document.getElementById("f1day").textContent = cap(niceForecastLabel(0));
-      document.getElementById("f1temp").textContent = `${Math.round(d1)}°C`;
-      document.getElementById("f1desc").textContent = "Forventet temperatur i dag.";
-
-      document.getElementById("f2day").textContent = cap(niceForecastLabel(1));
-      document.getElementById("f2temp").textContent = `${Math.round(d2)}°C`;
-      document.getElementById("f2desc").textContent = "Foreløpig estimat for neste døgn.";
-
-      document.getElementById("f3day").textContent = cap(niceForecastLabel(2));
-      document.getElementById("f3temp").textContent = `${Math.round(d3)}°C`;
-      document.getElementById("f3desc").textContent = "Foreløpig estimat for dag tre.";
-    })
-    .catch(() => {
-      document.getElementById("weatherNow").textContent = "Ikke tilgjengelig";
-      document.getElementById("weatherMeta").textContent = "Kunne ikke hente værdata akkurat nå.";
-    });
-
-    const p = new Date();
-    const yyyy = p.getFullYear();
-    const mm = String(p.getMonth() + 1).padStart(2, "0");
-    const dd = String(p.getDate()).padStart(2, "0");
-
-    fetch(`https://www.hvakosterstrommen.no/api/v1/prices/${yyyy}/${mm}-${dd}_NO5.json`)
-      .then(r => r.json())
-      .then(data => {
-        const hour = new Date().getHours();
-        const currentPrice = data[hour]?.NOK_per_kWh;
-        const rows = [];
-
-        if (typeof currentPrice === "number") {
-          rows.push(`
-            <div class="price-item">
-              <div class="price-main">${currentPrice.toFixed(2)} kr/kWh</div>
-              <span>Gjeldende timepris i NO5.</span>
-            </div>
-          `);
-        }
-
-        [6, 12, 18].forEach(h => {
-          if (data[h]) {
-            rows.push(`
-              <div class="price-item">
-                <strong>Kl. ${String(h).padStart(2, "0")}:00</strong><br>
-                <span>${data[h].NOK_per_kWh.toFixed(2)} kr/kWh</span>
-              </div>
-            `);
-          }
-        });
-
-        document.getElementById("powerFeed").innerHTML = rows.join("");
-      })
-      .catch(() => {
-        document.getElementById("powerFeed").innerHTML = `
-          <div class="price-item">
-            <span>Strømpris er ikke tilgjengelig akkurat nå.</span>
-          </div>
-        `;
-      });
-
-    const rssUrl = encodeURIComponent("https://psapi.nrk.no/smartspeaker/news/rss/nrk-hordaland.rss");
-    fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`)
-      .then(r => r.json())
-      .then(data => {
-        const items = data.items?.slice(0, 5) || [];
-        if (!items.length) throw new Error("Ingen nyheter");
-
-        document.getElementById("newsFeed").innerHTML = items.map(item => `
-          <div class="news-item">
-            <a href="${item.link}" target="_blank" rel="noopener noreferrer">${item.title}</a>
-            <span>${new Date(item.pubDate).toLocaleString("nb-NO")}</span>
-          </div>
-        `).join("");
-      })
-      .catch(() => {
-        document.getElementById("newsFeed").innerHTML = `
-          <div class="news-item">
-            <span>Nyhetsfeed er ikke tilgjengelig akkurat nå.</span>
-          </div>
-        `;
-      });
-  </script>
 </body>
 </html>

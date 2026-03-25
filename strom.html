@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strøm | Henrik Bergfjord</title>
+  <meta name="description" content="Strømoversikt med ny graf og teknisk uttrykk.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html"><span class="brand-mark"></span><span>Henrik Bergfjord</span></a>
+      <nav class="nav-links">
+        <a data-nav href="index.html">Hjem</a>
+        <a data-nav href="strom.html">Strøm</a>
+        <a data-nav href="dns-sjekk.html">DNS</a>
+        <a data-nav href="volvo-c40.html">Volvo C40</a>
+        <a data-nav href="maimyra.html">Maimyra</a>
+        <a data-nav href="galleri.html">Galleri</a>
+        <a data-nav href="SameieNett.html">SameieNett</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <div class="card tech-bg">
+          <div class="kicker">Energi · analyse · mørk teknisk profil</div>
+          <h1>Strøm med ny graf og mer teknisk uttrykk.</h1>
+          <p>
+            Her er strøm-siden oppgradert med mørkere design, grid-linjer, glow-effekter og en ny tegnet graf
+            som gir et tydeligere og mer moderne uttrykk.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="teknisk">
+      <div class="container grid-2">
+        <div class="card chart-card">
+          <div class="chart-header">
+            <div>
+              <h2 style="margin:0">Årsprofil</h2>
+              <div class="muted">Forbruk og pris gjennom året</div>
+            </div>
+            <div class="legend">
+              <span class="line1">Forbruk</span>
+              <span class="line2">Pris</span>
+            </div>
+          </div>
+          <canvas data-energy-chart width="1000" height="360"></canvas>
+        </div>
+        <div class="grid-2">
+          <div class="card tile">
+            <div class="badge">Snitt</div>
+            <div class="metric">1 654 kWh</div>
+            <div class="metric-sub">månedlig estimat</div>
+          </div>
+          <div class="card tile">
+            <div class="badge">Pris</div>
+            <div class="metric">1,07 kr</div>
+            <div class="metric-sub">estimert snittpris</div>
+          </div>
+          <div class="card tile">
+            <h3>Teknisk bakgrunn</h3>
+            <p class="muted">Designet er laget med grid, glow og kalde blå/grønne toner for å gi en mer digital og teknisk følelse.</p>
+          </div>
+          <div class="card tile">
+            <h3>Klar til videre kobling</h3>
+            <p class="muted">Du kan senere koble grafen mot ekte API-data, Home Assistant, Tibber, CSV eller eget backend-endepunkt.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid-3">
+        <div class="card tile">
+          <h3>Hva som er nytt</h3>
+          <div class="kv">
+            <div class="kv-row"><span>Graf</span><strong>Ny canvas-graf</strong></div>
+            <div class="kv-row"><span>Bakgrunn</span><strong>Teknisk mørk profil</strong></div>
+            <div class="kv-row"><span>Visning</span><strong>Mer moderne paneler</strong></div>
+          </div>
+        </div>
+        <div class="card tile">
+          <h3>Videre idéer</h3>
+          <p class="muted">Legg til spotpris time for time, batteri, elbilforbruk, nettleie og sammenligning mellom måneder.</p>
+        </div>
+        <div class="card tile">
+          <h3>Praktisk</h3>
+          <p class="muted">Alt er laget uten eksterne grafbibliotek slik at siden er enkel å publisere som statisk HTML.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="card">Strømoversikt · <span data-year></span></div></div></footer>
+  <script src="assets/app.js"></script>
+</body>
+</html>

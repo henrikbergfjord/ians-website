@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DNS-sjekk | Henrik Bergfjord</title>
+  <meta name="description" content="DNS-sjekk for domenenavn med A, AAAA, MX, TXT, CNAME og NS.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html"><span class="brand-mark"></span><span>Henrik Bergfjord</span></a>
+      <nav class="nav-links">
+        <a data-nav href="index.html">Hjem</a>
+        <a data-nav href="strom.html">Strøm</a>
+        <a data-nav href="dns-sjekk.html">DNS</a>
+        <a data-nav href="volvo-c40.html">Volvo C40</a>
+        <a data-nav href="maimyra.html">Maimyra</a>
+        <a data-nav href="galleri.html">Galleri</a>
+        <a data-nav href="SameieNett.html">SameieNett</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <div class="card tech-bg">
+          <div class="kicker">DNS · Domain check · nettverk</div>
+          <h1>Egen side for å sjekke DNS og domenenavn.</h1>
+          <p>Her kan du slå opp vanlige DNS-poster direkte i nettleseren. Praktisk for raske kontroller når du jobber med domener, web eller infrastruktur.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="card" style="padding:22px;">
+          <form class="form-row" data-dns-form>
+            <input class="input" type="text" name="domain" value="ians.no" placeholder="Skriv domenenavn, f.eks. ians.no">
+            <select name="type">
+              <option>A</option>
+              <option>AAAA</option>
+              <option>MX</option>
+              <option>TXT</option>
+              <option>CNAME</option>
+              <option>NS</option>
+            </select>
+            <button class="button primary" type="submit">Sjekk</button>
+          </form>
+          <div class="actions" style="margin-top:12px;">
+            <span class="badge" data-dns-summary>Klar</span>
+          </div>
+          <div class="results" data-dns-results></div>
+          <div class="note" style="margin-top:16px;">Tips: Denne siden er fin for enkel feilsøking. Ved større behov kan du senere koble til flere resolvere eller utvide med WHOIS og sertifikatsjekk.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="card">DNS-sjekk · <span data-year></span></div></div></footer>
+  <script src="assets/app.js"></script>
+</body>
+</html>
