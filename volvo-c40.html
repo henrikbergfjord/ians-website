@@ -8,147 +8,29 @@
     name="description"
     content="Volvo C40-side med bilde, oversikt, rekkevidde, lading og plass til videre EV-informasjon."
   />
+  <link rel="stylesheet" href="assets/styles.css" />
   <style>
-    :root{
-      --bg:#07111f;
-      --bg2:#0b1628;
-      --panel:#0f1b2d;
-      --panel2:rgba(255,255,255,.035);
-      --text:#edf4ff;
-      --muted:#93a7c7;
-      --line:rgba(255,255,255,.08);
-      --accent:#79a9ff;
-      --accent2:#8b7cff;
-      --shadow:0 12px 28px rgba(0,0,0,.24);
-      --radius:18px;
-      --max:1240px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-
-    body{
-      margin:0;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(139,124,255,.10), transparent 28%),
-        radial-gradient(circle at top right, rgba(121,169,255,.08), transparent 24%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-    }
-
-    a{color:inherit;text-decoration:none}
-
-    .container{
-      width:min(var(--max), calc(100% - 28px));
-      margin:0 auto;
-    }
-
-    header{
-      position:sticky;
-      top:0;
-      z-index:30;
-      backdrop-filter: blur(10px);
-      background:rgba(7,17,31,.84);
-      border-bottom:1px solid var(--line);
-    }
-
-    .nav{
-      min-height:60px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      padding:8px 0;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-      letter-spacing:.2px;
-    }
-
-    .brand-badge{
-      width:32px;
-      height:32px;
-      border-radius:10px;
+    .volvo-hero{
       display:grid;
-      place-items:center;
-      background:linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow:var(--shadow);
-      font-size:12px;
-      font-weight:900;
-    }
-
-    .nav-links{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a{
-      color:var(--muted);
-      padding:7px 10px;
-      border-radius:10px;
-      font-weight:600;
-      font-size:.92rem;
-    }
-
-    .nav-links a.active,
-    .nav-links a:hover{
-      background:rgba(255,255,255,.05);
-      color:var(--text);
-    }
-
-    .cta{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:9px 13px;
-      border-radius:12px;
-      font-weight:700;
-      border:1px solid transparent;
-      background:linear-gradient(135deg, var(--accent), var(--accent2));
-      color:#fff;
-      box-shadow:var(--shadow);
-      font-size:.9rem;
-    }
-
-    main{
-      padding:16px 0 28px;
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));
-      border:1px solid var(--line);
-      border-radius:18px;
-      box-shadow:var(--shadow);
-    }
-
-    .hero{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
+      grid-template-columns:1.08fr .92fr;
       gap:14px;
       align-items:stretch;
     }
 
-    .hero-copy{
-      padding:24px;
-      position:relative;
-      overflow:hidden;
+    .volvo-hero-copy{
       min-height:420px;
       display:flex;
       flex-direction:column;
       justify-content:center;
+      padding:24px;
+      position:relative;
+      overflow:hidden;
       background:
         linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)),
         linear-gradient(135deg, rgba(121,169,255,.06), rgba(139,124,255,.04));
     }
 
-    .hero-copy::before{
+    .volvo-hero-copy::before{
       content:"";
       position:absolute;
       inset:0;
@@ -159,7 +41,15 @@
       pointer-events:none;
     }
 
-    .eyebrow{
+    .volvo-hero-copy::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 72% 28%, rgba(121,169,255,.22), transparent 48%);
+      pointer-events:none;
+    }
+
+    .volvo-kicker{
       display:inline-flex;
       align-items:center;
       width:max-content;
@@ -175,180 +65,122 @@
       z-index:1;
     }
 
-    h1{
-      margin:0 0 10px;
-      font-size:clamp(2rem, 4vw, 3.2rem);
-      line-height:1.02;
-      letter-spacing:-1px;
+    .volvo-hero h1,
+    .volvo-hero .lead,
+    .volvo-hero .hero-actions{
       position:relative;
       z-index:1;
     }
 
-    .lead{
-      margin:0;
-      color:var(--muted);
-      line-height:1.6;
-      max-width:58ch;
-      position:relative;
-      z-index:1;
-    }
-
-    .hero-actions{
-      margin-top:18px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      position:relative;
-      z-index:1;
-    }
-
-    .ghost{
-      background:rgba(255,255,255,.04);
-      color:var(--text);
-      border:1px solid var(--line);
-    }
-
-    .hero-image{
+    .volvo-hero-image{
       position:relative;
       overflow:hidden;
       min-height:420px;
     }
 
-    .hero-image img{
+    .volvo-hero-image img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
+      transition:transform .45s ease;
     }
 
-    .hero-image::after{
+    .volvo-hero-image:hover img,
+    .volvo-gallery:hover img{
+      transform:scale(1.03);
+    }
+
+    .volvo-hero-image::after{
       content:"";
       position:absolute;
       inset:0;
       background:
-        linear-gradient(180deg, rgba(7,17,31,.10), rgba(7,17,31,.35)),
-        linear-gradient(135deg, rgba(121,169,255,.10), transparent 45%);
+        linear-gradient(180deg, rgba(7,17,31,.08), rgba(7,17,31,.30)),
+        linear-gradient(135deg, rgba(121,169,255,.08), transparent 46%);
       pointer-events:none;
     }
 
-    .section{
-      margin-top:14px;
-    }
-
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-    }
-
-    .grid-2{
-      display:grid;
-      grid-template-columns:1.2fr .8fr;
-      gap:12px;
-    }
-
-    .tile{
-      padding:18px;
-      background:var(--panel2);
-    }
-
-    .tile h2,
-    .tile h3{
-      margin:0 0 10px;
-    }
-
-    .muted{
-      color:var(--muted);
-      line-height:1.55;
-    }
-
-    .metric{
+    .volvo-metric{
       font-size:1.9rem;
       font-weight:900;
       line-height:1.05;
       margin:8px 0 4px;
     }
 
-    .metric-sub{
+    .volvo-metric-sub{
       color:var(--muted);
       font-size:.9rem;
+      line-height:1.5;
     }
 
-    .spec-list{
+    .volvo-specs{
       display:grid;
       gap:10px;
-      margin-top:8px;
+      margin-top:12px;
     }
 
-    .spec-row{
+    .volvo-spec-row{
       display:flex;
       justify-content:space-between;
       gap:12px;
-      padding:10px 0;
+      padding:11px 0;
       border-bottom:1px solid var(--line);
     }
 
-    .spec-row:last-child{
+    .volvo-spec-row:last-child{
       border-bottom:none;
       padding-bottom:0;
     }
 
-    .spec-row span{
+    .volvo-spec-row span{
       color:var(--muted);
     }
 
-    .spec-row strong{
+    .volvo-spec-row strong{
       color:var(--text);
+      text-align:right;
     }
 
-    .gallery-card{
+    .volvo-gallery{
       overflow:hidden;
-      min-height:320px;
+      min-height:330px;
       position:relative;
     }
 
-    .gallery-card img{
+    .volvo-gallery img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
+      transition:transform .45s ease;
     }
 
-    .gallery-card::after{
+    .volvo-gallery::after{
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(180deg, rgba(7,17,31,.04), rgba(7,17,31,.26));
+      background:linear-gradient(180deg, rgba(7,17,31,.04), rgba(7,17,31,.24));
       pointer-events:none;
     }
 
-    footer{
-      border-top:1px solid var(--line);
-      color:var(--muted);
-      padding:18px 0 24px;
-      margin-top:12px;
-      font-size:.84rem;
-    }
-
     @media (max-width:980px){
-      .hero,
-      .grid-2,
-      .grid-3{
+      .volvo-hero{
         grid-template-columns:1fr;
       }
 
-      .hero-copy,
-      .hero-image{
+      .volvo-hero-copy,
+      .volvo-hero-image{
         min-height:auto;
       }
     }
   </style>
 </head>
 <body>
-  <header>
+  <header class="topbar">
     <div class="container nav">
       <a class="brand" href="index.html">
-        <span class="brand-badge">HB</span>
+        <span class="brand-mark"></span>
         <span>Henrik Bergfjord</span>
       </a>
 
@@ -365,29 +197,29 @@
         <a href="SameieNett.html">SameieNett</a>
       </nav>
 
-      <a class="cta" href="#oversikt">Se oversikt</a>
+      <a class="button primary" href="#oversikt">Se oversikt</a>
     </div>
   </header>
 
   <main>
-    <section>
-      <div class="container hero">
-        <div class="card hero-copy">
-          <div class="eyebrow">EV · Volvo · hverdag</div>
+    <section class="page-header">
+      <div class="container volvo-hero">
+        <div class="card volvo-hero-copy">
+          <div class="volvo-kicker">EV · Volvo · hverdag</div>
           <h1>Volvo C40 i egen portalvisning</h1>
           <p class="lead">
-            En dedikert side for bilen, med plass til bilde, rekkevidde, lading, kostnad og videre ideer.
-            Her kan du bygge ut en enkel og personlig EV-side som passer inn i resten av nettstedet.
+            En egen underside for bilen, med bilde, rekkevidde, bilprofil og plass til videre utvikling.
+            Her kan du senere bygge inn lading, kostnad, sesongforskjeller og kobling mot strøm-siden.
           </p>
 
           <div class="hero-actions">
-            <a class="cta" href="#oversikt">Biloversikt</a>
-            <a class="cta ghost" href="#bilde">Se bilde</a>
+            <a class="button primary" href="#oversikt">Biloversikt</a>
+            <a class="button secondary" href="#bilde">Se bilde</a>
           </div>
         </div>
 
-        <div class="card hero-image" id="bilde">
-          <img src="images/volvo-c40.jpg" alt="Hvit Volvo C40 parkert i garasje">
+        <div class="card volvo-hero-image" id="bilde">
+          <img src="images/volvo-c40.jpg" alt="Hvit Volvo C40 parkert i garasje" />
         </div>
       </div>
     </section>
@@ -396,20 +228,20 @@
       <div class="container grid-3">
         <div class="card tile">
           <h3>Rekkevidde</h3>
-          <div class="metric">ca. 30 mil</div>
-          <div class="metric-sub">praktisk rekkevidde per fulladet batteri</div>
+          <div class="volvo-metric">ca. 30 mil</div>
+          <div class="volvo-metric-sub">praktisk rekkevidde per fulladet batteri</div>
         </div>
 
         <div class="card tile">
           <h3>Status</h3>
-          <div class="metric">Klar</div>
-          <div class="metric-sub">egen underside for videre utvidelse</div>
+          <div class="volvo-metric">Klar</div>
+          <div class="volvo-metric-sub">egen underside for videre utvidelse</div>
         </div>
 
         <div class="card tile">
           <h3>Videre innhold</h3>
           <p class="muted">
-            Legg til ladehistorikk, kostnad per mil, hjemme­lading, langturer og sammenligning mellom sommer og vinter.
+            Legg til ladehistorikk, kostnad per mil, hjemmelading, langturer og sammenligning mellom sommer og vinter.
           </p>
         </div>
       </div>
@@ -423,32 +255,32 @@
             Denne siden kan fungere som en ren oversikt over bilen din, med både visuelt uttrykk og praktisk informasjon samlet på ett sted.
           </p>
 
-          <div class="spec-list">
-            <div class="spec-row">
+          <div class="volvo-specs">
+            <div class="volvo-spec-row">
               <span>Modell</span>
               <strong>Volvo C40</strong>
             </div>
-            <div class="spec-row">
+            <div class="volvo-spec-row">
               <span>Drivlinje</span>
               <strong>Elektrisk</strong>
             </div>
-            <div class="spec-row">
+            <div class="volvo-spec-row">
               <span>Bruk</span>
               <strong>Hverdag og tur</strong>
             </div>
-            <div class="spec-row">
+            <div class="volvo-spec-row">
               <span>Plass</span>
               <strong>Fast parkering</strong>
             </div>
-            <div class="spec-row">
+            <div class="volvo-spec-row">
               <span>Neste steg</span>
               <strong>Lading og kostnadsvisning</strong>
             </div>
           </div>
         </div>
 
-        <div class="card gallery-card">
-          <img src="images/volvo-c40.jpg" alt="Volvo C40 i parkeringsanlegg">
+        <div class="card volvo-gallery">
+          <img src="images/volvo-c40.jpg" alt="Volvo C40 i parkeringsanlegg" />
         </div>
       </div>
     </section>
@@ -457,23 +289,29 @@
       <div class="container grid-3">
         <div class="card tile">
           <h3>Idé 1</h3>
-          <p class="muted">Vis batterinivå, ladestatus og estimert rekkevidde i et lite dashboard.</p>
+          <p class="muted">
+            Vis batterinivå, ladestatus og estimert rekkevidde i et lite dashboard.
+          </p>
         </div>
 
         <div class="card tile">
           <h3>Idé 2</h3>
-          <p class="muted">Lag en oversikt over kostnad per måned, hjemme­lading og hurtiglading.</p>
+          <p class="muted">
+            Lag en oversikt over kostnad per måned, hjemmelading og hurtiglading.
+          </p>
         </div>
 
         <div class="card tile">
           <h3>Idé 3</h3>
-          <p class="muted">Koble siden til strøm-siden senere for å vise lading opp mot strømpris.</p>
+          <p class="muted">
+            Koble siden til strøm-siden senere for å vise lading opp mot strømpris.
+          </p>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>
+  <footer class="footer">
     <div class="container">
       Volvo C40 · Henrik Bergfjord · Portal
     </div>
