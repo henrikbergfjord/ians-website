@@ -12,13 +12,13 @@
   <style>
     .sn-hero{
       display:grid;
-      grid-template-columns:1.08fr .92fr;
+      grid-template-columns:1.05fr .95fr;
       gap:14px;
       align-items:stretch;
     }
 
     .sn-hero-copy{
-      min-height:400px;
+      min-height:420px;
       display:flex;
       flex-direction:column;
       justify-content:center;
@@ -38,15 +38,6 @@
         linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
       background-size:28px 28px;
-      pointer-events:none;
-    }
-
-    .sn-hero-copy::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 76% 24%, rgba(121,169,255,.20), transparent 40%);
       pointer-events:none;
     }
 
@@ -80,28 +71,27 @@
       flex-wrap:wrap;
     }
 
-    .sn-hero-panel{
-      padding:18px;
-      display:grid;
-      gap:12px;
-      align-content:start;
+    .sn-hero-image{
+      position:relative;
+      overflow:hidden;
+      min-height:420px;
     }
 
-    .sn-mini{
-      padding:16px;
-      border-radius:16px;
-      background:rgba(255,255,255,.035);
-      border:1px solid var(--line);
+    .sn-hero-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
 
-    .sn-mini h3{
-      margin:0 0 8px;
-    }
-
-    .sn-mini p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.55;
+    .sn-hero-image::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(7,17,31,.10), rgba(7,17,31,.36)),
+        linear-gradient(135deg, rgba(121,169,255,.08), transparent 45%);
+      pointer-events:none;
     }
 
     .sn-grid-3{
@@ -112,7 +102,7 @@
 
     .sn-grid-2{
       display:grid;
-      grid-template-columns:1.1fr .9fr;
+      grid-template-columns:1.08fr .92fr;
       gap:12px;
     }
 
@@ -169,6 +159,58 @@
       line-height:1.55;
     }
 
+    .sn-gallery{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .sn-image-card{
+      overflow:hidden;
+      min-height:240px;
+      position:relative;
+    }
+
+    .sn-image-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .sn-image-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(7,17,31,.06), rgba(7,17,31,.22));
+      pointer-events:none;
+    }
+
+    .sn-caption{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:.9rem;
+      line-height:1.5;
+    }
+
+    .sn-illustration{
+      overflow:hidden;
+    }
+
+    .sn-illustration img{
+      width:100%;
+      display:block;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+    }
+
+    .sn-cta{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
     .sn-banner{
       padding:18px;
       border-radius:18px;
@@ -186,9 +228,17 @@
       line-height:1.55;
     }
 
+    .sn-small{
+      font-size:.9rem;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
     @media (max-width:1100px){
-      .sn-grid-3{
-        grid-template-columns:1fr 1fr;
+      .sn-grid-3,
+      .sn-gallery,
+      .sn-cta{
+        grid-template-columns:1fr;
       }
 
       .sn-grid-2{
@@ -197,12 +247,12 @@
     }
 
     @media (max-width:980px){
-      .sn-hero,
-      .sn-grid-3{
+      .sn-hero{
         grid-template-columns:1fr;
       }
 
-      .sn-hero-copy{
+      .sn-hero-copy,
+      .sn-hero-image{
         min-height:auto;
       }
     }
@@ -229,7 +279,7 @@
         <a href="SameieNett.html" class="active">SameieNett</a>
       </nav>
 
-      <a class="button primary" href="#oversikt">Les mer</a>
+      <a class="button primary" href="#kontakt">Ta kontakt</a>
     </div>
   </header>
 
@@ -238,39 +288,20 @@
       <div class="container sn-hero">
         <div class="card sn-hero-copy">
           <div class="sn-kicker">SameieNett · nettverk · digital infrastruktur</div>
-          <h1>En mer moderne tilnærming til digital infrastruktur i sameier</h1>
+          <h1>En mer moderne tilnærming til nettverk i sameier og borettslag</h1>
           <p class="lead">
-            SameieNett er en idé og retning for hvordan nettverk og tilhørende digitale tjenester
-            kan bygges mer helhetlig i sameier og borettslag. Målet er en tryggere, ryddigere og mer fremtidsrettet plattform for både drift og beboeropplevelse.
+            SameieNett peker mot en mer helhetlig måte å tenke nettverk og digital infrastruktur i bygg på.
+            Målet er å legge til rette for bedre stabilitet, enklere drift og et mer fremtidsrettet grunnlag for videre utvikling.
           </p>
 
           <div class="sn-hero-actions">
-            <a class="button primary" href="#oversikt">Utforsk konseptet</a>
-            <a class="button secondary" href="#kontakt">Ta kontakt</a>
+            <a class="button primary" href="#kontakt">Book en prat</a>
+            <a class="button secondary" href="#oversikt">Les mer</a>
           </div>
         </div>
 
-        <div class="card sn-hero-panel">
-          <div class="sn-mini">
-            <h3>Helhetlig tenkning</h3>
-            <p>
-              Nettverk, dekning og struktur bør sees i sammenheng med hvordan bygget faktisk brukes i hverdagen.
-            </p>
-          </div>
-
-          <div class="sn-mini">
-            <h3>Ryddigere drift</h3>
-            <p>
-              En god plattform gjør det enklere å følge opp stabilitet, kvalitet og videre utvikling over tid.
-            </p>
-          </div>
-
-          <div class="sn-mini">
-            <h3>Klar for mer</h3>
-            <p>
-              Når grunnmuren er riktig, er det også enklere å bygge videre med sikkerhet, adgang og andre digitale tjenester.
-            </p>
-          </div>
+        <div class="card sn-hero-image">
+          <img src="images/sameienett-hero.jpg" alt="Dronebilde av sameie" />
         </div>
       </div>
     </section>
@@ -280,21 +311,21 @@
         <div class="card sn-card">
           <h3>Hvorfor dette er relevant</h3>
           <p>
-            Mange bygg ender med løsninger som blir satt sammen over tid, uten en tydelig helhet. Det kan gi ujevn kvalitet, mer kompleks drift og dårligere forutsetninger for videre utvikling.
+            Mange bygg har løsninger som er blitt til over tid. Det kan gi ujevn dekning, svak oversikt og et dårligere utgangspunkt for videre digital utvikling.
           </p>
         </div>
 
         <div class="card sn-card">
-          <h3>Hva SameieNett peker mot</h3>
+          <h3>Hva SameieNett handler om</h3>
           <p>
-            Et mer gjennomtenkt oppsett for nettverk og digital infrastruktur i sameier, der stabilitet, oversikt og fremtidige behov er tatt med fra starten av.
+            En mer gjennomtenkt tilnærming til intern nettverksstruktur i sameier, der kvalitet, forvaltning og fremtidige behov tas mer på alvor fra starten av.
           </p>
         </div>
 
         <div class="card sn-card">
-          <h3>Hva som er viktigst</h3>
+          <h3>Retning</h3>
           <p>
-            Løsningen må være praktisk, trygg og mulig å forvalte over tid. Det handler ikke bare om teknologi, men om å gjøre bygget enklere å drifte og bedre å bo i.
+            Målet er ikke bare internett i bygget, men en mer robust grunnmur som over tid også kan støtte andre tjenester og behov.
           </p>
         </div>
       </div>
@@ -303,39 +334,39 @@
     <section class="section">
       <div class="container sn-grid-2">
         <div class="card sn-card">
-          <h2>Et godt utgangspunkt gir mer verdi senere</h2>
+          <h2>Et bedre utgangspunkt i bygget</h2>
           <p>
-            Når nettverket og infrastrukturen i et bygg er planlagt og bygget riktig, blir det lettere å holde høy kvalitet i hverdagen og enklere å innføre nye tjenester når behovene endrer seg.
+            Når infrastrukturen er ryddig og godt planlagt, blir det enklere å følge opp kvalitet i hverdagen og lettere å videreutvikle bygget senere.
           </p>
 
           <div class="sn-list">
             <div class="sn-list-row">
               <span>For beboere</span>
-              <strong>Bedre opplevelse og mer stabilitet</strong>
+              <strong>Mer stabil og forutsigbar opplevelse</strong>
             </div>
             <div class="sn-list-row">
               <span>For styret</span>
-              <strong>Mer oversikt og enklere oppfølging</strong>
+              <strong>Bedre oversikt over fellesløsningen</strong>
             </div>
             <div class="sn-list-row">
               <span>For drift</span>
-              <strong>Ryddigere struktur over tid</strong>
+              <strong>Ryddigere grunnlag for oppfølging</strong>
             </div>
             <div class="sn-list-row">
               <span>For fremtiden</span>
-              <strong>Bedre grunnlag for videre utvikling</strong>
+              <strong>Mer fleksibelt utgangspunkt</strong>
             </div>
           </div>
         </div>
 
         <div class="card sn-card">
-          <h2>Mulige bruksområder</h2>
+          <h2>Praktiske bruksområder</h2>
           <p>
-            Et godt grunnlag for nettverk og digital infrastruktur kan være relevant i mange sammenhenger, både i daglig drift og i senere forbedringer av bygget.
+            En god grunnstruktur kan være relevant både for daglig drift og for senere forbedringer i bygget.
           </p>
 
           <div class="sn-note" style="margin-top:14px;">
-            Dette handler først og fremst om å gjøre ting riktig fra starten, slik at senere utvidelser og forbedringer blir enklere å få til.
+            Poenget er å gjøre ting mer helhetlig fra starten, slik at videre utvikling blir enklere når behovene kommer.
           </div>
 
           <div class="sn-list" style="margin-top:14px;">
@@ -345,7 +376,7 @@
             </div>
             <div class="sn-list-row">
               <span>Fellesområder</span>
-              <strong>Bedre tilrettelegging</strong>
+              <strong>Bedre digital tilrettelegging</strong>
             </div>
             <div class="sn-list-row">
               <span>Sikkerhet og adgang</span>
@@ -353,8 +384,75 @@
             </div>
             <div class="sn-list-row">
               <span>Fremtidige tjenester</span>
-              <strong>Mer fleksibelt utgangspunkt</strong>
+              <strong>Et mer fleksibelt grunnlag</strong>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container sn-grid-2">
+        <div class="card sn-card">
+          <h2>Fra bygg til struktur</h2>
+          <div class="sn-gallery">
+            <div>
+              <div class="card sn-image-card">
+                <img src="images/sameienett-drone.jpg" alt="Oversiktsbilde av sameie" />
+              </div>
+              <div class="sn-caption">
+                Sameier og borettslag har ofte et tydelig fysisk potensial for bedre digital struktur og mer helhetlige fellesløsninger.
+              </div>
+            </div>
+
+            <div>
+              <div class="card sn-image-card">
+                <img src="images/sameienett-box.jpg" alt="Installasjon i leilighet" />
+              </div>
+              <div class="sn-caption">
+                Inne i bygget handler mye om hvordan teknisk infrastruktur faktisk er løst i praksis – fra skap og fiber til sluttpunkt og dekning.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card sn-card">
+          <h2>Illustrasjon</h2>
+          <div class="sn-illustration">
+            <img src="images/sameienett-illustrasjon.png" alt="Illustrasjon av nettverksarkitektur" />
+          </div>
+          <div class="sn-caption">
+            Illustrasjonen viser prinsippet om en mer strukturert og helhetlig modell, uten at denne offentlige siden går inn i for mange detaljer.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="kontakt">
+      <div class="container sn-cta">
+        <div class="card sn-card">
+          <h2>Book en prat i Teams</h2>
+          <p>
+            Ønsker du en uforpliktende gjennomgang eller vil høre mer om tankene bak SameieNett, kan du sende møteforespørsel direkte.
+          </p>
+          <div style="margin-top:14px;">
+            <a class="button primary" href="https://teams.microsoft.com/l/chat/0/0?users=henrik.bergfjord@blinq.no" target="_blank" rel="noopener noreferrer">Åpne Teams</a>
+          </div>
+          <div class="sn-small" style="margin-top:10px;">
+            Teams: henrik.bergfjord@blinq.no
+          </div>
+        </div>
+
+        <div class="card sn-card">
+          <h2>Send bookingønske på e-post</h2>
+          <p>
+            Du kan også sende en kort henvendelse på e-post dersom du ønsker dialog om sameie, borettslag eller et konkret bygg.
+          </p>
+          <div style="margin-top:14px;">
+            <a class="button secondary" href="mailto:henrik.bergfjord@blinq.no?subject=Booking%C3%B8nske%20SameieNett">Send e-post</a>
+          </div>
+          <div class="sn-small" style="margin-top:10px;">
+            E-post: henrik.bergfjord@blinq.no
           </div>
         </div>
       </div>
@@ -365,18 +463,7 @@
         <div class="sn-banner">
           <h3>Under videre utvikling</h3>
           <p>
-            SameieNett-siden er foreløpig en offentlig teaser. Mer detaljert innhold og videre visning kan legges bak en intern eller lukket side senere.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="kontakt">
-      <div class="container">
-        <div class="card sn-card">
-          <h2>Kontakt</h2>
-          <p>
-            Ønsker du å vite mer om tankene bak SameieNett eller se hvordan dette kan passe i et bygg eller prosjekt, kan denne siden senere utvides med kontaktpunkt, intern presentasjon eller en lukket visning.
+            SameieNett-siden er foreløpig en offentlig teaser. Mer detaljert innhold og eventuelle tekniske visninger kan legges i en lukket eller intern presentasjon senere.
           </p>
         </div>
       </div>
@@ -385,7 +472,7 @@
 
   <footer class="footer">
     <div class="container">
-      SameieNett · Nøktern offentlig visning · Nettverk og digital infrastruktur for sameier
+      SameieNett · Offentlig visning · Nettverk og digital infrastruktur for sameier
     </div>
   </footer>
 </body>
