@@ -6,7 +6,7 @@
   <title>Henrik Bergfjord | Portal</title>
   <meta
     name="description"
-    content="Moderne portal med oversikt over strøm, DNS-sjekk, Volvo C40, Maimyra, galleri og SameieNett."
+    content="Moderne portal med oversikt over strøm, DNS-sjekk, middag, Volvo C40, Maimyra, galleri og SameieNett."
   />
   <style>
     :root{
@@ -53,11 +53,11 @@
     }
 
     .nav{
-      min-height:64px;
+      min-height:58px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:14px;
+      gap:12px;
       flex-wrap:wrap;
       padding:8px 0;
     }
@@ -71,28 +71,29 @@
     }
 
     .brand-badge{
-      width:34px;
-      height:34px;
-      border-radius:11px;
+      width:32px;
+      height:32px;
+      border-radius:10px;
       display:grid;
       place-items:center;
       background:linear-gradient(135deg, var(--accent), var(--accent2));
       box-shadow:var(--shadow);
-      font-size:13px;
+      font-size:12px;
       font-weight:900;
     }
 
     .nav-links{
       display:flex;
-      gap:8px;
+      gap:6px;
       flex-wrap:wrap;
     }
 
     .nav-links a{
       color:var(--muted);
-      padding:8px 12px;
+      padding:7px 10px;
       border-radius:10px;
       font-weight:600;
+      font-size:.92rem;
     }
 
     .nav-links a.active,
@@ -105,14 +106,14 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:10px 14px;
+      padding:9px 13px;
       border-radius:12px;
       font-weight:700;
       border:1px solid transparent;
       background:linear-gradient(135deg, var(--accent), var(--accent2));
       color:#fff;
       box-shadow:var(--shadow);
-      font-size:.92rem;
+      font-size:.9rem;
     }
 
     .ghost{
@@ -123,12 +124,12 @@
     }
 
     .hero{
-      padding:18px 0 10px;
+      padding:14px 0 8px;
     }
 
     .hero-grid{
       display:grid;
-      grid-template-columns:1.2fr .8fr;
+      grid-template-columns:1.35fr .65fr;
       gap:12px;
     }
 
@@ -140,8 +141,8 @@
     }
 
     .hero-main{
-      padding:22px;
-      min-height:220px;
+      padding:20px;
+      min-height:180px;
     }
 
     .eyebrow{
@@ -154,28 +155,28 @@
       color:#cde3ff;
       font-size:11px;
       font-weight:700;
-      margin-bottom:12px;
+      margin-bottom:10px;
     }
 
     h1{
-      margin:0 0 10px;
-      font-size:clamp(2rem, 4vw, 3.3rem);
-      line-height:1.02;
+      margin:0 0 8px;
+      font-size:clamp(1.8rem, 3vw, 2.7rem);
+      line-height:1.04;
       letter-spacing:-1px;
     }
 
     .lead{
       margin:0;
       color:var(--muted);
-      font-size:.97rem;
-      line-height:1.55;
-      max-width:60ch;
+      font-size:.93rem;
+      line-height:1.5;
+      max-width:58ch;
     }
 
     .hero-actions{
-      margin-top:16px;
+      margin-top:14px;
       display:flex;
-      gap:10px;
+      gap:8px;
       flex-wrap:wrap;
     }
 
@@ -201,24 +202,24 @@
     }
 
     .mini-top strong{
-      font-size:.95rem;
+      font-size:.94rem;
     }
 
     .mini-value{
-      font-size:1.45rem;
+      font-size:1.2rem;
       font-weight:800;
-      line-height:1.1;
+      line-height:1.15;
       margin-bottom:5px;
     }
 
     .mini-text{
       color:var(--muted);
       line-height:1.45;
-      font-size:.88rem;
+      font-size:.86rem;
     }
 
     .section{
-      padding:10px 0 20px;
+      padding:8px 0 20px;
     }
 
     .section-head{
@@ -232,7 +233,7 @@
 
     .section-head h2{
       margin:0;
-      font-size:clamp(1.3rem, 2.5vw, 1.8rem);
+      font-size:clamp(1.2rem, 2.2vw, 1.6rem);
       letter-spacing:-.3px;
     }
 
@@ -241,18 +242,18 @@
       color:var(--muted);
       max-width:62ch;
       line-height:1.45;
-      font-size:.9rem;
+      font-size:.88rem;
     }
 
     .dashboard-grid{
       display:grid;
-      grid-template-columns:repeat(3,1fr);
+      grid-template-columns:repeat(4,1fr);
       gap:12px;
     }
 
     .dash-card{
-      padding:15px;
-      min-height:170px;
+      padding:14px;
+      min-height:145px;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
@@ -290,29 +291,35 @@
 
     .dash-card h3{
       margin:0 0 6px;
-      font-size:1rem;
+      font-size:.98rem;
     }
 
     .dash-card p{
       margin:0;
       color:var(--muted);
-      line-height:1.45;
-      font-size:.87rem;
+      line-height:1.4;
+      font-size:.84rem;
     }
 
     .dash-link{
       margin-top:12px;
       font-weight:800;
-      font-size:.86rem;
+      font-size:.84rem;
       color:var(--text);
     }
 
     footer{
       border-top:1px solid var(--line);
       color:var(--muted);
-      padding:18px 0 24px;
+      padding:16px 0 22px;
       margin-top:8px;
-      font-size:.84rem;
+      font-size:.82rem;
+    }
+
+    @media (max-width:1100px){
+      .dashboard-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
     }
 
     @media (max-width:980px){
@@ -345,6 +352,7 @@
         <a href="index.html" class="active">Hjem</a>
         <a href="strom.html">Strøm</a>
         <a href="dns-sjekk.html">DNS</a>
+        <a href="middag.html">Middag</a>
         <a href="volvo-c40.html">Volvo C40</a>
         <a href="maimyra.html">Maimyra</a>
         <a href="galleri.html">Galleri</a>
@@ -362,15 +370,14 @@
           <div class="eyebrow">Digital portal</div>
           <h1>En moderne og teknisk forside</h1>
           <p class="lead">
-            Her samles de viktigste delene av prosjektet i én ryddig portal:
-            strømoversikt, DNS-sjekk, Volvo C40, Maimyra, galleri og SameieNett.
-            Siden er bygget for å være enkel å oppdatere videre fra Visual Studio Code og GitHub.
+            En ryddig inngang til strøm, DNS, middag, Volvo C40, Maimyra, galleri og SameieNett.
+            Forsiden fungerer nå som en kompakt portal med raske snarveier videre.
           </p>
 
           <div class="hero-actions">
             <a class="cta" href="#oversikt">Se oversikt</a>
-            <a class="cta ghost" href="strom.html">Gå til strøm</a>
-            <a class="cta ghost" href="SameieNett.html">Se SameieNett</a>
+            <a class="cta ghost" href="strom.html">Strøm</a>
+            <a class="cta ghost" href="middag.html">Middag</a>
           </div>
         </div>
 
@@ -382,17 +389,7 @@
             </div>
             <div class="mini-value">Klar for videre bygging</div>
             <div class="mini-text">
-              Strukturen er nå samlet slik at du kan gjøre endringer lokalt i VS Code og pushe direkte til GitHub.
-            </div>
-          </div>
-
-          <div class="mini-card">
-            <div class="mini-top">
-              <strong>Fokus</strong>
-              <span>Portal</span>
-            </div>
-            <div class="mini-text">
-              Neste naturlige steg er å standardisere menyen på alle undersider og bruke samme toppmeny over hele nettstedet.
+              Menyen er samlet og forsiden er strammet inn for enklere videreutvikling.
             </div>
           </div>
         </aside>
@@ -404,7 +401,7 @@
         <div class="section-head">
           <div>
             <h2>Hurtigoversikt</h2>
-            <p>Her er snarveier til de viktigste sidene i den nye strukturen.</p>
+            <p>Snarveier til de viktigste sidene i portalen.</p>
           </div>
         </div>
 
@@ -416,7 +413,7 @@
                 <span class="dash-status">Aktiv</span>
               </div>
               <h3>Strøm</h3>
-              <p>Oversikt over strømdata, strømvisning og videre energiinformasjon.</p>
+              <p>Oversikt over strømdata og energivisning.</p>
             </div>
             <a class="dash-link" href="strom.html">Åpne strøm →</a>
           </article>
@@ -428,9 +425,21 @@
                 <span class="dash-status">Verktøy</span>
               </div>
               <h3>DNS-sjekk</h3>
-              <p>Sjekk domener og DNS-poster fra en egen side med teknisk profil.</p>
+              <p>Sjekk domener og DNS-poster fra én teknisk side.</p>
             </div>
             <a class="dash-link" href="dns-sjekk.html">Åpne DNS-sjekk →</a>
+          </article>
+
+          <article class="card dash-card">
+            <div>
+              <div class="dash-top">
+                <div class="dash-icon">🍽️</div>
+                <span class="dash-status">Hverdag</span>
+              </div>
+              <h3>Middag</h3>
+              <p>Middagsside med forslag, struktur og inspirasjon.</p>
+            </div>
+            <a class="dash-link" href="middag.html">Åpne middag →</a>
           </article>
 
           <article class="card dash-card">
@@ -440,7 +449,7 @@
                 <span class="dash-status">Bil</span>
               </div>
               <h3>Volvo C40</h3>
-              <p>Egen side for bil, lading, status og videre ideer rundt EV-oversikt.</p>
+              <p>Egen side for bil, lading og EV-idéer.</p>
             </div>
             <a class="dash-link" href="volvo-c40.html">Åpne Volvo C40 →</a>
           </article>
@@ -452,7 +461,7 @@
                 <span class="dash-status">Prosjekt</span>
               </div>
               <h3>Maimyra</h3>
-              <p>Samlet visning for hus, planer, ideer og videre utvikling rundt prosjektet.</p>
+              <p>Planer, ideer og videre utvikling rundt prosjektet.</p>
             </div>
             <a class="dash-link" href="maimyra.html">Åpne Maimyra →</a>
           </article>
@@ -464,7 +473,7 @@
                 <span class="dash-status">Media</span>
               </div>
               <h3>Galleri</h3>
-              <p>En egen side for bilder, visuelle inntrykk og fremtidige presentasjoner.</p>
+              <p>Bilder, visuelle inntrykk og presentasjoner.</p>
             </div>
             <a class="dash-link" href="galleri.html">Åpne galleri →</a>
           </article>
@@ -476,7 +485,7 @@
                 <span class="dash-status">Teaser</span>
               </div>
               <h3>SameieNett</h3>
-              <p>Teaser-side for nettverk, infrastruktur og en mer helhetlig leveransemodell.</p>
+              <p>Teaser for nettverk, infrastruktur og helhetlig leveranse.</p>
             </div>
             <a class="dash-link" href="SameieNett.html">Åpne SameieNett →</a>
           </article>
@@ -487,7 +496,7 @@
 
   <footer>
     <div class="container">
-      Henrik Bergfjord • Portal • Strøm, DNS, Volvo C40, Maimyra, Galleri og SameieNett
+      Henrik Bergfjord • Portal • Strøm, DNS, Middag, Volvo C40, Maimyra, Galleri og SameieNett
     </div>
   </footer>
 </body>
