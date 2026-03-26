@@ -1,443 +1,719 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IANS – Boller</title>
-  <meta name="description" content="Norwegian and Filipino buns and bakery favorites with detailed recipes." />
+  <title>Boller | Henrik Bergfjord</title>
+  <meta
+    name="description"
+    content="Bolle- og bakegenerator med norske og filippinske bakerifavoritter, ingredienser, fremgangsmåte og historikk."
+  />
+  <link rel="stylesheet" href="assets/styles.css" />
   <style>
-    body{
-      margin:0;
-      font-family:Inter, Arial, sans-serif;
-      background:linear-gradient(135deg,#07111f,#0b1628);
-      color:white;
+    .boller-hero-card{
+      overflow:hidden;
+      border-radius:22px;
+      margin-bottom:14px;
     }
 
-    .container{
-      max-width:1000px;
-      margin:auto;
-      padding:20px;
+    .boller-hero-image{
+      position:relative;
+      min-height:320px;
+      background-size:cover;
+      background-position:center;
     }
 
-    h1{
-      font-size:2.5rem;
+    .boller-hero-overlay{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(7,17,31,.18), rgba(7,17,31,.78)),
+        radial-gradient(circle at top left, rgba(121,169,255,.18), transparent 35%);
+    }
+
+    .boller-hero-content{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      padding:28px 24px 24px;
+    }
+
+    .boller-eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      color:#dfe9ff;
+      font-size:.78rem;
+      font-weight:800;
       margin-bottom:10px;
     }
 
-    .card{
-      background:rgba(255,255,255,0.05);
-      padding:20px;
-      border-radius:20px;
-      margin-top:20px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    .boller-hero-content h1{
+      margin:0 0 10px;
+      font-size:clamp(2rem, 5vw, 4rem);
+      line-height:1.02;
+      letter-spacing:-1px;
     }
 
-    button, .navbtn{
-      margin:8px;
-      padding:10px 16px;
-      border:none;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:bold;
-      text-decoration:none;
-      display:inline-block;
-      color:white;
+    .boller-hero-content p{
+      margin:0;
+      color:#d2def4;
+      max-width:60ch;
+      font-size:1rem;
+      line-height:1.55;
     }
 
-    .primary{background:#4fa3ff;color:white;}
-    .secondary{background:#222;color:white;}
-    .print{background:#28a745;color:white;}
+    .boller-hero-actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-    img{
+    .boller-layout{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:14px;
+    }
+
+    .boller-main{
+      overflow:hidden;
+    }
+
+    .boller-image-wrap{
+      padding:20px 20px 0;
+    }
+
+    .boller-image{
       width:100%;
       max-height:420px;
       object-fit:cover;
-      border-radius:15px;
-      margin-bottom:14px;
+      border-radius:18px;
+      display:block;
       background:#111827;
+      border:1px solid var(--line);
     }
 
-    h2{margin:8px 0}
-    h3{margin-top:20px}
-    p, li{line-height:1.6}
-    ul, ol{padding-left:22px}
+    .boller-main-inner{
+      padding:20px;
+    }
 
-    .toplinks{
-      margin-top:8px;
-      margin-bottom:10px;
+    .boller-title{
+      margin:0 0 8px;
+      font-size:clamp(1.8rem, 3vw, 2.6rem);
+      line-height:1.08;
+      letter-spacing:-.6px;
+    }
+
+    .boller-desc{
+      margin:0 0 18px;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:.98rem;
+    }
+
+    .boller-meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.76rem;
+      font-weight:800;
+      color:#dfe9ff;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.09);
+    }
+
+    .boller-content-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .inner-card{
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .inner-card h3{
+      margin:0 0 10px;
+      font-size:1rem;
+      letter-spacing:-.2px;
+    }
+
+    .inner-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:.94rem;
+    }
+
+    .inner-card ul,
+    .inner-card ol{
+      margin:0;
+      padding-left:18px;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:.94rem;
+    }
+
+    .inner-card li + li{
+      margin-top:4px;
+    }
+
+    .boller-side{
+      padding:18px;
+      display:grid;
+      gap:12px;
+      align-content:start;
+    }
+
+    .small-card{
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--line);
+    }
+
+    .small-card h3{
+      margin:0 0 8px;
+      font-size:1rem;
+    }
+
+    .small-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.58;
+      font-size:.92rem;
+    }
+
+    .boller-note{
+      font-size:.86rem;
+      color:#c8d6f0;
+      background:rgba(121,169,255,.08);
+      border:1px solid rgba(121,169,255,.18);
+      border-radius:14px;
+      padding:12px 14px;
+      line-height:1.55;
+    }
+
+    .coming-soon{
+      margin:18px 0 28px;
+      padding:18px;
+      border-radius:18px;
+      border:1px dashed rgba(255,255,255,.14);
+      background:rgba(255,255,255,.03);
+    }
+
+    .coming-soon h3{
+      margin:0 0 8px;
+      font-size:1rem;
+    }
+
+    .coming-soon p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
     }
 
     @media print{
-      button, .navbtn, .toplinks{
+      header,
+      .boller-hero-actions,
+      .boller-side,
+      .coming-soon,
+      footer{
         display:none !important;
       }
+
       body{
         background:#fff;
         color:#000;
       }
-      .card{
-        background:#fff;
+
+      .card,
+      .inner-card{
         box-shadow:none;
         border:1px solid #ddd;
+        background:#fff;
+      }
+
+      .boller-desc,
+      .inner-card p,
+      .inner-card li{
+        color:#222;
+      }
+
+      .boller-main{
+        border:none;
+      }
+    }
+
+    @media (max-width:980px){
+      .boller-layout{
+        grid-template-columns:1fr;
+      }
+
+      .boller-content-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:760px){
+      .boller-hero-content{
+        padding:20px 16px 16px;
+      }
+
+      .boller-main-inner,
+      .boller-side{
+        padding:16px;
+      }
+
+      .boller-image-wrap{
+        padding:16px 16px 0;
       }
     }
   </style>
 </head>
 <body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-mark"></span>
+        <span>Henrik Bergfjord</span>
+      </a>
 
-<div class="container">
+      <nav class="nav-links">
+        <a href="index.html">Hjem</a>
+        <a href="strom.html">Strøm</a>
+        <a href="dns-sjekk.html">DNS</a>
+        <a href="middag.html">Middag</a>
+        <a href="dessert.html">Dessert</a>
+        <a href="boller.html" class="active">Boller</a>
+        <a href="volvo-c40.html">Volvo C40</a>
+        <a href="maimyra.html">Maimyra</a>
+        <a href="galleri.html">Galleri</a>
+        <a href="SameieNett.html">SameieNett</a>
+      </nav>
 
-  <h1>🥐 Boller Generator</h1>
-  <p>Norwegian 🇳🇴 + Filipino 🇵🇭 bakery favorites</p>
+      <button class="button primary" id="generateTop" type="button">Nye boller</button>
+    </div>
+  </header>
 
-  <div class="toplinks">
-    <a class="navbtn secondary" href="index.html">⬅ Back</a>
-    <a class="navbtn secondary" href="middag.html">🍽 Dinner</a>
-    <a class="navbtn secondary" href="desser.html">🍰 Desserts</a>
-  </div>
+  <main>
+    <section class="page-header">
+      <div class="container card boller-hero-card">
+        <div class="boller-hero-image" id="heroImage">
+          <div class="boller-hero-overlay"></div>
+          <div class="boller-hero-content">
+            <div class="boller-eyebrow">🥐 Norsk + filippinsk bakeinspirasjon</div>
+            <h1>Bolle- og bakegenerator</h1>
+            <p>
+              Finn en ny favoritt med bilde, tidsbruk, ingredienser, fremgangsmåte og litt historikk fra norsk og filippinsk bakerikultur.
+            </p>
+            <div class="boller-hero-actions">
+              <button class="button primary" id="generateHero" type="button">Generer bakst</button>
+              <button class="button secondary" type="button" onclick="window.print()">Skriv ut</button>
+              <a class="button secondary" href="middag.html">Middag</a>
+              <a class="button secondary" href="dessert.html">Dessert</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <div class="card">
-    <img id="image" alt="Boller image">
-    <h2 id="title">Loading...</h2>
-    <p id="desc"></p>
+      <div class="container boller-layout">
+        <section class="card boller-main">
+          <div class="boller-image-wrap">
+            <img id="image" class="boller-image" alt="Bilde av bakst" />
+          </div>
 
-    <h3>⏱️ Time</h3>
-    <p id="time"></p>
+          <div class="boller-main-inner">
+            <div class="boller-meta">
+              <span class="pill">Bakst</span>
+              <span class="pill" id="time">Tid</span>
+            </div>
 
-    <h3>🛒 Ingredients</h3>
-    <ul id="ingredients"></ul>
+            <h2 class="boller-title" id="title">Bakst lastes...</h2>
+            <p class="boller-desc" id="desc">En bolle eller bakefavoritt vises her om et øyeblikk.</p>
 
-    <h3>👨‍🍳 Instructions</h3>
-    <ol id="instructions"></ol>
+            <div class="boller-content-grid">
+              <article class="inner-card">
+                <h3>Ingredienser</h3>
+                <ul id="ingredients"></ul>
+              </article>
 
-    <h3>📜 History</h3>
-    <p id="history"></p>
-  </div>
+              <article class="inner-card">
+                <h3>Slik lager du den</h3>
+                <ol id="instructions"></ol>
+              </article>
 
-  <button class="primary" onclick="generate()">Generate boller</button>
-  <button class="print" onclick="window.print()">Print</button>
-  <button class="secondary" onclick="location.href='index.html'">Dashboard</button>
+              <article class="inner-card" style="grid-column:1 / -1;">
+                <h3>Historikk</h3>
+                <p id="history"></p>
+              </article>
+            </div>
+          </div>
+        </section>
 
-</div>
+        <aside class="card boller-side">
+          <div class="small-card">
+            <h3>Hurtigvalg</h3>
+            <p>
+              Generer en ny bakst, skriv ut oppskriften eller hopp videre til middag og dessert.
+            </p>
+          </div>
 
-<script>
-const boller = [
+          <div class="boller-note">
+            Norske boller og filippinsk bakst viser to ulike bakekulturer, men begge handler mye om samvær, tradisjon og noe godt til kaffen eller merienda.
+          </div>
 
-/* 🇳🇴 NORWAY */
+          <div class="small-card">
+            <h3>Neste nivå</h3>
+            <p>
+              Senere kan denne siden få favoritter, søk, kategorier og kobling mot middag og dessert i samme familieportal.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-{
-title:"Hveteboller",
-time:"About 2 hours incl. rising",
-image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
-desc:"Classic Norwegian wheat buns. Soft, slightly sweet, and perfect with butter, jam, or just as they are.",
-ingredients:[
-  "950 g wheat flour",
-  "150 g sugar",
-  "1 tsp cardamom",
-  "1/2 tsp salt",
-  "150 g butter",
-  "5 dl milk",
-  "1 egg",
-  "50 g fresh yeast or 1 packet dry yeast",
-  "1 egg for brushing"
-],
-instructions:[
-  "Warm the milk until lukewarm. Melt the butter and mix it into the milk.",
-  "Add yeast and stir until dissolved if using fresh yeast.",
-  "Mix flour, sugar, cardamom, and salt in a bowl.",
-  "Add milk mixture and 1 egg. Knead for 10 minutes until smooth.",
-  "Cover and let the dough rise for about 1 hour.",
-  "Shape into buns and place on a baking tray.",
-  "Let rise again for 30–40 minutes.",
-  "Brush with beaten egg.",
-  "Bake at 210°C for 10–12 minutes until golden."
-],
-history:"A classic Norwegian home-baked bun enjoyed for generations, often used as the base for many other sweet bun variations."
-},
+    <section class="container">
+      <div class="coming-soon">
+        <h3>Videre utvikling</h3>
+        <p>
+          En senere versjon kan foreslå bakst til helg, høytider eller gjester, og koble oppskrifter sammen med dessert- og middagssiden.
+        </p>
+      </div>
+    </section>
+  </main>
 
-{
-title:"Skillingsboller",
-time:"About 2 hours incl. rising",
-image:"https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1400&q=80",
-desc:"Famous cinnamon buns from Bergen. Sweet, spiced, and very popular in Western Norway.",
-ingredients:[
-  "1 batch hvetebolle dough",
-  "100 g soft butter",
-  "1.5 dl sugar",
-  "2 tbsp cinnamon",
-  "Optional: pearl sugar on top"
-],
-instructions:[
-  "Prepare one batch of sweet bun dough and let it rise once.",
-  "Roll the dough into a large rectangle.",
-  "Spread soft butter over the dough.",
-  "Mix sugar and cinnamon, then sprinkle evenly over the butter.",
-  "Roll the dough tightly into a log.",
-  "Cut into slices about 2–3 cm thick.",
-  "Place on baking trays and let rise for 30 minutes.",
-  "Bake at 210°C for 10–12 minutes.",
-  "Optional: top with pearl sugar before baking."
-],
-history:"A bakery favorite from Bergen, especially associated with local café culture and traditional Norwegian sweet baking."
-},
+  <footer class="footer">
+    <div class="container">
+      Henrik Bergfjord · Bolle- og bakegenerator · Norske og filippinske bakerifavoritter
+    </div>
+  </footer>
 
-{
-title:"Fastelavnsboller",
-time:"About 2 hours + filling",
-image:"https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1400&q=80",
-desc:"Soft cardamom buns filled with whipped cream and jam, usually made for Fastelavn.",
-ingredients:[
-  "10 plain hveteboller",
-  "3 dl whipping cream",
-  "2 tbsp sugar",
-  "1 tsp vanilla sugar",
-  "Strawberry or raspberry jam",
-  "Icing sugar for dusting"
-],
-instructions:[
-  "Bake or prepare plain buns and let them cool fully.",
-  "Whip the cream with sugar and vanilla sugar until soft and fluffy.",
-  "Cut the tops off the buns.",
-  "Add 1 spoon of jam inside each bun.",
-  "Pipe or spoon whipped cream over the jam.",
-  "Place the top back on.",
-  "Dust with icing sugar before serving."
-],
-history:"A seasonal bun linked to Fastelavn in Norway and other Nordic countries."
-},
+  <script>
+    const boller = [
+      {
+        title:"Hveteboller",
+        time:"Ca. 2 timer inkludert heving",
+        image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
+        desc:"Klassiske norske hveteboller. Myke, lett søte og perfekte med smør, syltetøy eller bare som de er.",
+        ingredients:[
+          "950 g hvetemel",
+          "150 g sukker",
+          "1 ts kardemomme",
+          "1/2 ts salt",
+          "150 g smør",
+          "5 dl melk",
+          "1 egg",
+          "50 g fersk gjær eller 1 pose tørrgjær",
+          "1 egg til pensling"
+        ],
+        instructions:[
+          "Varm melken til den er lunken. Smelt smøret og bland det i melken.",
+          "Tilsett gjær og rør ut hvis du bruker fersk gjær.",
+          "Bland mel, sukker, kardemomme og salt i en bolle.",
+          "Tilsett melkeblandingen og 1 egg. Elt i ca. 10 minutter til deigen er glatt.",
+          "Dekk til og la deigen heve i ca. 1 time.",
+          "Form deigen til boller og legg dem på stekebrett.",
+          "La bollene etterheve i 30–40 minutter.",
+          "Pensle med sammenvispet egg.",
+          "Stek på 210°C i 10–12 minutter til de er gylne."
+        ],
+        history:"En klassisk norsk hjemmebakt bolle som har vært en del av hverdags- og helgekosen i generasjoner."
+      },
+      {
+        title:"Skillingsboller",
+        time:"Ca. 2 timer inkludert heving",
+        image:"https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1400&q=80",
+        desc:"Kjente kanelboller fra Bergen. Søte, krydrede og svært populære på Vestlandet.",
+        ingredients:[
+          "1 porsjon hvetebolledeig",
+          "100 g mykt smør",
+          "1,5 dl sukker",
+          "2 ss kanel",
+          "Evt. perlesukker på toppen"
+        ],
+        instructions:[
+          "Lag en porsjon søt bolledeig og la den heve én gang.",
+          "Kjevle deigen ut til et stort rektangel.",
+          "Smør mykt smør utover deigen.",
+          "Bland sukker og kanel og dryss jevnt over.",
+          "Rull deigen stramt sammen til en pølse.",
+          "Skjær i skiver på ca. 2–3 cm.",
+          "Legg på stekebrett og la etterheve i 30 minutter.",
+          "Stek på 210°C i 10–12 minutter.",
+          "Evt. dryss perlesukker på toppen før steking."
+        ],
+        history:"Et bakerifavoritt fra Bergen, sterkt knyttet til lokal kafékultur og tradisjonell søtbakst."
+      },
+      {
+        title:"Fastelavnsboller",
+        time:"Ca. 2 timer + fyll",
+        image:"https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1400&q=80",
+        desc:"Myke kardemommeboller fylt med krem og syltetøy, ofte laget til fastelavn.",
+        ingredients:[
+          "10 vanlige hveteboller",
+          "3 dl kremfløte",
+          "2 ss sukker",
+          "1 ts vaniljesukker",
+          "Jordbær- eller bringebærsyltetøy",
+          "Melis til dryss"
+        ],
+        instructions:[
+          "Bak eller gjør klar vanlige boller og la dem avkjøles helt.",
+          "Pisk kremfløten med sukker og vaniljesukker til luftig krem.",
+          "Skjær toppen av bollene.",
+          "Legg 1 skje syltetøy i hver bolle.",
+          "Sprøyt eller legg på krem over syltetøyet.",
+          "Sett toppen tilbake på.",
+          "Dryss over melis før servering."
+        ],
+        history:"En sesongbolle knyttet til fastelavn i Norge og resten av Norden."
+      },
+      {
+        title:"Rosinboller",
+        time:"Ca. 2 timer inkludert heving",
+        image:"https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=1400&q=80",
+        desc:"Myke søte boller med rosiner, veldig vanlig i norsk hjemmebakst.",
+        ingredients:[
+          "1 porsjon hvetebolledeig",
+          "150 g rosiner"
+        ],
+        instructions:[
+          "Lag søt bolledeig.",
+          "Tilsett rosiner mot slutten av eltingen.",
+          "La deigen heve i ca. 1 time.",
+          "Form til boller.",
+          "La etterheve i 30–40 minutter.",
+          "Pensle med egg.",
+          "Stek på 210°C i 10–12 minutter."
+        ],
+        history:"En klassisk familiebakst som lenge har vært vanlig i norske hjem, skolearrangementer og dugnader."
+      },
+      {
+        title:"Skoleboller",
+        time:"Ca. 2 timer inkludert heving",
+        image:"https://images.unsplash.com/photo-1601972599720-36938d4ecd31?auto=format&fit=crop&w=1400&q=80",
+        desc:"Myke boller med vaniljekrem i midten, pyntet med melisglasur og kokos.",
+        ingredients:[
+          "1 porsjon hvetebolledeig",
+          "3 dl vaniljekrem",
+          "2 dl melis",
+          "1–2 ss vann",
+          "1 dl kokosmasse"
+        ],
+        instructions:[
+          "Lag søt bolledeig og la den heve én gang.",
+          "Form runde boller og legg dem på stekebrett.",
+          "Trykk en fordypning i midten av hver bolle.",
+          "Fyll midten med vaniljekrem.",
+          "La etterheve i ca. 30 minutter.",
+          "Stek på 210°C i 10–12 minutter.",
+          "Bland melis og litt vann til en tykk glasur.",
+          "Smør glasur rundt vaniljekremen og dypp i kokos."
+        ],
+        history:"En svært populær norsk bakeribolle, ofte knyttet til skolekantiner og lokale bakerier."
+      },
+      {
+        title:"Pandesal",
+        time:"Ca. 2 timer inkludert heving",
+        image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
+        desc:"Den mest ikoniske filippinske brødrullen. Lett søt, myk og ofte spist til frokost eller merienda.",
+        ingredients:[
+          "750 g hvetemel",
+          "90 g sukker",
+          "1 ts salt",
+          "1 pose tørrgjær",
+          "3,5 dl varm melk",
+          "1 dl lunkent vann",
+          "60 g smeltet smør",
+          "1 egg",
+          "1 dl brødrasp til rulling"
+        ],
+        instructions:[
+          "Bland varm melk, vann, sukker og gjær. La stå i 5–10 minutter.",
+          "Tilsett egg og smeltet smør.",
+          "Bland inn mel og salt gradvis.",
+          "Elt i 8–10 minutter til deigen er glatt.",
+          "La deigen heve i 1 time.",
+          "Del og form små rundstykker.",
+          "Rull dem lett i brødrasp.",
+          "La etterheve i 30 minutter.",
+          "Stek på 180°C i 12–15 minutter til de er lyst gyldne."
+        ],
+        history:"Pandesal utviklet seg under spansk-inspirert bakekultur og ble en av de vanligste brødtypene på Filippinene."
+      },
+      {
+        title:"Ensaymada",
+        time:"Ca. 2,5 timer",
+        image:"https://images.unsplash.com/photo-1605478522626-3e6e2c8a8b7f?auto=format&fit=crop&w=1400&q=80",
+        desc:"Myke, rike filippinske boller toppet med smør, sukker og ost.",
+        ingredients:[
+          "800 g mel",
+          "100 g sukker",
+          "1 ts salt",
+          "1 pose tørrgjær",
+          "2,5 dl varm melk",
+          "4 eggeplommer",
+          "120 g mykt smør",
+          "Ekstra smør til topping",
+          "Sukker til topping",
+          "Revet ost til topping"
+        ],
+        instructions:[
+          "Bland varm melk og gjær og la det aktivere.",
+          "Tilsett eggeplommer, sukker og mykt smør.",
+          "Bland inn mel og salt.",
+          "Elt til deigen er myk og elastisk.",
+          "La heve i 1 time.",
+          "Form til spiraler eller runde boller i former om du har.",
+          "La etterheve i 30–40 minutter.",
+          "Stek på 180°C i 12–15 minutter.",
+          "Avkjøl litt og topp med smør, sukker og revet ost."
+        ],
+        history:"Ensaymada viser tydelig spansk bakepåvirkning, tilpasset en filippinsk tradisjon for myk og rik søtbakst."
+      },
+      {
+        title:"Spanish Bread",
+        time:"Ca. 2 timer",
+        image:"https://images.unsplash.com/photo-1627308595180-8b30d8a1c7b5?auto=format&fit=crop&w=1400&q=80",
+        desc:"Søte brødruller med smøraktig brødsmulefyll, en favoritt i filippinske bakerier.",
+        ingredients:[
+          "1 porsjon søt deig",
+          "100 g brødsmuler",
+          "80 g smør",
+          "1 dl brunt sukker",
+          "1 ts vanilje"
+        ],
+        instructions:[
+          "Lag en myk søt deig og la den heve én gang.",
+          "Lag fyll ved å varme brødsmuler, smør, sukker og vanilje lett sammen.",
+          "Del deigen i små emner og kjevle dem flate.",
+          "Legg på fyll og rull sammen til små pølser.",
+          "La etterheve i 30 minutter.",
+          "Stek på 180°C i 12–15 minutter."
+        ],
+        history:"Til tross for navnet er dette en lokalisert filippinsk bakerifavoritt og ikke et vanlig spansk brød."
+      },
+      {
+        title:"Cheese Bread",
+        time:"Ca. 2 timer",
+        image:"https://images.unsplash.com/photo-1625944525643-5b8df6f1d233?auto=format&fit=crop&w=1400&q=80",
+        desc:"Mykt, søtt brød med ostesmak og smørrik karakter, ofte solgt i filippinske bakerier.",
+        ingredients:[
+          "750 g mel",
+          "90 g sukker",
+          "1 pose tørrgjær",
+          "3 dl melk",
+          "60 g smør",
+          "1 egg",
+          "100 g revet ost",
+          "Ekstra smør og sukker til topping"
+        ],
+        instructions:[
+          "Bland varm melk, sukker og gjær.",
+          "Tilsett egg og smør.",
+          "Arbeid inn mel til en myk deig.",
+          "Elt til deigen er glatt.",
+          "La heve i 1 time.",
+          "Form til rundstykker eller små brød.",
+          "La etterheve i 30 minutter.",
+          "Stek på 180°C i 12–15 minutter.",
+          "Pensle med smør og topp med sukker og ost om ønskelig."
+        ],
+        history:"En moderne filippinsk bakeriklassiker som kombinerer søt bakst med den lokale kjærligheten til ost."
+      },
+      {
+        title:"Ube Cheese Pandesal",
+        time:"Ca. 2,5 timer",
+        image:"https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=1400&q=80",
+        desc:"Myke lilla rundstykker med ube og ostefyll, svært populære i nyere filippinske bakerier.",
+        ingredients:[
+          "750 g mel",
+          "100 g sukker",
+          "1 pose tørrgjær",
+          "3 dl varm melk",
+          "60 g smør",
+          "1 egg",
+          "150 g ube halaya eller ubesmak",
+          "150 g ost i terninger",
+          "Brødrasp til rulling"
+        ],
+        instructions:[
+          "Bland varm melk, sukker og gjær og la stå i 5–10 minutter.",
+          "Tilsett egg, smør og ube.",
+          "Bland inn mel til en myk deig.",
+          "Elt til den er glatt og elastisk.",
+          "La heve i 1 time.",
+          "Del deigen, trykk hvert emne flatt og legg en osteterning inni.",
+          "Form til rundstykker og rull lett i brødrasp.",
+          "La etterheve i 30 minutter.",
+          "Stek på 180°C i 12–15 minutter."
+        ],
+        history:"En nyere bakeritrend som kombinerer klassisk pandesal med filippinsk kjærlighet for ube og ost."
+      }
+    ];
 
-{
-title:"Rosinboller",
-time:"About 2 hours incl. rising",
-image:"https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=1400&q=80",
-desc:"Soft sweet buns with raisins, very common in Norwegian home baking.",
-ingredients:[
-  "1 batch hvetebolle dough",
-  "150 g raisins"
-],
-instructions:[
-  "Prepare the sweet bun dough.",
-  "Add raisins during the last part of kneading.",
-  "Let the dough rise for about 1 hour.",
-  "Shape into buns.",
-  "Let rise again for 30–40 minutes.",
-  "Brush with egg.",
-  "Bake at 210°C for 10–12 minutes."
-],
-history:"A classic family bun that has long been common in Norwegian homes, school events, and bake sales."
-},
+    function fallbackImage(title){
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop stop-color="#07111f" offset="0"/>
+              <stop stop-color="#0b1628" offset="1"/>
+            </linearGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#g)"/>
+          <text x="50%" y="42%" text-anchor="middle" fill="#ffffff" font-size="86" font-family="Arial">🥐</text>
+          <text x="50%" y="56%" text-anchor="middle" fill="#dbeafe" font-size="34" font-family="Arial">${title}</text>
+          <text x="50%" y="64%" text-anchor="middle" fill="#93a7c7" font-size="22" font-family="Arial">Bilde midlertidig</text>
+        </svg>
+      `)}`;
+    }
 
-{
-title:"Skoleboller",
-time:"About 2 hours incl. rising",
-image:"https://images.unsplash.com/photo-1601972599720-36938d4ecd31?auto=format&fit=crop&w=1400&q=80",
-desc:"Soft buns with vanilla custard in the middle, decorated with icing and coconut.",
-ingredients:[
-  "1 batch hvetebolle dough",
-  "3 dl vanilla custard",
-  "2 dl icing sugar",
-  "1–2 tbsp water",
-  "1 dl desiccated coconut"
-],
-instructions:[
-  "Prepare the sweet bun dough and let it rise once.",
-  "Shape into round buns and place on baking trays.",
-  "Press a dip in the center of each bun.",
-  "Fill the center with vanilla custard.",
-  "Let rise again for about 30 minutes.",
-  "Bake at 210°C for 10–12 minutes.",
-  "Mix icing sugar and a little water into thick icing.",
-  "Spread icing in a ring around the custard and dip into coconut."
-],
-history:"A very popular Norwegian bakery bun, often associated with school cafeterias and local bakeries."
-},
+    function generate(){
+      const d = boller[Math.floor(Math.random()*boller.length)];
 
-/* 🇵🇭 PHILIPPINES */
+      document.getElementById("title").textContent = d.title;
+      document.getElementById("desc").textContent = d.desc;
+      document.getElementById("time").textContent = d.time;
 
-{
-title:"Pandesal",
-time:"About 2 hours incl. rising",
-image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
-desc:"The most iconic Filipino bread roll. Lightly sweet, soft, and usually eaten for breakfast or merienda.",
-ingredients:[
-  "750 g all-purpose flour",
-  "90 g sugar",
-  "1 tsp salt",
-  "1 packet dry yeast",
-  "3.5 dl warm milk",
-  "1 dl warm water",
-  "60 g melted butter",
-  "1 egg",
-  "1 dl breadcrumbs for coating"
-],
-instructions:[
-  "Mix warm milk, warm water, sugar, and yeast. Let sit for 5–10 minutes.",
-  "Add egg and melted butter.",
-  "Mix in flour and salt gradually.",
-  "Knead for 8–10 minutes until smooth.",
-  "Let the dough rise for 1 hour.",
-  "Divide and shape into small rolls.",
-  "Roll lightly in breadcrumbs.",
-  "Let rise again for 30 minutes.",
-  "Bake at 180°C for 12–15 minutes until lightly golden."
-],
-history:"Pandesal developed under Spanish-era baking influence and became one of the most common breads in the Philippines."
-},
+      const img = document.getElementById("image");
+      img.onerror = () => { img.src = fallbackImage(d.title); };
+      img.src = d.image;
 
-{
-title:"Ensaymada",
-time:"About 2.5 hours",
-image:"https://images.unsplash.com/photo-1605478522626-3e6e2c8a8b7f?auto=format&fit=crop&w=1400&q=80",
-desc:"Soft, rich Filipino buns topped with butter, sugar, and cheese.",
-ingredients:[
-  "800 g flour",
-  "100 g sugar",
-  "1 tsp salt",
-  "1 packet dry yeast",
-  "2.5 dl warm milk",
-  "4 egg yolks",
-  "120 g soft butter",
-  "Extra butter for topping",
-  "Sugar for topping",
-  "Grated cheese for topping"
-],
-instructions:[
-  "Mix warm milk and yeast and let it activate.",
-  "Add egg yolks, sugar, and soft butter.",
-  "Mix in flour and salt.",
-  "Knead until soft and elastic.",
-  "Let rise for 1 hour.",
-  "Shape into coils or round buns in molds if you have them.",
-  "Let rise again for 30–40 minutes.",
-  "Bake at 180°C for 12–15 minutes.",
-  "Cool slightly, then top with butter, sugar, and grated cheese."
-],
-history:"Ensaymada reflects Spanish baking influence adapted into a beloved Filipino sweet bun tradition."
-},
+      document.getElementById("ingredients").innerHTML =
+        d.ingredients.map(i => `<li>${i}</li>`).join("");
 
-{
-title:"Spanish Bread",
-time:"About 2 hours",
-image:"https://images.unsplash.com/photo-1627308595180-8b30d8a1c7b5?auto=format&fit=crop&w=1400&q=80",
-desc:"Sweet bread rolls filled with buttery breadcrumb filling, a favorite in Filipino bakeries.",
-ingredients:[
-  "1 batch sweet dough",
-  "100 g breadcrumbs",
-  "80 g butter",
-  "1 dl brown sugar",
-  "1 tsp vanilla"
-],
-instructions:[
-  "Prepare a soft sweet dough and let it rise once.",
-  "Make filling by cooking breadcrumbs, butter, sugar, and vanilla together briefly.",
-  "Divide dough into small pieces and roll each flat.",
-  "Add filling and roll into logs.",
-  "Let rise again for 30 minutes.",
-  "Bake at 180°C for 12–15 minutes."
-],
-history:"Despite the name, this is a localized Filipino bakery favorite rather than a Spanish everyday bread."
-},
+      document.getElementById("instructions").innerHTML =
+        d.instructions.map(i => `<li>${i}</li>`).join("");
 
-{
-title:"Cheese Bread",
-time:"About 2 hours",
-image:"https://images.unsplash.com/photo-1625944525643-5b8df6f1d233?auto=format&fit=crop&w=1400&q=80",
-desc:"Soft sweet bread with a cheesy, buttery flavor, often sold in Filipino bakeries.",
-ingredients:[
-  "750 g flour",
-  "90 g sugar",
-  "1 packet dry yeast",
-  "3 dl milk",
-  "60 g butter",
-  "1 egg",
-  "100 g grated cheese",
-  "Extra butter and sugar for topping"
-],
-instructions:[
-  "Mix warm milk, sugar, and yeast.",
-  "Add egg and butter.",
-  "Work in flour until a soft dough forms.",
-  "Knead until smooth.",
-  "Let rise for 1 hour.",
-  "Shape into rolls or small loaves.",
-  "Let rise again for 30 minutes.",
-  "Bake at 180°C for 12–15 minutes.",
-  "Brush with butter and top with sugar and cheese if desired."
-],
-history:"A modern Filipino bakery classic that combines sweet bread with the local love of cheese-topped buns."
-},
+      document.getElementById("history").textContent = d.history;
+      document.getElementById("heroImage").style.background =
+        `linear-gradient(180deg, rgba(7,17,31,.08), rgba(7,17,31,.28)), url('${d.image}') center/cover no-repeat`;
+    }
 
-{
-title:"Ube Cheese Pandesal",
-time:"About 2.5 hours",
-image:"https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=1400&q=80",
-desc:"Soft purple yam bread rolls with a cheesy filling, very popular in modern Filipino bakeries.",
-ingredients:[
-  "750 g flour",
-  "100 g sugar",
-  "1 packet dry yeast",
-  "3 dl warm milk",
-  "60 g butter",
-  "1 egg",
-  "150 g ube halaya or ube flavoring",
-  "150 g cheese cubes",
-  "Breadcrumbs for coating"
-],
-instructions:[
-  "Mix warm milk, sugar, and yeast and let sit for 5–10 minutes.",
-  "Add egg, butter, and ube.",
-  "Mix in flour until a soft dough forms.",
-  "Knead until smooth and elastic.",
-  "Let rise for 1 hour.",
-  "Divide dough, flatten each piece, and place a cheese cube inside.",
-  "Shape into rolls and coat lightly in breadcrumbs.",
-  "Let rise again for 30 minutes.",
-  "Bake at 180°C for 12–15 minutes."
-],
-history:"A newer bakery trend that combines classic pandesal with the Filipino love of ube and cheese."
-}
+    document.getElementById("generateTop").addEventListener("click", generate);
+    document.getElementById("generateHero").addEventListener("click", generate);
 
-];
-
-function fallbackImage(title){
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
-      <defs>
-        <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-          <stop stop-color="#07111f" offset="0"/>
-          <stop stop-color="#0b1628" offset="1"/>
-        </linearGradient>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#g)"/>
-      <text x="50%" y="42%" text-anchor="middle" fill="#ffffff" font-size="86" font-family="Arial">🥐</text>
-      <text x="50%" y="56%" text-anchor="middle" fill="#dbeafe" font-size="34" font-family="Arial">${title}</text>
-      <text x="50%" y="64%" text-anchor="middle" fill="#93a7c7" font-size="22" font-family="Arial">Image placeholder</text>
-    </svg>
-  `)}`;
-}
-
-function generate(){
-  const d = boller[Math.floor(Math.random()*boller.length)];
-
-  document.getElementById("title").textContent = d.title;
-  document.getElementById("desc").textContent = d.desc;
-  document.getElementById("time").textContent = d.time;
-
-  const img = document.getElementById("image");
-  img.onerror = () => { img.src = fallbackImage(d.title); };
-  img.src = d.image;
-
-  document.getElementById("ingredients").innerHTML =
-    d.ingredients.map(i=>`<li>${i}</li>`).join("");
-
-  document.getElementById("instructions").innerHTML =
-    d.instructions.map(i=>`<li>${i}</li>`).join("");
-
-  document.getElementById("history").textContent = d.history;
-}
-
-generate();
-</script>
-
+    window.addEventListener("load", generate);
+  </script>
 </body>
 </html>
