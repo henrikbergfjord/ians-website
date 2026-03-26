@@ -5,20 +5,355 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Strøm | Henrik Bergfjord</title>
   <meta name="description" content="Strømoversikt med ny graf og teknisk uttrykk.">
-  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    :root{
+      --bg:#07111f;
+      --bg2:#0b1628;
+      --panel:#0f1b2d;
+      --panel2:rgba(255,255,255,.035);
+      --text:#edf4ff;
+      --muted:#93a7c7;
+      --line:rgba(255,255,255,.08);
+      --accent:#79a9ff;
+      --accent2:#8b7cff;
+      --green:#64e6c3;
+      --shadow:0 12px 28px rgba(0,0,0,.22);
+      --radius:18px;
+      --max:1240px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(139,124,255,.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(121,169,255,.08), transparent 24%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .container{
+      width:min(var(--max), calc(100% - 28px));
+      margin:0 auto;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter: blur(10px);
+      background:rgba(7,17,31,.84);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav{
+      min-height:60px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:8px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+
+    .brand-mark{
+      width:32px;
+      height:32px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow:var(--shadow);
+      position:relative;
+    }
+
+    .brand-mark::after{
+      content:"HB";
+      font-size:12px;
+      font-weight:900;
+      color:#fff;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
+    .nav-links a{
+      color:var(--muted);
+      padding:7px 10px;
+      border-radius:10px;
+      font-weight:600;
+      font-size:.92rem;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active{
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+    }
+
+    main{
+      padding:18px 0 28px;
+    }
+
+    .page-header{
+      margin-bottom:14px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .tech-bg{
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)),
+        linear-gradient(135deg, rgba(121,169,255,.06), rgba(100,230,195,.04));
+    }
+
+    .tech-bg::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size:28px 28px;
+      pointer-events:none;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(121,169,255,.10);
+      border:1px solid rgba(121,169,255,.18);
+      color:#cde3ff;
+      font-size:11px;
+      font-weight:700;
+      margin-bottom:10px;
+      position:relative;
+      z-index:1;
+    }
+
+    h1{
+      margin:0 0 8px;
+      font-size:clamp(1.8rem, 3vw, 2.7rem);
+      line-height:1.05;
+      letter-spacing:-1px;
+      position:relative;
+      z-index:1;
+    }
+
+    h2,h3{
+      margin-top:0;
+    }
+
+    p{
+      position:relative;
+      z-index:1;
+    }
+
+    .muted{
+      color:var(--muted);
+    }
+
+    .section{
+      margin-top:14px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1.35fr .85fr;
+      gap:12px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    .chart-card{
+      padding:16px;
+    }
+
+    .chart-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+
+    .legend{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:.88rem;
+      font-weight:700;
+    }
+
+    .legend span{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+    }
+
+    .legend .line1::before,
+    .legend .line2::before{
+      content:"";
+      width:18px;
+      height:3px;
+      border-radius:999px;
+      display:inline-block;
+    }
+
+    .legend .line1::before{
+      background:var(--accent);
+      box-shadow:0 0 10px rgba(121,169,255,.5);
+    }
+
+    .legend .line2::before{
+      background:var(--green);
+      box-shadow:0 0 10px rgba(100,230,195,.5);
+    }
+
+    canvas{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius:14px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .side-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .tile{
+      padding:16px;
+      background:var(--panel2);
+    }
+
+    .badge{
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:.72rem;
+      font-weight:700;
+      margin-bottom:10px;
+    }
+
+    .metric{
+      font-size:1.7rem;
+      font-weight:900;
+      line-height:1.1;
+      margin-bottom:4px;
+    }
+
+    .metric-sub{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .kv{
+      display:grid;
+      gap:10px;
+    }
+
+    .kv-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 0;
+      border-bottom:1px solid var(--line);
+      color:var(--muted);
+    }
+
+    .kv-row:last-child{
+      border-bottom:none;
+      padding-bottom:0;
+    }
+
+    .kv-row strong{
+      color:var(--text);
+    }
+
+    .footer{
+      padding:16px 0 24px;
+      color:var(--muted);
+    }
+
+    .footer .card{
+      padding:14px 16px;
+    }
+
+    @media (max-width:1100px){
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+      .grid-3{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media (max-width:760px){
+      .grid-3,
+      .side-grid{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="topbar">
     <div class="container nav">
-      <a class="brand" href="index.html"><span class="brand-mark"></span><span>Henrik Bergfjord</span></a>
+      <a class="brand" href="index.html">
+        <span class="brand-mark"></span>
+        <span>Henrik Bergfjord</span>
+      </a>
+
       <nav class="nav-links">
-        <a data-nav href="index.html">Hjem</a>
-        <a data-nav href="strom.html">Strøm</a>
-        <a data-nav href="dns-sjekk.html">DNS</a>
-        <a data-nav href="volvo-c40.html">Volvo C40</a>
-        <a data-nav href="maimyra.html">Maimyra</a>
-        <a data-nav href="galleri.html">Galleri</a>
-        <a data-nav href="SameieNett.html">SameieNett</a>
+        <a href="index.html">Hjem</a>
+        <a href="strom.html" class="active">Strøm</a>
+        <a href="dns-sjekk.html">DNS</a>
+        <a href="middag.html">Middag</a>
+        <a href="volvo-c40.html">Volvo C40</a>
+        <a href="maimyra.html">Maimyra</a>
+        <a href="galleri.html">Galleri</a>
+        <a href="SameieNett.html">SameieNett</a>
       </nav>
     </div>
   </header>
@@ -28,9 +363,9 @@
       <div class="container">
         <div class="card tech-bg">
           <div class="kicker">Energi · analyse · mørk teknisk profil</div>
-          <h1>Strøm med ny graf og mer teknisk uttrykk.</h1>
-          <p>
-            Her er strøm-siden oppgradert med mørkere design, grid-linjer, glow-effekter og en ny tegnet graf
+          <h1>Strøm med ny graf og mer teknisk uttrykk</h1>
+          <p class="muted">
+            En oppdatert strøm-side med mørkere design, tekniske flater og en enkel innebygget graf
             som gir et tydeligere og mer moderne uttrykk.
           </p>
         </div>
@@ -50,26 +385,30 @@
               <span class="line2">Pris</span>
             </div>
           </div>
-          <canvas data-energy-chart width="1000" height="360"></canvas>
+          <canvas id="energyChart" width="1000" height="360"></canvas>
         </div>
-        <div class="grid-2">
+
+        <div class="side-grid">
           <div class="card tile">
             <div class="badge">Snitt</div>
             <div class="metric">1 654 kWh</div>
             <div class="metric-sub">månedlig estimat</div>
           </div>
+
           <div class="card tile">
             <div class="badge">Pris</div>
             <div class="metric">1,07 kr</div>
             <div class="metric-sub">estimert snittpris</div>
           </div>
+
           <div class="card tile">
             <h3>Teknisk bakgrunn</h3>
             <p class="muted">Designet er laget med grid, glow og kalde blå/grønne toner for å gi en mer digital og teknisk følelse.</p>
           </div>
+
           <div class="card tile">
             <h3>Klar til videre kobling</h3>
-            <p class="muted">Du kan senere koble grafen mot ekte API-data, Home Assistant, Tibber, CSV eller eget backend-endepunkt.</p>
+            <p class="muted">Du kan senere koble grafen mot ekte API-data, Tibber, Home Assistant, CSV eller eget backend-endepunkt.</p>
           </div>
         </div>
       </div>
@@ -85,19 +424,106 @@
             <div class="kv-row"><span>Visning</span><strong>Mer moderne paneler</strong></div>
           </div>
         </div>
+
         <div class="card tile">
           <h3>Videre idéer</h3>
           <p class="muted">Legg til spotpris time for time, batteri, elbilforbruk, nettleie og sammenligning mellom måneder.</p>
         </div>
+
         <div class="card tile">
           <h3>Praktisk</h3>
-          <p class="muted">Alt er laget uten eksterne grafbibliotek slik at siden er enkel å publisere som statisk HTML.</p>
+          <p class="muted">Alt er laget som statisk HTML uten eksterne grafbibliotek, noe som gjør siden enkel å publisere og vedlikeholde.</p>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer"><div class="container"><div class="card">Strømoversikt · <span data-year></span></div></div></footer>
-  <script src="assets/app.js"></script>
+  <footer class="footer">
+    <div class="container">
+      <div class="card">Strømoversikt · <span id="year"></span></div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const canvas = document.getElementById("energyChart");
+    const ctx = canvas.getContext("2d");
+
+    const labels = ["Jan","Feb","Mar","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Des"];
+    const consumption = [1950, 1820, 1680, 1490, 1320, 1180, 1110, 1160, 1340, 1580, 1760, 1910];
+    const price = [1.42, 1.31, 1.18, 1.04, 0.96, 0.89, 0.84, 0.87, 0.95, 1.08, 1.19, 1.34];
+
+    const w = canvas.width;
+    const h = canvas.height;
+    const pad = { top: 24, right: 30, bottom: 42, left: 44 };
+
+    function mapY(value, maxValue) {
+      return h - pad.bottom - ((value / maxValue) * (h - pad.top - pad.bottom));
+    }
+
+    function drawGrid() {
+      ctx.strokeStyle = "rgba(255,255,255,0.07)";
+      ctx.lineWidth = 1;
+
+      for (let i = 0; i < 5; i++) {
+        const y = pad.top + ((h - pad.top - pad.bottom) / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(w - pad.right, y);
+        ctx.stroke();
+      }
+
+      for (let i = 0; i < labels.length; i++) {
+        const x = pad.left + ((w - pad.left - pad.right) / (labels.length - 1)) * i;
+        ctx.beginPath();
+        ctx.moveTo(x, pad.top);
+        ctx.lineTo(x, h - pad.bottom);
+        ctx.stroke();
+      }
+    }
+
+    function drawLabels() {
+      ctx.fillStyle = "rgba(237,244,255,0.75)";
+      ctx.font = "12px Inter, Arial, sans-serif";
+      ctx.textAlign = "center";
+
+      labels.forEach((label, i) => {
+        const x = pad.left + ((w - pad.left - pad.right) / (labels.length - 1)) * i;
+        ctx.fillText(label, x, h - 16);
+      });
+    }
+
+    function drawLine(data, maxValue, color, glow) {
+      ctx.beginPath();
+      data.forEach((val, i) => {
+        const x = pad.left + ((w - pad.left - pad.right) / (data.length - 1)) * i;
+        const y = mapY(val, maxValue);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3;
+      ctx.shadowColor = glow;
+      ctx.shadowBlur = 10;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      data.forEach((val, i) => {
+        const x = pad.left + ((w - pad.left - pad.right) / (data.length - 1)) * i;
+        const y = mapY(val, maxValue);
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+      });
+    }
+
+    drawGrid();
+    drawLabels();
+    drawLine(consumption, 2200, "#79a9ff", "rgba(121,169,255,.5)");
+    drawLine(price.map(v => v * 1000), 2200, "#64e6c3", "rgba(100,230,195,.5)");
+  </script>
 </body>
 </html>
