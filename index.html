@@ -6,345 +6,15 @@
   <title>Henrik Bergfjord | Portal</title>
   <meta
     name="description"
-    content="Moderne portal med oversikt over strøm, DNS-sjekk, middag, Volvo C40, Maimyra, galleri og SameieNett."
+    content="Portal med oversikt over strøm, DNS, Volvo C40, Maimyra, galleri, SameieNett og hverdagssider."
   />
-  <style>
-    :root{
-      --bg:#07111f;
-      --bg2:#0b1628;
-      --panel:#0f1b2d;
-      --text:#edf4ff;
-      --muted:#93a7c7;
-      --line:rgba(255,255,255,.08);
-      --accent:#79a9ff;
-      --accent2:#8b7cff;
-      --shadow:0 12px 28px rgba(0,0,0,.22);
-      --radius:16px;
-      --max:1240px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-
-    body{
-      margin:0;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(139,124,255,.10), transparent 28%),
-        radial-gradient(circle at top right, rgba(121,169,255,.08), transparent 24%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-    }
-
-    a{color:inherit;text-decoration:none}
-
-    .container{
-      width:min(var(--max), calc(100% - 28px));
-      margin:0 auto;
-    }
-
-    header{
-      position:sticky;
-      top:0;
-      z-index:30;
-      backdrop-filter: blur(10px);
-      background:rgba(7,17,31,.84);
-      border-bottom:1px solid var(--line);
-    }
-
-    .nav{
-      min-height:58px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      padding:8px 0;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-      letter-spacing:.2px;
-    }
-
-    .brand-badge{
-      width:32px;
-      height:32px;
-      border-radius:10px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow:var(--shadow);
-      font-size:12px;
-      font-weight:900;
-    }
-
-    .nav-links{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a{
-      color:var(--muted);
-      padding:7px 10px;
-      border-radius:10px;
-      font-weight:600;
-      font-size:.92rem;
-    }
-
-    .nav-links a.active,
-    .nav-links a:hover{
-      background:rgba(255,255,255,.05);
-      color:var(--text);
-    }
-
-    .cta{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:9px 13px;
-      border-radius:12px;
-      font-weight:700;
-      border:1px solid transparent;
-      background:linear-gradient(135deg, var(--accent), var(--accent2));
-      color:#fff;
-      box-shadow:var(--shadow);
-      font-size:.9rem;
-    }
-
-    .ghost{
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      color:var(--text);
-      box-shadow:none;
-    }
-
-    .hero{
-      padding:14px 0 8px;
-    }
-
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.35fr .65fr;
-      gap:12px;
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));
-      border:1px solid var(--line);
-      border-radius:18px;
-      box-shadow:var(--shadow);
-    }
-
-    .hero-main{
-      padding:20px;
-      min-height:180px;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      padding:5px 10px;
-      border-radius:999px;
-      background:rgba(121,169,255,.10);
-      border:1px solid rgba(121,169,255,.20);
-      color:#cde3ff;
-      font-size:11px;
-      font-weight:700;
-      margin-bottom:10px;
-    }
-
-    h1{
-      margin:0 0 8px;
-      font-size:clamp(1.8rem, 3vw, 2.7rem);
-      line-height:1.04;
-      letter-spacing:-1px;
-    }
-
-    .lead{
-      margin:0;
-      color:var(--muted);
-      font-size:.93rem;
-      line-height:1.5;
-      max-width:58ch;
-    }
-
-    .hero-actions{
-      margin-top:14px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .hero-side{
-      padding:12px;
-      display:grid;
-      gap:10px;
-    }
-
-    .mini-card{
-      padding:14px;
-      border-radius:14px;
-      background:rgba(255,255,255,.035);
-      border:1px solid var(--line);
-    }
-
-    .mini-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-      margin-bottom:8px;
-    }
-
-    .mini-top strong{
-      font-size:.94rem;
-    }
-
-    .mini-value{
-      font-size:1.2rem;
-      font-weight:800;
-      line-height:1.15;
-      margin-bottom:5px;
-    }
-
-    .mini-text{
-      color:var(--muted);
-      line-height:1.45;
-      font-size:.86rem;
-    }
-
-    .section{
-      padding:8px 0 20px;
-    }
-
-    .section-head{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:12px;
-      flex-wrap:wrap;
-    }
-
-    .section-head h2{
-      margin:0;
-      font-size:clamp(1.2rem, 2.2vw, 1.6rem);
-      letter-spacing:-.3px;
-    }
-
-    .section-head p{
-      margin:4px 0 0;
-      color:var(--muted);
-      max-width:62ch;
-      line-height:1.45;
-      font-size:.88rem;
-    }
-
-    .dashboard-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-    }
-
-    .dash-card{
-      padding:14px;
-      min-height:145px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
-
-    .dash-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-      margin-bottom:10px;
-    }
-
-    .dash-icon{
-      width:30px;
-      height:30px;
-      border-radius:10px;
-      display:grid;
-      place-items:center;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      font-size:.85rem;
-    }
-
-    .dash-status{
-      padding:4px 8px;
-      border-radius:999px;
-      font-size:.68rem;
-      color:var(--muted);
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      white-space:nowrap;
-      font-weight:700;
-    }
-
-    .dash-card h3{
-      margin:0 0 6px;
-      font-size:.98rem;
-    }
-
-    .dash-card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.4;
-      font-size:.84rem;
-    }
-
-    .dash-link{
-      margin-top:12px;
-      font-weight:800;
-      font-size:.84rem;
-      color:var(--text);
-    }
-
-    footer{
-      border-top:1px solid var(--line);
-      color:var(--muted);
-      padding:16px 0 22px;
-      margin-top:8px;
-      font-size:.82rem;
-    }
-
-    @media (max-width:1100px){
-      .dashboard-grid{
-        grid-template-columns:repeat(3,1fr);
-      }
-    }
-
-    @media (max-width:980px){
-      .hero-grid,
-      .dashboard-grid{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media (max-width:760px){
-      .nav{
-        padding:10px 0;
-      }
-
-      .hero-main{
-        padding:18px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <header>
+  <header class="topbar">
     <div class="container nav">
       <a class="brand" href="index.html">
-        <span class="brand-badge">HB</span>
+        <span class="brand-mark"></span>
         <span>Henrik Bergfjord</span>
       </a>
 
@@ -353,46 +23,58 @@
         <a href="strom.html">Strøm</a>
         <a href="dns-sjekk.html">DNS</a>
         <a href="middag.html">Middag</a>
+        <a href="dessert.html">Dessert</a>
+        <a href="boller.html">Boller</a>
         <a href="volvo-c40.html">Volvo C40</a>
         <a href="maimyra.html">Maimyra</a>
         <a href="galleri.html">Galleri</a>
         <a href="SameieNett.html">SameieNett</a>
       </nav>
 
-      <a class="cta" href="dns-sjekk.html">Åpne DNS-sjekk</a>
+      <a class="button primary" href="#oversikt">Se oversikt</a>
     </div>
   </header>
 
   <main>
-    <section class="hero">
+    <section class="page-header">
       <div class="container hero-grid">
-        <div class="card hero-main">
-          <div class="eyebrow">Digital portal</div>
-          <h1>En moderne og teknisk forside</h1>
+        <div class="card hero-panel portal-hero">
+          <div class="kicker">Portal · oversikt · videre bygging</div>
+          <h1>En samlet inngang til hele nettstedet</h1>
           <p class="lead">
-            En ryddig inngang til strøm, DNS, middag, Volvo C40, Maimyra, galleri og SameieNett.
-            Forsiden fungerer nå som en kompakt portal med raske snarveier videre.
+            Forsiden er nå en ren portal med raske snarveier videre til strøm, DNS,
+            Volvo C40, Maimyra, galleri, SameieNett og hverdagssidene.
           </p>
 
           <div class="hero-actions">
-            <a class="cta" href="#oversikt">Se oversikt</a>
-            <a class="cta ghost" href="strom.html">Strøm</a>
-            <a class="cta ghost" href="middag.html">Middag</a>
+            <a class="button primary" href="#oversikt">Åpne oversikt</a>
+            <a class="button secondary" href="strom.html">Gå til strøm</a>
+            <a class="button secondary" href="volvo-c40.html">Se Volvo C40</a>
           </div>
         </div>
 
-        <aside class="card hero-side">
+        <div class="card side-stack">
           <div class="mini-card">
             <div class="mini-top">
               <strong>Status</strong>
-              <span>Live</span>
+              <span class="badge ok">Live</span>
             </div>
             <div class="mini-value">Klar for videre bygging</div>
-            <div class="mini-text">
-              Menyen er samlet og forsiden er strammet inn for enklere videreutvikling.
-            </div>
+            <p class="muted">
+              Målet er at forsiden skal være lett og ryddig, mens undersidene får mer innhold og mer personlighet.
+            </p>
           </div>
-        </aside>
+
+          <div class="mini-card">
+            <div class="mini-top">
+              <strong>Neste nivå</strong>
+              <span class="badge">Struktur</span>
+            </div>
+            <p class="muted">
+              Felles stil, samme navigasjon og mer innhold flyttet ut på undersidene.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -400,103 +82,134 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <h2>Hurtigoversikt</h2>
-            <p>Snarveier til de viktigste sidene i portalen.</p>
+            <h2>Portaloversikt</h2>
+            <p>Hovedsider, verktøy og hverdag samlet på ett sted.</p>
           </div>
         </div>
 
-        <div class="dashboard-grid">
-          <article class="card dash-card">
-            <div>
-              <div class="dash-top">
-                <div class="dash-icon">⚡</div>
-                <span class="dash-status">Aktiv</span>
-              </div>
-              <h3>Strøm</h3>
-              <p>Oversikt over strømdata og energivisning.</p>
+        <div class="portal-grid">
+          <article class="card portal-card">
+            <div class="card-top">
+              <div class="card-icon">⚡</div>
+              <span class="badge">Tech</span>
             </div>
-            <a class="dash-link" href="strom.html">Åpne strøm →</a>
+            <h3>Strøm</h3>
+            <p>Teknisk strømvisning med paneler, graf og videre muligheter for data og koblinger.</p>
+            <a class="card-link" href="strom.html">Åpne strøm →</a>
           </article>
 
-          <article class="card dash-card">
-            <div>
-              <div class="dash-top">
-                <div class="dash-icon">🌐</div>
-                <span class="dash-status">Verktøy</span>
-              </div>
-              <h3>DNS-sjekk</h3>
-              <p>Sjekk domener og DNS-poster fra én teknisk side.</p>
+          <article class="card portal-card">
+            <div class="card-top">
+              <div class="card-icon">🌐</div>
+              <span class="badge">Verktøy</span>
             </div>
-            <a class="dash-link" href="dns-sjekk.html">Åpne DNS-sjekk →</a>
+            <h3>DNS-sjekk</h3>
+            <p>DNS-oppslag direkte i nettleseren for raske kontroller ved domener, web og infrastruktur.</p>
+            <a class="card-link" href="dns-sjekk.html">Åpne DNS →</a>
           </article>
 
-          <article class="card dash-card">
-            <div>
-              <div class="dash-top">
-                <div class="dash-icon">🍽️</div>
-                <span class="dash-status">Hverdag</span>
-              </div>
-              <h3>Middag</h3>
-              <p>Middagsside med forslag, struktur og inspirasjon.</p>
+          <article class="card portal-card">
+            <div class="card-top">
+              <div class="card-icon">🚗</div>
+              <span class="badge">EV</span>
             </div>
-            <a class="dash-link" href="middag.html">Åpne middag →</a>
+            <h3>Volvo C40</h3>
+            <p>Egen side for bilen med bilde, bilprofil, rekkevidde og plass til lading og kostnad senere.</p>
+            <a class="card-link" href="volvo-c40.html">Åpne Volvo C40 →</a>
           </article>
 
-          <article class="card dash-card">
-            <div>
-              <div class="dash-top">
-                <div class="dash-icon">🚗</div>
-                <span class="dash-status">Bil</span>
-              </div>
-              <h3>Volvo C40</h3>
-              <p>Egen side for bil, lading og EV-idéer.</p>
+          <article class="card portal-card">
+            <div class="card-top">
+              <div class="card-icon">🏠</div>
+              <span class="badge">Prosjekt</span>
             </div>
-            <a class="dash-link" href="volvo-c40.html">Åpne Volvo C40 →</a>
+            <h3>Maimyra</h3>
+            <p>Samlet side for bolig, planer, prioriteringer og videre utvikling i prosjektet.</p>
+            <a class="card-link" href="maimyra.html">Åpne Maimyra →</a>
           </article>
 
-          <article class="card dash-card">
-            <div>
-              <div class="dash-top">
-                <div class="dash-icon">🏠</div>
-                <span class="dash-status">Prosjekt</span>
-              </div>
-              <h3>Maimyra</h3>
-              <p>Planer, ideer og videre utvikling rundt prosjektet.</p>
+          <article class="card portal-card">
+            <div class="card-top">
+              <div class="card-icon">🖼️</div>
+              <span class="badge">Media</span>
             </div>
-            <a class="dash-link" href="maimyra.html">Åpne Maimyra →</a>
+            <h3>Galleri</h3>
+            <p>Bilder, visuelle inntrykk og plass for mer presentasjon og inspirasjon.</p>
+            <a class="card-link" href="galleri.html">Åpne galleri →</a>
           </article>
 
-          <article class="card dash-card">
-            <div>
-              <div class="dash-top">
-                <div class="dash-icon">🖼️</div>
-                <span class="dash-status">Media</span>
-              </div>
-              <h3>Galleri</h3>
-              <p>Bilder, visuelle inntrykk og presentasjoner.</p>
+          <article class="card portal-card">
+            <div class="card-top">
+              <div class="card-icon">🏢</div>
+              <span class="badge">Teaser</span>
             </div>
-            <a class="dash-link" href="galleri.html">Åpne galleri →</a>
+            <h3>SameieNett</h3>
+            <p>Underside for nettverk, infrastruktur og en mer helhetlig leveransemodell.</p>
+            <a class="card-link" href="SameieNett.html">Åpne SameieNett →</a>
           </article>
 
-          <article class="card dash-card">
-            <div>
-              <div class="dash-top">
-                <div class="dash-icon">🏢</div>
-                <span class="dash-status">Teaser</span>
-              </div>
-              <h3>SameieNett</h3>
-              <p>Teaser for nettverk, infrastruktur og helhetlig leveranse.</p>
+          <article class="card portal-card">
+            <div class="card-top">
+              <div class="card-icon">🍽️</div>
+              <span class="badge">Hverdag</span>
             </div>
-            <a class="dash-link" href="SameieNett.html">Åpne SameieNett →</a>
+            <h3>Middag</h3>
+            <p>Hverdagsmat, forslag og struktur for ukemeny og middagsside.</p>
+            <a class="card-link" href="middag.html">Åpne middag →</a>
           </article>
+
+          <article class="card portal-card">
+            <div class="card-top">
+              <div class="card-icon">🍰</div>
+              <span class="badge">Hverdag</span>
+            </div>
+            <h3>Dessert</h3>
+            <p>Egen side for dessertforslag og søtere innhold i familieportalen.</p>
+            <a class="card-link" href="dessert.html">Åpne dessert →</a>
+          </article>
+
+          <article class="card portal-card">
+            <div class="card-top">
+              <div class="card-icon">🥐</div>
+              <span class="badge">Hverdag</span>
+            </div>
+            <h3>Boller</h3>
+            <p>En egen side for boller, bakst og oppskrifter i samme stil som resten av siden.</p>
+            <a class="card-link" href="boller.html">Åpne boller →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section compact-section">
+      <div class="container info-grid">
+        <div class="card info-card">
+          <h3>Portal</h3>
+          <p class="muted">
+            Forsiden skal være enkel: oversikt, navigasjon og raske valg. Mer detaljer legges på undersidene.
+          </p>
+        </div>
+
+        <div class="card info-card">
+          <h3>Retning</h3>
+          <p class="muted">
+            Samme uttrykk på alle sider gjør at hele nettstedet føles som ett system, ikke bare løse filer.
+          </p>
+        </div>
+
+        <div class="card info-card">
+          <h3>Neste steg</h3>
+          <p class="muted">
+            La flere sider bruke samme stilfil, og begynn å koble strøm, bil og verktøy tettere sammen.
+          </p>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>
+  <footer class="footer">
     <div class="container">
-      Henrik Bergfjord • Portal • Strøm, DNS, Middag, Volvo C40, Maimyra, Galleri og SameieNett
+      Henrik Bergfjord · Portal · Strøm, DNS, Volvo C40, Maimyra, Galleri, SameieNett, Middag, Dessert og Boller
     </div>
   </footer>
 </body>
