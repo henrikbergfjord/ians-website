@@ -1,25 +1,148 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="no">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DNS-sjekk | Henrik Bergfjord</title>
-  <meta name="description" content="DNS-sjekk for domenenavn med A, AAAA, MX, TXT, CNAME og NS.">
-  <link rel="stylesheet" href="assets/styles.css">
+  <meta name="description" content="DNS-sjekk for domenenavn med A, AAAA, MX, TXT, CNAME og NS." />
+  <style>
+    :root{
+      --bg:#07111f;
+      --bg2:#0b1628;
+      --panel:#0f1b2d;
+      --text:#edf4ff;
+      --muted:#93a7c7;
+      --line:rgba(255,255,255,.08);
+      --accent:#79a9ff;
+      --accent2:#8b7cff;
+      --shadow:0 12px 28px rgba(0,0,0,.22);
+      --radius:16px;
+      --max:1240px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(139,124,255,.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(121,169,255,.08), transparent 24%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .container{
+      width:min(var(--max), calc(100% - 28px));
+      margin:0 auto;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter: blur(10px);
+      background:rgba(7,17,31,.84);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav{
+      min-height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      padding:8px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+
+    .brand-badge{
+      width:34px;
+      height:34px;
+      border-radius:11px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow:var(--shadow);
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .nav-links a{
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:10px;
+      font-weight:600;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover{
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+    }
+
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:12px;
+      font-weight:700;
+      border:1px solid transparent;
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+      color:#fff;
+      box-shadow:var(--shadow);
+      font-size:.92rem;
+    }
+
+    main{padding:16px 0}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+    .section{padding:10px 0 20px}
+    h1{margin:0 0 10px;font-size:clamp(2rem, 4vw, 3.3rem);line-height:1.02;letter-spacing:-1px}
+    h3{margin:0;font-size:1rem}
+    p{margin:0;color:var(--muted);line-height:1.55;font-size:.95rem}
+    .note{color:var(--muted);font-size:.88rem;margin-top:12px}
+    footer{border-top:1px solid var(--line);color:var(--muted);padding:18px 0 24px;margin-top:8px;font-size:.84rem}
+
+    @media (max-width:760px){
+      .nav{padding:10px 0}
+    }
+  </style>
 </head>
 <body>
-  <header class="topbar">
+  <header>
     <div class="container nav">
-      <a class="brand" href="index.html"><span class="brand-mark"></span><span>Henrik Bergfjord</span></a>
+      <a class="brand" href="index.html">
+        <span class="brand-badge">HB</span>
+        <span>Henrik Bergfjord</span>
+      </a>
       <nav class="nav-links">
-        <a data-nav href="index.html">Hjem</a>
-        <a data-nav href="strom.html">Strøm</a>
-        <a data-nav href="dns-sjekk.html">DNS</a>
-        <a data-nav href="volvo-c40.html">Volvo C40</a>
-        <a data-nav href="maimyra.html">Maimyra</a>
-        <a data-nav href="galleri.html">Galleri</a>
-        <a data-nav href="SameieNett.html">SameieNett</a>
+        <a href="index.html">Hjem</a>
+        <a href="strom.html">Strøm</a>
+        <a href="dns-sjekk.html" class="active">DNS</a>
+        <a href="volvo-c40.html">Volvo C40</a>
+        <a href="maimyra.html">Maimyra</a>
+        <a href="galleri.html">Galleri</a>
+        <a href="SameieNett.html">SameieNett</a>
       </nav>
+      <a class="cta" href="dns-sjekk.html">Åpne DNS-sjekk</a>
     </div>
   </header>
 
@@ -59,7 +182,10 @@
     </section>
   </main>
 
-  <footer class="footer"><div class="container"><div class="card">DNS-sjekk · <span data-year></span></div></div></footer>
-  <script src="assets/app.js"></script>
+  <footer>
+    <div class="container">
+      DNS-sjekk · Portal · Henrik Bergfjord
+    </div>
+  </footer>
 </body>
 </html>
