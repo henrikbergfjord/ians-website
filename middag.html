@@ -1,146 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IANS – Dinner Generator</title>
-  <meta name="description" content="Norwegian and Filipino dinner inspiration with recipe, time, shopping list, favorites, and weekly meal planning." />
+  <title>Middag | Henrik Bergfjord</title>
+  <meta
+    name="description"
+    content="Middagsgenerator med norsk og filippinsk middagsinspirasjon, ingredienser, fremgangsmåte, favoritt og ukemeny."
+  />
+  <link rel="stylesheet" href="assets/styles.css" />
   <style>
-    :root{
-      --bg:#07111f;
-      --bg2:#0b1628;
-      --panel:#0f1b2d;
-      --text:#edf4ff;
-      --muted:#93a7c7;
-      --line:rgba(255,255,255,.08);
-      --accent:#79a9ff;
-      --accent2:#8b7cff;
-      --shadow:0 14px 34px rgba(0,0,0,.28);
-      --max:1240px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-
-    body{
-      margin:0;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(139,124,255,.10), transparent 28%),
-        radial-gradient(circle at top right, rgba(121,169,255,.08), transparent 24%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-    }
-
-    a{color:inherit;text-decoration:none}
-
-    .container{
-      width:min(var(--max), calc(100% - 28px));
-      margin:0 auto;
-    }
-
-    header{
-      position:sticky;
-      top:0;
-      z-index:30;
-      backdrop-filter: blur(10px);
-      background:rgba(7,17,31,.84);
-      border-bottom:1px solid var(--line);
-    }
-
-    .nav{
-      min-height:64px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-      letter-spacing:.2px;
-    }
-
-    .brand-badge{
-      width:34px;
-      height:34px;
-      border-radius:11px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow:var(--shadow);
-      font-size:13px;
-      font-weight:900;
-    }
-
-    .nav-links{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a{
-      color:var(--muted);
-      padding:8px 12px;
-      border-radius:10px;
-      font-weight:600;
-    }
-
-    .nav-links a.active,
-    .nav-links a:hover{
-      background:rgba(255,255,255,.05);
-      color:var(--text);
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:11px 16px;
-      border-radius:12px;
-      font-weight:800;
-      border:1px solid rgba(255,255,255,.08);
-      background:#000;
-      color:#fff;
-      box-shadow:var(--shadow);
-      font-size:.94rem;
-      cursor:pointer;
-    }
-
-    .btn:hover{background:#111}
-
-    .btn.secondary{
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      box-shadow:none;
-    }
-
-    .hero{
-      padding:18px 0 14px;
-    }
-
-    .hero-card{
+    .dinner-hero-card{
       overflow:hidden;
       border-radius:22px;
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));
       margin-bottom:14px;
     }
 
-    .hero-image{
+    .dinner-hero-image{
       position:relative;
       min-height:320px;
       background-size:cover;
       background-position:center;
     }
 
-    .hero-overlay{
+    .dinner-hero-overlay{
       position:absolute;
       inset:0;
       background:
@@ -148,7 +31,7 @@
         radial-gradient(circle at top left, rgba(121,169,255,.18), transparent 35%);
     }
 
-    .hero-content{
+    .dinner-hero-content{
       position:absolute;
       left:0;
       right:0;
@@ -156,7 +39,7 @@
       padding:28px 24px 24px;
     }
 
-    .eyebrow{
+    .dinner-eyebrow{
       display:inline-flex;
       align-items:center;
       gap:8px;
@@ -170,14 +53,14 @@
       margin-bottom:10px;
     }
 
-    h1{
+    .dinner-hero-content h1{
       margin:0 0 10px;
       font-size:clamp(2rem, 5vw, 4rem);
       line-height:1.02;
       letter-spacing:-1px;
     }
 
-    .lead{
+    .dinner-hero-content p{
       margin:0;
       color:#d2def4;
       max-width:60ch;
@@ -185,27 +68,20 @@
       line-height:1.55;
     }
 
-    .hero-actions{
+    .dinner-hero-actions{
       margin-top:16px;
       display:flex;
       gap:10px;
       flex-wrap:wrap;
     }
 
-    .page-grid{
+    .dinner-layout{
       display:grid;
       grid-template-columns:1.2fr .8fr;
       gap:14px;
     }
 
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));
-      border:1px solid var(--line);
-      border-radius:20px;
-      box-shadow:var(--shadow);
-    }
-
-    .main-card{
+    .dinner-main{
       overflow:hidden;
     }
 
@@ -223,7 +99,7 @@
       background:linear-gradient(180deg, rgba(7,17,31,.10), rgba(7,17,31,.55));
     }
 
-    .main-inner{
+    .dinner-main-inner{
       padding:20px;
     }
 
@@ -261,7 +137,7 @@
       font-size:.98rem;
     }
 
-    .content-grid{
+    .dinner-content-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
@@ -300,7 +176,7 @@
       margin-top:4px;
     }
 
-    .side-card{
+    .dinner-side{
       padding:18px;
       display:grid;
       gap:12px;
@@ -406,17 +282,10 @@
       line-height:1.55;
     }
 
-    footer{
-      border-top:1px solid var(--line);
-      color:var(--muted);
-      padding:16px 0 24px;
-      font-size:.84rem;
-    }
-
     @media print{
       header,
-      .hero-actions,
-      .side-card,
+      .dinner-hero-actions,
+      .dinner-side,
       .coming-soon,
       footer{
         display:none !important;
@@ -440,32 +309,28 @@
         color:#222;
       }
 
-      .main-card{
+      .dinner-main{
         border:none;
       }
     }
 
     @media (max-width:980px){
-      .page-grid{
+      .dinner-layout{
         grid-template-columns:1fr;
       }
 
-      .content-grid{
+      .dinner-content-grid{
         grid-template-columns:1fr;
       }
     }
 
     @media (max-width:760px){
-      .nav{
-        padding:10px 0;
-      }
-
-      .hero-content{
+      .dinner-hero-content{
         padding:20px 16px 16px;
       }
 
-      .main-inner,
-      .side-card{
+      .dinner-main-inner,
+      .dinner-side{
         padding:16px;
       }
 
@@ -476,118 +341,122 @@
   </style>
 </head>
 <body>
-  <header>
+  <header class="topbar">
     <div class="container nav">
       <a class="brand" href="index.html">
-        <span class="brand-badge">IA</span>
-        <span>IANS</span>
+        <span class="brand-mark"></span>
+        <span>Henrik Bergfjord</span>
       </a>
 
       <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="kalender.html">Calendar</a>
-        <a href="middag.html" class="active">Dinner</a>
-        <a href="desser.html">Desserts</a>
+        <a href="index.html">Hjem</a>
+        <a href="strom.html">Strøm</a>
+        <a href="dns-sjekk.html">DNS</a>
+        <a href="middag.html" class="active">Middag</a>
+        <a href="dessert.html">Dessert</a>
         <a href="boller.html">Boller</a>
+        <a href="volvo-c40.html">Volvo C40</a>
+        <a href="maimyra.html">Maimyra</a>
+        <a href="galleri.html">Galleri</a>
+        <a href="SameieNett.html">SameieNett</a>
       </nav>
 
-      <button class="btn" id="generateTop">Generate new dinner</button>
+      <button class="button primary" id="generateTop" type="button">Ny middag</button>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="container hero-card">
-        <div class="hero-image" id="heroImage">
-          <div class="hero-overlay"></div>
-          <div class="hero-content">
-            <div class="eyebrow">🍽️ Norwegian + Filipino inspiration</div>
-            <h1>Dinner Generator</h1>
-            <p class="lead">
-              Discover a new dinner idea with image, cooking time, ingredients, method, cultural background, and a short historical note.
+    <section class="page-header">
+      <div class="container card dinner-hero-card">
+        <div class="dinner-hero-image" id="heroImage">
+          <div class="dinner-hero-overlay"></div>
+          <div class="dinner-hero-content">
+            <div class="dinner-eyebrow">🍽️ Norsk + filippinsk inspirasjon</div>
+            <h1>Middagsgenerator</h1>
+            <p>
+              Finn en ny middagsidé med bilde, tidsbruk, ingredienser, fremgangsmåte, bakgrunn og enkel ukemeny.
             </p>
-            <div class="hero-actions">
-              <button class="btn" id="generateHero">Generate dinner</button>
-              <button class="btn secondary" onclick="window.print()">🖨️ Print recipe</button>
-              <a class="btn secondary" href="index.html">⬅ Back to dashboard</a>
-              <a class="btn secondary" href="desser.html">🍰 Desserts</a>
-              <a class="btn secondary" href="boller.html">🥐 Boller</a>
+            <div class="dinner-hero-actions">
+              <button class="button primary" id="generateHero" type="button">Generer middag</button>
+              <button class="button secondary" type="button" onclick="window.print()">Skriv ut oppskrift</button>
+              <a class="button secondary" href="dessert.html">Dessert</a>
+              <a class="button secondary" href="boller.html">Boller</a>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="container page-grid">
-        <section class="card main-card" id="dinner-card">
+      <div class="container dinner-layout">
+        <section class="card dinner-main" id="dinner-card">
           <div class="dish-image" id="dishImage"></div>
-          <div class="main-inner">
+          <div class="dinner-main-inner">
             <div class="dish-meta">
-              <span class="pill" id="dishOrigin">Origin</span>
+              <span class="pill" id="dishOrigin">Opprinnelse</span>
               <span class="pill" id="dishType">Type</span>
-              <span class="pill" id="dishTime">Time</span>
+              <span class="pill" id="dishTime">Tid</span>
             </div>
 
-            <h2 class="dish-title" id="dishName">Dinner idea loading...</h2>
-            <p class="dish-desc" id="dishDescription">A cozy dinner suggestion will appear here.</p>
+            <h2 class="dish-title" id="dishName">Middagsidé lastes...</h2>
+            <p class="dish-desc" id="dishDescription">En middag vises her om et øyeblikk.</p>
 
-            <div class="content-grid">
+            <div class="dinner-content-grid">
               <article class="inner-card">
-                <h3>Ingredients for a family of 4</h3>
+                <h3>Ingredienser for 4 personer</h3>
                 <ul id="ingredientsList"></ul>
               </article>
 
               <article class="inner-card">
-                <h3>How to make it</h3>
+                <h3>Slik lager du retten</h3>
                 <ol id="instructionsList"></ol>
               </article>
 
               <article class="inner-card">
-                <h3>About the dish</h3>
+                <h3>Om retten</h3>
                 <p id="dishStory"></p>
               </article>
 
               <article class="inner-card">
-                <h3>History</h3>
+                <h3>Historikk</h3>
                 <p id="dishHistory"></p>
               </article>
             </div>
           </div>
         </section>
 
-        <aside class="card side-card">
+        <aside class="card dinner-side">
           <div class="small-card">
-            <h3>Quick actions</h3>
+            <h3>Hurtigvalg</h3>
             <p>
-              Generate a new dinner, print the recipe, save it as a favorite, or make a simple weekly meal plan.
+              Generer en ny middag, skriv ut oppskriften, lagre favoritt og sett opp en enkel ukemeny.
             </p>
           </div>
 
           <div class="small-card">
-            <h3>Favorite</h3>
-            <p id="favoriteText">No favorite selected yet.</p>
+            <h3>Favoritt</h3>
+            <p id="favoriteText">Ingen favoritt valgt ennå.</p>
             <div style="margin-top:12px;">
-              <button class="btn secondary" id="favoriteBtn">❤️ Save current as favorite</button>
+              <button class="button secondary" id="favoriteBtn" type="button">Lagre som favoritt</button>
             </div>
           </div>
 
           <div class="history-note" id="historyNote">
-            Many famous dishes are part of a broader food tradition rather than the invention of one clearly documented person.
+            Mange kjente retter er del av en større matkultur og ikke nødvendigvis oppfunnet av én dokumentert person.
           </div>
 
           <div class="small-card">
-            <h3>Serving idea</h3>
-            <p id="servingTip">A serving tip will appear here.</p>
+            <h3>Serveringstips</h3>
+            <p id="servingTip">Et serveringstips vises her.</p>
           </div>
 
           <div class="small-card">
-            <h3>Shopping list</h3>
+            <h3>Handleliste</h3>
             <div class="shopping-list" id="shoppingList"></div>
           </div>
 
           <div class="small-card">
-            <h3>Weekly meal plan</h3>
+            <h3>Ukemeny</h3>
             <div style="margin-bottom:12px;">
-              <button class="btn secondary" id="generateWeekBtn">📅 Generate week plan</button>
+              <button class="button secondary" id="generateWeekBtn" type="button">Generer ukeplan</button>
             </div>
             <div class="week-grid" id="weekPlan"></div>
           </div>
@@ -597,17 +466,17 @@
 
     <section class="container">
       <div class="coming-soon">
-        <h3>Shopping list coming later</h3>
+        <h3>Neste nivå</h3>
         <p>
-          A future version can include auto-grouped groceries, weekly planning by cuisine, budget mode, and a family-friendly filter for quick dinners.
+          En senere versjon kan få handleliste per uke, budsjettmodus, familiefilter, raske middager og kobling mot dessert- og boller-sidene.
         </p>
       </div>
     </section>
   </main>
 
-  <footer>
+  <footer class="footer">
     <div class="container">
-      IANS • Dinner Generator • Norwegian and Filipino food inspiration
+      Henrik Bergfjord · Middagsgenerator · Norsk og filippinsk middagsinspirasjon
     </div>
   </footer>
 
@@ -615,81 +484,81 @@
     const dinners = [
       {
         name: "Fårikål",
-        origin: "🇳🇴 Norway",
-        type: "Traditional lamb stew",
-        time: "⏱️ 2.5–3 hours",
-        description: "A classic Norwegian one-pot dinner made with lamb, cabbage, black pepper, and time.",
+        origin: "🇳🇴 Norge",
+        type: "Tradisjonell lammegryte",
+        time: "⏱️ 2,5–3 timer",
+        description: "En klassisk norsk gryterett med lam, kål, hel pepper og god tid.",
         image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1400&q=80",
-        ingredients: ["1.5 kg lamb pieces with bone","1 large green cabbage","2 tsp whole black pepper","2 tsp salt","2 tbsp flour","3 dl water"],
-        instructions: ["Cut the cabbage into wedges.","Layer lamb and cabbage in a large pot.","Sprinkle flour, salt and pepper between layers.","Add water.","Simmer on low heat for 2.5 to 3 hours.","Serve with boiled potatoes."],
-        story: "Often described as Norway’s national dish.",
-        history: "A traditional Norwegian farmhouse dish that became especially established in the 19th century.",
-        serving: "Best served hot with boiled potatoes."
+        ingredients: ["1,5 kg lammekjøtt med bein","1 stor hodekål","2 ts hel sort pepper","2 ts salt","2 ss hvetemel","3 dl vann"],
+        instructions: ["Del kålen i båter.","Legg lagvis lam og kål i en stor gryte.","Dryss mel, salt og pepper mellom lagene.","Tilsett vann.","La småkoke i 2,5 til 3 timer.","Server med kokte poteter."],
+        story: "Ofte omtalt som en av Norges mest kjente tradisjonsretter.",
+        history: "En gammel norsk bonderett som ble særlig etablert gjennom 1800-tallet.",
+        serving: "Server rykende varm med kokte poteter."
       },
       {
         name: "Kjøttkaker",
-        origin: "🇳🇴 Norway",
-        type: "Comfort food / meatballs",
-        time: "⏱️ 45–60 minutes",
-        description: "Norwegian meat cakes served with brown sauce.",
+        origin: "🇳🇴 Norge",
+        type: "Husmannskost",
+        time: "⏱️ 45–60 minutter",
+        description: "Norske kjøttkaker servert med brun saus og klassisk tilbehør.",
         image: "https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=1400&q=80",
-        ingredients: ["600 g ground beef","1 small onion, grated","1 egg","1 dl milk","2 tbsp flour or breadcrumbs","1 tsp salt","0.5 tsp pepper","Butter for frying"],
-        instructions: ["Mix ingredients.","Shape into oval meat cakes.","Brown in a frying pan with butter.","Finish on lower heat or in brown sauce.","Serve with potatoes and vegetables."],
-        story: "One of the most familiar home dinners in Norway.",
-        history: "Developed gradually in home kitchens. No single documented inventor.",
-        serving: "Serve with brown gravy, potatoes, carrots and peas."
+        ingredients: ["600 g kjøttdeig","1 liten løk, revet","1 egg","1 dl melk","2 ss mel eller griljermel","1 ts salt","0,5 ts pepper","Smør til steking"],
+        instructions: ["Bland alle ingrediensene godt.","Form ovale kjøttkaker.","Brun dem i panne med smør.","La dem steke ferdig på lavere varme eller i brun saus.","Server med poteter og grønnsaker."],
+        story: "En av de mest kjente hjemmemiddagene i Norge.",
+        history: "Utviklet gradvis i hjemmekjøkken og husmannskosttradisjon.",
+        serving: "Server med brun saus, poteter, gulrøtter og erter."
       },
       {
         name: "Lapskaus",
-        origin: "🇳🇴 Norway",
-        type: "Hearty stew",
-        time: "⏱️ 1.5–2 hours",
-        description: "A thick and warming Norwegian stew made with potatoes, root vegetables, and meat.",
+        origin: "🇳🇴 Norge",
+        type: "Varmende gryte",
+        time: "⏱️ 1,5–2 timer",
+        description: "En tykk og varmende gryte med poteter, rotgrønnsaker og kjøtt.",
         image: "https://images.unsplash.com/photo-1608500218808-84761e4cbf4c?auto=format&fit=crop&w=1400&q=80",
-        ingredients: ["500 g beef or lamb","6 potatoes","3 carrots","1 onion","1 small leek","8 dl stock or water","Salt and pepper"],
-        instructions: ["Cut vegetables and meat into bite-sized pieces.","Place everything in a pot with stock or water.","Simmer slowly until vegetables soften.","Season to taste and serve warm."],
-        story: "Practical family food with many variations.",
-        history: "Linked to older European sailor and stew traditions.",
-        serving: "Serve with flatbread."
+        ingredients: ["500 g storfekjøtt eller lam","6 poteter","3 gulrøtter","1 løk","1 liten purre","8 dl kraft eller vann","Salt og pepper"],
+        instructions: ["Skjær grønnsaker og kjøtt i biter.","Ha alt i en gryte med kraft eller vann.","La retten småkoke til grønnsakene er møre.","Smak til og server varm."],
+        story: "Praktisk familiemat med mange lokale varianter.",
+        history: "Har røtter i eldre europeiske gryte- og sjømannstradisjoner.",
+        serving: "Server gjerne med flatbrød."
       },
       {
         name: "Chicken Adobo",
-        origin: "🇵🇭 Philippines",
-        type: "Classic braised dish",
-        time: "⏱️ 45–60 minutes",
-        description: "One of the best known Filipino dishes with soy sauce, vinegar and garlic.",
+        origin: "🇵🇭 Filippinene",
+        type: "Klassisk gryterett",
+        time: "⏱️ 45–60 minutter",
+        description: "En kjent filippinsk rett med soyasaus, eddik, hvitløk og mørt kyllingkjøtt.",
         image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1400&q=80",
-        ingredients: ["1 kg chicken","120 ml soy sauce","120 ml vinegar","6 cloves garlic","3 bay leaves","1 tsp whole peppercorns","1 dl water"],
-        instructions: ["Marinate the chicken.","Place everything in a pot.","Simmer gently until tender.","Reduce sauce slightly.","Serve with steamed rice."],
-        story: "A dish served both everyday and to guests.",
-        history: "A long-standing Filipino preparation that predates Spanish colonization.",
-        serving: "Serve with hot rice and extra sauce."
+        ingredients: ["1 kg kylling","120 ml soyasaus","120 ml eddik","6 fedd hvitløk","3 laurbærblad","1 ts hele pepperkorn","1 dl vann"],
+        instructions: ["Mariner kyllingen.","Ha alt i en gryte.","La det småkoke til kjøttet er mørt.","Kok inn sausen litt.","Server med dampet ris."],
+        story: "En rett som passer både til hverdags og når man får besøk.",
+        history: "En langvarig filippinsk tilberedningsmåte som går tilbake før spansk kolonitid.",
+        serving: "Server med varm ris og ekstra saus."
       },
       {
         name: "Sinigang na Baboy",
-        origin: "🇵🇭 Philippines",
-        type: "Sour soup",
-        time: "⏱️ 1–1.5 hours",
-        description: "A Filipino sour soup often made with pork and vegetables.",
+        origin: "🇵🇭 Filippinene",
+        type: "Syrlig suppe",
+        time: "⏱️ 1–1,5 time",
+        description: "En filippinsk syrlig suppe med svinekjøtt og grønnsaker.",
         image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1400&q=80",
-        ingredients: ["800 g pork","1 onion","2 tomatoes","1 radish","1 small eggplant","Green beans","Leafy greens","Tamarind mix","Fish sauce"],
-        instructions: ["Boil the pork with onion and tomatoes.","Add tamarind.","Add vegetables in stages.","Season with fish sauce.","Serve hot with rice."],
-        story: "Known for its fresh sourness and comforting broth.",
-        history: "Rooted in older Filipino sour-broth traditions.",
-        serving: "Best with steamed rice."
+        ingredients: ["800 g svinekjøtt","1 løk","2 tomater","1 reddik","1 liten aubergine","Grønne bønner","Bladgrønnsaker","Tamarindblanding","Fish sauce"],
+        instructions: ["Kok svinekjøttet med løk og tomater.","Tilsett tamarind.","Ha i grønnsakene i etapper.","Smak til med fish sauce.","Server varm med ris."],
+        story: "Kjent for sin friske syrlighet og trøstende kraft.",
+        history: "Har røtter i eldre filippinske tradisjoner med syrlig suppebase.",
+        serving: "Best sammen med dampet ris."
       },
       {
         name: "Pancit Bihon",
-        origin: "🇵🇭 Philippines",
-        type: "Noodle stir-fry",
-        time: "⏱️ 35–45 minutes",
-        description: "A festive noodle dish often associated with celebrations.",
+        origin: "🇵🇭 Filippinene",
+        type: "Nudelrett",
+        time: "⏱️ 35–45 minutter",
+        description: "En populær nudelrett som ofte forbindes med feiringer og samlinger.",
         image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=1400&q=80",
-        ingredients: ["250 g rice noodles","300 g chicken","2 carrots","1/4 cabbage","Green beans","3 tbsp soy sauce","3 cloves garlic","5 dl stock"],
-        instructions: ["Soften noodles.","Cook garlic and meat.","Add vegetables.","Pour in stock and soy sauce.","Add noodles and toss together."],
-        story: "A popular dish for birthdays and gatherings.",
-        history: "Reflects Chinese influence on Filipino food culture.",
-        serving: "Serve with calamansi or lemon."
+        ingredients: ["250 g risnudler","300 g kylling","2 gulrøtter","1/4 kål","Grønne bønner","3 ss soyasaus","3 fedd hvitløk","5 dl kraft"],
+        instructions: ["Bløtlegg nudlene.","Stek hvitløk og kjøtt.","Tilsett grønnsakene.","Hell i kraft og soyasaus.","Vend inn nudlene til alt er godt blandet."],
+        story: "En populær rett til bursdager og familiesamlinger.",
+        history: "Viser tydelig kinesisk påvirkning på filippinsk matkultur.",
+        serving: "Server med calamansi eller litt sitron."
       }
     ];
 
@@ -731,18 +600,18 @@
     function saveFavorite(){
       const current = document.getElementById("dishName").textContent;
       localStorage.setItem("iansFavoriteDinner", current);
-      document.getElementById("favoriteText").textContent = `${current} saved as favorite.`;
+      document.getElementById("favoriteText").textContent = `${current} lagret som favoritt.`;
     }
 
     function loadFavorite(){
       const favorite = localStorage.getItem("iansFavoriteDinner");
       if (favorite) {
-        document.getElementById("favoriteText").textContent = `Favorite: ${favorite}`;
+        document.getElementById("favoriteText").textContent = `Favoritt: ${favorite}`;
       }
     }
 
     function generateWeekPlan(){
-      const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+      const days = ["Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag","Søndag"];
       const shuffled = [...dinners, ...dinners].sort(() => 0.5 - Math.random()).slice(0, 7);
 
       document.getElementById("weekPlan").innerHTML = days.map((day, index) => `
