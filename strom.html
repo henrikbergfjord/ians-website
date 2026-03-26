@@ -4,126 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Strøm | Henrik Bergfjord</title>
-  <meta name="description" content="Strømoversikt med ny graf og teknisk uttrykk.">
+  <meta name="description" content="Strømoversikt med graf, teknisk uttrykk og plass for videre energidata.">
+  <link rel="stylesheet" href="assets/styles.css">
   <style>
-    :root{
-      --bg:#07111f;
-      --bg2:#0b1628;
-      --panel:#0f1b2d;
-      --panel2:rgba(255,255,255,.035);
-      --text:#edf4ff;
-      --muted:#93a7c7;
-      --line:rgba(255,255,255,.08);
-      --accent:#79a9ff;
-      --accent2:#8b7cff;
-      --green:#64e6c3;
-      --shadow:0 12px 28px rgba(0,0,0,.22);
-      --radius:18px;
-      --max:1240px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-
-    body{
-      margin:0;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(139,124,255,.10), transparent 28%),
-        radial-gradient(circle at top right, rgba(121,169,255,.08), transparent 24%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-    }
-
-    a{color:inherit;text-decoration:none}
-
-    .container{
-      width:min(var(--max), calc(100% - 28px));
-      margin:0 auto;
-    }
-
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:30;
-      backdrop-filter: blur(10px);
-      background:rgba(7,17,31,.84);
-      border-bottom:1px solid var(--line);
-    }
-
-    .nav{
-      min-height:60px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      padding:8px 0;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-      letter-spacing:.2px;
-    }
-
-    .brand-mark{
-      width:32px;
-      height:32px;
-      border-radius:10px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow:var(--shadow);
-      position:relative;
-    }
-
-    .brand-mark::after{
-      content:"HB";
-      font-size:12px;
-      font-weight:900;
-      color:#fff;
-    }
-
-    .nav-links{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a{
-      color:var(--muted);
-      padding:7px 10px;
-      border-radius:10px;
-      font-weight:600;
-      font-size:.92rem;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active{
-      background:rgba(255,255,255,.05);
-      color:var(--text);
-    }
-
-    main{
-      padding:18px 0 28px;
-    }
-
-    .page-header{
-      margin-bottom:14px;
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));
-      border:1px solid var(--line);
-      border-radius:18px;
-      box-shadow:var(--shadow);
-    }
-
-    .tech-bg{
-      padding:22px;
+    .power-hero{
+      padding:24px;
       position:relative;
       overflow:hidden;
       background:
@@ -131,7 +16,7 @@
         linear-gradient(135deg, rgba(121,169,255,.06), rgba(100,230,195,.04));
     }
 
-    .tech-bg::before{
+    .power-hero::before{
       content:"";
       position:absolute;
       inset:0;
@@ -142,9 +27,26 @@
       pointer-events:none;
     }
 
-    .kicker{
+    .power-hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 78% 24%, rgba(100,230,195,.16), transparent 42%);
+      pointer-events:none;
+    }
+
+    .power-kicker,
+    .power-hero h1,
+    .power-hero p,
+    .power-hero-actions{
+      position:relative;
+      z-index:1;
+    }
+
+    .power-kicker{
       display:inline-flex;
       align-items:center;
+      width:max-content;
       padding:5px 10px;
       border-radius:999px;
       background:rgba(121,169,255,.10);
@@ -152,46 +54,19 @@
       color:#cde3ff;
       font-size:11px;
       font-weight:700;
-      margin-bottom:10px;
-      position:relative;
-      z-index:1;
+      margin-bottom:12px;
     }
 
-    h1{
-      margin:0 0 8px;
-      font-size:clamp(1.8rem, 3vw, 2.7rem);
-      line-height:1.05;
-      letter-spacing:-1px;
-      position:relative;
-      z-index:1;
+    .power-hero-actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    h2,h3{
-      margin-top:0;
-    }
-
-    p{
-      position:relative;
-      z-index:1;
-    }
-
-    .muted{
-      color:var(--muted);
-    }
-
-    .section{
-      margin-top:14px;
-    }
-
-    .grid-2{
+    .power-layout{
       display:grid;
       grid-template-columns:1.35fr .85fr;
-      gap:12px;
-    }
-
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
       gap:12px;
     }
 
@@ -206,6 +81,10 @@
       gap:10px;
       margin-bottom:14px;
       flex-wrap:wrap;
+    }
+
+    .chart-header h2{
+      margin:0 0 4px;
     }
 
     .legend{
@@ -252,39 +131,23 @@
       border:1px solid rgba(255,255,255,.05);
     }
 
-    .side-grid{
+    .stats-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
     }
 
-    .tile{
-      padding:16px;
-      background:var(--panel2);
-    }
-
-    .badge{
-      display:inline-block;
-      padding:5px 9px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      color:var(--muted);
-      font-size:.72rem;
-      font-weight:700;
-      margin-bottom:10px;
-    }
-
-    .metric{
-      font-size:1.7rem;
+    .power-metric{
+      font-size:1.75rem;
       font-weight:900;
-      line-height:1.1;
-      margin-bottom:4px;
+      line-height:1.08;
+      margin:8px 0 4px;
     }
 
-    .metric-sub{
+    .power-metric-sub{
       color:var(--muted);
       font-size:.9rem;
+      line-height:1.5;
     }
 
     .kv{
@@ -309,29 +172,21 @@
 
     .kv-row strong{
       color:var(--text);
+      text-align:right;
     }
 
-    .footer{
-      padding:16px 0 24px;
-      color:var(--muted);
-    }
-
-    .footer .card{
+    .footer-card{
       padding:14px 16px;
     }
 
     @media (max-width:1100px){
-      .grid-2{
+      .power-layout{
         grid-template-columns:1fr;
-      }
-      .grid-3{
-        grid-template-columns:1fr 1fr;
       }
     }
 
     @media (max-width:760px){
-      .grid-3,
-      .side-grid{
+      .stats-grid{
         grid-template-columns:1fr;
       }
     }
@@ -350,35 +205,44 @@
         <a href="strom.html" class="active">Strøm</a>
         <a href="dns-sjekk.html">DNS</a>
         <a href="middag.html">Middag</a>
+        <a href="dessert.html">Dessert</a>
+        <a href="boller.html">Boller</a>
         <a href="volvo-c40.html">Volvo C40</a>
         <a href="maimyra.html">Maimyra</a>
         <a href="galleri.html">Galleri</a>
         <a href="SameieNett.html">SameieNett</a>
       </nav>
+
+      <a class="button primary" href="#energi">Se energi</a>
     </div>
   </header>
 
   <main>
     <section class="page-header">
       <div class="container">
-        <div class="card tech-bg">
-          <div class="kicker">Energi · analyse · mørk teknisk profil</div>
-          <h1>Strøm med ny graf og mer teknisk uttrykk</h1>
-          <p class="muted">
-            En oppdatert strøm-side med mørkere design, tekniske flater og en enkel innebygget graf
-            som gir et tydeligere og mer moderne uttrykk.
+        <div class="card power-hero">
+          <div class="power-kicker">Energi · analyse · mørk teknisk profil</div>
+          <h1>Strøm med graf og tydeligere energivisning</h1>
+          <p class="lead">
+            En oppdatert strøm-side med teknisk uttrykk, graf og paneler som kan bygges videre ut med spotpris,
+            lading, batteri, nettleie og sammenligning mellom perioder.
           </p>
+
+          <div class="power-hero-actions">
+            <a class="button primary" href="#energi">Åpne oversikt</a>
+            <a class="button secondary" href="volvo-c40.html">Koble mot Volvo C40</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="teknisk">
-      <div class="container grid-2">
+    <section class="section" id="energi">
+      <div class="container power-layout">
         <div class="card chart-card">
           <div class="chart-header">
             <div>
-              <h2 style="margin:0">Årsprofil</h2>
-              <div class="muted">Forbruk og pris gjennom året</div>
+              <h2>Årsprofil</h2>
+              <div class="muted">Estimert forbruk og pris gjennom året</div>
             </div>
             <div class="legend">
               <span class="line1">Forbruk</span>
@@ -388,27 +252,31 @@
           <canvas id="energyChart" width="1000" height="360"></canvas>
         </div>
 
-        <div class="side-grid">
+        <div class="stats-grid">
           <div class="card tile">
-            <div class="badge">Snitt</div>
-            <div class="metric">1 654 kWh</div>
-            <div class="metric-sub">månedlig estimat</div>
+            <div class="badge">Snittforbruk</div>
+            <div class="power-metric">1 654 kWh</div>
+            <div class="power-metric-sub">månedlig estimat</div>
           </div>
 
           <div class="card tile">
-            <div class="badge">Pris</div>
-            <div class="metric">1,07 kr</div>
-            <div class="metric-sub">estimert snittpris</div>
+            <div class="badge">Snittpris</div>
+            <div class="power-metric">1,07 kr</div>
+            <div class="power-metric-sub">estimert snittpris</div>
           </div>
 
           <div class="card tile">
             <h3>Teknisk bakgrunn</h3>
-            <p class="muted">Designet er laget med grid, glow og kalde blå/grønne toner for å gi en mer digital og teknisk følelse.</p>
+            <p class="muted">
+              Siden bruker mørke flater, grid-linjer og kalde toner for å gi en tydeligere energidashboard-følelse.
+            </p>
           </div>
 
           <div class="card tile">
-            <h3>Klar til videre kobling</h3>
-            <p class="muted">Du kan senere koble grafen mot ekte API-data, Tibber, Home Assistant, CSV eller eget backend-endepunkt.</p>
+            <h3>Klar for videre kobling</h3>
+            <p class="muted">
+              Neste naturlige steg er å koble siden mot ekte data fra Tibber, Home Assistant, CSV eller et eget endepunkt.
+            </p>
           </div>
         </div>
       </div>
@@ -419,20 +287,25 @@
         <div class="card tile">
           <h3>Hva som er nytt</h3>
           <div class="kv">
-            <div class="kv-row"><span>Graf</span><strong>Ny canvas-graf</strong></div>
-            <div class="kv-row"><span>Bakgrunn</span><strong>Teknisk mørk profil</strong></div>
-            <div class="kv-row"><span>Visning</span><strong>Mer moderne paneler</strong></div>
+            <div class="kv-row"><span>Graf</span><strong>Canvas-basert visning</strong></div>
+            <div class="kv-row"><span>Profil</span><strong>Mørk teknisk stil</strong></div>
+            <div class="kv-row"><span>Paneler</span><strong>Bedre struktur</strong></div>
+            <div class="kv-row"><span>Neste nivå</span><strong>Klar for datakilder</strong></div>
           </div>
         </div>
 
         <div class="card tile">
           <h3>Videre idéer</h3>
-          <p class="muted">Legg til spotpris time for time, batteri, elbilforbruk, nettleie og sammenligning mellom måneder.</p>
+          <p class="muted">
+            Legg til spotpris time for time, batteri, elbilforbruk, nettleie og sammenligning mellom måneder og sesonger.
+          </p>
         </div>
 
         <div class="card tile">
           <h3>Praktisk</h3>
-          <p class="muted">Alt er laget som statisk HTML uten eksterne grafbibliotek, noe som gjør siden enkel å publisere og vedlikeholde.</p>
+          <p class="muted">
+            Grafen er laget uten eksterne biblioteker, slik at siden er enkel å publisere og lett å videreutvikle som statisk løsning.
+          </p>
         </div>
       </div>
     </section>
@@ -440,7 +313,7 @@
 
   <footer class="footer">
     <div class="container">
-      <div class="card">Strømoversikt · <span id="year"></span></div>
+      <div class="card footer-card">Strømoversikt · <span id="year"></span></div>
     </div>
   </footer>
 
