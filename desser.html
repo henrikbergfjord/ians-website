@@ -1,419 +1,686 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IANS – Desserts</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dessert | Henrik Bergfjord</title>
+  <meta
+    name="description"
+    content="Dessertgenerator med norske og filippinske dessertfavoritter, ingredienser, fremgangsmåte og historikk."
+  />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .dessert-hero-card{
+      overflow:hidden;
+      border-radius:22px;
+      margin-bottom:14px;
+    }
 
-<style>
-body{
-  margin:0;
-  font-family:Inter, sans-serif;
-  background:linear-gradient(135deg,#07111f,#0b1628);
-  color:white;
-}
+    .dessert-hero-image{
+      position:relative;
+      min-height:320px;
+      background-size:cover;
+      background-position:center;
+    }
 
-.container{
-  max-width:1000px;
-  margin:auto;
-  padding:20px;
-}
+    .dessert-hero-overlay{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(7,17,31,.18), rgba(7,17,31,.78)),
+        radial-gradient(circle at top left, rgba(121,169,255,.18), transparent 35%);
+    }
 
-h1{
-  font-size:2.5rem;
-}
+    .dessert-hero-content{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      padding:28px 24px 24px;
+    }
 
-.card{
-  background:rgba(255,255,255,0.05);
-  padding:20px;
-  border-radius:20px;
-  margin-top:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.3);
-}
+    .dessert-eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      color:#dfe9ff;
+      font-size:.78rem;
+      font-weight:800;
+      margin-bottom:10px;
+    }
 
-button{
-  margin:8px;
-  padding:10px 16px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-}
+    .dessert-hero-content h1{
+      margin:0 0 10px;
+      font-size:clamp(2rem, 5vw, 4rem);
+      line-height:1.02;
+      letter-spacing:-1px;
+    }
 
-.primary{background:#4fa3ff;color:white;}
-.secondary{background:#222;color:white;}
-.print{background:#28a745;color:white;}
+    .dessert-hero-content p{
+      margin:0;
+      color:#d2def4;
+      max-width:60ch;
+      font-size:1rem;
+      line-height:1.55;
+    }
 
-img{
-  width:100%;
-  max-height:420px;
-  object-fit:cover;
-  border-radius:15px;
-  margin-bottom:10px;
-  background:#111827;
-}
+    .dessert-hero-actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-p, li{
-  line-height:1.6;
-}
+    .dessert-layout{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:14px;
+    }
 
-.toplinks{
-  margin-top:8px;
-  margin-bottom:10px;
-}
+    .dessert-main{
+      overflow:hidden;
+    }
 
-.navbtn{
-  margin:8px;
-  padding:10px 16px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-  text-decoration:none;
-  display:inline-block;
-  color:white;
-  background:#222;
-}
+    .dessert-image-wrap{
+      padding:20px 20px 0;
+    }
 
-@media print{
-  button, .navbtn, .toplinks{
-    display:none !important;
-  }
-  body{
-    background:#fff;
-    color:#000;
-  }
-  .card{
-    background:#fff;
-    box-shadow:none;
-    border:1px solid #ddd;
-  }
-}
-</style>
+    .dessert-image{
+      width:100%;
+      max-height:420px;
+      object-fit:cover;
+      border-radius:18px;
+      display:block;
+      background:#111827;
+      border:1px solid var(--line);
+    }
+
+    .dessert-main-inner{
+      padding:20px;
+    }
+
+    .dessert-title{
+      margin:0 0 8px;
+      font-size:clamp(1.8rem, 3vw, 2.6rem);
+      line-height:1.08;
+      letter-spacing:-.6px;
+    }
+
+    .dessert-desc{
+      margin:0 0 18px;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:.98rem;
+    }
+
+    .dessert-meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.76rem;
+      font-weight:800;
+      color:#dfe9ff;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.09);
+    }
+
+    .dessert-content-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .inner-card{
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:16px;
+    }
+
+    .inner-card h3{
+      margin:0 0 10px;
+      font-size:1rem;
+      letter-spacing:-.2px;
+    }
+
+    .inner-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:.94rem;
+    }
+
+    .inner-card ul,
+    .inner-card ol{
+      margin:0;
+      padding-left:18px;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:.94rem;
+    }
+
+    .inner-card li + li{
+      margin-top:4px;
+    }
+
+    .dessert-side{
+      padding:18px;
+      display:grid;
+      gap:12px;
+      align-content:start;
+    }
+
+    .small-card{
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--line);
+    }
+
+    .small-card h3{
+      margin:0 0 8px;
+      font-size:1rem;
+    }
+
+    .small-card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.58;
+      font-size:.92rem;
+    }
+
+    .dessert-note{
+      font-size:.86rem;
+      color:#c8d6f0;
+      background:rgba(121,169,255,.08);
+      border:1px solid rgba(121,169,255,.18);
+      border-radius:14px;
+      padding:12px 14px;
+      line-height:1.55;
+    }
+
+    .coming-soon{
+      margin:18px 0 28px;
+      padding:18px;
+      border-radius:18px;
+      border:1px dashed rgba(255,255,255,.14);
+      background:rgba(255,255,255,.03);
+    }
+
+    .coming-soon h3{
+      margin:0 0 8px;
+      font-size:1rem;
+    }
+
+    .coming-soon p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    @media print{
+      header,
+      .dessert-hero-actions,
+      .dessert-side,
+      .coming-soon,
+      footer{
+        display:none !important;
+      }
+
+      body{
+        background:#fff;
+        color:#000;
+      }
+
+      .card,
+      .inner-card{
+        box-shadow:none;
+        border:1px solid #ddd;
+        background:#fff;
+      }
+
+      .dessert-desc,
+      .inner-card p,
+      .inner-card li{
+        color:#222;
+      }
+
+      .dessert-main{
+        border:none;
+      }
+    }
+
+    @media (max-width:980px){
+      .dessert-layout{
+        grid-template-columns:1fr;
+      }
+
+      .dessert-content-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:760px){
+      .dessert-hero-content{
+        padding:20px 16px 16px;
+      }
+
+      .dessert-main-inner,
+      .dessert-side{
+        padding:16px;
+      }
+
+      .dessert-image-wrap{
+        padding:16px 16px 0;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-mark"></span>
+        <span>Henrik Bergfjord</span>
+      </a>
 
-<div class="container">
+      <nav class="nav-links">
+        <a href="index.html">Hjem</a>
+        <a href="strom.html">Strøm</a>
+        <a href="dns-sjekk.html">DNS</a>
+        <a href="middag.html">Middag</a>
+        <a href="dessert.html" class="active">Dessert</a>
+        <a href="boller.html">Boller</a>
+        <a href="volvo-c40.html">Volvo C40</a>
+        <a href="maimyra.html">Maimyra</a>
+        <a href="galleri.html">Galleri</a>
+        <a href="SameieNett.html">SameieNett</a>
+      </nav>
 
-<h1>🍰 Dessert Generator</h1>
-<p>Norwegian 🇳🇴 + Filipino 🇵🇭 sweet favorites</p>
+      <button class="button primary" id="generateTop" type="button">Ny dessert</button>
+    </div>
+  </header>
 
-<div class="toplinks">
-  <a class="navbtn" href="index.html">⬅ Back</a>
-  <a class="navbtn" href="middag.html">🍽 Dinner</a>
-  <a class="navbtn" href="boller.html">🥐 Boller</a>
-</div>
+  <main>
+    <section class="page-header">
+      <div class="container card dessert-hero-card">
+        <div class="dessert-hero-image" id="heroImage">
+          <div class="dessert-hero-overlay"></div>
+          <div class="dessert-hero-content">
+            <div class="dessert-eyebrow">🍰 Norsk + filippinsk dessertinspirasjon</div>
+            <h1>Dessertgenerator</h1>
+            <p>
+              Finn en søt favoritt med bilde, tidsbruk, ingredienser, fremgangsmåte og litt historikk.
+            </p>
+            <div class="dessert-hero-actions">
+              <button class="button primary" id="generateHero" type="button">Generer dessert</button>
+              <button class="button secondary" type="button" onclick="window.print()">Skriv ut</button>
+              <a class="button secondary" href="middag.html">Middag</a>
+              <a class="button secondary" href="boller.html">Boller</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<div class="card">
-  <img id="image" alt="Dessert image">
-  <h2 id="title"></h2>
-  <p id="desc"></p>
+      <div class="container dessert-layout">
+        <section class="card dessert-main">
+          <div class="dessert-image-wrap">
+            <img id="image" class="dessert-image" alt="Dessertbilde" />
+          </div>
 
-  <h3>⏱️ Time</h3>
-  <p id="time"></p>
+          <div class="dessert-main-inner">
+            <div class="dessert-meta">
+              <span class="pill">Dessert</span>
+              <span class="pill" id="time">Tid</span>
+            </div>
 
-  <h3>🛒 Ingredients</h3>
-  <ul id="ingredients"></ul>
+            <h2 class="dessert-title" id="title">Dessert lastes...</h2>
+            <p class="dessert-desc" id="desc">En søt dessert vises her om et øyeblikk.</p>
 
-  <h3>👨‍🍳 Instructions</h3>
-  <ol id="instructions"></ol>
+            <div class="dessert-content-grid">
+              <article class="inner-card">
+                <h3>Ingredienser</h3>
+                <ul id="ingredients"></ul>
+              </article>
 
-  <h3>📜 History</h3>
-  <p id="history"></p>
-</div>
+              <article class="inner-card">
+                <h3>Slik lager du den</h3>
+                <ol id="instructions"></ol>
+              </article>
 
-<button class="primary" onclick="generate()">Generate dessert</button>
-<button class="print" onclick="window.print()">Print</button>
-<button class="secondary" onclick="location.href='index.html'">Dashboard</button>
+              <article class="inner-card" style="grid-column:1 / -1;">
+                <h3>Historikk</h3>
+                <p id="history"></p>
+              </article>
+            </div>
+          </div>
+        </section>
 
-</div>
+        <aside class="card dessert-side">
+          <div class="small-card">
+            <h3>Hurtigvalg</h3>
+            <p>
+              Generer en ny dessert, skriv ut oppskriften eller hopp videre til middag og boller.
+            </p>
+          </div>
 
-<script>
-const desserts = [
+          <div class="dessert-note">
+            Norske og filippinske desserter viser to forskjellige matkulturer, men begge er sterke på tradisjon, feiring og familie.
+          </div>
 
-/* 🇳🇴 NORWAY */
+          <div class="small-card">
+            <h3>Neste nivå</h3>
+            <p>
+              Senere kan denne siden få favoritter, handleliste og forslag til hva som passer etter middagen du valgte.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-{
-title:"Vafler",
-time:"20–25 min",
-image:"https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1400&q=80",
-desc:"Classic Norwegian waffles, soft and heart-shaped, often served with brown cheese, jam, or sour cream.",
-ingredients:[
-  "4 dl wheat flour",
-  "1 dl sugar",
-  "1 tsp baking powder",
-  "1 tsp vanilla sugar",
-  "4 dl milk",
-  "3 eggs",
-  "100 g melted butter"
-],
-instructions:[
-  "Mix flour, sugar, baking powder, and vanilla sugar in a bowl.",
-  "Add milk little by little while whisking.",
-  "Whisk in the eggs.",
-  "Add melted butter and mix until smooth.",
-  "Let the batter rest for 10 minutes.",
-  "Bake in a waffle iron until golden."
-],
-history:"Waffles are deeply rooted in Scandinavian food culture and became especially popular in Norway as an easy homemade sweet treat."
-},
+    <section class="container">
+      <div class="coming-soon">
+        <h3>Videre utvikling</h3>
+        <p>
+          En senere versjon kan koble dessertsiden til middagssiden, slik at du får forslag til dessert som passer til dagens middag eller ukemeny.
+        </p>
+      </div>
+    </section>
+  </main>
 
-{
-title:"Riskrem",
-time:"25–30 min + chilling",
-image:"https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1400&q=80",
-desc:"A creamy rice dessert traditionally served at Christmas with red berry sauce.",
-ingredients:[
-  "5 dl cold rice porridge",
-  "3 dl whipping cream",
-  "2 tbsp sugar",
-  "1 tsp vanilla sugar",
-  "Berry sauce for serving"
-],
-instructions:[
-  "Whip the cream with sugar and vanilla sugar until soft peaks form.",
-  "Fold the whipped cream gently into the cold rice porridge.",
-  "Chill until serving.",
-  "Serve with raspberry or strawberry sauce."
-],
-history:"Riskrem grew out of Norwegian Christmas porridge traditions and became a festive dessert favorite."
-},
+  <footer class="footer">
+    <div class="container">
+      Henrik Bergfjord · Dessertgenerator · Norske og filippinske dessertfavoritter
+    </div>
+  </footer>
 
-{
-title:"Kvæfjordkake",
-time:"1.5–2 hours",
-image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
-desc:"Known as ‘Verdens beste’ in Norway, this cake has soft sponge, meringue, vanilla cream, and almonds.",
-ingredients:[
-  "125 g butter",
-  "125 g sugar",
-  "4 egg yolks",
-  "125 g flour",
-  "1 tsp baking powder",
-  "4 tbsp milk",
-  "4 egg whites",
-  "200 g sugar for meringue",
-  "50 g sliced almonds",
-  "3 dl vanilla cream",
-  "2 dl whipped cream"
-],
-instructions:[
-  "Cream butter and sugar.",
-  "Add egg yolks one at a time.",
-  "Mix in flour, baking powder, and milk.",
-  "Spread the batter in a baking tray.",
-  "Whisk egg whites and sugar into meringue and spread on top.",
-  "Sprinkle with almonds.",
-  "Bake at 175°C for about 30 minutes.",
-  "Cool completely, then fill with vanilla cream and whipped cream."
-],
-history:"This cake is strongly associated with Northern Norway and became famous nationwide as ‘the world’s best cake’."
-},
+  <script>
+    const desserts = [
+      {
+        title:"Vafler",
+        time:"20–25 min",
+        image:"https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1400&q=80",
+        desc:"Klassiske norske vafler, myke og hjerteformede, ofte servert med brunost, syltetøy eller rømme.",
+        ingredients:[
+          "4 dl hvetemel",
+          "1 dl sukker",
+          "1 ts bakepulver",
+          "1 ts vaniljesukker",
+          "4 dl melk",
+          "3 egg",
+          "100 g smeltet smør"
+        ],
+        instructions:[
+          "Bland mel, sukker, bakepulver og vaniljesukker i en bolle.",
+          "Spe med melk litt etter litt mens du visper.",
+          "Visp inn eggene.",
+          "Tilsett smeltet smør og bland til røren er glatt.",
+          "La røren hvile i 10 minutter.",
+          "Stek i vaffeljern til vaflene er gylne."
+        ],
+        history:"Vafler har dype røtter i skandinavisk matkultur og ble spesielt populære i Norge som en enkel og hjemmelaget søt rett."
+      },
+      {
+        title:"Riskrem",
+        time:"25–30 min + kjøling",
+        image:"https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1400&q=80",
+        desc:"En kremet riskrem som tradisjonelt serveres i julen med rød saus.",
+        ingredients:[
+          "5 dl kald risgrøt",
+          "3 dl kremfløte",
+          "2 ss sukker",
+          "1 ts vaniljesukker",
+          "Bærsaus til servering"
+        ],
+        instructions:[
+          "Pisk kremfløte med sukker og vaniljesukker til myke topper.",
+          "Vend den piskede kremen forsiktig inn i den kalde risgrøten.",
+          "Sett kjølig til servering.",
+          "Server med bringebær- eller jordbærsaus."
+        ],
+        history:"Riskrem vokste frem fra norske grøttradisjoner i julen og ble en fast del av høytidsdessertene."
+      },
+      {
+        title:"Kvæfjordkake",
+        time:"1,5–2 timer",
+        image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
+        desc:"Kjent som Verdens beste, med sukkerbrød, marengs, vaniljekrem og mandler.",
+        ingredients:[
+          "125 g smør",
+          "125 g sukker",
+          "4 eggeplommer",
+          "125 g mel",
+          "1 ts bakepulver",
+          "4 ss melk",
+          "4 eggehviter",
+          "200 g sukker til marengs",
+          "50 g mandelflak",
+          "3 dl vaniljekrem",
+          "2 dl kremfløte"
+        ],
+        instructions:[
+          "Pisk smør og sukker hvitt.",
+          "Tilsett eggeplommene én etter én.",
+          "Bland inn mel, bakepulver og melk.",
+          "Fordel røren i en bakeform.",
+          "Pisk eggehviter og sukker til marengs og fordel over røren.",
+          "Dryss over mandelflak.",
+          "Stek på 175°C i ca. 30 minutter.",
+          "Avkjøl helt og fyll med vaniljekrem og pisket krem."
+        ],
+        history:"Kaken forbindes sterkt med Nord-Norge og ble kjent over hele landet som Verdens beste."
+      },
+      {
+        title:"Tilslørte bondepiker",
+        time:"20–30 min",
+        image:"https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
+        desc:"En lagvis dessert med eplemos, krem og søte sprø smuler.",
+        ingredients:[
+          "4 epler",
+          "2 ss sukker",
+          "1 ts kanel",
+          "100 g kavring eller knuste kjeks",
+          "2 ss smør",
+          "3 dl kremfløte"
+        ],
+        instructions:[
+          "Skrell og skjær eplene i biter.",
+          "Kok dem med sukker og kanel til de er myke.",
+          "Stek kavring eller smuler i smør til de er gylne.",
+          "Pisk kremfløten lett.",
+          "Legg dessert lagvis i glass eller skåler."
+        ],
+        history:"En gammel norsk gårdsdessert bygget på enkle råvarer og smarte lag."
+      },
+      {
+        title:"Multekrem",
+        time:"15 min",
+        image:"https://images.unsplash.com/photo-1505253758473-96b7015fcd40?auto=format&fit=crop&w=1400&q=80",
+        desc:"En rik og enkel dessert med multer og krem.",
+        ingredients:[
+          "300 g multer",
+          "3 dl kremfløte",
+          "2 ss sukker"
+        ],
+        instructions:[
+          "Pisk kremfløten lett med sukker.",
+          "Vend inn mesteparten av multene.",
+          "Server kald med ekstra bær på toppen."
+        ],
+        history:"Multer er høyt verdsatt i Norge, og multekrem ble en klassiker ved høytider og feiringer."
+      },
+      {
+        title:"Halo-Halo",
+        time:"15–20 min",
+        image:"https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1400&q=80",
+        desc:"En fargerik filippinsk dessert med knust is, melk, søte bønner, frukt og is.",
+        ingredients:[
+          "4 kopper knust is",
+          "2 dl evaporert melk",
+          "1 dl søte bønner",
+          "1 dl nata de coco eller gelé",
+          "1 banan i skiver",
+          "1 dl søt jackfruit",
+          "4 kuler ube- eller vaniljeis"
+        ],
+        instructions:[
+          "Fordel de søte ingrediensene i høye glass.",
+          "Topp med knust is.",
+          "Hell over evaporert melk.",
+          "Legg en kule is på toppen.",
+          "Server med en gang og rør før du spiser."
+        ],
+        history:"Halo-halo ble en av de mest ikoniske filippinske dessertene som en avkjølende rett i varmt klima."
+      },
+      {
+        title:"Leche Flan",
+        time:"1–1,5 time",
+        image:"https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1400&q=80",
+        desc:"En rik og silkemyk filippinsk karamellpudding, ofte servert ved høytider og selskap.",
+        ingredients:[
+          "10 eggeplommer",
+          "1 boks kondensert melk",
+          "1 boks evaporert melk",
+          "1 ts vanilje",
+          "150 g sukker til karamell"
+        ],
+        instructions:[
+          "Smelt sukker i panne til karamell.",
+          "Hell karamellen i former.",
+          "Bland eggeplommer, kondensert melk, evaporert melk og vanilje forsiktig.",
+          "Hell blandingen i formene.",
+          "Damp eller bak i vannbad til den setter seg.",
+          "Avkjøl helt før servering."
+        ],
+        history:"Leche flan viser tydelig spansk dessertpåvirkning og ble en høyt elsket filippinsk klassiker."
+      },
+      {
+        title:"Bibingka",
+        time:"35–45 min",
+        image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
+        desc:"En myk filippinsk riskake som ofte serveres varm i juletiden.",
+        ingredients:[
+          "2 kopper rismel",
+          "1 kopp sukker",
+          "1 ss bakepulver",
+          "2 egg",
+          "4 dl kokosmelk",
+          "50 g smeltet smør",
+          "Ost eller saltet egg til topping"
+        ],
+        instructions:[
+          "Bland rismel, sukker og bakepulver.",
+          "Tilsett egg, kokosmelk og smør.",
+          "Hell røren i smurt form.",
+          "Topp med ost eller saltet egg om ønskelig.",
+          "Stek på 180°C i 25–30 minutter til kaken er fast."
+        ],
+        history:"Bibingka er en del av den lange filippinske riskaketradisjonen og er særlig knyttet til julemat."
+      },
+      {
+        title:"Turon",
+        time:"20–25 min",
+        image:"https://images.unsplash.com/photo-1488477304112-4944851de03d?auto=format&fit=crop&w=1400&q=80",
+        desc:"Sprø, friterte bananruller med karamellisert sukker, svært populær som merienda eller dessert.",
+        ingredients:[
+          "4 bananer",
+          "1 dl brunt sukker",
+          "8 vårrullark",
+          "Olje til steking",
+          "Evt. jackfruit i strimler"
+        ],
+        instructions:[
+          "Del bananene i to på langs.",
+          "Rull hver bit i brunt sukker.",
+          "Legg dem i vårrullark med eventuell jackfruit.",
+          "Rull tett sammen og forsegl.",
+          "Friter til de er gyldne og karamelliserte."
+        ],
+        history:"Turon er en klassisk filippinsk snack-dessert som ble populær gjennom hjemmekjøkken og gatemat."
+      },
+      {
+        title:"Ube Cake",
+        time:"1–1,5 time",
+        image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
+        desc:"En myk kake med lilla yam og søt, kremet ube-smak.",
+        ingredients:[
+          "250 g mel",
+          "200 g sukker",
+          "1 ss bakepulver",
+          "4 egg",
+          "1 dl olje",
+          "2 dl melk",
+          "200 g ube halaya eller ube-syltetøy",
+          "Ube-frosting hvis ønskelig"
+        ],
+        instructions:[
+          "Bland de tørre ingrediensene i en bolle.",
+          "Visp egg, olje, melk og ube i en annen.",
+          "Bland alt til en jevn røre.",
+          "Hell i smurt kakeform.",
+          "Stek på 175°C i 30–40 minutter.",
+          "Avkjøl og ha på frosting om ønskelig."
+        ],
+        history:"Ube-desserter har blitt stadig mer populære etter hvert som filippinske smaker har fått større oppmerksomhet."
+      }
+    ];
 
-{
-title:"Tilslørte bondepiker",
-time:"20–30 min",
-image:"https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=1400&q=80",
-desc:"A layered dessert with stewed apples, whipped cream, and crispy sweet crumbs.",
-ingredients:[
-  "4 apples",
-  "2 tbsp sugar",
-  "1 tsp cinnamon",
-  "100 g breadcrumbs or crushed biscuits",
-  "2 tbsp butter",
-  "3 dl whipping cream"
-],
-instructions:[
-  "Peel and slice the apples.",
-  "Cook them with sugar and cinnamon until soft.",
-  "Toast breadcrumbs in butter until golden.",
-  "Whip the cream lightly.",
-  "Layer apples, crumbs, and cream in glasses or bowls."
-],
-history:"An old Norwegian farmhouse dessert built from simple ingredients and clever layering."
-},
+    function fallbackImage(title){
+      return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+              <stop stop-color="#07111f" offset="0"/>
+              <stop stop-color="#0b1628" offset="1"/>
+            </linearGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#g)"/>
+          <text x="50%" y="42%" text-anchor="middle" fill="#ffffff" font-size="86" font-family="Arial">🍰</text>
+          <text x="50%" y="56%" text-anchor="middle" fill="#dbeafe" font-size="34" font-family="Arial">${title}</text>
+          <text x="50%" y="64%" text-anchor="middle" fill="#93a7c7" font-size="22" font-family="Arial">Bilde midlertidig</text>
+        </svg>
+      `)}`;
+    }
 
-{
-title:"Multekrem",
-time:"15 min",
-image:"https://images.unsplash.com/photo-1505253758473-96b7015fcd40?auto=format&fit=crop&w=1400&q=80",
-desc:"A rich cloudberry cream dessert, simple but luxurious.",
-ingredients:[
-  "300 g cloudberries",
-  "3 dl whipping cream",
-  "2 tbsp sugar"
-],
-instructions:[
-  "Whip the cream lightly with sugar.",
-  "Fold in most of the cloudberries.",
-  "Serve chilled with extra berries on top."
-],
-history:"Cloudberries are highly prized in Norway, and multekrem became a special dessert for celebrations and holidays."
-},
+    function generate(){
+      const d = desserts[Math.floor(Math.random()*desserts.length)];
 
-/* 🇵🇭 PHILIPPINES */
+      document.getElementById("title").textContent = d.title;
+      document.getElementById("desc").textContent = d.desc;
+      document.getElementById("time").textContent = d.time;
 
-{
-title:"Halo-Halo",
-time:"15–20 min",
-image:"https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1400&q=80",
-desc:"A colorful shaved ice dessert with milk, sweet beans, jelly, fruits, and ice cream.",
-ingredients:[
-  "4 cups shaved ice",
-  "2 dl evaporated milk",
-  "1 dl sweet beans",
-  "1 dl nata de coco or jelly",
-  "1 banana, sliced",
-  "1 dl sweet jackfruit",
-  "4 scoops ube or vanilla ice cream"
-],
-instructions:[
-  "Divide the sweet ingredients into tall glasses.",
-  "Top with shaved ice.",
-  "Pour evaporated milk over the ice.",
-  "Add a scoop of ice cream on top.",
-  "Serve immediately and mix before eating."
-],
-history:"Halo-halo became one of the most iconic Filipino desserts as a cooling treat for hot weather."
-},
+      const img = document.getElementById("image");
+      img.onerror = () => { img.src = fallbackImage(d.title); };
+      img.src = d.image;
 
-{
-title:"Leche Flan",
-time:"1–1.5 hours",
-image:"https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1400&q=80",
-desc:"A rich and smooth Filipino caramel custard, often served at parties and holidays.",
-ingredients:[
-  "10 egg yolks",
-  "1 can condensed milk",
-  "1 can evaporated milk",
-  "1 tsp vanilla",
-  "150 g sugar for caramel"
-],
-instructions:[
-  "Heat sugar in a pan until it turns into caramel.",
-  "Pour caramel into molds.",
-  "Mix egg yolks, condensed milk, evaporated milk, and vanilla gently.",
-  "Pour into molds.",
-  "Steam or bake in a water bath until set.",
-  "Cool completely before serving."
-],
-history:"Leche flan reflects Spanish colonial dessert influence and became a beloved Filipino classic."
-},
+      document.getElementById("ingredients").innerHTML =
+        d.ingredients.map(i => `<li>${i}</li>`).join("");
 
-{
-title:"Bibingka",
-time:"35–45 min",
-image:"https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
-desc:"A soft Filipino rice cake often served warm during the Christmas season.",
-ingredients:[
-  "2 cups rice flour",
-  "1 cup sugar",
-  "1 tbsp baking powder",
-  "2 eggs",
-  "4 dl coconut milk",
-  "50 g melted butter",
-  "Cheese or salted egg for topping"
-],
-instructions:[
-  "Mix rice flour, sugar, and baking powder.",
-  "Add eggs, coconut milk, and butter.",
-  "Pour into a greased baking pan.",
-  "Top with cheese or salted egg if desired.",
-  "Bake at 180°C for 25–30 minutes until set."
-],
-history:"Bibingka is part of the long Filipino rice-cake tradition and is especially tied to Christmas food culture."
-},
+      document.getElementById("instructions").innerHTML =
+        d.instructions.map(i => `<li>${i}</li>`).join("");
 
-{
-title:"Turon",
-time:"20–25 min",
-image:"https://images.unsplash.com/photo-1488477304112-4944851de03d?auto=format&fit=crop&w=1400&q=80",
-desc:"Crispy fried banana rolls with caramelized sugar, very popular as merienda or dessert.",
-ingredients:[
-  "4 bananas",
-  "1 dl brown sugar",
-  "8 spring roll wrappers",
-  "Oil for frying",
-  "Optional jackfruit strips"
-],
-instructions:[
-  "Cut bananas in half lengthwise.",
-  "Roll each banana piece in brown sugar.",
-  "Place in wrapper with optional jackfruit.",
-  "Roll tightly and seal.",
-  "Fry in oil until golden and caramelized."
-],
-history:"Turon is a classic Filipino snack-dessert that became popular through home kitchens and street food culture."
-},
+      document.getElementById("history").textContent = d.history;
+      document.getElementById("heroImage").style.background =
+        `linear-gradient(180deg, rgba(7,17,31,.08), rgba(7,17,31,.28)), url('${d.image}') center/cover no-repeat`;
+    }
 
-{
-title:"Ube Cake",
-time:"1–1.5 hours",
-image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1400&q=80",
-desc:"A soft purple yam cake with a sweet, creamy ube flavor.",
-ingredients:[
-  "250 g flour",
-  "200 g sugar",
-  "1 tbsp baking powder",
-  "4 eggs",
-  "1 dl oil",
-  "2 dl milk",
-  "200 g ube halaya or ube jam",
-  "Ube frosting if desired"
-],
-instructions:[
-  "Mix dry ingredients in one bowl.",
-  "Whisk eggs, oil, milk, and ube in another bowl.",
-  "Combine everything into a smooth batter.",
-  "Pour into a greased cake pan.",
-  "Bake at 175°C for 30–40 minutes.",
-  "Cool and frost if desired."
-],
-history:"Ube desserts became increasingly popular as Filipino flavors gained broader recognition both locally and internationally."
-}
+    document.getElementById("generateTop").addEventListener("click", generate);
+    document.getElementById("generateHero").addEventListener("click", generate);
 
-];
-
-function fallbackImage(title){
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
-      <defs>
-        <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-          <stop stop-color="#07111f" offset="0"/>
-          <stop stop-color="#0b1628" offset="1"/>
-        </linearGradient>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#g)"/>
-      <text x="50%" y="42%" text-anchor="middle" fill="#ffffff" font-size="86" font-family="Arial">🍰</text>
-      <text x="50%" y="56%" text-anchor="middle" fill="#dbeafe" font-size="34" font-family="Arial">${title}</text>
-      <text x="50%" y="64%" text-anchor="middle" fill="#93a7c7" font-size="22" font-family="Arial">Image placeholder</text>
-    </svg>
-  `)}`;
-}
-
-function generate(){
-  const d = desserts[Math.floor(Math.random()*desserts.length)];
-
-  document.getElementById("title").textContent = d.title;
-  document.getElementById("desc").textContent = d.desc;
-  document.getElementById("time").textContent = d.time;
-
-  const img = document.getElementById("image");
-  img.onerror = () => { img.src = fallbackImage(d.title); };
-  img.src = d.image;
-
-  document.getElementById("ingredients").innerHTML =
-    d.ingredients.map(i=>`<li>${i}</li>`).join("");
-
-  document.getElementById("instructions").innerHTML =
-    d.instructions.map(i=>`<li>${i}</li>`).join("");
-
-  document.getElementById("history").textContent = d.history;
-}
-
-generate();
-</script>
-
+    window.addEventListener("load", generate);
+  </script>
 </body>
 </html>
