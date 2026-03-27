@@ -8,8 +8,150 @@
     name="description"
     content="Dessertgenerator med norske og filippinske dessertfavoritter, ingredienser, fremgangsmåte og historikk."
   />
-  <link rel="stylesheet" href="assets/styles.css" />
   <style>
+    :root{
+      --bg:#07111f;
+      --bg2:#0b1628;
+      --panel:#0f1b2d;
+      --text:#edf4ff;
+      --muted:#93a7c7;
+      --line:rgba(255,255,255,.08);
+      --accent:#79a9ff;
+      --accent2:#8b7cff;
+      --shadow:0 12px 28px rgba(0,0,0,.22);
+      --radius:18px;
+      --max:1240px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      font-family:Inter, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(121,169,255,.12), transparent 30%),
+        linear-gradient(135deg,var(--bg),var(--bg2));
+      color:var(--text);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .container{
+      width:min(var(--max), calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(7,17,31,.88);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav{
+      min-height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      padding:12px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:-.2px;
+    }
+
+    .brand-mark{
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 0 20px rgba(121,169,255,.55);
+      display:inline-block;
+    }
+
+    .nav-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .nav-links a{
+      padding:8px 12px;
+      border-radius:10px;
+      color:var(--muted);
+      transition:.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active{
+      color:var(--text);
+      background:rgba(255,255,255,.06);
+    }
+
+    .button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:11px 16px;
+      border-radius:12px;
+      font-weight:700;
+      border:1px solid transparent;
+      cursor:pointer;
+      transition:.2s ease;
+      text-decoration:none;
+      font-size:.95rem;
+    }
+
+    button.button{
+      appearance:none;
+      -webkit-appearance:none;
+    }
+
+    .button.primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:white;
+      border:none;
+    }
+
+    .button.primary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 24px rgba(121,169,255,.22);
+    }
+
+    .button.secondary{
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+
+    .button.secondary:hover{
+      background:rgba(255,255,255,.08);
+    }
+
+    .page-header{
+      padding:20px 0 0;
+    }
+
+    .card{
+      background:rgba(15,27,45,.92);
+      border:1px solid var(--line);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+    }
+
     .dessert-hero-card{
       overflow:hidden;
       border-radius:22px;
@@ -21,6 +163,9 @@
       min-height:320px;
       background-size:cover;
       background-position:center;
+      background-image:
+        linear-gradient(180deg, rgba(7,17,31,.08), rgba(7,17,31,.28)),
+        url("https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1400&q=80");
     }
 
     .dessert-hero-overlay{
@@ -37,6 +182,7 @@
       right:0;
       bottom:0;
       padding:28px 24px 24px;
+      z-index:2;
     }
 
     .dessert-eyebrow{
@@ -231,12 +377,19 @@
       line-height:1.55;
     }
 
+    .footer{
+      padding:28px 0 40px;
+      color:var(--muted);
+      text-align:center;
+      font-size:.92rem;
+    }
+
     @media print{
-      header,
+      .topbar,
       .dessert-hero-actions,
       .dessert-side,
       .coming-soon,
-      footer{
+      .footer{
         display:none !important;
       }
 
@@ -254,7 +407,8 @@
 
       .dessert-desc,
       .inner-card p,
-      .inner-card li{
+      .inner-card li,
+      .small-card p{
         color:#222;
       }
 
@@ -274,6 +428,10 @@
     }
 
     @media (max-width:760px){
+      .nav{
+        align-items:flex-start;
+      }
+
       .dessert-hero-content{
         padding:20px 16px 16px;
       }
@@ -656,11 +814,12 @@
     }
 
     function generate(){
-      const d = desserts[Math.floor(Math.random()*desserts.length)];
+      const d = desserts[Math.floor(Math.random() * desserts.length)];
 
       document.getElementById("title").textContent = d.title;
       document.getElementById("desc").textContent = d.desc;
       document.getElementById("time").textContent = d.time;
+      document.getElementById("history").textContent = d.history;
 
       const img = document.getElementById("image");
       img.onerror = () => { img.src = fallbackImage(d.title); };
@@ -672,15 +831,21 @@
       document.getElementById("instructions").innerHTML =
         d.instructions.map(i => `<li>${i}</li>`).join("");
 
-      document.getElementById("history").textContent = d.history;
-      document.getElementById("heroImage").style.background =
-        `linear-gradient(180deg, rgba(7,17,31,.08), rgba(7,17,31,.28)), url('${d.image}') center/cover no-repeat`;
+      document.getElementById("heroImage").style.backgroundImage =
+        `linear-gradient(180deg, rgba(7,17,31,.08), rgba(7,17,31,.28)), url("${d.image}")`;
+      document.getElementById("heroImage").style.backgroundSize = "cover";
+      document.getElementById("heroImage").style.backgroundPosition = "center";
     }
 
-    document.getElementById("generateTop").addEventListener("click", generate);
-    document.getElementById("generateHero").addEventListener("click", generate);
+    document.addEventListener("DOMContentLoaded", () => {
+      const btnTop = document.getElementById("generateTop");
+      const btnHero = document.getElementById("generateHero");
 
-    window.addEventListener("load", generate);
+      if(btnTop) btnTop.addEventListener("click", generate);
+      if(btnHero) btnHero.addEventListener("click", generate);
+
+      generate();
+    });
   </script>
 </body>
 </html>
