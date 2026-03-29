@@ -9,6 +9,161 @@
     content="Portal med oversikt over strøm, DNS, Volvo C40, Maimyra, galleri, SameieNett og hverdagssider."
   />
   <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .clock-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .clock-card{
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:20px;
+      padding:18px;
+      backdrop-filter:blur(8px);
+    }
+
+    .clock-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+      gap:12px;
+    }
+
+    .clock-title{
+      font-size:1rem;
+      font-weight:700;
+    }
+
+    .clock-sub{
+      font-size:.9rem;
+      opacity:.75;
+    }
+
+    .digital-clock{
+      font-size:2rem;
+      font-weight:800;
+      letter-spacing:.04em;
+      margin:8px 0 4px;
+    }
+
+    .digital-date{
+      font-size:.95rem;
+      opacity:.8;
+      margin-bottom:16px;
+    }
+
+    .analog-wrap{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin-top:6px;
+    }
+
+    .analog-clock{
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      position:relative;
+      border:4px solid rgba(255,255,255,0.18);
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,0.12) 0 6px, transparent 7px),
+        rgba(255,255,255,0.03);
+      box-shadow:
+        inset 0 0 20px rgba(255,255,255,0.05),
+        0 10px 24px rgba(0,0,0,0.25);
+    }
+
+    .analog-clock .marker{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:2px;
+      height:68px;
+      transform-origin:center bottom;
+      margin-left:-1px;
+      margin-top:-68px;
+    }
+
+    .analog-clock .marker::after{
+      content:"";
+      display:block;
+      width:2px;
+      height:10px;
+      background:rgba(255,255,255,0.6);
+      border-radius:2px;
+      margin:0 auto;
+    }
+
+    .analog-clock .marker.hour::after{
+      width:3px;
+      height:14px;
+      background:rgba(255,255,255,0.85);
+    }
+
+    .hand{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform-origin:bottom center;
+      border-radius:999px;
+    }
+
+    .hand.hour{
+      width:6px;
+      height:38px;
+      margin-left:-3px;
+      margin-top:-38px;
+      background:#ffffff;
+    }
+
+    .hand.minute{
+      width:4px;
+      height:54px;
+      margin-left:-2px;
+      margin-top:-54px;
+      background:#9fd0ff;
+    }
+
+    .hand.second{
+      width:2px;
+      height:62px;
+      margin-left:-1px;
+      margin-top:-62px;
+      background:#ff8a8a;
+    }
+
+    .clock-center{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:12px;
+      height:12px;
+      margin-left:-6px;
+      margin-top:-6px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 0 0 3px rgba(255,255,255,0.15);
+    }
+
+    .hero-panel.portal-hero{
+      overflow:hidden;
+    }
+
+    @media (max-width: 720px){
+      .digital-clock{
+        font-size:1.6rem;
+      }
+
+      .analog-clock{
+        width:130px;
+        height:130px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -50,6 +205,78 @@
             <a class="button primary" href="#oversikt">Åpne oversikt</a>
             <a class="button secondary" href="strom.html">Gå til strøm</a>
             <a class="button secondary" href="volvo-c40.html">Se Volvo C40</a>
+          </div>
+
+          <div class="clock-grid">
+            <div class="clock-card">
+              <div class="clock-header">
+                <div>
+                  <div class="clock-title">Norge</div>
+                  <div class="clock-sub">Lokal tid</div>
+                </div>
+                <span class="badge ok">NO</span>
+              </div>
+
+              <div class="digital-clock" id="clock-no-digital">--:--:--</div>
+              <div class="digital-date" id="clock-no-date">Laster dato...</div>
+
+              <div class="analog-wrap">
+                <div class="analog-clock" id="clock-no-analog">
+                  <div class="marker hour" style="transform:rotate(0deg)"></div>
+                  <div class="marker" style="transform:rotate(30deg)"></div>
+                  <div class="marker" style="transform:rotate(60deg)"></div>
+                  <div class="marker hour" style="transform:rotate(90deg)"></div>
+                  <div class="marker" style="transform:rotate(120deg)"></div>
+                  <div class="marker" style="transform:rotate(150deg)"></div>
+                  <div class="marker hour" style="transform:rotate(180deg)"></div>
+                  <div class="marker" style="transform:rotate(210deg)"></div>
+                  <div class="marker" style="transform:rotate(240deg)"></div>
+                  <div class="marker hour" style="transform:rotate(270deg)"></div>
+                  <div class="marker" style="transform:rotate(300deg)"></div>
+                  <div class="marker" style="transform:rotate(330deg)"></div>
+
+                  <div class="hand hour" id="clock-no-hour"></div>
+                  <div class="hand minute" id="clock-no-minute"></div>
+                  <div class="hand second" id="clock-no-second"></div>
+                  <div class="clock-center"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="clock-card">
+              <div class="clock-header">
+                <div>
+                  <div class="clock-title">Filippinene</div>
+                  <div class="clock-sub">Manila / PH tid</div>
+                </div>
+                <span class="badge">PH</span>
+              </div>
+
+              <div class="digital-clock" id="clock-ph-digital">--:--:--</div>
+              <div class="digital-date" id="clock-ph-date">Laster dato...</div>
+
+              <div class="analog-wrap">
+                <div class="analog-clock" id="clock-ph-analog">
+                  <div class="marker hour" style="transform:rotate(0deg)"></div>
+                  <div class="marker" style="transform:rotate(30deg)"></div>
+                  <div class="marker" style="transform:rotate(60deg)"></div>
+                  <div class="marker hour" style="transform:rotate(90deg)"></div>
+                  <div class="marker" style="transform:rotate(120deg)"></div>
+                  <div class="marker" style="transform:rotate(150deg)"></div>
+                  <div class="marker hour" style="transform:rotate(180deg)"></div>
+                  <div class="marker" style="transform:rotate(210deg)"></div>
+                  <div class="marker" style="transform:rotate(240deg)"></div>
+                  <div class="marker hour" style="transform:rotate(270deg)"></div>
+                  <div class="marker" style="transform:rotate(300deg)"></div>
+                  <div class="marker" style="transform:rotate(330deg)"></div>
+
+                  <div class="hand hour" id="clock-ph-hour"></div>
+                  <div class="hand minute" id="clock-ph-minute"></div>
+                  <div class="hand second" id="clock-ph-second"></div>
+                  <div class="clock-center"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -212,5 +439,77 @@
       Henrik Bergfjord · Portal · Strøm, DNS, Volvo C40, Maimyra, Galleri, SameieNett, Middag, Dessert og Boller
     </div>
   </footer>
+
+  <script>
+    function updateClock(timeZone, digitalId, dateId, hourId, minuteId, secondId, locale = "no-NO") {
+      const now = new Date();
+
+      const formatter = new Intl.DateTimeFormat("en-GB", {
+        timeZone,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      });
+
+      const dateFormatter = new Intl.DateTimeFormat(locale, {
+        timeZone,
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+
+      const parts = new Intl.DateTimeFormat("en-GB", {
+        timeZone,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).formatToParts(now);
+
+      const getPart = (type) => Number(parts.find(p => p.type === type)?.value || 0);
+
+      const hours = getPart("hour");
+      const minutes = getPart("minute");
+      const seconds = getPart("second");
+
+      document.getElementById(digitalId).textContent = formatter.format(now);
+      document.getElementById(dateId).textContent = dateFormatter.format(now);
+
+      const hourDeg = (hours % 12) * 30 + minutes * 0.5;
+      const minuteDeg = minutes * 6 + seconds * 0.1;
+      const secondDeg = seconds * 6;
+
+      document.getElementById(hourId).style.transform = `rotate(${hourDeg}deg)`;
+      document.getElementById(minuteId).style.transform = `rotate(${minuteDeg}deg)`;
+      document.getElementById(secondId).style.transform = `rotate(${secondDeg}deg)`;
+    }
+
+    function tickClocks() {
+      updateClock(
+        "Europe/Oslo",
+        "clock-no-digital",
+        "clock-no-date",
+        "clock-no-hour",
+        "clock-no-minute",
+        "clock-no-second",
+        "no-NO"
+      );
+
+      updateClock(
+        "Asia/Manila",
+        "clock-ph-digital",
+        "clock-ph-date",
+        "clock-ph-hour",
+        "clock-ph-minute",
+        "clock-ph-second",
+        "en-PH"
+      );
+    }
+
+    tickClocks();
+    setInterval(tickClocks, 1000);
+  </script>
 </body>
 </html>
