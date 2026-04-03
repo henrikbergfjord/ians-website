@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galleri | IANS</title>
+  <meta
+    name="description"
+    content="Automatisk galleri som henter bilder fra Azure Blob Storage."
+  />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .gallery-page{
+      max-width:1200px;
+      margin:0 auto;
+      padding:32px 20px 48px;
+    }
+
+    .gallery-header{
+      text-align:center;
+      margin-bottom:28px;
+    }
+
+    .gallery-header h1{
+      margin-bottom:10px;
+    }
+
+    .gallery-header p{
+      opacity:.8;
+      max-width:720px;
+      margin:0 auto;
+    }
+
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:20px;
+      margin-top:24px;
+    }
+
+    .gallery-card{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 10px 20px rgba(0,0,0,.25);
+      transition:transform .2s ease, box-shadow .2s ease;
+      backdrop-filter:blur(8px);
+    }
+
+    .gallery-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 16px 28px rgba(0,0,0,.32);
+    }
+
+    .gallery-card img{
+      width:100%;
+      height:220px;
+      object-fit:cover;
+      display:block;
+      background:#0f1b2d;
+    }
+
+    .gallery-card .title{
+      padding:14px 16px 18px;
+      text-align:center;
+      font-size:15px;
+      font-weight:600;
+      word-break:break-word;
+    }
+
+    .gallery-actions{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:28px;
+    }
+
+    .status-message{
+      text-align:center;
+      opacity:.8;
+      margin-top:20px;
+    }
+
+    @media (max-width:720px){
+      .gallery-page{
+        padding:24px 16px 40px;
+      }
+
+      .gallery-card img{
+        height:200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <span class="brand-mark"></span>
+        <span>Henrik Bergfjord</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html">Hjem</a>
+        <a href="strom.html">Strøm</a>
+        <a href="dns-sjekk.html">DNS</a>
+        <a href="kalender.html">Kalender</a>
+        <a href="middag.html">Middag</a>
+        <a href="dessert.html">Dessert</a>
+        <a href="boller.html">Boller</a>
+        <a href="volvo-c40.html">Volvo C40</a>
+        <a href="maimyra.html">Maimyra</a>
+        <a href="galleri.html" class="active">Galleri</a>
+        <a href="sameienett.html">SameieNett</a>
+      </nav>
+
+      <a class="button primary" href="index.html">Til portal</a>
+    </div>
+  </header>
+
+  <main class="gallery-page">
+    <section class="gallery-header">
+      <div class="kicker">Media · Azure Blob · automatisk</div>
+      <h1>📸 Galleri</h1>
+      <p>
+        Denne siden henter bilder automatisk fra Azure Blob Storage uten hardkoding.
+      </p>
+    </section>
+
+    <div id="status" class="status-message">Laster bilder...</div>
+    <section id="gallery" class="gallery"></section>
+
+    <div class="gallery-actions">
+      <a class="button secondary" href="volvo-c40.html">Se Volvo C40</a>
+      <a class="button secondary" href="maimyra.html">Se Maimyra</a>
+      <a class="button primary" href="index.html">Tilbake til portal</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      Henrik Bergfjord · Galleri · Azure Blob Storage
+    </div>
+  </footer>
+
+  <script>
+    const storageAccount = "iansbilder";
+    const containerName = "images";
+    const listUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}?restype=container&comp=list`;
+
+    const galleryEl = document.getElementById("gallery");
+    const statusEl = document.getElementById("status");
+
+    function friendlyTitle(filename) {
+      const withoutExtension = filename.replace(/\.[^/.]+$/, "");
+      return withoutExtension
+        .replace(/[-_]/g, " ")
+        .replace(/\b\w/g, char => char.toUpperCase());
+    }
+
+    async function loadGallery() {
+      try {
+        const response = await fetch(listUrl);
+
+        if (!response.ok) {
+          throw new Error(`Kunne ikke hente bildeliste (${response.status})`);
+        }
+
+        const xmlText = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+
+        const blobNames = Array.from(xmlDoc.getElementsByTagName("Name"))
+          .map(node => node.textContent)
+          .filter(name => /\.(jpg|jpeg|png|webp|gif)$/i.test(name));
+
+        if (blobNames.length === 0) {
+          statusEl.textContent = "Ingen bilder funnet i containeren.";
+          return;
+        }
+
+        statusEl.textContent = "";
+
+        blobNames.forEach(name => {
+          const imageUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${encodeURIComponent(name).replace(/%2F/g, "/")}`;
+
+          const card = document.createElement("article");
+          card.className = "gallery-card";
+
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          img.alt = friendlyTitle(name);
+          img.loading = "lazy";
+
+          const title = document.createElement("div");
+          title.className = "title";
+          title.textContent = friendlyTitle(name);
+
+          card.appendChild(img);
+          card.appendChild(title);
+          galleryEl.appendChild(card);
+        });
+      } catch (error) {
+        console.error(error);
+        statusEl.textContent = "Kunne ikke laste bilder automatisk. Sjekk container access og filnavn.";
+      }
+    }
+
+    loadGallery();
+  </script>
+</body>
+</html>
