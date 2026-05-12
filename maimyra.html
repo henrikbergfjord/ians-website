@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maimyra</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            background:#111;
+            color:white;
+            overflow-x:hidden;
+        }
+
+        header{
+            height:100vh;
+            background:
+                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
+                url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1600&auto=format&fit=crop');
+            background-size:cover;
+            background-position:center;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            padding:20px;
+        }
+
+        .hero{
+            max-width:800px;
+        }
+
+        .hero h1{
+            font-size:70px;
+            letter-spacing:4px;
+            margin-bottom:20px;
+        }
+
+        .hero p{
+            font-size:22px;
+            color:#d0d0d0;
+            line-height:1.6;
+        }
+
+        .btn{
+            display:inline-block;
+            margin-top:30px;
+            padding:15px 35px;
+            background:#6b7a52;
+            color:white;
+            text-decoration:none;
+            border-radius:10px;
+            transition:0.3s;
+            font-weight:bold;
+        }
+
+        .btn:hover{
+            background:#849665;
+            transform:scale(1.05);
+        }
+
+        section{
+            padding:80px 10%;
+        }
+
+        .cards{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:25px;
+            margin-top:40px;
+        }
+
+        .card{
+            background:#1b1b1b;
+            padding:30px;
+            border-radius:20px;
+            border:1px solid #333;
+            transition:0.3s;
+        }
+
+        .card:hover{
+            transform:translateY(-5px);
+            border-color:#6b7a52;
+        }
+
+        .card h3{
+            margin-bottom:15px;
+            color:#d7e6b5;
+        }
+
+        footer{
+            text-align:center;
+            padding:30px;
+            background:#0b0b0b;
+            color:#777;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="hero">
+        <h1>MAIMYRA</h1>
+
+        <p>
+            Smart Home • UniFi • Plejd • Future Living<br>
+            Moderne rekkehus med teknologi, sikkerhet og luksuriøs atmosfære.
+        </p>
+
+        <a href="#about" class="btn">Utforsk</a>
+    </div>
+</header>
+
+<section id="about">
+
+    <h2>Velkommen til Maimyra</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>🏡 Smart Home</h3>
+            <p>
+                Integrert smarthus med automatisering,
+                lys-soner, sensorer og moderne kontroll.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>📶 UniFi Network</h3>
+            <p>
+                Profesjonelt nettverk med WiFi-dekning,
+                kameraer, VLAN og sikker infrastruktur.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>🚘 Volvo C40</h3>
+            <p>
+                Elektrisk fremtid med smart lading,
+                energieffektivitet og moderne teknologi.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    © 2026 Maimyra Project - Henrik Bergfjord
+</footer>
+
+</body>
+</html>
