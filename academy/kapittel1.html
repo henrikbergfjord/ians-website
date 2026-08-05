@@ -1,0 +1,2044 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Kapittel 1 – Kraftsystemet | Henrik Academy</title>
+
+  <meta
+    name="description"
+    content="Kapittel 1 i Henrik Academy: En innføring i hvordan det norske kraftsystemet fungerer, fra kraftproduksjon til sluttkunde."
+  />
+
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <style>
+    :root {
+      --academy-green: #26d07c;
+      --academy-green-dark: #087f55;
+      --academy-mint: #a8f3d2;
+      --academy-blue: #74b9ff;
+      --academy-yellow: #ffd166;
+      --academy-red: #ff7f7f;
+      --academy-purple: #bd9cff;
+      --academy-card: rgba(255, 255, 255, 0.055);
+      --academy-border: rgba(255, 255, 255, 0.11);
+      --academy-muted: rgba(255, 255, 255, 0.72);
+      --academy-bg: #081221;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .academy-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--academy-border);
+      background: rgba(8, 18, 33, 0.92);
+      backdrop-filter: blur(18px);
+    }
+
+    .academy-nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .academy-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: inherit;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .academy-logo {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: linear-gradient(
+        135deg,
+        var(--academy-green),
+        var(--academy-green-dark)
+      );
+      color: #042519;
+      font-size: 1.25rem;
+      box-shadow: 0 10px 28px rgba(38, 208, 124, 0.22);
+    }
+
+    .academy-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .academy-nav-links a {
+      padding: 9px 12px;
+      border-radius: 10px;
+      color: var(--academy-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: 0.2s ease;
+    }
+
+    .academy-nav-links a:hover,
+    .academy-nav-links a.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.075);
+    }
+
+    .chapter-hero {
+      position: relative;
+      padding: 70px 0 42px;
+      overflow: hidden;
+    }
+
+    .chapter-hero::before {
+      content: "";
+      position: absolute;
+      width: 620px;
+      height: 620px;
+      top: -340px;
+      right: -190px;
+      border-radius: 50%;
+      background: rgba(38, 208, 124, 0.16);
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    .chapter-hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .academy-card {
+      background: var(--academy-card);
+      border: 1px solid var(--academy-border);
+      border-radius: 24px;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    .chapter-hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 54px);
+    }
+
+    .chapter-hero-card::after {
+      content: "420 kV";
+      position: absolute;
+      right: -20px;
+      bottom: -34px;
+      font-size: clamp(4rem, 10vw, 8rem);
+      font-weight: 900;
+      letter-spacing: -0.07em;
+      color: rgba(255, 255, 255, 0.025);
+      pointer-events: none;
+    }
+
+    .chapter-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--academy-mint);
+      background: rgba(38, 208, 124, 0.1);
+      border: 1px solid rgba(38, 208, 124, 0.26);
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .chapter-hero h1 {
+      max-width: 900px;
+      margin: 20px 0 0;
+      font-size: clamp(2.5rem, 6vw, 5.3rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .chapter-hero h1 span {
+      color: var(--academy-green);
+    }
+
+    .chapter-lead {
+      max-width: 800px;
+      margin: 22px 0 0;
+      color: var(--academy-muted);
+      font-size: clamp(1.04rem, 1.8vw, 1.22rem);
+      line-height: 1.78;
+    }
+
+    .chapter-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: var(--academy-muted);
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.85rem;
+    }
+
+    .hero-side {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .hero-side h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .progress-value {
+      margin-top: 8px;
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(
+        90deg,
+        var(--academy-green),
+        var(--academy-mint)
+      );
+      transition: width 0.5s ease;
+    }
+
+    .objective-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .objective-item {
+      padding: 12px 13px;
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.075);
+      color: var(--academy-muted);
+      line-height: 1.5;
+    }
+
+    .objective-item strong {
+      color: #ffffff;
+    }
+
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 285px;
+      gap: 24px;
+      align-items: start;
+      padding: 18px 0 50px;
+    }
+
+    .chapter-main {
+      min-width: 0;
+    }
+
+    .chapter-sidebar {
+      position: sticky;
+      top: 94px;
+    }
+
+    .content-block {
+      padding: clamp(22px, 4vw, 38px);
+      margin-bottom: 18px;
+      scroll-margin-top: 96px;
+    }
+
+    .content-block h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      letter-spacing: -0.035em;
+    }
+
+    .content-block h3 {
+      margin: 26px 0 10px;
+      font-size: 1.18rem;
+    }
+
+    .content-block p {
+      color: var(--academy-muted);
+      line-height: 1.82;
+    }
+
+    .content-block p:last-child {
+      margin-bottom: 0;
+    }
+
+    .intro-text {
+      font-size: 1.07rem;
+    }
+
+    .power-flow {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(90px, 1fr));
+      gap: 10px;
+      align-items: stretch;
+      margin-top: 24px;
+    }
+
+    .power-step {
+      position: relative;
+      min-height: 150px;
+      padding: 16px 11px;
+      border-radius: 17px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.07),
+        rgba(255, 255, 255, 0.025)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.095);
+    }
+
+    .power-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      z-index: 2;
+      right: -17px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--academy-green);
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+
+    .power-step-icon {
+      margin-bottom: 9px;
+      font-size: 1.9rem;
+    }
+
+    .power-step strong {
+      font-size: 0.92rem;
+    }
+
+    .power-step span {
+      display: block;
+      margin-top: 6px;
+      color: var(--academy-muted);
+      font-size: 0.78rem;
+      line-height: 1.4;
+    }
+
+    .network-levels {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+      margin-top: 22px;
+    }
+
+    .network-level {
+      padding: 21px;
+      border-radius: 18px;
+      border: 1px solid var(--academy-border);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .network-level-icon {
+      font-size: 1.8rem;
+    }
+
+    .network-level h3 {
+      margin: 13px 0 6px;
+    }
+
+    .network-level p {
+      margin: 0;
+      font-size: 0.93rem;
+    }
+
+    .voltage-scale {
+      display: grid;
+      gap: 13px;
+      margin-top: 22px;
+    }
+
+    .voltage-row {
+      display: grid;
+      grid-template-columns: 115px minmax(0, 1fr) 165px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .voltage-label {
+      font-weight: 800;
+    }
+
+    .voltage-bar-track {
+      height: 14px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .voltage-bar {
+      height: 100%;
+      min-width: 8px;
+      border-radius: inherit;
+      background: linear-gradient(
+        90deg,
+        var(--academy-blue),
+        var(--academy-green)
+      );
+    }
+
+    .voltage-description {
+      color: var(--academy-muted);
+      font-size: 0.84rem;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .compare-card {
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--academy-border);
+    }
+
+    .compare-card.low-voltage {
+      border-color: rgba(255, 127, 127, 0.3);
+    }
+
+    .compare-card.high-voltage {
+      border-color: rgba(38, 208, 124, 0.3);
+    }
+
+    .compare-card h3 {
+      margin: 0 0 9px;
+    }
+
+    .compare-number {
+      font-size: 2.1rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .low-voltage .compare-number {
+      color: var(--academy-red);
+    }
+
+    .high-voltage .compare-number {
+      color: var(--academy-green);
+    }
+
+    .info-box {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 18px;
+      border-left: 4px solid;
+    }
+
+    .info-box.planner {
+      background: rgba(38, 208, 124, 0.08);
+      border-color: var(--academy-green);
+    }
+
+    .info-box.remember {
+      background: rgba(116, 185, 255, 0.08);
+      border-color: var(--academy-blue);
+    }
+
+    .info-box.warning {
+      background: rgba(255, 127, 127, 0.075);
+      border-color: var(--academy-red);
+    }
+
+    .info-box.term {
+      background: rgba(189, 156, 255, 0.075);
+      border-color: var(--academy-purple);
+    }
+
+    .info-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 7px;
+      font-weight: 900;
+    }
+
+    .bottleneck {
+      margin-top: 22px;
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--academy-border);
+    }
+
+    .road {
+      display: grid;
+      grid-template-columns: 1fr 110px 1fr;
+      align-items: center;
+      margin: 18px 0;
+    }
+
+    .road-wide {
+      height: 62px;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.12) 0 16px,
+          transparent 16px 28px
+        ),
+        rgba(116, 185, 255, 0.12);
+      border: 1px solid rgba(116, 185, 255, 0.25);
+    }
+
+    .road-narrow {
+      height: 34px;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.14) 0 12px,
+          transparent 12px 22px
+        ),
+        rgba(255, 209, 102, 0.13);
+      border-block: 1px solid rgba(255, 209, 102, 0.28);
+    }
+
+    .n-minus-one {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+      margin-top: 22px;
+    }
+
+    .n1-card {
+      padding: 20px;
+      border-radius: 17px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--academy-border);
+    }
+
+    .n1-visual {
+      min-height: 80px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 10px;
+      font-family: monospace;
+      font-size: 1.1rem;
+      color: var(--academy-mint);
+      white-space: pre-line;
+    }
+
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .glossary-item {
+      padding: 17px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.085);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .glossary-item strong {
+      display: block;
+      color: var(--academy-mint);
+    }
+
+    .glossary-item span {
+      display: block;
+      margin-top: 5px;
+      color: var(--academy-muted);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .sidebar-card {
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+
+    .sidebar-card h2 {
+      margin: 0 0 13px;
+      font-size: 1.05rem;
+    }
+
+    .sidebar-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .sidebar-list a {
+      display: block;
+      padding: 9px 11px;
+      border-radius: 10px;
+      color: var(--academy-muted);
+      text-decoration: none;
+      font-size: 0.89rem;
+    }
+
+    .sidebar-list a:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .complete-button {
+      width: 100%;
+      min-height: 45px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--academy-green);
+      color: #05281c;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .complete-button.completed {
+      color: var(--academy-mint);
+      background: rgba(38, 208, 124, 0.14);
+      border: 1px solid rgba(38, 208, 124, 0.3);
+    }
+
+    .quiz-question {
+      margin-top: 18px;
+      padding: 20px;
+      border-radius: 17px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.085);
+    }
+
+    .quiz-question h3 {
+      margin: 0 0 14px;
+      line-height: 1.5;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 9px;
+    }
+
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 13px;
+      border-radius: 11px;
+      color: var(--academy-muted);
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .quiz-option:hover {
+      background: rgba(255, 255, 255, 0.065);
+    }
+
+    .quiz-option input {
+      accent-color: var(--academy-green);
+    }
+
+    .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .academy-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 45px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .academy-button.primary {
+      color: #04281b;
+      background: var(--academy-green);
+    }
+
+    .academy-button.secondary {
+      border-color: var(--academy-border);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .quiz-result {
+      min-height: 28px;
+      font-weight: 800;
+    }
+
+    .quiz-result.good {
+      color: var(--academy-mint);
+    }
+
+    .quiz-result.medium {
+      color: var(--academy-yellow);
+    }
+
+    .quiz-result.low {
+      color: var(--academy-red);
+    }
+
+    .next-chapter {
+      padding: clamp(24px, 4vw, 38px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .next-chapter h2 {
+      margin: 0 0 8px;
+    }
+
+    .next-chapter p {
+      margin: 0;
+      color: var(--academy-muted);
+    }
+
+    .academy-footer {
+      padding: 36px 0;
+      margin-top: 35px;
+      border-top: 1px solid var(--academy-border);
+      color: var(--academy-muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    @media (max-width: 1080px) {
+      .power-flow {
+        grid-template-columns: repeat(4, minmax(100px, 1fr));
+      }
+
+      .power-step::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .academy-nav {
+        padding-block: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .chapter-hero-grid,
+      .chapter-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .chapter-sidebar {
+        position: static;
+      }
+
+      .network-levels,
+      .n-minus-one {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .academy-nav-links {
+        display: none;
+      }
+
+      .chapter-hero {
+        padding-top: 34px;
+      }
+
+      .power-flow,
+      .compare-grid,
+      .glossary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .voltage-row {
+        grid-template-columns: 88px 1fr;
+      }
+
+      .voltage-description {
+        grid-column: 1 / -1;
+      }
+
+      .next-chapter,
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="academy-topbar">
+    <div class="container academy-nav">
+      <a class="academy-brand" href="index.html">
+        <span class="academy-logo">⚡</span>
+        <span>Henrik Academy</span>
+      </a>
+
+      <nav class="academy-nav-links" aria-label="Academy-meny">
+        <a href="index.html">Academy</a>
+        <a href="kapittel1.html" class="active">Kapittel 1</a>
+        <a href="#ordliste">Ordliste</a>
+        <a href="#quiz">Quiz</a>
+        <a href="../index.html">Hovedportal</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="chapter-hero">
+      <div class="container chapter-hero-grid">
+        <article class="academy-card chapter-hero-card">
+          <span class="chapter-label">
+            ⚡ Kapittel 1 av 10
+          </span>
+
+          <h1>
+            Hvordan <span>kraftsystemet</span> fungerer
+          </h1>
+
+          <p class="chapter-lead">
+            Fra vannet treffer turbinen, til strømmen kommer frem til
+            boligen, industrien eller ladestasjonen. Dette kapittelet gir
+            deg grunnmuren du trenger for å forstå transmisjonsnettet,
+            transformatorstasjoner og Statnetts prosjekter.
+          </p>
+
+          <div class="chapter-meta">
+            <span class="meta-pill">⏱️ Ca. 20–30 minutter</span>
+            <span class="meta-pill">📘 Grunnleggende nivå</span>
+            <span class="meta-pill">🧠 Quiz: 5 spørsmål</span>
+          </div>
+        </article>
+
+        <aside class="academy-card hero-side">
+          <div>
+            <h2>Kapittelfremdrift</h2>
+
+            <div class="progress-value" id="progress-value">
+              0 %
+            </div>
+
+            <div class="progress-track">
+              <div
+                class="progress-bar"
+                id="progress-bar"
+              ></div>
+            </div>
+          </div>
+
+          <div class="objective-list">
+            <div class="objective-item">
+              <strong>1.</strong>
+              Forstå hvordan elektrisk energi produseres.
+            </div>
+
+            <div class="objective-item">
+              <strong>2.</strong>
+              Forstå hvorfor spenningen økes før transport.
+            </div>
+
+            <div class="objective-item">
+              <strong>3.</strong>
+              Skille mellom transmisjons-, regional- og distribusjonsnett.
+            </div>
+
+            <div class="objective-item">
+              <strong>4.</strong>
+              Forklare flaskehalser og N-1-prinsippet.
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="container chapter-layout">
+      <div class="chapter-main">
+        <section
+          class="academy-card content-block"
+          id="introduksjon"
+        >
+          <h2>Kraftsystemet er Norges største maskin</h2>
+
+          <p class="intro-text">
+            Når du slår på kaffemaskinen, lader bilen eller starter en
+            datamaskin, må den elektriske energien være tilgjengelig i
+            samme øyeblikk som du bruker den. Kraftsystemet må derfor
+            hele tiden holde produksjon og forbruk i balanse.
+          </p>
+
+          <p>
+            Kraftsystemet består ikke av én enkelt ledning fra et
+            kraftverk til huset ditt. Det er et sammenkoblet system av
+            kraftverk, ledninger, kabler, transformatorstasjoner,
+            kontrollanlegg, driftssentraler og markedsmekanismer.
+          </p>
+
+          <div class="info-box planner">
+            <div class="info-title">
+              👷 Hvorfor er dette viktig for en planlegger?
+            </div>
+
+            <p>
+              En fremdriftsplan gir først mening når du forstår hvilken
+              funksjon anlegget skal ha i kraftsystemet. En forsinket
+              transformator, stasjon eller ledning kan påvirke kapasitet,
+              utkoblingsvinduer, tilknytning av nye kunder og fremdriften
+              i flere tilstøtende prosjekter.
+            </p>
+          </div>
+        </section>
+
+        <section
+          class="academy-card content-block"
+          id="kraftens-reise"
+        >
+          <h2>Kraftens reise – fra produksjon til sluttkunde</h2>
+
+          <p>
+            Elektrisk energi produseres i et kraftverk. Deretter økes
+            spenningen slik at store mengder effekt kan transporteres
+            over lange avstander med lavere tap. Nær forbrukerne senkes
+            spenningen trinnvis.
+          </p>
+
+          <div
+            class="power-flow"
+            aria-label="Kraftens vei gjennom kraftsystemet"
+          >
+            <div class="power-step">
+              <div class="power-step-icon">💧</div>
+              <strong>Energikilde</strong>
+              <span>Vann, vind, sol eller annen energikilde</span>
+            </div>
+
+            <div class="power-step">
+              <div class="power-step-icon">⚙️</div>
+              <strong>Turbin</strong>
+              <span>Bevegelsesenergi omdannes til rotasjon</span>
+            </div>
+
+            <div class="power-step">
+              <div class="power-step-icon">🔄</div>
+              <strong>Generator</strong>
+              <span>Rotasjonen omdannes til elektrisk energi</span>
+            </div>
+
+            <div class="power-step">
+              <div class="power-step-icon">🔼</div>
+              <strong>Transformator</strong>
+              <span>Spenningen økes før transport</span>
+            </div>
+
+            <div class="power-step">
+              <div class="power-step-icon">⚡</div>
+              <strong>Transmisjonsnett</strong>
+              <span>Store mengder effekt transporteres langt</span>
+            </div>
+
+            <div class="power-step">
+              <div class="power-step-icon">🔽</div>
+              <strong>Nedtransformering</strong>
+              <span>Spenningen senkes i flere trinn</span>
+            </div>
+
+            <div class="power-step">
+              <div class="power-step-icon">🏠</div>
+              <strong>Sluttkunde</strong>
+              <span>Bolig, næringsliv, industri eller transport</span>
+            </div>
+          </div>
+
+          <h3>Produksjon og forbruk må være i balanse</h3>
+
+          <p>
+            Elektrisk energi kan ikke lagres i det ordinære kraftnettet
+            på samme måte som varer på et lager. Produksjonen må derfor
+            kontinuerlig tilpasses forbruket. Dersom balansen forstyrres,
+            påvirkes frekvensen i kraftsystemet.
+          </p>
+
+          <div class="info-box remember">
+            <div class="info-title">
+              💡 Husk
+            </div>
+
+            <p>
+              I det nordiske synkronområdet er den nominelle frekvensen
+              50 Hz. Frekvensen brukes som en viktig indikator på
+              balansen mellom produksjon og forbruk.
+            </p>
+          </div>
+        </section>
+
+        <section
+          class="academy-card content-block"
+          id="nettnivaer"
+        >
+          <h2>Tre hovednivåer i strømnettet</h2>
+
+          <p>
+            Strømnettet deles normalt inn etter funksjon og
+            spenningsnivå. Grensene kan variere, men hovedprinsippet er
+            det samme: transmisjonsnettet transporterer store mengder
+            effekt over lange avstander, mens regional- og
+            distribusjonsnettet fører strømmen nærmere kundene.
+          </p>
+
+          <div class="network-levels">
+            <article class="network-level">
+              <div class="network-level-icon">🗼</div>
+              <h3>Transmisjonsnett</h3>
+              <p>
+                Kraftsystemets motorveier. Binder landsdeler,
+                produksjonsområder og store forbruksområder sammen.
+                Statnett er systemansvarlig og eier hoveddelen av dette
+                nettet i Norge.
+              </p>
+            </article>
+
+            <article class="network-level">
+              <div class="network-level-icon">🏭</div>
+              <h3>Regionalnett</h3>
+              <p>
+                Kobler transmisjonsnettet sammen med større lokale
+                forbruksområder, industri og distribusjonsnett.
+                Regionalnettet drives av regionale nettselskaper.
+              </p>
+            </article>
+
+            <article class="network-level">
+              <div class="network-level-icon">🏘️</div>
+              <h3>Distribusjonsnett</h3>
+              <p>
+                Nettet som fører strømmen frem til boliger, mindre
+                næringsbygg og lokale kunder. Her reduseres spenningen
+                frem til nivået sluttkunden bruker.
+              </p>
+            </article>
+          </div>
+
+          <div class="info-box term">
+            <div class="info-title">
+              📖 Begrep: systemansvar
+            </div>
+
+            <p>
+              Systemansvaret innebærer å koordinere driften av
+              kraftsystemet og sørge for at systemet til enhver tid har
+              tilfredsstillende sikkerhet, kvalitet og balanse.
+            </p>
+          </div>
+        </section>
+
+        <section
+          class="academy-card content-block"
+          id="spenning"
+        >
+          <h2>Hvorfor transporteres strøm med høy spenning?</h2>
+
+          <p>
+            Når en bestemt effekt skal overføres, vil høyere spenning
+            gjøre det mulig å redusere strømstyrken. Lavere strømstyrke
+            reduserer varmetapene i ledninger og kabler. Derfor brukes
+            høye spenningsnivåer i transmisjonsnettet.
+          </p>
+
+          <div class="voltage-scale">
+            <div class="voltage-row">
+              <div class="voltage-label">230 V</div>
+
+              <div class="voltage-bar-track">
+                <div
+                  class="voltage-bar"
+                  style="width: 2%;"
+                ></div>
+              </div>
+
+              <div class="voltage-description">
+                Vanlig enfaset boligforsyning
+              </div>
+            </div>
+
+            <div class="voltage-row">
+              <div class="voltage-label">11–22 kV</div>
+
+              <div class="voltage-bar-track">
+                <div
+                  class="voltage-bar"
+                  style="width: 18%;"
+                ></div>
+              </div>
+
+              <div class="voltage-description">
+                Typiske nivåer i distribusjonsnett
+              </div>
+            </div>
+
+            <div class="voltage-row">
+              <div class="voltage-label">66–132 kV</div>
+
+              <div class="voltage-bar-track">
+                <div
+                  class="voltage-bar"
+                  style="width: 45%;"
+                ></div>
+              </div>
+
+              <div class="voltage-description">
+                Vanlige nivåer i regionalnett
+              </div>
+            </div>
+
+            <div class="voltage-row">
+              <div class="voltage-label">300 kV</div>
+
+              <div class="voltage-bar-track">
+                <div
+                  class="voltage-bar"
+                  style="width: 75%;"
+                ></div>
+              </div>
+
+              <div class="voltage-description">
+                Eldre og eksisterende transmisjonsnett
+              </div>
+            </div>
+
+            <div class="voltage-row">
+              <div class="voltage-label">420 kV</div>
+
+              <div class="voltage-bar-track">
+                <div
+                  class="voltage-bar"
+                  style="width: 100%;"
+                ></div>
+              </div>
+
+              <div class="voltage-description">
+                Statnetts langsiktige standard for målnettet
+              </div>
+            </div>
+          </div>
+
+          <div class="compare-grid">
+            <article class="compare-card low-voltage">
+              <h3>Lavere spenning</h3>
+              <div class="compare-number">
+                Høyere strøm
+              </div>
+              <p>
+                For samme overførte effekt må mer strøm gå gjennom
+                lederen. Det gir høyere elektriske tap og større krav
+                til lederens kapasitet.
+              </p>
+            </article>
+
+            <article class="compare-card high-voltage">
+              <h3>Høyere spenning</h3>
+              <div class="compare-number">
+                Lavere strøm
+              </div>
+              <p>
+                Den samme effekten kan overføres med lavere
+                strømstyrke. Dette reduserer tapene og gjør det mulig
+                å transportere mer effekt over lange avstander.
+              </p>
+            </article>
+          </div>
+
+          <div class="info-box warning">
+            <div class="info-title">
+              ⚠️ Viktig nyanse
+            </div>
+
+            <p>
+              Høyere spenning gir ikke bare fordeler. Det krever større
+              sikkerhetsavstander, mer isolasjon, tilpassede brytere,
+              transformatorer og stasjoner. Derfor må hele anlegget
+              prosjekteres for spenningsnivået.
+            </p>
+          </div>
+        </section>
+
+        <section
+          class="academy-card content-block"
+          id="transformator"
+        >
+          <h2>Transformatoren – forbindelsen mellom nettnivåene</h2>
+
+          <p>
+            En transformator endrer vekselspenningen mellom ulike
+            nivåer. Ved kraftverket kan spenningen økes før kraften
+            sendes ut på nettet. Nærmere kundene senkes spenningen
+            trinnvis.
+          </p>
+
+          <p>
+            Store krafttransformatorer er ofte blant de mest kritiske
+            komponentene i et stasjonsprosjekt. De kan ha lang
+            prosjekterings-, produksjons-, transport- og
+            installasjonstid.
+          </p>
+
+          <div class="info-box planner">
+            <div class="info-title">
+              👷 Planleggerperspektiv
+            </div>
+
+            <p>
+              Leveransen av en transformator kan ligge på prosjektets
+              kritiske linje. Fremdriftsplanen må derfor omfatte
+              spesifikasjon, anskaffelse, konstruksjon, produksjon,
+              fabrikkprøving, transport, fundament, montering,
+              oljehåndtering, testing og spenningssetting.
+            </p>
+          </div>
+        </section>
+
+        <section
+          class="academy-card content-block"
+          id="stasjoner"
+        >
+          <h2>Hva gjør en transformatorstasjon?</h2>
+
+          <p>
+            En transformatorstasjon er et knutepunkt i kraftsystemet.
+            Stasjonen kan transformere spenning, koble ledninger sammen,
+            fordele kraft, måle tilstanden i nettet og koble ut feil.
+          </p>
+
+          <p>
+            En stor stasjon kan blant annet inneholde:
+          </p>
+
+          <div class="glossary-grid">
+            <div class="glossary-item">
+              <strong>Krafttransformator</strong>
+              <span>
+                Endrer spenningsnivået mellom transmisjons- og
+                regionalnett eller mellom ulike transmisjonsnivåer.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Bryterfelt</strong>
+              <span>
+                Samling av utstyr som kobler en ledning, transformator
+                eller annen komponent til samleskinnen.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Effektbryter</strong>
+              <span>
+                Kan koble inn og ut strømmer ved normal drift og ved
+                feil, når vern gir utløsesignal.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Skillebryter</strong>
+              <span>
+                Gir synlig eller definert elektrisk skille når anlegg
+                skal isoleres for arbeid og vedlikehold.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Samleskinne</strong>
+              <span>
+                Felles elektrisk forbindelsespunkt som flere felt
+                kobles til.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Kontrollanlegg</strong>
+              <span>
+                Vern, styring, overvåking, kommunikasjon, måling og
+                automatiserte funksjoner.
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="academy-card content-block"
+          id="flaskehals"
+        >
+          <h2>Hva er en flaskehals i kraftnettet?</h2>
+
+          <p>
+            En flaskehals oppstår når behovet for å overføre kraft er
+            større enn den tilgjengelige kapasiteten i en ledning,
+            kabel, transformator eller transportkorridor.
+          </p>
+
+          <div class="bottleneck">
+            <strong>
+              Tenk på kraftnettet som et veinett:
+            </strong>
+
+            <div class="road">
+              <div class="road-wide"></div>
+              <div class="road-narrow"></div>
+              <div class="road-wide"></div>
+            </div>
+
+            <p>
+              Brede veier på begge sider hjelper lite dersom trafikken
+              må gjennom en smal passasje i midten. Kapasiteten i den
+              svakeste delen begrenser hvor mye som kan overføres.
+            </p>
+          </div>
+
+          <p>
+            Flaskehalser kan føre til at kraft ikke kan flyttes dit den
+            har størst verdi. Det kan gi prisforskjeller mellom
+            budområder og begrense tilknytning av nytt forbruk eller
+            produksjon.
+          </p>
+
+          <div class="info-box planner">
+            <div class="info-title">
+              👷 Planleggerperspektiv
+            </div>
+
+            <p>
+              Et enkelt prosjekt kan være del av en større nyttepakke.
+              Den fulle kapasitetsgevinsten kan først komme når flere
+              tilstøtende ledninger, stasjoner og transformatorer er
+              ferdige. Rekkefølgen mellom prosjektene er derfor viktig.
+            </p>
+          </div>
+        </section>
+
+        <section
+          class="academy-card content-block"
+          id="n-1"
+        >
+          <h2>N-1-prinsippet og forsyningssikkerhet</h2>
+
+          <p>
+            N-1 er et sentralt prinsipp i kraftsystemet. Forenklet betyr
+            det at systemet skal kunne håndtere bortfall av én viktig
+            komponent uten at dette fører til omfattende avbrudd eller
+            ukontrollert sammenbrudd.
+          </p>
+
+          <div class="n-minus-one">
+            <article class="n1-card">
+              <div class="n1-visual">
+A ===== B
+ \     /
+  \   /
+    C
+              </div>
+
+              <strong>Normal drift</strong>
+
+              <p>
+                Flere forbindelser kan dele kraftflyten.
+              </p>
+            </article>
+
+            <article class="n1-card">
+              <div class="n1-visual">
+A ==X== B
+ \     /
+  \   /
+    C
+              </div>
+
+              <strong>Én forbindelse faller ut</strong>
+
+              <p>
+                En ledning eller annen komponent blir utilgjengelig.
+              </p>
+            </article>
+
+            <article class="n1-card">
+              <div class="n1-visual">
+A       B
+ \     /
+  \   /
+    C
+              </div>
+
+              <strong>Alternativ kraftflyt</strong>
+
+              <p>
+                Systemet må omfordele kraften gjennom andre forbindelser.
+              </p>
+            </article>
+          </div>
+
+          <p>
+            N-1 betyr ikke at alle kunder alltid er garantert full
+            forsyning i enhver situasjon. Det er et planleggings- og
+            driftsprinsipp som brukes til å vurdere hvor robust systemet
+            er mot enkeltfeil.
+          </p>
+        </section>
+
+        <section
+          class="academy-card content-block"
+          id="planleggerrollen"
+        >
+          <h2>Hva betyr kraftsystemet for planleggerrollen?</h2>
+
+          <p>
+            En planlegger må forstå mer enn aktivitetenes navn og
+            datoer. Det er nødvendig å se hvordan prosjektet påvirker
+            systemdrift, tilstøtende prosjekter, utkoblinger og
+            kapasitetsgevinster.
+          </p>
+
+          <div class="glossary-grid">
+            <div class="glossary-item">
+              <strong>Konsesjon før bygging</strong>
+              <span>
+                Anleggsarbeid kan være avhengig av myndighetsvedtak,
+                detaljplaner og andre tillatelser.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Innkjøp før installasjon</strong>
+              <span>
+                Komponenter med lang leveringstid må bestilles tidlig og
+                kobles til riktig prosjekteringsmodenhet.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Utkobling før ombygging</strong>
+              <span>
+                Eksisterende nett må ofte tas ut av drift før arbeid kan
+                utføres sikkert.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Testing før spenningssetting</strong>
+              <span>
+                Primæranlegg, kontrollanlegg, vern og kommunikasjon må
+                testes og dokumenteres.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Tilstøtende prosjekter</strong>
+              <span>
+                Et prosjekt kan være teknisk ferdig, men avhengig av
+                andre anlegg før systemnytten kan tas ut.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Sesong og systemdrift</strong>
+              <span>
+                Utkoblinger kan være begrenset til bestemte perioder
+                fordi nettet skal være sikkert mens anlegget bygges om.
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="academy-card content-block"
+          id="ordliste"
+        >
+          <h2>Ordliste for kapittel 1</h2>
+
+          <div class="glossary-grid">
+            <div class="glossary-item">
+              <strong>Effekt</strong>
+              <span>
+                Hvor raskt elektrisk energi produseres eller brukes.
+                Måles blant annet i watt, kilowatt og megawatt.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Energi</strong>
+              <span>
+                Effekt brukt eller produsert over tid. Måles blant annet
+                i kilowattimer og megawattimer.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Spenning</strong>
+              <span>
+                Elektrisk potensialforskjell. Måles i volt.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Strømstyrke</strong>
+              <span>
+                Elektrisk ladning som passerer et punkt per tidsenhet.
+                Måles i ampere.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Frekvens</strong>
+              <span>
+                Antall perioder per sekund i vekselstrømmen. Måles i
+                hertz.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Generator</strong>
+              <span>
+                Maskin som omdanner mekanisk energi til elektrisk energi.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Transformator</strong>
+              <span>
+                Elektrisk komponent som øker eller senker
+                vekselspenningen.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Transmisjonsnett</strong>
+              <span>
+                Det høyspente nettet som transporterer store mengder
+                effekt over lange avstander.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Flaskehals</strong>
+              <span>
+                Begrensning som gjør at ønsket kraftflyt overstiger
+                tilgjengelig overføringskapasitet.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>N-1</strong>
+              <span>
+                Prinsipp om at kraftsystemet skal kunne håndtere bortfall
+                av én viktig komponent.
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="academy-card content-block"
+          id="quiz"
+        >
+          <h2>Quiz – test kunnskapen din</h2>
+
+          <p>
+            Velg ett svar på hvert spørsmål. Resultatet lagres lokalt i
+            nettleseren din.
+          </p>
+
+          <form id="chapter-quiz">
+            <div class="quiz-question">
+              <h3>
+                1. Hva er generatorens hovedoppgave?
+              </h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q1"
+                    value="a"
+                  />
+                  Å redusere spenningen til 230 V
+                </label>
+
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q1"
+                    value="b"
+                  />
+                  Å omdanne mekanisk energi til elektrisk energi
+                </label>
+
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q1"
+                    value="c"
+                  />
+                  Å koble ut en feil i nettet
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question">
+              <h3>
+                2. Hvorfor brukes høy spenning ved transport av kraft?
+              </h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q2"
+                    value="a"
+                  />
+                  Fordi høy spenning alltid gjør anlegget mindre
+                </label>
+
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q2"
+                    value="b"
+                  />
+                  Fordi samme effekt kan overføres med lavere strøm og
+                  lavere tap
+                </label>
+
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q2"
+                    value="c"
+                  />
+                  Fordi kraftverk bare kan produsere 420 kV
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question">
+              <h3>
+                3. Hva er transmisjonsnettets hovedfunksjon?
+              </h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q3"
+                    value="a"
+                  />
+                  Å levere strøm direkte til hver enkelt stikkontakt
+                </label>
+
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q3"
+                    value="b"
+                  />
+                  Å transportere store mengder effekt mellom områder
+                </label>
+
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q3"
+                    value="c"
+                  />
+                  Å produsere elektrisk energi
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question">
+              <h3>
+                4. Hva beskriver en flaskehals?
+              </h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q4"
+                    value="a"
+                  />
+                  En begrensning i tilgjengelig overføringskapasitet
+                </label>
+
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q4"
+                    value="b"
+                  />
+                  Et kraftverk som produserer for mye vannkraft
+                </label>
+
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q4"
+                    value="c"
+                  />
+                  En transformator som alltid er koblet ut
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question">
+              <h3>
+                5. Hva betyr N-1 forenklet?
+              </h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q5"
+                    value="a"
+                  />
+                  At alle anlegg skal ha én transformator
+                </label>
+
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q5"
+                    value="b"
+                  />
+                  At systemet skal kunne håndtere bortfall av én viktig
+                  komponent
+                </label>
+
+                <label class="quiz-option">
+                  <input
+                    type="radio"
+                    name="q5"
+                    value="c"
+                  />
+                  At ett prosjekt alltid skal ferdigstilles før det
+                  neste starter
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-actions">
+              <button
+                class="academy-button primary"
+                type="submit"
+              >
+                Sjekk svar
+              </button>
+
+              <button
+                class="academy-button secondary"
+                type="button"
+                id="reset-quiz"
+              >
+                Nullstill
+              </button>
+
+              <div
+                class="quiz-result"
+                id="quiz-result"
+                aria-live="polite"
+              ></div>
+            </div>
+          </form>
+        </section>
+
+        <section class="academy-card next-chapter">
+          <div>
+            <span class="chapter-label">
+              Neste kapittel
+            </span>
+
+            <h2>
+              Kapittel 2 – Statnett og samfunnsoppdraget
+            </h2>
+
+            <p>
+              Lær hvordan Statnett planlegger, utvikler og drifter
+              transmisjonsnettet, og hvorfor systemansvaret er kritisk
+              for hele Norge.
+            </p>
+          </div>
+
+          <a
+            class="academy-button secondary"
+            href="index.html"
+          >
+            Til Academy-forsiden →
+          </a>
+        </section>
+      </div>
+
+      <aside class="chapter-sidebar">
+        <div class="academy-card sidebar-card">
+          <h2>Innhold</h2>
+
+          <nav class="sidebar-list">
+            <a href="#introduksjon">Kraftsystemet</a>
+            <a href="#kraftens-reise">Kraftens reise</a>
+            <a href="#nettnivaer">Nettnivåene</a>
+            <a href="#spenning">Hvorfor høy spenning?</a>
+            <a href="#transformator">Transformatorer</a>
+            <a href="#stasjoner">Stasjoner</a>
+            <a href="#flaskehals">Flaskehalser</a>
+            <a href="#n-1">N-1-prinsippet</a>
+            <a href="#planleggerrollen">Planleggerrollen</a>
+            <a href="#ordliste">Ordliste</a>
+            <a href="#quiz">Quiz</a>
+          </nav>
+        </div>
+
+        <div class="academy-card sidebar-card">
+          <h2>Kapittelstatus</h2>
+
+          <p
+            style="
+              color: var(--academy-muted);
+              line-height: 1.6;
+              font-size: 0.9rem;
+            "
+          >
+            Marker kapittelet som fullført når du har lest innholdet og
+            tatt quizen.
+          </p>
+
+          <button
+            class="complete-button"
+            id="complete-button"
+            type="button"
+          >
+            Marker som fullført
+          </button>
+        </div>
+
+        <div class="academy-card sidebar-card">
+          <h2>Kildegrunnlag</h2>
+
+          <p
+            style="
+              color: var(--academy-muted);
+              line-height: 1.6;
+              font-size: 0.86rem;
+            "
+          >
+            Kapittelet er et personlig læringsnotat basert på generelle
+            kraftsystemprinsipper og offentlig informasjon fra
+            Statnetts Systemutviklingsplan 2025. Det er ikke offisiell
+            intern opplæring fra Statnett.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="academy-footer">
+    <div class="container footer-inner">
+      <div>
+        Henrik Bergfjord · Personlig kraftsystemakademi
+      </div>
+
+      <div>
+        Kapittel 1 · Kraftsystemet
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const storageKeys = {
+      completed: "henrikAcademyChapter1Completed",
+      quizScore: "henrikAcademyChapter1QuizScore"
+    };
+
+    const progressValue = document.getElementById("progress-value");
+    const progressBar = document.getElementById("progress-bar");
+    const completeButton = document.getElementById("complete-button");
+    const quizForm = document.getElementById("chapter-quiz");
+    const quizResult = document.getElementById("quiz-result");
+    const resetQuizButton = document.getElementById("reset-quiz");
+
+    function updateProgress() {
+      const completed =
+        localStorage.getItem(storageKeys.completed) === "true";
+
+      const quizScore = Number(
+        localStorage.getItem(storageKeys.quizScore) || 0
+      );
+
+      let progress = 0;
+
+      if (quizScore > 0) {
+        progress = 50;
+      }
+
+      if (completed) {
+        progress = 100;
+      }
+
+      progressValue.textContent = `${progress} %`;
+      progressBar.style.width = `${progress}%`;
+
+      if (completed) {
+        completeButton.textContent = "✓ Kapittel fullført";
+        completeButton.classList.add("completed");
+      } else {
+        completeButton.textContent = "Marker som fullført";
+        completeButton.classList.remove("completed");
+      }
+    }
+
+    completeButton.addEventListener("click", () => {
+      const isCompleted =
+        localStorage.getItem(storageKeys.completed) === "true";
+
+      localStorage.setItem(
+        storageKeys.completed,
+        String(!isCompleted)
+      );
+
+      updateProgress();
+    });
+
+    quizForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const answers = {
+        q1: "b",
+        q2: "b",
+        q3: "b",
+        q4: "a",
+        q5: "b"
+      };
+
+      const formData = new FormData(quizForm);
+      let score = 0;
+      let answered = 0;
+
+      Object.entries(answers).forEach(([question, correctAnswer]) => {
+        const selectedAnswer = formData.get(question);
+
+        if (selectedAnswer) {
+          answered += 1;
+        }
+
+        if (selectedAnswer === correctAnswer) {
+          score += 1;
+        }
+      });
+
+      if (answered < 5) {
+        quizResult.textContent =
+          "Svar på alle spørsmålene før du sjekker resultatet.";
+
+        quizResult.className = "quiz-result low";
+        return;
+      }
+
+      const percentage = Math.round((score / 5) * 100);
+
+      localStorage.setItem(
+        storageKeys.quizScore,
+        String(percentage)
+      );
+
+      if (score === 5) {
+        quizResult.textContent =
+          `5 av 5 riktige – svært godt jobbet!`;
+
+        quizResult.className = "quiz-result good";
+      } else if (score >= 3) {
+        quizResult.textContent =
+          `${score} av 5 riktige. God forståelse – les gjerne gjennom punktene du var usikker på.`;
+
+        quizResult.className = "quiz-result medium";
+      } else {
+        quizResult.textContent =
+          `${score} av 5 riktige. Gå gjennom kapittelet én gang til og prøv på nytt.`;
+
+        quizResult.className = "quiz-result low";
+      }
+
+      updateProgress();
+    });
+
+    resetQuizButton.addEventListener("click", () => {
+      quizForm.reset();
+
+      quizResult.textContent = "";
+      quizResult.className = "quiz-result";
+
+      localStorage.removeItem(storageKeys.quizScore);
+
+      updateProgress();
+    });
+
+    updateProgress();
+  </script>
+</body>
+</html>
