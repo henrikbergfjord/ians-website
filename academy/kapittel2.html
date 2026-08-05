@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Kapittel 2 – Statnett og samfunnsoppdraget | Henrik Academy</title>
+
+  <meta
+    name="description"
+    content="Kapittel 2 i Henrik Academy: Statnetts samfunnsoppdrag, systemansvar, transmisjonsnett, nettutvikling og planleggerrollen."
+  />
+
+  <link rel="stylesheet" href="../assets/styles.css" />
+
+  <style>
+    :root {
+      --academy-green: #26d07c;
+      --academy-green-dark: #087f55;
+      --academy-mint: #a8f3d2;
+      --academy-blue: #74b9ff;
+      --academy-yellow: #ffd166;
+      --academy-red: #ff7f7f;
+      --academy-purple: #bd9cff;
+      --academy-card: rgba(255, 255, 255, 0.055);
+      --academy-border: rgba(255, 255, 255, 0.11);
+      --academy-muted: rgba(255, 255, 255, 0.72);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .academy-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--academy-border);
+      background: rgba(8, 18, 33, 0.92);
+      backdrop-filter: blur(18px);
+    }
+
+    .academy-nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .academy-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: inherit;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .academy-logo {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: #042519;
+      background: linear-gradient(
+        135deg,
+        var(--academy-green),
+        var(--academy-green-dark)
+      );
+      box-shadow: 0 10px 28px rgba(38, 208, 124, 0.22);
+    }
+
+    .academy-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .academy-nav-links a {
+      padding: 9px 12px;
+      border-radius: 10px;
+      color: var(--academy-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: 0.2s ease;
+    }
+
+    .academy-nav-links a:hover,
+    .academy-nav-links a.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.075);
+    }
+
+    .chapter-hero {
+      position: relative;
+      padding: 70px 0 42px;
+      overflow: hidden;
+    }
+
+    .chapter-hero::before {
+      content: "";
+      position: absolute;
+      width: 620px;
+      height: 620px;
+      top: -340px;
+      right: -190px;
+      border-radius: 50%;
+      background: rgba(38, 208, 124, 0.16);
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    .chapter-hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .academy-card {
+      background: var(--academy-card);
+      border: 1px solid var(--academy-border);
+      border-radius: 24px;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    .chapter-hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 54px);
+    }
+
+    .chapter-hero-card::after {
+      content: "STATNETT";
+      position: absolute;
+      right: -15px;
+      bottom: -28px;
+      font-size: clamp(3.8rem, 9vw, 7rem);
+      font-weight: 900;
+      letter-spacing: -0.07em;
+      color: rgba(255, 255, 255, 0.025);
+      pointer-events: none;
+    }
+
+    .chapter-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--academy-mint);
+      background: rgba(38, 208, 124, 0.1);
+      border: 1px solid rgba(38, 208, 124, 0.26);
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .chapter-hero h1 {
+      max-width: 900px;
+      margin: 20px 0 0;
+      font-size: clamp(2.5rem, 6vw, 5.1rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .chapter-hero h1 span {
+      color: var(--academy-green);
+    }
+
+    .chapter-lead {
+      max-width: 810px;
+      margin: 22px 0 0;
+      color: var(--academy-muted);
+      font-size: clamp(1.04rem, 1.8vw, 1.22rem);
+      line-height: 1.78;
+    }
+
+    .chapter-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: var(--academy-muted);
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.85rem;
+    }
+
+    .hero-side {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .hero-side h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .progress-value {
+      margin-top: 8px;
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      margin-top: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(
+        90deg,
+        var(--academy-green),
+        var(--academy-mint)
+      );
+      transition: width 0.5s ease;
+    }
+
+    .objective-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .objective-item {
+      padding: 12px 13px;
+      border-radius: 13px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.075);
+      color: var(--academy-muted);
+      line-height: 1.5;
+    }
+
+    .objective-item strong {
+      color: #ffffff;
+    }
+
+    .chapter-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 285px;
+      gap: 24px;
+      align-items: start;
+      padding: 18px 0 50px;
+    }
+
+    .chapter-main {
+      min-width: 0;
+    }
+
+    .chapter-sidebar {
+      position: sticky;
+      top: 94px;
+    }
+
+    .content-block {
+      padding: clamp(22px, 4vw, 38px);
+      margin-bottom: 18px;
+      scroll-margin-top: 96px;
+    }
+
+    .content-block h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      letter-spacing: -0.035em;
+    }
+
+    .content-block h3 {
+      margin: 26px 0 10px;
+      font-size: 1.18rem;
+    }
+
+    .content-block p {
+      color: var(--academy-muted);
+      line-height: 1.82;
+    }
+
+    .content-block p:last-child {
+      margin-bottom: 0;
+    }
+
+    .intro-text {
+      font-size: 1.07rem;
+    }
+
+    .mission-grid,
+    .responsibility-grid,
+    .planning-grid,
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .mission-card,
+    .responsibility-card,
+    .planning-card,
+    .glossary-item {
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--academy-border);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .mission-card-icon,
+    .responsibility-icon {
+      margin-bottom: 12px;
+      font-size: 1.7rem;
+    }
+
+    .mission-card h3,
+    .responsibility-card h3,
+    .planning-card h3 {
+      margin: 0 0 8px;
+    }
+
+    .mission-card p,
+    .responsibility-card p,
+    .planning-card p {
+      margin: 0;
+      font-size: 0.94rem;
+    }
+
+    .system-role {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(110px, 1fr));
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .system-step {
+      position: relative;
+      min-height: 145px;
+      padding: 17px 12px;
+      border-radius: 17px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.07),
+        rgba(255, 255, 255, 0.025)
+      );
+      border: 1px solid rgba(255, 255, 255, 0.095);
+    }
+
+    .system-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -17px;
+      top: 50%;
+      z-index: 2;
+      transform: translateY(-50%);
+      color: var(--academy-green);
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+
+    .system-step-icon {
+      margin-bottom: 9px;
+      font-size: 1.8rem;
+    }
+
+    .system-step strong {
+      font-size: 0.93rem;
+    }
+
+    .system-step span {
+      display: block;
+      margin-top: 6px;
+      color: var(--academy-muted);
+      font-size: 0.79rem;
+      line-height: 1.4;
+    }
+
+    .three-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+      margin-top: 22px;
+    }
+
+    .pillar {
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--academy-border);
+    }
+
+    .pillar-number {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      color: #04281b;
+      background: var(--academy-green);
+      font-weight: 900;
+    }
+
+    .pillar h3 {
+      margin: 16px 0 8px;
+    }
+
+    .project-flow {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .project-phase {
+      min-height: 140px;
+      padding: 17px 12px;
+      border-radius: 17px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--academy-border);
+    }
+
+    .project-phase span {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.6rem;
+    }
+
+    .project-phase strong {
+      display: block;
+    }
+
+    .project-phase small {
+      display: block;
+      margin-top: 7px;
+      color: var(--academy-muted);
+      line-height: 1.4;
+    }
+
+    .info-box {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 18px;
+      border-left: 4px solid;
+    }
+
+    .info-box.planner {
+      background: rgba(38, 208, 124, 0.08);
+      border-color: var(--academy-green);
+    }
+
+    .info-box.remember {
+      background: rgba(116, 185, 255, 0.08);
+      border-color: var(--academy-blue);
+    }
+
+    .info-box.warning {
+      background: rgba(255, 127, 127, 0.075);
+      border-color: var(--academy-red);
+    }
+
+    .info-box.term {
+      background: rgba(189, 156, 255, 0.075);
+      border-color: var(--academy-purple);
+    }
+
+    .info-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 7px;
+      font-weight: 900;
+    }
+
+    .glossary-item strong {
+      display: block;
+      color: var(--academy-mint);
+    }
+
+    .glossary-item span {
+      display: block;
+      margin-top: 5px;
+      color: var(--academy-muted);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .sidebar-card {
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+
+    .sidebar-card h2 {
+      margin: 0 0 13px;
+      font-size: 1.05rem;
+    }
+
+    .sidebar-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .sidebar-list a {
+      display: block;
+      padding: 9px 11px;
+      border-radius: 10px;
+      color: var(--academy-muted);
+      text-decoration: none;
+      font-size: 0.89rem;
+    }
+
+    .sidebar-list a:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .complete-button {
+      width: 100%;
+      min-height: 45px;
+      border: 0;
+      border-radius: 12px;
+      color: #05281c;
+      background: var(--academy-green);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .complete-button.completed {
+      color: var(--academy-mint);
+      background: rgba(38, 208, 124, 0.14);
+      border: 1px solid rgba(38, 208, 124, 0.3);
+    }
+
+    .quiz-question {
+      margin-top: 18px;
+      padding: 20px;
+      border-radius: 17px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.085);
+    }
+
+    .quiz-question h3 {
+      margin: 0 0 14px;
+      line-height: 1.5;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 9px;
+    }
+
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 13px;
+      border-radius: 11px;
+      color: var(--academy-muted);
+      background: rgba(255, 255, 255, 0.035);
+      cursor: pointer;
+    }
+
+    .quiz-option:hover {
+      background: rgba(255, 255, 255, 0.065);
+    }
+
+    .quiz-option input {
+      accent-color: var(--academy-green);
+    }
+
+    .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .academy-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 45px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .academy-button.primary {
+      color: #04281b;
+      background: var(--academy-green);
+    }
+
+    .academy-button.secondary {
+      border-color: var(--academy-border);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .quiz-result {
+      min-height: 28px;
+      font-weight: 800;
+    }
+
+    .quiz-result.good {
+      color: var(--academy-mint);
+    }
+
+    .quiz-result.medium {
+      color: var(--academy-yellow);
+    }
+
+    .quiz-result.low {
+      color: var(--academy-red);
+    }
+
+    .chapter-navigation {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .navigation-card {
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: 0.2s ease;
+    }
+
+    .navigation-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(38, 208, 124, 0.35);
+    }
+
+    .navigation-card span {
+      display: block;
+      color: var(--academy-muted);
+      font-size: 0.85rem;
+    }
+
+    .navigation-card strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 1.15rem;
+    }
+
+    .academy-footer {
+      padding: 36px 0;
+      margin-top: 35px;
+      border-top: 1px solid var(--academy-border);
+      color: var(--academy-muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    @media (max-width: 1100px) {
+      .project-flow {
+        grid-template-columns: repeat(4, minmax(100px, 1fr));
+      }
+
+      .system-role {
+        grid-template-columns: repeat(3, minmax(110px, 1fr));
+      }
+
+      .system-step::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .academy-nav {
+        padding-block: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .chapter-hero-grid,
+      .chapter-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .chapter-sidebar {
+        position: static;
+      }
+
+      .three-pillars {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .academy-nav-links {
+        display: none;
+      }
+
+      .chapter-hero {
+        padding-top: 34px;
+      }
+
+      .mission-grid,
+      .responsibility-grid,
+      .planning-grid,
+      .glossary-grid,
+      .chapter-navigation,
+      .project-flow,
+      .system-role {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="academy-topbar">
+    <div class="container academy-nav">
+      <a class="academy-brand" href="index.html">
+        <span class="academy-logo">⚡</span>
+        <span>Henrik Academy</span>
+      </a>
+
+      <nav class="academy-nav-links" aria-label="Academy-meny">
+        <a href="index.html">Academy</a>
+        <a href="kapittel1.html">Kapittel 1</a>
+        <a href="kapittel2.html" class="active">Kapittel 2</a>
+        <a href="#ordliste">Ordliste</a>
+        <a href="#quiz">Quiz</a>
+        <a href="../index.html">Hovedportal</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="chapter-hero">
+      <div class="container chapter-hero-grid">
+        <article class="academy-card chapter-hero-card">
+          <span class="chapter-label">
+            🏭 Kapittel 2 av 10
+          </span>
+
+          <h1>
+            Statnett og <span>samfunnsoppdraget</span>
+          </h1>
+
+          <p class="chapter-lead">
+            Statnett skal ikke bare bygge kraftledninger og stasjoner.
+            Virksomheten skal planlegge, utvikle og drifte det norske
+            transmisjonsnettet, ivareta systemansvaret og legge til rette
+            for sikker strømforsyning, verdiskaping og omstilling.
+          </p>
+
+          <div class="chapter-meta">
+            <span class="meta-pill">⏱️ Ca. 25–35 minutter</span>
+            <span class="meta-pill">📘 Grunnleggende nivå</span>
+            <span class="meta-pill">🧠 Quiz: 6 spørsmål</span>
+          </div>
+        </article>
+
+        <aside class="academy-card hero-side">
+          <div>
+            <h2>Kapittelfremdrift</h2>
+
+            <div class="progress-value" id="progress-value">
+              0 %
+            </div>
+
+            <div class="progress-track">
+              <div class="progress-bar" id="progress-bar"></div>
+            </div>
+          </div>
+
+          <div class="objective-list">
+            <div class="objective-item">
+              <strong>1.</strong>
+              Forstå Statnetts rolle i kraftsystemet.
+            </div>
+
+            <div class="objective-item">
+              <strong>2.</strong>
+              Forklare hva systemansvar innebærer.
+            </div>
+
+            <div class="objective-item">
+              <strong>3.</strong>
+              Forstå hvorfor nettet må planlegges langsiktig.
+            </div>
+
+            <div class="objective-item">
+              <strong>4.</strong>
+              Se hvorfor planleggerrollen er viktig for gjennomføring.
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="container chapter-layout">
+      <div class="chapter-main">
+        <section class="academy-card content-block" id="introduksjon">
+          <h2>Statnett er ryggraden i kraftsystemet</h2>
+
+          <p class="intro-text">
+            Statnett er ansvarlig for den overordnede infrastrukturen som
+            binder produksjon, store forbruksområder, regionale nett og
+            utenlandsforbindelser sammen.
+          </p>
+
+          <p>
+            Dette betyr at Statnetts arbeid påvirker langt mer enn selve
+            strømnettet. Kapasiteten og driftssikkerheten i
+            transmisjonsnettet påvirker blant annet industriutvikling,
+            elektrifisering, kraftproduksjon, strømpriser,
+            forsyningssikkerhet og samfunnsberedskap.
+          </p>
+
+          <div class="info-box remember">
+            <div class="info-title">
+              💡 Viktig skille
+            </div>
+
+            <p>
+              Statnett produserer normalt ikke strømmen og leverer den
+              heller ikke direkte til de fleste boliger. Statnett sørger
+              for at kraftsystemets hovednett og den samlede driften
+              fungerer.
+            </p>
+          </div>
+        </section>
+
+        <section class="academy-card content-block" id="samfunnsoppdrag">
+          <h2>Samfunnsoppdraget</h2>
+
+          <p>
+            Statnetts samfunnsoppdrag kan forstås gjennom fire
+            hovedområder:
+          </p>
+
+          <div class="mission-grid">
+            <article class="mission-card">
+              <div class="mission-card-icon">🛡️</div>
+              <h3>Sikker strømforsyning</h3>
+              <p>
+                Kraftsystemet skal være robust og kunne håndtere feil,
+                vedlikehold og krevende driftssituasjoner.
+              </p>
+            </article>
+
+            <article class="mission-card">
+              <div class="mission-card-icon">⚖️</div>
+              <h3>Balanse i kraftsystemet</h3>
+              <p>
+                Produksjon og forbruk må kontinuerlig balanseres slik at
+                frekvens og systemstabilitet opprettholdes.
+              </p>
+            </article>
+
+            <article class="mission-card">
+              <div class="mission-card-icon">🏗️</div>
+              <h3>Utvikle transmisjonsnettet</h3>
+              <p>
+                Nettet må fornyes og forsterkes for å møte nye behov,
+                erstatte gamle anlegg og redusere flaskehalser.
+              </p>
+            </article>
+
+            <article class="mission-card">
+              <div class="mission-card-icon">🌱</div>
+              <h3>Legge til rette for omstilling</h3>
+              <p>
+                Et sterkere nett gjør det mulig å tilknytte mer
+                kraftproduksjon, industri, transport og elektrifisering.
+              </p>
+            </article>
+          </div>
+
+          <div class="info-box planner">
+            <div class="info-title">
+              👷 Planleggerperspektiv
+            </div>
+
+            <p>
+              Samfunnsoppdraget blir realisert gjennom prosjekter.
+              Prosjektene må gjennomføres i riktig rekkefølge og med
+              kontroll på tillatelser, leveranser, ressurser,
+              utkoblinger, testing og idriftsettelse.
+            </p>
+          </div>
+        </section>
+
+        <section class="academy-card content-block" id="systemrolle">
+          <h2>Statnetts plass i verdikjeden</h2>
+
+          <div class="system-role">
+            <div class="system-step">
+              <div class="system-step-icon">💧</div>
+              <strong>Produksjon</strong>
+              <span>Kraftverk og produsenter</span>
+            </div>
+
+            <div class="system-step">
+              <div class="system-step-icon">🗼</div>
+              <strong>Transmisjonsnett</strong>
+              <span>Statnett og hovedforbindelsene</span>
+            </div>
+
+            <div class="system-step">
+              <div class="system-step-icon">🏭</div>
+              <strong>Regionalnett</strong>
+              <span>Regionale nettselskaper</span>
+            </div>
+
+            <div class="system-step">
+              <div class="system-step-icon">🏘️</div>
+              <strong>Distribusjonsnett</strong>
+              <span>Lokale nettselskaper</span>
+            </div>
+
+            <div class="system-step">
+              <div class="system-step-icon">🔌</div>
+              <strong>Kunde</strong>
+              <span>Bolig, næring og industri</span>
+            </div>
+          </div>
+
+          <p>
+            Statnett har dermed en sentral posisjon mellom
+            kraftproduksjonen og de underliggende nettene. En begrensning
+            i transmisjonsnettet kan påvirke store geografiske områder
+            og mange kunder samtidig.
+          </p>
+        </section>
+
+        <section class="academy-card content-block" id="systemansvar">
+          <h2>Hva betyr systemansvar?</h2>
+
+          <p>
+            Systemansvaret handler om å koordinere det samlede
+            kraftsystemet slik at det fungerer sikkert og stabilt.
+            Kraftsystemet må håndtere løpende endringer i produksjon,
+            forbruk, kraftflyt, vær, feil og tilgjengelig nettkapasitet.
+          </p>
+
+          <div class="responsibility-grid">
+            <article class="responsibility-card">
+              <div class="responsibility-icon">〰️</div>
+              <h3>Frekvens</h3>
+              <p>
+                Frekvensen gir informasjon om balansen mellom samlet
+                produksjon og samlet forbruk.
+              </p>
+            </article>
+
+            <article class="responsibility-card">
+              <div class="responsibility-icon">🔁</div>
+              <h3>Kraftflyt</h3>
+              <p>
+                Kraftflyten må holdes innenfor anleggenes og systemets
+                sikre driftsgrenser.
+              </p>
+            </article>
+
+            <article class="responsibility-card">
+              <div class="responsibility-icon">⚠️</div>
+              <h3>Driftsforstyrrelser</h3>
+              <p>
+                Feil må håndteres raskt for å hindre at en hendelse
+                utvikler seg til et større avbrudd.
+              </p>
+            </article>
+
+            <article class="responsibility-card">
+              <div class="responsibility-icon">📊</div>
+              <h3>Reserver</h3>
+              <p>
+                Tilgjengelige ressurser må kunne aktiveres når
+                produksjon og forbruk ikke lenger er i balanse.
+              </p>
+            </article>
+          </div>
+
+          <div class="info-box term">
+            <div class="info-title">
+              📖 Begrep: driftsgrense
+            </div>
+
+            <p>
+              En driftsgrense er en grense for hvor mye et anlegg eller
+              kraftsystemet kan belastes uten at sikkerhet eller
+              stabilitet blir uakseptabel.
+            </p>
+          </div>
+        </section>
+
+        <section class="academy-card content-block" id="nettutvikling">
+          <h2>Hvorfor må transmisjonsnettet utvikles?</h2>
+
+          <p>
+            Nettet utvikles både fordi samfunnet trenger mer kapasitet,
+            og fordi eldre anlegg må fornyes. Mange tiltak kombinerer
+            derfor reinvestering og kapasitetsøkning.
+          </p>
+
+          <div class="three-pillars">
+            <article class="pillar">
+              <div class="pillar-number">1</div>
+              <h3>Fornyelse</h3>
+              <p>
+                Ledninger, stasjoner og komponenter nærmer seg slutten
+                av teknisk levetid og må erstattes.
+              </p>
+            </article>
+
+            <article class="pillar">
+              <div class="pillar-number">2</div>
+              <h3>Forsterkning</h3>
+              <p>
+                Høyere overføringskapasitet reduserer flaskehalser og
+                åpner for nytt forbruk og ny produksjon.
+              </p>
+            </article>
+
+            <article class="pillar">
+              <div class="pillar-number">3</div>
+              <h3>Forsyningssikkerhet</h3>
+              <p>
+                Flere forbindelser, sterkere stasjoner og bedre
+                redundans gjør systemet mer robust.
+              </p>
+            </article>
+          </div>
+
+          <div class="info-box remember">
+            <div class="info-title">
+              💡 Målnett
+            </div>
+
+            <p>
+              Målnettet beskriver hvordan transmisjonsnettet skal se ut
+              etter at langsiktige tiltak i et område er gjennomført.
+              Enkeltprosjekter må derfor forstås som deler av et større
+              system.
+            </p>
+          </div>
+        </section>
+
+        <section class="academy-card content-block" id="omradeplaner">
+          <h2>Områdeplaner og langsiktig planlegging</h2>
+
+          <p>
+            Statnett deler nettutviklingen inn i geografiske områder.
+            Områdeplanene beskriver behov, utfordringer, mulige tiltak
+            og ønsket utvikling av nettet over tid.
+          </p>
+
+          <p>
+            Planene utarbeides i samarbeid med regionale nettselskaper
+            og må ta hensyn til blant annet:
+          </p>
+
+          <div class="planning-grid">
+            <article class="planning-card">
+              <h3>Forbruksutvikling</h3>
+              <p>
+                Nye industriprosjekter, transport, elektrifisering og
+                vanlig forbruksvekst.
+              </p>
+            </article>
+
+            <article class="planning-card">
+              <h3>Produksjonsutvikling</h3>
+              <p>
+                Ny kraftproduksjon, oppgraderinger og endret geografisk
+                produksjonsmønster.
+              </p>
+            </article>
+
+            <article class="planning-card">
+              <h3>Teknisk tilstand</h3>
+              <p>
+                Alder, tilstand, vedlikeholdsbehov og forventet levetid
+                for eksisterende anlegg.
+              </p>
+            </article>
+
+            <article class="planning-card">
+              <h3>Systemnytte</h3>
+              <p>
+                Hvordan flere tiltak samlet forbedrer kapasitet,
+                driftssikkerhet og kraftflyt.
+              </p>
+            </article>
+          </div>
+
+          <div class="info-box warning">
+            <div class="info-title">
+              ⚠️ Usikkerhet er en del av planleggingen
+            </div>
+
+            <p>
+              Behov, konsesjoner, kundemodenhet, kostnader og
+              leverandørkapasitet kan endre seg. Planene må derfor
+              oppdateres og kunne håndtere flere utviklingsbaner.
+            </p>
+          </div>
+        </section>
+
+        <section class="academy-card content-block" id="prosjektforlop">
+          <h2>Fra behov til idriftsettelse</h2>
+
+          <p>
+            Et stort nettprosjekt går normalt gjennom mange faser før
+            anlegget kan tas i bruk.
+          </p>
+
+          <div class="project-flow">
+            <div class="project-phase">
+              <span>🔎</span>
+              <strong>Behov</strong>
+              <small>Kapasitet, tilstand eller sikkerhet</small>
+            </div>
+
+            <div class="project-phase">
+              <span>🧭</span>
+              <strong>Utredning</strong>
+              <small>Alternativer og systemløsning</small>
+            </div>
+
+            <div class="project-phase">
+              <span>📜</span>
+              <strong>Konsesjon</strong>
+              <small>Tillatelser og myndighetsbehandling</small>
+            </div>
+
+            <div class="project-phase">
+              <span>📐</span>
+              <strong>Prosjektering</strong>
+              <small>Detaljering av teknisk løsning</small>
+            </div>
+
+            <div class="project-phase">
+              <span>📦</span>
+              <strong>Anskaffelse</strong>
+              <small>Kontrakter, leverandører og utstyr</small>
+            </div>
+
+            <div class="project-phase">
+              <span>🏗️</span>
+              <strong>Bygging</strong>
+              <small>Anlegg, montasje og oppfølging</small>
+            </div>
+
+            <div class="project-phase">
+              <span>✅</span>
+              <strong>Idriftsettelse</strong>
+              <small>Testing, spenningssetting og overlevering</small>
+            </div>
+          </div>
+
+          <div class="info-box planner">
+            <div class="info-title">
+              👷 Planleggerens rolle gjennom hele løpet
+            </div>
+
+            <p>
+              Planleggeren må koble fasene sammen og synliggjøre
+              avhengigheter. Sen konsesjon påvirker prosjektering. Sen
+              prosjektering påvirker innkjøp. Sen leveranse påvirker
+              montasje, testing og utkoblingsvindu.
+            </p>
+          </div>
+        </section>
+
+        <section class="academy-card content-block" id="gjennomforing">
+          <h2>Hvorfor gjennomføringskapasitet er avgjørende</h2>
+
+          <p>
+            Når investeringsnivået øker, er det ikke nok å ha gode
+            prosjektideer og finansiering. Organisasjonen må ha
+            kapasitet til å planlegge, prosjektere, anskaffe, bygge,
+            teste og følge opp mange prosjekter samtidig.
+          </p>
+
+          <div class="responsibility-grid">
+            <article class="responsibility-card">
+              <div class="responsibility-icon">👥</div>
+              <h3>Ressurser</h3>
+              <p>
+                Fagressurser, prosjektledelse, byggeledelse,
+                planlegging og støttefunksjoner må være tilgjengelige.
+              </p>
+            </article>
+
+            <article class="responsibility-card">
+              <div class="responsibility-icon">🚚</div>
+              <h3>Leverandører</h3>
+              <p>
+                Markedet må kunne levere komponenter, prosjektering,
+                entrepriser og spesialkompetanse.
+              </p>
+            </article>
+
+            <article class="responsibility-card">
+              <div class="responsibility-icon">🔌</div>
+              <h3>Utkoblinger</h3>
+              <p>
+                Eksisterende nett må holdes sikkert i drift mens nye
+                anlegg bygges og gamle anlegg kobles om.
+              </p>
+            </article>
+
+            <article class="responsibility-card">
+              <div class="responsibility-icon">🔗</div>
+              <h3>Avhengigheter</h3>
+              <p>
+                Prosjekter må samordnes slik at ett tiltak ikke
+                forsinker eller blokkerer et annet.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="academy-card content-block" id="planleggerrollen">
+          <h2>Planleggerrollen i Statnetts prosjektorganisasjon</h2>
+
+          <p>
+            Planleggeren omsetter prosjektets tekniske og kommersielle
+            innhold til en gjennomførbar tidsmodell. Rollen gir
+            prosjektledelsen et grunnlag for prioritering, koordinering
+            og tidlig varsling.
+          </p>
+
+          <div class="planning-grid">
+            <article class="planning-card">
+              <h3>Bygge fremdriftsplanen</h3>
+              <p>
+                Strukturere aktiviteter, milepæler, leveranser og
+                avhengigheter.
+              </p>
+            </article>
+
+            <article class="planning-card">
+              <h3>Identifisere kritisk linje</h3>
+              <p>
+                Synliggjøre aktivitetene som direkte styrer prosjektets
+                sluttdato.
+              </p>
+            </article>
+
+            <article class="planning-card">
+              <h3>Oppdatere faktisk status</h3>
+              <p>
+                Sammenligne planlagt og faktisk fremdrift og vurdere
+                konsekvensene.
+              </p>
+            </article>
+
+            <article class="planning-card">
+              <h3>Støtte beslutninger</h3>
+              <p>
+                Vise konsekvensen av forsinkelser, omsekvensering og
+                alternative gjennomføringsstrategier.
+              </p>
+            </article>
+
+            <article class="planning-card">
+              <h3>Koordinere grensesnitt</h3>
+              <p>
+                Koble konsesjon, prosjektering, innkjøp, bygging,
+                kontrollanlegg og idriftsettelse sammen.
+              </p>
+            </article>
+
+            <article class="planning-card">
+              <h3>Varsle tidlig</h3>
+              <p>
+                Oppdage trender og avvik før de utvikler seg til tapte
+                milepæler.
+              </p>
+            </article>
+          </div>
+
+          <div class="info-box planner">
+            <div class="info-title">
+              👷 Kjernen i rollen
+            </div>
+
+            <p>
+              En god planlegger rapporterer ikke bare at prosjektet er
+              forsinket. Planleggeren forklarer hvorfor, hva det
+              påvirker, og hvilke tiltak som kan redusere konsekvensen.
+            </p>
+          </div>
+        </section>
+
+        <section class="academy-card content-block" id="ordliste">
+          <h2>Ordliste for kapittel 2</h2>
+
+          <div class="glossary-grid">
+            <div class="glossary-item">
+              <strong>Systemansvar</strong>
+              <span>
+                Ansvar for å koordinere og sikre den samlede driften av
+                kraftsystemet.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Samfunnsoppdrag</strong>
+              <span>
+                Virksomhetens overordnede oppgave og ansvar overfor
+                samfunnet.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Områdeplan</strong>
+              <span>
+                Langsiktig plan for utvikling av nettet innenfor et
+                geografisk område.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Målnett</strong>
+              <span>
+                Ønsket fremtidig nettstruktur etter at planlagte tiltak
+                er gjennomført.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Konsesjon</strong>
+              <span>
+                Offentlig tillatelse som kreves før bestemte
+                energianlegg kan bygges og drives.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Gjennomføringskapasitet</strong>
+              <span>
+                Organisasjonens og leverandørmarkedets evne til å
+                realisere planlagte tiltak.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Kritisk linje</strong>
+              <span>
+                Den lengste kjeden av avhengige aktiviteter som styrer
+                prosjektets tidligste mulige sluttdato.
+              </span>
+            </div>
+
+            <div class="glossary-item">
+              <strong>Idriftsettelse</strong>
+              <span>
+                Prosessen der et ferdig bygget anlegg testes, kobles inn
+                og tas i operativ bruk.
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section class="academy-card content-block" id="quiz">
+          <h2>Quiz – Statnett og samfunnsoppdraget</h2>
+
+          <p>
+            Velg ett svar på hvert spørsmål. Resultatet lagres lokalt i
+            nettleseren.
+          </p>
+
+          <form id="chapter-quiz">
+            <div class="quiz-question">
+              <h3>1. Hva er Statnetts hovedrolle?</h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input type="radio" name="q1" value="a" />
+                  Å levere strøm direkte til alle norske boliger
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q1" value="b" />
+                  Å utvikle og drifte transmisjonsnettet og ivareta
+                  systemansvaret
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q1" value="c" />
+                  Å produsere all vannkraft i Norge
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question">
+              <h3>2. Hva innebærer systemansvaret?</h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input type="radio" name="q2" value="a" />
+                  Å koordinere den samlede driften av kraftsystemet
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q2" value="b" />
+                  Å bygge alle lokale nettstasjoner
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q2" value="c" />
+                  Å fastsette strømregningen til husholdningene
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question">
+              <h3>3. Hvorfor utvikles transmisjonsnettet?</h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input type="radio" name="q3" value="a" />
+                  Bare for å gjøre mastene høyere
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q3" value="b" />
+                  For å fornye gamle anlegg, øke kapasiteten og bedre
+                  forsyningssikkerheten
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q3" value="c" />
+                  Bare for å redusere antall kraftverk
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question">
+              <h3>4. Hva beskriver en områdeplan?</h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input type="radio" name="q4" value="a" />
+                  Behov og langsiktig nettutvikling i et geografisk område
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q4" value="b" />
+                  Den daglige bemanningsplanen for ett kontor
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q4" value="c" />
+                  Kun vedlikeholdsplanen for én transformator
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question">
+              <h3>5. Hva betyr gjennomføringskapasitet?</h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input type="radio" name="q5" value="a" />
+                  Evnen til å realisere planlagte prosjekter og tiltak
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q5" value="b" />
+                  Antall megawatt i én ledning
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q5" value="c" />
+                  Hvor mange møter en prosjektleder kan delta i
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-question">
+              <h3>6. Hva er en sentral oppgave for planleggeren?</h3>
+
+              <div class="quiz-options">
+                <label class="quiz-option">
+                  <input type="radio" name="q6" value="a" />
+                  Å utføre alle tekniske beregninger alene
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q6" value="b" />
+                  Å koble aktiviteter og avhengigheter til en realistisk
+                  fremdriftsplan
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="q6" value="c" />
+                  Å godkjenne alle konsesjonssøknader
+                </label>
+              </div>
+            </div>
+
+            <div class="quiz-actions">
+              <button class="academy-button primary" type="submit">
+                Sjekk svar
+              </button>
+
+              <button
+                class="academy-button secondary"
+                type="button"
+                id="reset-quiz"
+              >
+                Nullstill
+              </button>
+
+              <div
+                class="quiz-result"
+                id="quiz-result"
+                aria-live="polite"
+              ></div>
+            </div>
+          </form>
+        </section>
+
+        <section class="chapter-navigation">
+          <a class="academy-card navigation-card" href="kapittel1.html">
+            <span>← Forrige kapittel</span>
+            <strong>Kapittel 1 – Kraftsystemet</strong>
+          </a>
+
+          <a class="academy-card navigation-card" href="index.html">
+            <span>Academy-oversikt</span>
+            <strong>Tilbake til alle kapitlene →</strong>
+          </a>
+        </section>
+      </div>
+
+      <aside class="chapter-sidebar">
+        <div class="academy-card sidebar-card">
+          <h2>Innhold</h2>
+
+          <nav class="sidebar-list">
+            <a href="#introduksjon">Introduksjon</a>
+            <a href="#samfunnsoppdrag">Samfunnsoppdraget</a>
+            <a href="#systemrolle">Plass i verdikjeden</a>
+            <a href="#systemansvar">Systemansvaret</a>
+            <a href="#nettutvikling">Nettutvikling</a>
+            <a href="#omradeplaner">Områdeplaner</a>
+            <a href="#prosjektforlop">Prosjektforløpet</a>
+            <a href="#gjennomforing">Gjennomføringskapasitet</a>
+            <a href="#planleggerrollen">Planleggerrollen</a>
+            <a href="#ordliste">Ordliste</a>
+            <a href="#quiz">Quiz</a>
+          </nav>
+        </div>
+
+        <div class="academy-card sidebar-card">
+          <h2>Kapittelstatus</h2>
+
+          <p
+            style="
+              color: var(--academy-muted);
+              line-height: 1.6;
+              font-size: 0.9rem;
+            "
+          >
+            Marker kapittelet som fullført når du har lest innholdet og
+            tatt quizen.
+          </p>
+
+          <button
+            class="complete-button"
+            id="complete-button"
+            type="button"
+          >
+            Marker som fullført
+          </button>
+        </div>
+
+        <div class="academy-card sidebar-card">
+          <h2>Om innholdet</h2>
+
+          <p
+            style="
+              color: var(--academy-muted);
+              line-height: 1.6;
+              font-size: 0.86rem;
+            "
+          >
+            Dette er en personlig læringsside basert på generelle
+            kraftsystemprinsipper og offentlig informasjon. Siden er
+            ikke offisiell intern opplæring fra Statnett.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="academy-footer">
+    <div class="container footer-inner">
+      <div>
+        Henrik Bergfjord · Personlig kraftsystemakademi
+      </div>
+
+      <div>
+        Kapittel 2 · Statnett og samfunnsoppdraget
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const storageKeys = {
+      completed: "henrikAcademyChapter2Completed",
+      quizScore: "henrikAcademyChapter2QuizScore"
+    };
+
+    const progressValue = document.getElementById("progress-value");
+    const progressBar = document.getElementById("progress-bar");
+    const completeButton = document.getElementById("complete-button");
+    const quizForm = document.getElementById("chapter-quiz");
+    const quizResult = document.getElementById("quiz-result");
+    const resetQuizButton = document.getElementById("reset-quiz");
+
+    function updateProgress() {
+      const completed =
+        localStorage.getItem(storageKeys.completed) === "true";
+
+      const quizScore = Number(
+        localStorage.getItem(storageKeys.quizScore) || 0
+      );
+
+      let progress = 0;
+
+      if (quizScore > 0) {
+        progress = 50;
+      }
+
+      if (completed) {
+        progress = 100;
+      }
+
+      progressValue.textContent = `${progress} %`;
+      progressBar.style.width = `${progress}%`;
+
+      if (completed) {
+        completeButton.textContent = "✓ Kapittel fullført";
+        completeButton.classList.add("completed");
+      } else {
+        completeButton.textContent = "Marker som fullført";
+        completeButton.classList.remove("completed");
+      }
+    }
+
+    completeButton.addEventListener("click", () => {
+      const isCompleted =
+        localStorage.getItem(storageKeys.completed) === "true";
+
+      localStorage.setItem(
+        storageKeys.completed,
+        String(!isCompleted)
+      );
+
+      updateProgress();
+    });
+
+    quizForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const answers = {
+        q1: "b",
+        q2: "a",
+        q3: "b",
+        q4: "a",
+        q5: "a",
+        q6: "b"
+      };
+
+      const formData = new FormData(quizForm);
+      let score = 0;
+      let answered = 0;
+
+      Object.entries(answers).forEach(([question, correctAnswer]) => {
+        const selectedAnswer = formData.get(question);
+
+        if (selectedAnswer) {
+          answered += 1;
+        }
+
+        if (selectedAnswer === correctAnswer) {
+          score += 1;
+        }
+      });
+
+      if (answered < 6) {
+        quizResult.textContent =
+          "Svar på alle spørsmålene før du sjekker resultatet.";
+
+        quizResult.className = "quiz-result low";
+        return;
+      }
+
+      const percentage = Math.round((score / 6) * 100);
+
+      localStorage.setItem(
+        storageKeys.quizScore,
+        String(percentage)
+      );
+
+      if (score === 6) {
+        quizResult.textContent =
+          "6 av 6 riktige – svært godt jobbet!";
+
+        quizResult.className = "quiz-result good";
+      } else if (score >= 4) {
+        quizResult.textContent =
+          `${score} av 6 riktige. God forståelse – les gjerne gjennom punktene du var usikker på.`;
+
+        quizResult.className = "quiz-result medium";
+      } else {
+        quizResult.textContent =
+          `${score} av 6 riktige. Gå gjennom kapittelet én gang til og prøv på nytt.`;
+
+        quizResult.className = "quiz-result low";
+      }
+
+      updateProgress();
+    });
+
+    resetQuizButton.addEventListener("click", () => {
+      quizForm.reset();
+
+      quizResult.textContent = "";
+      quizResult.className = "quiz-result";
+
+      localStorage.removeItem(storageKeys.quizScore);
+
+      updateProgress();
+    });
+
+    updateProgress();
+  </script>
+</body>
+</html>
