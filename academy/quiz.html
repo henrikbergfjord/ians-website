@@ -7,6 +7,181 @@
   <title>Quiz – Statnett Academy</title>
 
   <link rel="stylesheet" href="../assets/styles.css">
+
+  <style>
+    #quizForm{
+      display:grid;
+      gap:14px;
+    }
+
+    .quiz-question{
+      padding:22px;
+      transition:
+        border-color .18s ease,
+        background .18s ease,
+        transform .18s ease;
+    }
+
+    .quiz-question:hover{
+      border-color:rgba(121,169,255,.24);
+    }
+
+    .quiz-question-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .quiz-question h3{
+      margin:0 0 18px;
+      font-size:1.08rem;
+      line-height:1.5;
+    }
+
+    .quiz-status{
+      min-height:20px;
+      font-size:.8rem;
+      font-weight:800;
+    }
+
+    .quiz-option{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      margin-top:10px;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:13px;
+      color:var(--muted);
+      background:rgba(255,255,255,.025);
+      cursor:pointer;
+      transition:
+        border-color .18s ease,
+        background .18s ease,
+        color .18s ease;
+    }
+
+    .quiz-option:hover{
+      border-color:rgba(121,169,255,.35);
+      color:var(--text);
+      background:rgba(121,169,255,.055);
+    }
+
+    .quiz-option:has(input:checked){
+      border-color:rgba(121,169,255,.55);
+      color:var(--text);
+      background:rgba(121,169,255,.09);
+    }
+
+    .quiz-option input{
+      width:18px;
+      height:18px;
+      flex:0 0 auto;
+      margin:2px 0 0;
+      accent-color:var(--accent);
+    }
+
+    .quiz-option span{
+      line-height:1.5;
+    }
+
+    .quiz-question.quiz-correct{
+      border-color:rgba(100,230,195,.48);
+      background:rgba(100,230,195,.045);
+    }
+
+    .quiz-question.quiz-correct .quiz-status{
+      color:var(--green);
+    }
+
+    .quiz-question.quiz-incorrect{
+      border-color:rgba(255,125,125,.48);
+      background:rgba(255,125,125,.045);
+    }
+
+    .quiz-question.quiz-incorrect .quiz-status{
+      color:var(--danger);
+    }
+
+    .quiz-question.quiz-unanswered{
+      border-color:rgba(255,204,102,.50);
+      background:rgba(255,204,102,.045);
+    }
+
+    .quiz-question.quiz-unanswered .quiz-status{
+      color:var(--warn);
+    }
+
+    .quiz-actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+      padding:22px;
+    }
+
+    .quiz-actions h2{
+      margin-bottom:6px;
+    }
+
+    .quiz-actions p{
+      margin:0;
+    }
+
+    .quiz-result{
+      padding:28px;
+    }
+
+    .quiz-score{
+      margin:14px 0 8px;
+      color:var(--text);
+      font-size:1.45rem;
+      font-weight:900;
+    }
+
+    .quiz-result-bar{
+      height:12px;
+      margin-top:20px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+    }
+
+    .quiz-result-fill{
+      width:0;
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(
+        90deg,
+        var(--accent),
+        var(--accent2),
+        var(--green)
+      );
+      transition:width .7s ease;
+    }
+
+    @media (max-width:600px){
+      .quiz-question{
+        padding:18px;
+      }
+
+      .quiz-actions{
+        align-items:stretch;
+      }
+
+      .quiz-actions .hero-actions{
+        width:100%;
+      }
+
+      .quiz-actions .button{
+        width:100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -14,18 +189,18 @@
   <header class="topbar">
     <div class="container nav">
 
-<a class="brand" href="/academy/">
-  <span class="brand-mark"></span>
-  <span>Academy</span>
-</a>
+      <a class="brand" href="/academy/">
+        <span class="brand-mark"></span>
+        <span>Academy</span>
+      </a>
 
-<nav class="nav-links">
-  <a href="/">Portal</a>
-  <a href="/academy/">Kapitler</a>
-  <a class="active" href="/academy/quiz.html">Quiz</a>
-  <a href="/academy/minenotater.html">Mine notater</a>
-  <a href="/academy/ordliste.html">Ordliste</a>
-</nav>
+      <nav class="nav-links">
+        <a href="/">Portal</a>
+        <a href="/academy/">Kapitler</a>
+        <a class="active" href="/academy/quiz.html">Quiz</a>
+        <a href="/academy/minenotater.html">Mine notater</a>
+        <a href="/academy/ordliste.html">Ordliste</a>
+      </nav>
 
     </div>
   </header>
@@ -33,31 +208,31 @@
   <main class="container">
 
     <section class="page-header">
-  <div class="card hero-panel academy-hero">
-    <div class="academy-hero-content">
+      <div class="card hero-panel academy-hero">
+        <div class="academy-hero-content">
 
-      <span class="kicker">Statnett Academy</span>
+          <span class="kicker">Statnett Academy</span>
 
-      <h1>Quiz</h1>
-<a class="brand" href="../academy.html"></a>
-      <p>
-        Test kunnskapen din om kraftsystemet, Statnetts samfunnsoppdrag,
-        420 kV-nettet, transformatorstasjoner og planleggerrollen.
-      </p>
+          <h1>Quiz</h1>
 
-      <div class="hero-actions">
-        <a class="button secondary" href="index.html">
-          ← Tilbake til kapitler
-        </a>
+          <p>
+            Test kunnskapen din om kraftsystemet, Statnetts samfunnsoppdrag,
+            420 kV-nettet, transformatorstasjoner og planleggerrollen.
+          </p>
 
-        <a class="button primary" href="#quiz">
-          Start quiz
-        </a>
+          <div class="hero-actions">
+            <a class="button secondary" href="/academy/">
+              ← Tilbake til kapitler
+            </a>
+
+            <a class="button primary" href="#quiz">
+              Start quiz
+            </a>
+          </div>
+
+        </div>
       </div>
-
-    </div>
-  </div>
-</section>
+    </section>
 
     <section class="section" id="quiz">
 
@@ -89,23 +264,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q1" value="a">
-            <span>
-              Å transportere store mengder kraft over lange avstander
-            </span>
+            <span>Å transportere store mengder kraft over lange avstander</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q1" value="b">
-            <span>
-              Å levere strøm direkte til alle boliger
-            </span>
+            <span>Å levere strøm direkte til alle boliger</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q1" value="c">
-            <span>
-              Å produsere elektrisk energi
-            </span>
+            <span>Å produsere elektrisk energi</span>
           </label>
         </article>
 
@@ -145,23 +314,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q3" value="a">
-            <span>
-              Å bygge distribusjonsnett i alle kommuner
-            </span>
+            <span>Å bygge distribusjonsnett i alle kommuner</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q3" value="b">
-            <span>
-              Å sikre balanse og koordinere sikker drift av kraftsystemet
-            </span>
+            <span>Å sikre balanse og koordinere sikker drift av kraftsystemet</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q3" value="c">
-            <span>
-              Å bestemme strømprisen til sluttkundene
-            </span>
+            <span>Å bestemme strømprisen til sluttkundene</span>
           </label>
         </article>
 
@@ -176,23 +339,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q4" value="a">
-            <span>
-              Det blir behov for høyere strøm for samme effekt
-            </span>
+            <span>Det blir behov for høyere strøm for samme effekt</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q4" value="b">
-            <span>
-              Mer effekt kan overføres med lavere strøm
-            </span>
+            <span>Mer effekt kan overføres med lavere strøm</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q4" value="c">
-            <span>
-              Alle transformatorstasjoner kan fjernes
-            </span>
+            <span>Alle transformatorstasjoner kan fjernes</span>
           </label>
         </article>
 
@@ -207,22 +364,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q5" value="a">
-            <span>
-              To parallelle delledere per fase
-            </span>
+            <span>To parallelle delledere per fase</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q5" value="b">
-            <span>
-              To master per spenn</span>
+            <span>To master per spenn</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q5" value="c">
-            <span>
-              To transformatorstasjoner i samme anlegg
-            </span>
+            <span>To transformatorstasjoner i samme anlegg</span>
           </label>
         </article>
 
@@ -237,23 +389,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q6" value="a">
-            <span>
-              Å produsere elektrisk energi
-            </span>
+            <span>Å produsere elektrisk energi</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q6" value="b">
-            <span>
-              Å endre spenningsnivå
-            </span>
+            <span>Å endre spenningsnivå</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q6" value="c">
-            <span>
-              Å registrere prosjektfremdrift
-            </span>
+            <span>Å registrere prosjektfremdrift</span>
           </label>
         </article>
 
@@ -268,23 +414,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q7" value="a">
-            <span>
-              Å koble inn og ut strøm, også ved feilstrømmer
-            </span>
+            <span>Å koble inn og ut strøm, også ved feilstrømmer</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q7" value="b">
-            <span>
-              Å måle prosjektets kostnader
-            </span>
+            <span>Å måle prosjektets kostnader</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q7" value="c">
-            <span>
-              Å kjøle ned kontrollbygget
-            </span>
+            <span>Å kjøle ned kontrollbygget</span>
           </label>
         </article>
 
@@ -299,23 +439,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q8" value="a">
-            <span>
-              Ground Integrated System
-            </span>
+            <span>Ground Integrated System</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q8" value="b">
-            <span>
-              Gas Insulated Switchgear
-            </span>
+            <span>Gas Insulated Switchgear</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q8" value="c">
-            <span>
-              Grid Information Service
-            </span>
+            <span>Grid Information Service</span>
           </label>
         </article>
 
@@ -330,23 +464,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q9" value="a">
-            <span>
-              Å overvåke, styre og beskytte anlegget
-            </span>
+            <span>Å overvåke, styre og beskytte anlegget</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q9" value="b">
-            <span>
-              Å transportere transformatorer
-            </span>
+            <span>Å transportere transformatorer</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q9" value="c">
-            <span>
-              Å bygge master og fundamenter
-            </span>
+            <span>Å bygge master og fundamenter</span>
           </label>
         </article>
 
@@ -361,23 +489,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q10" value="a">
-            <span>
-              At hele kraftsystemet alltid kobles ut ved feil
-            </span>
+            <span>At hele kraftsystemet alltid kobles ut ved feil</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q10" value="b">
-            <span>
-              At den minste nødvendige delen kobles ut
-            </span>
+            <span>At den minste nødvendige delen kobles ut</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q10" value="c">
-            <span>
-              At bare manuell utkobling er tillatt
-            </span>
+            <span>At bare manuell utkobling er tillatt</span>
           </label>
         </article>
 
@@ -392,23 +514,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q11" value="a">
-            <span>
-              En aktivitet som alltid varer én uke
-            </span>
+            <span>En aktivitet som alltid varer én uke</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q11" value="b">
-            <span>
-              Et viktig tidspunkt eller beslutningspunkt uten varighet
-            </span>
+            <span>Et viktig tidspunkt eller beslutningspunkt uten varighet</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q11" value="c">
-            <span>
-              En liste over alle prosjektkostnader
-            </span>
+            <span>En liste over alle prosjektkostnader</span>
           </label>
         </article>
 
@@ -423,23 +539,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q12" value="a">
-            <span>
-              Aktivitet B starter når aktivitet A er ferdig
-            </span>
+            <span>Aktivitet B starter når aktivitet A er ferdig</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q12" value="b">
-            <span>
-              Aktivitetene må avsluttes samtidig
-            </span>
+            <span>Aktivitetene må avsluttes samtidig</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q12" value="c">
-            <span>
-              Aktivitet B avsluttes før aktivitet A starter
-            </span>
+            <span>Aktivitet B avsluttes før aktivitet A starter</span>
           </label>
         </article>
 
@@ -454,23 +564,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q13" value="a">
-            <span>
-              Listen over prosjektets dyreste aktiviteter
-            </span>
+            <span>Listen over prosjektets dyreste aktiviteter</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q13" value="b">
-            <span>
-              Aktivitetskjeden som bestemmer prosjektets sluttdato
-            </span>
+            <span>Aktivitetskjeden som bestemmer prosjektets sluttdato</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q13" value="c">
-            <span>
-              Alle aktiviteter med mer enn ti dagers varighet
-            </span>
+            <span>Alle aktiviteter med mer enn ti dagers varighet</span>
           </label>
         </article>
 
@@ -485,23 +589,17 @@
 
           <label class="quiz-option">
             <input type="radio" name="q14" value="a">
-            <span>
-              Den godkjente referanseplanen
-            </span>
+            <span>Den godkjente referanseplanen</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q14" value="b">
-            <span>
-              Den siste muntlige statusen fra leverandøren
-            </span>
+            <span>Den siste muntlige statusen fra leverandøren</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q14" value="c">
-            <span>
-              Prosjektets risikoregister
-            </span>
+            <span>Prosjektets risikoregister</span>
           </label>
         </article>
 
@@ -516,28 +614,21 @@
 
           <label class="quiz-option">
             <input type="radio" name="q15" value="a">
-            <span>
-              Fordi utkoblinger kan påvirke forsyningssikkerheten
-            </span>
+            <span>Fordi utkoblinger kan påvirke forsyningssikkerheten</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q15" value="b">
-            <span>
-              Fordi alle aktiviteter må foregå om vinteren
-            </span>
+            <span>Fordi alle aktiviteter må foregå om vinteren</span>
           </label>
 
           <label class="quiz-option">
             <input type="radio" name="q15" value="c">
-            <span>
-              Fordi transformatorer ikke kan testes
-            </span>
+            <span>Fordi transformatorer ikke kan testes</span>
           </label>
         </article>
 
         <div class="card quiz-actions">
-
           <div>
             <h2>Klar til å se resultatet?</h2>
 
@@ -547,7 +638,11 @@
           </div>
 
           <div class="hero-actions">
-            <button class="button secondary" type="button" id="resetQuiz">
+            <button
+              class="button secondary"
+              type="button"
+              id="resetQuiz"
+            >
               Nullstill
             </button>
 
@@ -555,7 +650,6 @@
               Se resultat
             </button>
           </div>
-
         </div>
 
       </form>
@@ -563,7 +657,6 @@
     </section>
 
     <section class="section" id="quizResultSection" hidden>
-
       <div class="card quiz-result" id="quizResult">
 
         <span class="kicker">Resultat</span>
@@ -579,17 +672,20 @@
         </div>
 
         <div class="hero-actions">
-          <button class="button secondary" type="button" id="tryAgain">
+          <button
+            class="button secondary"
+            type="button"
+            id="tryAgain"
+          >
             Prøv igjen
           </button>
 
-          <a class="button primary" href="index.html">
+          <a class="button primary" href="/academy/">
             Tilbake til kapitler
           </a>
         </div>
 
       </div>
-
     </section>
 
   </main>
@@ -620,25 +716,42 @@
     };
 
     const quizForm = document.getElementById("quizForm");
-    const questionCards = document.querySelectorAll(".quiz-question");
-    const progressText = document.getElementById("quizProgress");
-    const resultSection = document.getElementById("quizResultSection");
-    const resultHeading = document.getElementById("resultHeading");
-    const resultScore = document.getElementById("resultScore");
-    const resultMessage = document.getElementById("resultMessage");
-    const resultFill = document.getElementById("resultFill");
-    const resetButton = document.getElementById("resetQuiz");
-    const tryAgainButton = document.getElementById("tryAgain");
+    const questionCards =
+      document.querySelectorAll(".quiz-question");
+
+    const progressText =
+      document.getElementById("quizProgress");
+
+    const resultSection =
+      document.getElementById("quizResultSection");
+
+    const resultHeading =
+      document.getElementById("resultHeading");
+
+    const resultScore =
+      document.getElementById("resultScore");
+
+    const resultMessage =
+      document.getElementById("resultMessage");
+
+    const resultFill =
+      document.getElementById("resultFill");
+
+    const resetButton =
+      document.getElementById("resetQuiz");
+
+    const tryAgainButton =
+      document.getElementById("tryAgain");
 
     function updateQuizProgress() {
       let answered = 0;
 
       Object.keys(answers).forEach((questionName) => {
-        if (
-          document.querySelector(
-            `input[name="${questionName}"]:checked`
-          )
-        ) {
+        const selected = document.querySelector(
+          `input[name="${questionName}"]:checked`
+        );
+
+        if (selected) {
           answered++;
         }
       });
@@ -655,7 +768,8 @@
           "quiz-unanswered"
         );
 
-        const status = card.querySelector(".quiz-status");
+        const status =
+          card.querySelector(".quiz-status");
 
         if (status) {
           status.textContent = "";
@@ -672,13 +786,16 @@
 
       updateQuizProgress();
 
-      window.scrollTo({
-        top: document.getElementById("quiz").offsetTop - 70,
-        behavior: "smooth"
+      document.getElementById("quiz").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
       });
     }
 
-    quizForm.addEventListener("change", updateQuizProgress);
+    quizForm.addEventListener(
+      "change",
+      updateQuizProgress
+    );
 
     quizForm.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -689,40 +806,56 @@
       let answered = 0;
       let firstUnanswered = null;
 
-      Object.entries(answers).forEach(([questionName, correctAnswer]) => {
-        const selected = document.querySelector(
-          `input[name="${questionName}"]:checked`
-        );
+      Object.entries(answers).forEach(
+        ([questionName, correctAnswer]) => {
+          const selected = document.querySelector(
+            `input[name="${questionName}"]:checked`
+          );
 
-        const questionNumber = questionName.replace("q", "");
-        const questionCard = document.querySelector(
-          `[data-question="${questionNumber}"]`
-        );
+          const questionNumber =
+            questionName.replace("q", "");
 
-        const status = questionCard.querySelector(".quiz-status");
+          const questionCard =
+            document.querySelector(
+              `[data-question="${questionNumber}"]`
+            );
 
-        if (!selected) {
-          questionCard.classList.add("quiz-unanswered");
-          status.textContent = "Ikke besvart";
+          const status =
+            questionCard.querySelector(".quiz-status");
 
-          if (!firstUnanswered) {
-            firstUnanswered = questionCard;
+          if (!selected) {
+            questionCard.classList.add(
+              "quiz-unanswered"
+            );
+
+            status.textContent = "Ikke besvart";
+
+            if (!firstUnanswered) {
+              firstUnanswered = questionCard;
+            }
+
+            return;
           }
 
-          return;
-        }
+          answered++;
 
-        answered++;
+          if (selected.value === correctAnswer) {
+            score++;
 
-        if (selected.value === correctAnswer) {
-          score++;
-          questionCard.classList.add("quiz-correct");
-          status.textContent = "Riktig";
-        } else {
-          questionCard.classList.add("quiz-incorrect");
-          status.textContent = "Feil";
+            questionCard.classList.add(
+              "quiz-correct"
+            );
+
+            status.textContent = "Riktig";
+          } else {
+            questionCard.classList.add(
+              "quiz-incorrect"
+            );
+
+            status.textContent = "Feil";
+          }
         }
-      });
+      );
 
       if (answered < Object.keys(answers).length) {
         firstUnanswered.scrollIntoView({
@@ -734,7 +867,8 @@
       }
 
       const total = Object.keys(answers).length;
-      const percentage = Math.round((score / total) * 100);
+      const percentage =
+        Math.round((score / total) * 100);
 
       resultScore.textContent =
         `${score} av ${total} riktige – ${percentage} %`;
@@ -743,18 +877,25 @@
 
       if (percentage === 100) {
         resultHeading.textContent = "Full pott!";
+
         resultMessage.textContent =
           "Du svarte riktig på alle spørsmålene. Meget godt gjennomført.";
       } else if (percentage >= 80) {
-        resultHeading.textContent = "Svært godt resultat";
+        resultHeading.textContent =
+          "Svært godt resultat";
+
         resultMessage.textContent =
           "Du har svært god forståelse av innholdet i Academy.";
       } else if (percentage >= 60) {
-        resultHeading.textContent = "Godt resultat";
+        resultHeading.textContent =
+          "Godt resultat";
+
         resultMessage.textContent =
           "Du har fått med deg mye. Se gjennom spørsmålene som ble markert som feil.";
       } else {
-        resultHeading.textContent = "Fortsett læringen";
+        resultHeading.textContent =
+          "Fortsett læringen";
+
         resultMessage.textContent =
           "Gå gjerne gjennom kapitlene en gang til og prøv quizen på nytt.";
       }
@@ -767,8 +908,15 @@
       });
     });
 
-    resetButton.addEventListener("click", resetQuiz);
-    tryAgainButton.addEventListener("click", resetQuiz);
+    resetButton.addEventListener(
+      "click",
+      resetQuiz
+    );
+
+    tryAgainButton.addEventListener(
+      "click",
+      resetQuiz
+    );
 
     updateQuizProgress();
   </script>
