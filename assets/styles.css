@@ -74,9 +74,7 @@ img{
   margin:0 auto;
 }
 
-/* --------------------------------------------------
-   Toppmeny
--------------------------------------------------- */
+/* Toppmeny */
 
 .topbar{
   position:sticky;
@@ -152,9 +150,7 @@ img{
   background:rgba(255,255,255,.05);
 }
 
-/* --------------------------------------------------
-   Knapper
--------------------------------------------------- */
+/* Knapper */
 
 .button{
   display:inline-flex;
@@ -193,9 +189,7 @@ img{
   background:rgba(255,255,255,.04);
 }
 
-/* --------------------------------------------------
-   Generelle kort
--------------------------------------------------- */
+/* Generelle kort */
 
 .card{
   border:1px solid var(--line);
@@ -209,9 +203,7 @@ img{
   box-shadow:var(--shadow);
 }
 
-/* --------------------------------------------------
-   Sidehode og hero
--------------------------------------------------- */
+/* Sidehode og hero */
 
 .page-header{
   padding:16px 0 8px;
@@ -228,8 +220,6 @@ img{
   overflow:hidden;
   padding:24px;
 }
-
-/* Hero på den vanlige portalen */
 
 .portal-hero{
   min-height:290px;
@@ -267,7 +257,7 @@ img{
   background-size:28px 28px;
 }
 
-/* Hero på Academy-forsiden */
+/* Academy-hero med kraftledningsbilde */
 
 .academy-hero{
   min-height:300px;
@@ -276,14 +266,14 @@ img{
   isolation:isolate;
 
   background-image:
-  linear-gradient(
-    90deg,
-    rgba(7,17,31,.88) 0%,
-    rgba(7,17,31,.76) 42%,
-    rgba(7,17,31,.50) 72%,
-    rgba(7,17,31,.38) 100%
-  ),
-  url("../images/kraftledninger.jpg");
+    linear-gradient(
+      90deg,
+      rgba(7,17,31,.88) 0%,
+      rgba(7,17,31,.76) 42%,
+      rgba(7,17,31,.50) 72%,
+      rgba(7,17,31,.38) 100%
+    ),
+    url("/images/kraftledninger.jpg");
 
   background-size:cover;
   background-position:center 35%;
@@ -382,9 +372,7 @@ h3{
   margin-top:18px;
 }
 
-/* --------------------------------------------------
-   Små kort og sidepanel
--------------------------------------------------- */
+/* Små kort og sidepanel */
 
 .side-stack{
   display:grid;
@@ -414,9 +402,7 @@ h3{
   line-height:1.15;
 }
 
-/* --------------------------------------------------
-   Seksjoner
--------------------------------------------------- */
+/* Seksjoner */
 
 .section{
   padding:8px 0 20px;
@@ -439,9 +425,7 @@ h3{
   padding-top:0;
 }
 
-/* --------------------------------------------------
-   Portalrutenett
--------------------------------------------------- */
+/* Portalrutenett */
 
 .portal-grid{
   display:grid;
@@ -490,9 +474,7 @@ h3{
   font-weight:800;
 }
 
-/* --------------------------------------------------
-   Informasjonsrutenett
--------------------------------------------------- */
+/* Informasjonsrutenett */
 
 .info-grid{
   display:grid;
@@ -530,9 +512,7 @@ h3{
   line-height:1.55;
 }
 
-/* --------------------------------------------------
-   Statusmerker
--------------------------------------------------- */
+/* Statusmerker */
 
 .badge{
   display:inline-flex;
@@ -565,9 +545,7 @@ h3{
   background:rgba(255,125,125,.08);
 }
 
-/* --------------------------------------------------
-   Footer
--------------------------------------------------- */
+/* Footer */
 
 .footer,
 .site-footer{
@@ -578,9 +556,7 @@ h3{
   font-size:.84rem;
 }
 
-/* --------------------------------------------------
-   Academy – kapitteloversikt
--------------------------------------------------- */
+/* Academy – kapitteloversikt */
 
 .academy-grid{
   display:grid;
@@ -671,9 +647,7 @@ h3{
   );
 }
 
-/* --------------------------------------------------
-   Oppslagsverk og ordliste
--------------------------------------------------- */
+/* Oppslagsverk og ordliste */
 
 .glossary-search-panel{
   padding:20px;
@@ -749,9 +723,7 @@ h3{
   display:none;
 }
 
-/* --------------------------------------------------
-   Forkortelsestabell
--------------------------------------------------- */
+/* Forkortelsestabell */
 
 .abbreviation-table-wrap{
   overflow-x:auto;
@@ -798,9 +770,7 @@ h3{
   background:rgba(255,255,255,.025);
 }
 
-/* --------------------------------------------------
-   Enkel passordlås for Academy
--------------------------------------------------- */
+/* Enkel passordlås for Academy */
 
 .academy-lock{
   position:fixed;
@@ -884,9 +854,7 @@ h3{
   font-size:.86rem;
 }
 
-/* --------------------------------------------------
-   Responsivt design
--------------------------------------------------- */
+/* Responsivt design */
 
 @media (max-width:1100px){
   .portal-grid,
@@ -928,7 +896,7 @@ h3{
         rgba(7,17,31,.78) 48%,
         rgba(7,17,31,.96) 100%
       ),
-      url("../images/kraftledninger.jpg");
+      url("/images/kraftledninger.jpg");
 
     background-position:center;
   }
