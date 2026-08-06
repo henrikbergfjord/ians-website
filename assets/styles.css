@@ -27,11 +27,28 @@ html{
 body{
   margin:0;
   min-height:100vh;
-  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
   color:var(--text);
   background:
-    radial-gradient(circle at top left, rgba(139,124,255,.10), transparent 28%),
-    radial-gradient(circle at top right, rgba(121,169,255,.08), transparent 24%),
+    radial-gradient(
+      circle at top left,
+      rgba(139,124,255,.10),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(121,169,255,.08),
+      transparent 24%
+    ),
     linear-gradient(180deg, var(--bg), var(--bg2));
 }
 
@@ -48,8 +65,8 @@ select{
 }
 
 img{
-  max-width:100%;
   display:block;
+  max-width:100%;
 }
 
 .container{
@@ -57,16 +74,18 @@ img{
   margin:0 auto;
 }
 
-/* Toppmeny */
+/* --------------------------------------------------
+   Toppmeny
+-------------------------------------------------- */
 
 .topbar{
   position:sticky;
   top:0;
   z-index:30;
+  border-bottom:1px solid var(--line);
+  background:rgba(7,17,31,.84);
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
-  background:rgba(7,17,31,.84);
-  border-bottom:1px solid var(--line);
 }
 
 .nav{
@@ -88,22 +107,26 @@ img{
 }
 
 .brand-mark{
+  position:relative;
   width:32px;
   height:32px;
-  border-radius:10px;
+  flex:0 0 auto;
   display:grid;
   place-items:center;
-  background:linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius:10px;
+  background:linear-gradient(
+    135deg,
+    var(--accent),
+    var(--accent2)
+  );
   box-shadow:var(--shadow);
-  position:relative;
-  flex:0 0 auto;
 }
 
 .brand-mark::after{
   content:"HB";
+  color:#fff;
   font-size:12px;
   font-weight:900;
-  color:#fff;
 }
 
 .nav-links{
@@ -113,30 +136,35 @@ img{
 }
 
 .nav-links a{
-  color:var(--muted);
   padding:7px 10px;
   border-radius:10px;
-  font-weight:600;
+  color:var(--muted);
   font-size:.92rem;
+  font-weight:600;
+  transition:
+    color .15s ease,
+    background .15s ease;
 }
 
-.nav-links a.active,
-.nav-links a:hover{
-  background:rgba(255,255,255,.05);
+.nav-links a:hover,
+.nav-links a.active{
   color:var(--text);
+  background:rgba(255,255,255,.05);
 }
 
-/* Knapper */
+/* --------------------------------------------------
+   Knapper
+-------------------------------------------------- */
 
 .button{
   display:inline-flex;
   align-items:center;
   justify-content:center;
   padding:10px 14px;
-  border-radius:12px;
-  font-weight:700;
   border:1px solid transparent;
+  border-radius:12px;
   font-size:.92rem;
+  font-weight:700;
   cursor:pointer;
   transition:
     transform .15s ease,
@@ -150,32 +178,40 @@ img{
 }
 
 .button.primary{
-  background:linear-gradient(135deg, var(--accent), var(--accent2));
   color:#fff;
+  background:linear-gradient(
+    135deg,
+    var(--accent),
+    var(--accent2)
+  );
   box-shadow:var(--shadow);
 }
 
 .button.secondary{
-  background:rgba(255,255,255,.04);
-  border-color:var(--line);
   color:var(--text);
+  border-color:var(--line);
+  background:rgba(255,255,255,.04);
 }
 
-/* Generelle kort */
+/* --------------------------------------------------
+   Generelle kort
+-------------------------------------------------- */
 
 .card{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
   background:
     linear-gradient(
       180deg,
       rgba(255,255,255,.038),
       rgba(255,255,255,.018)
     );
-  border:1px solid var(--line);
-  border-radius:var(--radius);
   box-shadow:var(--shadow);
 }
 
-/* Sidehode og hero */
+/* --------------------------------------------------
+   Sidehode og hero
+-------------------------------------------------- */
 
 .page-header{
   padding:16px 0 8px;
@@ -188,10 +224,12 @@ img{
 }
 
 .hero-panel{
-  padding:24px;
   position:relative;
   overflow:hidden;
+  padding:24px;
 }
+
+/* Hero på den vanlige portalen */
 
 .portal-hero{
   min-height:290px;
@@ -215,6 +253,7 @@ img{
   content:"";
   position:absolute;
   inset:0;
+  pointer-events:none;
   background-image:
     linear-gradient(
       rgba(255,255,255,.025) 1px,
@@ -226,32 +265,91 @@ img{
       transparent 1px
     );
   background-size:28px 28px;
-  pointer-events:none;
 }
 
+/* Hero på Academy-forsiden */
+
+.academy-hero{
+  min-height:300px;
+  display:flex;
+  align-items:center;
+  isolation:isolate;
+
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(7,17,31,.94) 0%,
+      rgba(7,17,31,.84) 42%,
+      rgba(7,17,31,.62) 72%,
+      rgba(7,17,31,.52) 100%
+    ),
+    url("../images/kraftledninger.jpg");
+
+  background-size:cover;
+  background-position:center 35%;
+  background-repeat:no-repeat;
+}
+
+.academy-hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.02),
+      rgba(0,0,0,.16)
+    );
+}
+
+.academy-hero-content{
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:720px;
+}
+
+.academy-hero h1{
+  color:#fff;
+  text-shadow:0 2px 18px rgba(0,0,0,.32);
+}
+
+.academy-hero p{
+  max-width:680px;
+  margin:0;
+  color:#d3def0;
+  font-size:1rem;
+  line-height:1.65;
+  text-shadow:0 2px 12px rgba(0,0,0,.3);
+}
+
+/* Tekstelementer */
+
 .kicker{
+  position:relative;
+  z-index:1;
   display:inline-flex;
   align-items:center;
   width:max-content;
+  margin-bottom:12px;
   padding:5px 10px;
-  border-radius:999px;
-  background:rgba(121,169,255,.10);
   border:1px solid rgba(121,169,255,.18);
+  border-radius:999px;
   color:#cde3ff;
+  background:rgba(121,169,255,.10);
   font-size:11px;
   font-weight:700;
-  margin-bottom:12px;
-  position:relative;
-  z-index:1;
 }
 
 h1{
+  position:relative;
+  z-index:1;
   margin:0 0 10px;
   font-size:clamp(2rem, 4vw, 3.1rem);
   line-height:1.02;
   letter-spacing:-1px;
-  position:relative;
-  z-index:1;
 }
 
 h2{
@@ -266,37 +364,39 @@ h3{
 }
 
 .lead{
+  position:relative;
+  z-index:1;
+  max-width:62ch;
   margin:0;
   color:var(--muted);
   font-size:.98rem;
   line-height:1.6;
-  max-width:62ch;
-  position:relative;
-  z-index:1;
 }
 
 .hero-actions{
-  margin-top:18px;
+  position:relative;
+  z-index:1;
   display:flex;
   gap:10px;
   flex-wrap:wrap;
-  position:relative;
-  z-index:1;
+  margin-top:18px;
 }
 
-/* Små kort og sidepanel */
+/* --------------------------------------------------
+   Små kort og sidepanel
+-------------------------------------------------- */
 
 .side-stack{
-  padding:12px;
   display:grid;
   gap:12px;
+  padding:12px;
 }
 
 .mini-card{
   padding:16px;
+  border:1px solid var(--line);
   border-radius:16px;
   background:var(--panel2);
-  border:1px solid var(--line);
 }
 
 .mini-top{
@@ -308,13 +408,15 @@ h3{
 }
 
 .mini-value{
+  margin-bottom:6px;
   font-size:1.25rem;
   font-weight:800;
   line-height:1.15;
-  margin-bottom:6px;
 }
 
-/* Seksjoner */
+/* --------------------------------------------------
+   Seksjoner
+-------------------------------------------------- */
 
 .section{
   padding:8px 0 20px;
@@ -325,8 +427,8 @@ h3{
   align-items:flex-end;
   justify-content:space-between;
   gap:12px;
-  margin-bottom:12px;
   flex-wrap:wrap;
+  margin-bottom:12px;
 }
 
 .section-head p{
@@ -337,7 +439,9 @@ h3{
   padding-top:0;
 }
 
-/* Portalrutenett */
+/* --------------------------------------------------
+   Portalrutenett
+-------------------------------------------------- */
 
 .portal-grid{
   display:grid;
@@ -346,10 +450,10 @@ h3{
 }
 
 .portal-card{
-  padding:16px;
   min-height:190px;
   display:flex;
   flex-direction:column;
+  padding:16px;
 }
 
 .card-top{
@@ -363,30 +467,32 @@ h3{
 .card-icon{
   width:34px;
   height:34px;
-  border-radius:11px;
   display:grid;
   place-items:center;
-  background:rgba(255,255,255,.04);
   border:1px solid var(--line);
+  border-radius:11px;
+  background:rgba(255,255,255,.04);
   font-size:.95rem;
 }
 
 .portal-card p{
   margin:0;
   color:var(--muted);
-  line-height:1.5;
   font-size:.9rem;
+  line-height:1.5;
 }
 
 .card-link{
   margin-top:auto;
   padding-top:14px;
-  font-weight:800;
-  font-size:.88rem;
   color:var(--text);
+  font-size:.88rem;
+  font-weight:800;
 }
 
-/* Informasjonsrutenett */
+/* --------------------------------------------------
+   Informasjonsrutenett
+-------------------------------------------------- */
 
 .info-grid{
   display:grid;
@@ -424,17 +530,19 @@ h3{
   line-height:1.55;
 }
 
-/* Statusmerker */
+/* --------------------------------------------------
+   Statusmerker
+-------------------------------------------------- */
 
 .badge{
   display:inline-flex;
   align-items:center;
   gap:8px;
   padding:6px 10px;
-  border-radius:999px;
   border:1px solid var(--line);
-  background:rgba(255,255,255,.04);
+  border-radius:999px;
   color:var(--muted);
+  background:rgba(255,255,255,.04);
   font-size:.75rem;
   font-weight:700;
 }
@@ -457,17 +565,22 @@ h3{
   background:rgba(255,125,125,.08);
 }
 
-/* Footer */
+/* --------------------------------------------------
+   Footer
+-------------------------------------------------- */
 
-.footer{
+.footer,
+.site-footer{
+  margin-top:8px;
+  padding:18px 0 24px;
   border-top:1px solid var(--line);
   color:var(--muted);
-  padding:18px 0 24px;
-  margin-top:8px;
   font-size:.84rem;
 }
 
-/* Academy – kapitteloversikt */
+/* --------------------------------------------------
+   Academy – kapitteloversikt
+-------------------------------------------------- */
 
 .academy-grid{
   display:grid;
@@ -477,9 +590,9 @@ h3{
 
 .academy-card{
   min-height:310px;
-  padding:20px;
   display:flex;
   flex-direction:column;
+  padding:20px;
   transition:
     transform .18s ease,
     border-color .18s ease,
@@ -511,12 +624,12 @@ h3{
 .chapter-icon{
   width:48px;
   height:48px;
-  margin-bottom:18px;
   display:grid;
   place-items:center;
+  margin-bottom:18px;
+  border:1px solid rgba(121,169,255,.16);
   border-radius:14px;
   background:rgba(121,169,255,.08);
-  border:1px solid rgba(121,169,255,.16);
   font-size:1.55rem;
 }
 
@@ -529,8 +642,8 @@ h3{
 .academy-card p{
   margin:0;
   color:var(--muted);
-  line-height:1.55;
   font-size:.92rem;
+  line-height:1.55;
 }
 
 .academy-card .card-link{
@@ -548,13 +661,19 @@ h3{
   content:"";
   position:absolute;
   top:0;
-  left:0;
   right:0;
+  left:0;
   height:3px;
-  background:linear-gradient(90deg, var(--accent), var(--accent2));
+  background:linear-gradient(
+    90deg,
+    var(--accent),
+    var(--accent2)
+  );
 }
 
-/* Oppslagsverk og ordliste */
+/* --------------------------------------------------
+   Oppslagsverk og ordliste
+-------------------------------------------------- */
 
 .glossary-search-panel{
   padding:20px;
@@ -604,8 +723,8 @@ h3{
 }
 
 .glossary-card{
-  padding:18px;
   min-height:205px;
+  padding:18px;
   transition:
     transform .18s ease,
     border-color .18s ease;
@@ -630,17 +749,19 @@ h3{
   display:none;
 }
 
-/* Forkortelsestabell */
+/* --------------------------------------------------
+   Forkortelsestabell
+-------------------------------------------------- */
 
 .abbreviation-table-wrap{
-  padding:8px;
   overflow-x:auto;
+  padding:8px;
 }
 
 .abbreviation-table{
   width:100%;
-  border-collapse:collapse;
   min-width:720px;
+  border-collapse:collapse;
 }
 
 .abbreviation-table th,
@@ -677,7 +798,9 @@ h3{
   background:rgba(255,255,255,.025);
 }
 
-/* Enkel passordlås for Academy */
+/* --------------------------------------------------
+   Enkel passordlås for Academy
+-------------------------------------------------- */
 
 .academy-lock{
   position:fixed;
@@ -761,7 +884,9 @@ h3{
   font-size:.86rem;
 }
 
-/* Responsivt design */
+/* --------------------------------------------------
+   Responsivt design
+-------------------------------------------------- */
 
 @media (max-width:1100px){
   .portal-grid,
@@ -790,6 +915,26 @@ h3{
 
   .hero-panel{
     padding:20px;
+  }
+
+  .academy-hero{
+    min-height:320px;
+    align-items:flex-end;
+
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(7,17,31,.38) 0%,
+        rgba(7,17,31,.78) 48%,
+        rgba(7,17,31,.96) 100%
+      ),
+      url("../images/kraftledninger.jpg");
+
+    background-position:center;
+  }
+
+  .academy-hero-content{
+    max-width:100%;
   }
 
   h1{
@@ -842,21 +987,12 @@ h3{
   .academy-card{
     padding:18px;
   }
-}
-.academy-hero {
-    min-height: 300px;
 
-    background:
-        linear-gradient(
-            rgba(7,17,31,.78),
-            rgba(7,17,31,.78)
-        ),
-        url("../images/kraftledninger.jpg");
+  .academy-hero{
+    min-height:300px;
+  }
 
-    background-size: cover;
-    background-position: center 35%;
-    background-repeat: no-repeat;
-
-    display: flex;
-    align-items: center;
+  .academy-hero p{
+    font-size:.92rem;
+  }
 }
