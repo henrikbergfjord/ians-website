@@ -16,12 +16,18 @@
   --max:1240px;
 }
 
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
 
 body{
   margin:0;
-  font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  min-height:100vh;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   color:var(--text);
   background:
     radial-gradient(circle at top left, rgba(139,124,255,.10), transparent 28%),
@@ -34,16 +40,31 @@ a{
   text-decoration:none;
 }
 
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+img{
+  max-width:100%;
+  display:block;
+}
+
 .container{
   width:min(var(--max), calc(100% - 28px));
   margin:0 auto;
 }
 
+/* Toppmeny */
+
 .topbar{
   position:sticky;
   top:0;
   z-index:30;
-  backdrop-filter: blur(10px);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
   background:rgba(7,17,31,.84);
   border-bottom:1px solid var(--line);
 }
@@ -75,6 +96,7 @@ a{
   background:linear-gradient(135deg, var(--accent), var(--accent2));
   box-shadow:var(--shadow);
   position:relative;
+  flex:0 0 auto;
 }
 
 .brand-mark::after{
@@ -104,6 +126,8 @@ a{
   color:var(--text);
 }
 
+/* Knapper */
+
 .button{
   display:inline-flex;
   align-items:center;
@@ -114,7 +138,11 @@ a{
   border:1px solid transparent;
   font-size:.92rem;
   cursor:pointer;
-  transition:transform .15s ease, opacity .15s ease, border-color .15s ease;
+  transition:
+    transform .15s ease,
+    opacity .15s ease,
+    border-color .15s ease,
+    background .15s ease;
 }
 
 .button:hover{
@@ -133,12 +161,21 @@ a{
   color:var(--text);
 }
 
+/* Generelle kort */
+
 .card{
-  background:linear-gradient(180deg, rgba(255,255,255,.038), rgba(255,255,255,.018));
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.038),
+      rgba(255,255,255,.018)
+    );
   border:1px solid var(--line);
-  border-radius:18px;
+  border-radius:var(--radius);
   box-shadow:var(--shadow);
 }
+
+/* Sidehode og hero */
 
 .page-header{
   padding:16px 0 8px;
@@ -162,8 +199,16 @@ a{
   flex-direction:column;
   justify-content:center;
   background:
-    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)),
-    linear-gradient(135deg, rgba(121,169,255,.06), rgba(139,124,255,.04));
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.04),
+      rgba(255,255,255,.02)
+    ),
+    linear-gradient(
+      135deg,
+      rgba(121,169,255,.06),
+      rgba(139,124,255,.04)
+    );
 }
 
 .portal-hero::before{
@@ -171,8 +216,15 @@ a{
   position:absolute;
   inset:0;
   background-image:
-    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
   background-size:28px 28px;
   pointer-events:none;
 }
@@ -232,6 +284,8 @@ h3{
   z-index:1;
 }
 
+/* Små kort og sidepanel */
+
 .side-stack{
   padding:12px;
   display:grid;
@@ -260,13 +314,15 @@ h3{
   margin-bottom:6px;
 }
 
+/* Seksjoner */
+
 .section{
   padding:8px 0 20px;
 }
 
 .section-head{
   display:flex;
-  align-items:end;
+  align-items:flex-end;
   justify-content:space-between;
   gap:12px;
   margin-bottom:12px;
@@ -277,9 +333,15 @@ h3{
   margin:4px 0 0;
 }
 
+.compact-section{
+  padding-top:0;
+}
+
+/* Portalrutenett */
+
 .portal-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(3, minmax(0, 1fr));
   gap:12px;
 }
 
@@ -324,13 +386,11 @@ h3{
   color:var(--text);
 }
 
-.compact-section{
-  padding-top:0;
-}
+/* Informasjonsrutenett */
 
 .info-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(3, minmax(0, 1fr));
   gap:12px;
 }
 
@@ -338,10 +398,33 @@ h3{
   padding:16px;
 }
 
+.grid-2{
+  display:grid;
+  grid-template-columns:1.35fr .85fr;
+  gap:12px;
+}
+
+.grid-3{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:12px;
+}
+
+.tile{
+  padding:16px;
+  background:var(--panel2);
+}
+
+.tile p:last-child{
+  margin-bottom:0;
+}
+
 .muted{
   color:var(--muted);
   line-height:1.55;
 }
+
+/* Statusmerker */
 
 .badge{
   display:inline-flex;
@@ -374,22 +457,7 @@ h3{
   background:rgba(255,125,125,.08);
 }
 
-.grid-2{
-  display:grid;
-  grid-template-columns:1.35fr .85fr;
-  gap:12px;
-}
-
-.grid-3{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-
-.tile{
-  padding:16px;
-  background:var(--panel2);
-}
+/* Footer */
 
 .footer{
   border-top:1px solid var(--line);
@@ -399,40 +467,6 @@ h3{
   font-size:.84rem;
 }
 
-@media (max-width:1100px){
-  .portal-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .info-grid,
-  .grid-3{
-    grid-template-columns:1fr 1fr;
-  }
-}
-
-@media (max-width:980px){
-  .hero-grid,
-  .grid-2,
-  .portal-grid,
-  .info-grid,
-  .grid-3{
-    grid-template-columns:1fr;
-  }
-}
-
-@media (max-width:760px){
-  .nav{
-    padding:10px 0;
-  }
-
-  .hero-panel{
-    padding:20px;
-  }
-
-  h1{
-    font-size:clamp(1.8rem, 8vw, 2.4rem);
-  }
-}
 /* Academy – kapitteloversikt */
 
 .academy-grid{
@@ -520,1057 +554,129 @@ h3{
   background:linear-gradient(90deg, var(--accent), var(--accent2));
 }
 
-@media (max-width:1100px){
-  .academy-grid{
-    grid-template-columns:repeat(2, minmax(0, 1fr));
-  }
+/* Oppslagsverk og ordliste */
+
+.glossary-search-panel{
+  padding:20px;
 }
 
-@media (max-width:700px){
-  .academy-grid{
-    grid-template-columns:1fr;
-  }
-
-  .academy-card{
-    min-height:280px;
-  }
+.glossary-label{
+  display:block;
+  margin-bottom:9px;
+  color:var(--text);
+  font-size:.85rem;
+  font-weight:800;
 }
-<!DOCTYPE html>
-<html lang="no">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Oppslagsverk – Statnett Academy</title>
+.glossary-search{
+  width:100%;
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  outline:none;
+  color:var(--text);
+  background:rgba(255,255,255,.04);
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+}
+
+.glossary-search::placeholder{
+  color:var(--muted);
+}
+
+.glossary-search:focus{
+  border-color:rgba(121,169,255,.55);
+  background:rgba(255,255,255,.055);
+  box-shadow:0 0 0 4px rgba(121,169,255,.09);
+}
+
+.glossary-result-text{
+  margin:12px 0 0;
+  font-size:.86rem;
+}
+
+.glossary-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:12px;
+}
+
+.glossary-card{
+  padding:18px;
+  min-height:205px;
+  transition:
+    transform .18s ease,
+    border-color .18s ease;
+}
+
+.glossary-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(121,169,255,.35);
+}
+
+.glossary-card h3{
+  margin:15px 0 9px;
+  font-size:1.08rem;
+}
+
+.glossary-card p{
+  margin:0;
+  font-size:.9rem;
+}
+
+.glossary-card[hidden]{
+  display:none;
+}
+
+/* Forkortelsestabell */
+
+.abbreviation-table-wrap{
+  padding:8px;
+  overflow-x:auto;
+}
+
+.abbreviation-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:720px;
+}
+
+.abbreviation-table th,
+.abbreviation-table td{
+  padding:14px;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  vertical-align:top;
+}
+
+.abbreviation-table th{
+  color:var(--text);
+  font-size:.78rem;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.abbreviation-table td{
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.5;
+}
+
+.abbreviation-table td:first-child{
+  color:var(--text);
+  font-weight:800;
+}
 
-  <link rel="stylesheet" href="../assets/styles.css">
-</head>
+.abbreviation-table tbody tr:last-child td{
+  border-bottom:none;
+}
 
-<body>
+.abbreviation-table tbody tr:hover{
+  background:rgba(255,255,255,.025);
+}
 
-  <header class="topbar">
-    <div class="container nav">
-
-      <a class="brand" href="../academy.html">
-        <span class="brand-mark"></span>
-        <span>Academy</span>
-      </a>
-
-      <nav class="nav-links">
-        <a href="../academy.html">Portal</a>
-        <a href="index.html">Kapitler</a>
-        <a href="quiz.html">Quiz</a>
-        <a href="minenotater.html">Mine notater</a>
-        <a class="active" href="ordliste.html">Ordliste</a>
-      </nav>
-
-    </div>
-  </header>
-
-  <main class="container">
-
-    <section class="page-header">
-      <div class="card hero-panel portal-hero">
-
-        <span class="kicker">Oppslagsverk</span>
-
-        <h1>Ordliste</h1>
-
-        <p class="lead">
-          Et søkbart oppslagsverk med sentrale begreper innen
-          kraftsystemet, transmisjonsnettet, transformatorstasjoner,
-          kontrollanlegg og prosjektplanlegging.
-        </p>
-
-        <div class="hero-actions">
-          <a class="button secondary" href="index.html">
-            ← Tilbake til kapitler
-          </a>
-
-          <a class="button primary" href="#ordliste">
-            Åpne ordlisten
-          </a>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="section" id="ordliste">
-
-      <div class="section-head">
-        <div>
-          <h2>Søk etter begreper</h2>
-
-          <p class="muted">
-            Skriv inn et ord, en forkortelse eller en del av en forklaring.
-          </p>
-        </div>
-      </div>
-
-      <div class="card glossary-search-panel">
-
-        <label class="glossary-label" for="glossarySearch">
-          Søk i ordlisten
-        </label>
-
-        <input
-          class="glossary-search"
-          type="search"
-          id="glossarySearch"
-          placeholder="Eksempel: GIS, transformator, kritisk linje …"
-          autocomplete="off"
-        >
-
-        <p class="muted glossary-result-text" id="resultText">
-          Viser alle begreper.
-        </p>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-head">
-        <div>
-          <h2>Kraftsystem og nett</h2>
-        </div>
-      </div>
-
-      <div class="glossary-grid">
-
-        <article class="card glossary-card" data-search="aktiv effekt p watt mw elektrisk arbeid">
-          <span class="badge">A</span>
-          <h3>Aktiv effekt</h3>
-          <p class="muted">
-            Den delen av den elektriske effekten som omsettes til nyttig
-            arbeid, lys, varme eller mekanisk energi. Måles i watt,
-            kilowatt eller megawatt.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="distribusjonsnett lokalnett lavspent høyspent sluttkunde">
-          <span class="badge">D</span>
-          <h3>Distribusjonsnett</h3>
-          <p class="muted">
-            Den delen av strømnettet som transporterer elektrisk energi
-            fra regionalnettet og frem til sluttkundene.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="effekt watt kilowatt megawatt energi per tid">
-          <span class="badge">E</span>
-          <h3>Effekt</h3>
-          <p class="muted">
-            Mengden energi som produseres, overføres eller brukes per
-            tidsenhet. Måles normalt i watt, kilowatt eller megawatt.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="elektrisk energi kwh mwh strømforbruk produksjon">
-          <span class="badge">E</span>
-          <h3>Elektrisk energi</h3>
-          <p class="muted">
-            Mengden elektrisk arbeid som produseres eller forbrukes over
-            tid. Måles blant annet i kilowattimer og megawattimer.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="frekvens 50 hz kraftsystem balanse produksjon forbruk">
-          <span class="badge">F</span>
-          <h3>Frekvens</h3>
-          <p class="muted">
-            Antall elektriske svingninger per sekund. I det nordiske
-            kraftsystemet er den nominelle frekvensen 50 Hz.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="forsyningssikkerhet strøm leveranse feil avbrudd">
-          <span class="badge">F</span>
-          <h3>Forsyningssikkerhet</h3>
-          <p class="muted">
-            Kraftsystemets evne til å levere elektrisk energi til kundene,
-            også når det oppstår feil, vedlikeholdsbehov eller høy belastning.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="kraftflyt strøm retning nett produksjon forbruk">
-          <span class="badge">K</span>
-          <h3>Kraftflyt</h3>
-          <p class="muted">
-            Hvordan elektrisk effekt beveger seg gjennom kraftsystemet
-            mellom produksjon, nettområder, forbruk og utenlandsforbindelser.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="kraftsystem produksjon overføring distribusjon forbruk">
-          <span class="badge">K</span>
-          <h3>Kraftsystem</h3>
-          <p class="muted">
-            Hele systemet av kraftproduksjon, transmisjonsnett,
-            regionalnett, distribusjonsnett og elektrisk forbruk.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="regionalnett mellom transmisjonsnett distribusjonsnett">
-          <span class="badge">R</span>
-          <h3>Regionalnett</h3>
-          <p class="muted">
-            Nettet mellom transmisjonsnettet og distribusjonsnettet.
-            Regionalnettet transporterer kraft innenfor større områder.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="reaktiv effekt var kvar spenning magnetfelt">
-          <span class="badge">R</span>
-          <h3>Reaktiv effekt</h3>
-          <p class="muted">
-            Effekt som veksler mellom nettet og elektrisk utstyr og som
-            blant annet påvirker spenningen i kraftsystemet. Måles i var.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="systemansvar statnett balanse drift frekvens">
-          <span class="badge">S</span>
-          <h3>Systemansvar</h3>
-          <p class="muted">
-            Ansvar for å sikre balanse mellom produksjon og forbruk og
-            for å koordinere sikker drift av kraftsystemet.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="transmisjonsnett sentralnett høyspent 420 300 kv">
-          <span class="badge">T</span>
-          <h3>Transmisjonsnett</h3>
-          <p class="muted">
-            Det overordnede kraftnettet som transporterer store mengder
-            elektrisk energi over lange avstander og mellom landsdeler.
-          </p>
-        </article>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-head">
-        <div>
-          <h2>Ledninger og spenningsnivå</h2>
-        </div>
-      </div>
-
-      <div class="glossary-grid">
-
-        <article class="card glossary-card" data-search="300 kv kilovolt spenning eldre transmisjonsnett">
-          <span class="badge">300 kV</span>
-          <h3>300 kV</h3>
-          <p class="muted">
-            Et spenningsnivå som har vært mye brukt i det norske
-            transmisjonsnettet. Flere forbindelser bygges om til 420 kV.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="420 kv kilovolt transmisjonsnett høy spenning kapasitet">
-          <span class="badge">420 kV</span>
-          <h3>420 kV</h3>
-          <p class="muted">
-            Det høyeste ordinære vekselspenningsnivået i det norske
-            transmisjonsnettet. Gir høy overføringskapasitet.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="duplex to delledere fase leder bunt">
-          <span class="badge">D</span>
-          <h3>Duplexleder</h3>
-          <p class="muted">
-            En lederkonfigurasjon der hver elektriske fase består av to
-            parallelle delledere.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="faseleder strøm line kraftledning">
-          <span class="badge">F</span>
-          <h3>Faseleder</h3>
-          <p class="muted">
-            Den spenningsførende lederen som transporterer elektrisk strøm
-            i en kraftledning.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="isolator isolatorkjede mast faseleder elektrisk skille">
-          <span class="badge">I</span>
-          <h3>Isolator</h3>
-          <p class="muted">
-            En komponent som holder spenningsførende ledere mekanisk på
-            plass og elektrisk isolert fra mast eller jord.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="jordline jordingsline lyn toppline kraftledning">
-          <span class="badge">J</span>
-          <h3>Jordline</h3>
-          <p class="muted">
-            En leder øverst på kraftledningen som beskytter faselederne
-            mot lyn og leder lynstrømmer til jord.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="kilovolt kv tusen volt spenning">
-          <span class="badge">kV</span>
-          <h3>Kilovolt</h3>
-          <p class="muted">
-            En måleenhet for elektrisk spenning. Én kilovolt tilsvarer
-            1 000 volt.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="ledningstrase trase kraftledning master areal">
-          <span class="badge">L</span>
-          <h3>Ledningstrasé</h3>
-          <p class="muted">
-            Området eller ruten en kraftledning følger gjennom terrenget.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="linestrekk trekking faseledere master montasje">
-          <span class="badge">L</span>
-          <h3>Linestrekking</h3>
-          <p class="muted">
-            Arbeidet med å trekke ut og montere faseledere og jordliner
-            mellom kraftledningsmastene.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="mastefundament fundament kraftledning mast betong fjell">
-          <span class="badge">M</span>
-          <h3>Mastefundament</h3>
-          <p class="muted">
-            Konstruksjonen som fester en kraftledningsmast til bakken
-            eller fjellet.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="triplex tre delledere fase buntleder">
-          <span class="badge">T</span>
-          <h3>Triplexleder</h3>
-          <p class="muted">
-            En lederkonfigurasjon der hver elektriske fase består av tre
-            parallelle delledere.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="overføringstap varmetap i2r strøm motstand">
-          <span class="badge">O</span>
-          <h3>Overføringstap</h3>
-          <p class="muted">
-            Energi som går tapt, hovedsakelig som varme, når strøm
-            transporteres gjennom ledninger og annet elektrisk utstyr.
-          </p>
-        </article>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-head">
-        <div>
-          <h2>Transformatorstasjoner</h2>
-        </div>
-      </div>
-
-      <div class="glossary-grid">
-
-        <article class="card glossary-card" data-search="ais air insulated switchgear luftisolert bryteranlegg">
-          <span class="badge">AIS</span>
-          <h3>AIS</h3>
-          <p class="muted">
-            Air Insulated Switchgear. Et luftisolert høyspenningsanlegg
-            der luft brukes som isolasjonsmedium.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="bryterfelt ledningsfelt transformatorfelt kabel felt">
-          <span class="badge">B</span>
-          <h3>Bryterfelt</h3>
-          <p class="muted">
-            En del av en transformatorstasjon som kobler en ledning,
-            kabel, transformator eller annen komponent til samleskinnene.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="effektbryter bryte feilstrøm koble ut inn">
-          <span class="badge">E</span>
-          <h3>Effektbryter</h3>
-          <p class="muted">
-            En bryter som kan koble inn og ut strøm både ved normal drift
-            og ved store feilstrømmer.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="gis gas insulated switchgear gassisolert anlegg">
-          <span class="badge">GIS</span>
-          <h3>GIS</h3>
-          <p class="muted">
-            Gas Insulated Switchgear. Et kompakt høyspenningsanlegg der
-            komponentene er kapslet inn og isolert med gass.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="gjennomføring transformator isolasjon leder tank">
-          <span class="badge">G</span>
-          <h3>Gjennomføring</h3>
-          <p class="muted">
-            En isolert komponent som fører en elektrisk leder gjennom
-            en jordet kapsling, vegg eller transformatortank.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="jordingsanlegg jord feilstrøm sikkerhet berøringsspenning">
-          <span class="badge">J</span>
-          <h3>Jordingsanlegg</h3>
-          <p class="muted">
-            Et system av ledere og jordelektroder som leder feilstrømmer
-            og lynstrømmer sikkert til jord.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="krafttransformator transformator spenning vikling kjerne">
-          <span class="badge">K</span>
-          <h3>Krafttransformator</h3>
-          <p class="muted">
-            En transformator som overfører store mengder elektrisk energi
-            mellom ulike spenningsnivåer.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="reaktor reaktiv effekt spenningsregulering spole">
-          <span class="badge">R</span>
-          <h3>Reaktor</h3>
-          <p class="muted">
-            En induktiv komponent som brukes til å regulere reaktiv effekt
-            og bidra til kontroll av spenningen i nettet.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="samleskinne busbar stasjon bryterfelt strøm">
-          <span class="badge">S</span>
-          <h3>Samleskinne</h3>
-          <p class="muted">
-            En kraftig elektrisk leder som fordeler strøm mellom flere
-            bryterfelt i en transformatorstasjon.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="skillebryter synlig skille frakobling vedlikehold">
-          <span class="badge">S</span>
-          <h3>Skillebryter</h3>
-          <p class="muted">
-            En bryter som brukes til å etablere et tydelig elektrisk skille
-            før arbeid på anlegget.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="strømtransformator ct måling vern strøm">
-          <span class="badge">CT</span>
-          <h3>Strømtransformator</h3>
-          <p class="muted">
-            En måletransformator som reduserer store strømmer til et nivå
-            som kan brukes av vern, målere og kontrollanlegg.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="spenningstransformator vt måling vern spenning">
-          <span class="badge">VT</span>
-          <h3>Spenningstransformator</h3>
-          <p class="muted">
-            En måletransformator som reduserer høy spenning til et nivå
-            som kan brukes av vern, målere og kontrollanlegg.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="trinnkobler tap changer transformator regulere spenning">
-          <span class="badge">T</span>
-          <h3>Trinnkobler</h3>
-          <p class="muted">
-            En mekanisme i transformatoren som endrer omsetningsforholdet
-            og dermed bidrar til å regulere spenningen.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="transformatorstasjon stasjon spenningsnivå bryterfelt">
-          <span class="badge">T</span>
-          <h3>Transformatorstasjon</h3>
-          <p class="muted">
-            Et knutepunkt der elektrisk kraft transformeres mellom ulike
-            spenningsnivåer, kobles, overvåkes og beskyttes.
-          </p>
-        </article>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-head">
-        <div>
-          <h2>Kontrollanlegg og vern</h2>
-        </div>
-      </div>
-
-      <div class="glossary-grid">
-
-        <article class="card glossary-card" data-search="automatikk automatisk funksjon kontrollanlegg handling">
-          <span class="badge">A</span>
-          <h3>Automatikk</h3>
-          <p class="muted">
-            Funksjoner som automatisk utfører handlinger basert på målte
-            verdier, hendelser eller bestemte driftsforhold.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="fjernkontroll driftssentral styring stasjon">
-          <span class="badge">F</span>
-          <h3>Fjernkontroll</h3>
-          <p class="muted">
-            Muligheten til å overvåke og styre en stasjon fra en ekstern
-            driftssentral.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="hendelseslogg soe sequence of events alarm">
-          <span class="badge">H</span>
-          <h3>Hendelseslogg</h3>
-          <p class="muted">
-            En tidsstemplet oversikt over signaler, alarmer og endringer
-            som har skjedd i anlegget.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="ied intelligent electronic device vern kontroll">
-          <span class="badge">IED</span>
-          <h3>IED</h3>
-          <p class="muted">
-            Intelligent Electronic Device. En digital enhet som utfører
-            vern-, kontroll-, måle- eller kommunikasjonsfunksjoner.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="kontrollanlegg styring overvåking vern kommunikasjon">
-          <span class="badge">K</span>
-          <h3>Kontrollanlegg</h3>
-          <p class="muted">
-            Systemet som håndterer styring, overvåking, signaler,
-            hendelser, vern og kommunikasjon i en stasjon.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="primærutstyr høyspenning bryter transformator leder">
-          <span class="badge">P</span>
-          <h3>Primærutstyr</h3>
-          <p class="muted">
-            Høyspenningsutstyret som fører eller påvirker den elektriske
-            hovedstrømmen, som transformatorer, brytere og samleskinner.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="reservevern backup vern hovedvern feil">
-          <span class="badge">R</span>
-          <h3>Reservevern</h3>
-          <p class="muted">
-            Et ekstra vern som kobler ut en feil dersom hovedvernet eller
-            den nærmeste effektbryteren ikke fungerer.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="rtu remote terminal unit fjernkontroll signaler">
-          <span class="badge">RTU</span>
-          <h3>RTU</h3>
-          <p class="muted">
-            Remote Terminal Unit. En enhet som samler inn signaler og
-            formidler informasjon og kommandoer mellom stasjon og driftssentral.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="scada supervisory control data acquisition driftssentral">
-          <span class="badge">SCADA</span>
-          <h3>SCADA</h3>
-          <p class="muted">
-            Et system for fjernovervåking, datainnsamling og styring
-            av tekniske anlegg.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="sekundærutstyr vern kontroll måling signal kommunikasjon">
-          <span class="badge">S</span>
-          <h3>Sekundærutstyr</h3>
-          <p class="muted">
-            Utstyr for vern, kontroll, signalbehandling, måling,
-            hjelpeforsyning og kommunikasjon.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="selektivitet vern riktig del kobles ut">
-          <span class="badge">S</span>
-          <h3>Selektivitet</h3>
-          <p class="muted">
-            Prinsippet om at vernsystemet skal koble ut den minste
-            nødvendige delen av kraftsystemet når en feil oppstår.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="vern beskyttelse feil kortslutning jordfeil">
-          <span class="badge">V</span>
-          <h3>Vern</h3>
-          <p class="muted">
-            Utstyr og funksjoner som oppdager elektriske feil og gir
-            kommando om utkobling.
-          </p>
-        </article>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-head">
-        <div>
-          <h2>Prosjekt og planlegging</h2>
-        </div>
-      </div>
-
-      <div class="glossary-grid">
-
-        <article class="card glossary-card" data-search="aktivitet oppgave fremdriftsplan varighet">
-          <span class="badge">A</span>
-          <h3>Aktivitet</h3>
-          <p class="muted">
-            En avgrenset arbeidsoppgave i fremdriftsplanen med definert
-            start, slutt, varighet og leveranse.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="avhengighet predecessor successor logikk aktivitet">
-          <span class="badge">A</span>
-          <h3>Avhengighet</h3>
-          <p class="muted">
-            En logisk sammenheng som bestemmer hvordan tidspunktet for
-            én aktivitet påvirkes av en annen aktivitet.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="baseline basisplan referanseplan opprinnelig plan">
-          <span class="badge">B</span>
-          <h3>Baseline</h3>
-          <p class="muted">
-            Den godkjente referanseplanen som faktisk fremdrift og
-            gjeldende prognose sammenlignes med.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="endringskontroll change control endring prosjekt">
-          <span class="badge">E</span>
-          <h3>Endringskontroll</h3>
-          <p class="muted">
-            Prosessen for å registrere, vurdere, godkjenne og følge opp
-            endringer i prosjektets omfang, tid eller kostnad.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="finish to finish ff slutt slutt avhengighet">
-          <span class="badge">FF</span>
-          <h3>Finish to Finish</h3>
-          <p class="muted">
-            En avhengighet der en aktivitet ikke kan avsluttes før en
-            annen aktivitet er avsluttet.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="finish to start fs slutt start avhengighet">
-          <span class="badge">FS</span>
-          <h3>Finish to Start</h3>
-          <p class="muted">
-            En avhengighet der en aktivitet må være ferdig før den neste
-            aktiviteten kan starte.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="float slakk tidsreserve planlegging">
-          <span class="badge">F</span>
-          <h3>Float</h3>
-          <p class="muted">
-            Tidsreserven en aktivitet har før en etterfølgende aktivitet
-            eller prosjektets sluttdato blir påvirket.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="fremdrift progresjon status prosjekt plan">
-          <span class="badge">F</span>
-          <h3>Fremdrift</h3>
-          <p class="muted">
-            Utviklingen i prosjektet målt mot planlagte aktiviteter,
-            leveranser og milepæler.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="kritisk aktivitet null float forsinkelse">
-          <span class="badge">K</span>
-          <h3>Kritisk aktivitet</h3>
-          <p class="muted">
-            En aktivitet med liten eller ingen tidsreserve som kan påvirke
-            prosjektets sluttdato dersom den forsinkes.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="kritisk linje critical path prosjekt sluttdato">
-          <span class="badge">K</span>
-          <h3>Kritisk linje</h3>
-          <p class="muted">
-            Den lengste logiske kjeden av aktiviteter som bestemmer
-            prosjektets tidligste mulige sluttdato.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="lag ventetid forsinkelse avhengighet">
-          <span class="badge">L</span>
-          <h3>Lag</h3>
-          <p class="muted">
-            En planlagt ventetid mellom to aktiviteter, for eksempel
-            herdetid, tørketid eller transporttid.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="lead overlapping aktiviteter avhengighet">
-          <span class="badge">L</span>
-          <h3>Lead</h3>
-          <p class="muted">
-            En planlagt overlapping der en etterfølgende aktivitet starter
-            før den foregående aktiviteten er helt ferdig.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="leveranse deliverable resultat produkt prosjekt">
-          <span class="badge">L</span>
-          <h3>Leveranse</h3>
-          <p class="muted">
-            Et definert resultat, produkt, dokument eller anlegg som
-            prosjektet eller en aktivitet skal produsere.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="milepæl milestone null varighet beslutning">
-          <span class="badge">M</span>
-          <h3>Milepæl</h3>
-          <p class="muted">
-            Et viktig tidspunkt eller en hendelse i prosjektet som normalt
-            ikke har varighet.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="negativ float tidsreserve frist forsinkelse">
-          <span class="badge">N</span>
-          <h3>Negativ float</h3>
-          <p class="muted">
-            Oppstår når den beregnede planen ikke rekker en fastsatt
-            frist eller milepæl.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="prognose forecast forventet sluttdato plan">
-          <span class="badge">P</span>
-          <h3>Prognose</h3>
-          <p class="muted">
-            Den beste nåværende vurderingen av når aktiviteter,
-            milepæler og prosjektet forventes ferdigstilt.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="risiko sannsynlighet konsekvens usikkerhet prosjekt">
-          <span class="badge">R</span>
-          <h3>Risiko</h3>
-          <p class="muted">
-            En usikker hendelse eller et forhold som kan påvirke prosjektets
-            mål, tid, kostnad, kvalitet eller sikkerhet.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="start to finish sf start slutt avhengighet">
-          <span class="badge">SF</span>
-          <h3>Start to Finish</h3>
-          <p class="muted">
-            En sjelden brukt avhengighet der en aktivitet ikke kan
-            avsluttes før en annen aktivitet har startet.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="start to start ss start start avhengighet">
-          <span class="badge">SS</span>
-          <h3>Start to Start</h3>
-          <p class="muted">
-            En avhengighet der en aktivitet kan starte når en annen
-            aktivitet har startet.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="statusdato data date plan oppdatering">
-          <span class="badge">S</span>
-          <h3>Statusdato</h3>
-          <p class="muted">
-            Datoen som brukes som skille mellom faktisk gjennomført arbeid
-            og fremtidig planlagt arbeid.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="total float total tidsreserve sluttdato">
-          <span class="badge">T</span>
-          <h3>Total float</h3>
-          <p class="muted">
-            Hvor mye en aktivitet kan forsinkes uten at prosjektets
-            beregnede sluttdato påvirkes.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="utkobling outage høyspenningsanlegg drift arbeid">
-          <span class="badge">U</span>
-          <h3>Utkobling</h3>
-          <p class="muted">
-            En planlagt eller uplanlagt periode der en del av kraftsystemet
-            tas ut av drift.
-          </p>
-        </article>
-
-        <article class="card glossary-card" data-search="wbs work breakdown structure prosjektstruktur nedbrytning">
-          <span class="badge">WBS</span>
-          <h3>Work Breakdown Structure</h3>
-          <p class="muted">
-            En hierarkisk nedbrytning av prosjektets omfang i leveranser,
-            arbeidspakker og mindre styrbare deler.
-          </p>
-        </article>
-
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-head">
-        <div>
-          <h2>Forkortelser</h2>
-
-          <p class="muted">
-            Vanlige forkortelser du kan møte i fagmiljøet.
-          </p>
-        </div>
-      </div>
-
-      <div class="card abbreviation-table-wrap">
-
-        <table class="abbreviation-table">
-          <thead>
-            <tr>
-              <th>Forkortelse</th>
-              <th>Betydning</th>
-              <th>Forklaring</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>AIS</td>
-              <td>Air Insulated Switchgear</td>
-              <td>Luftisolert høyspenningsanlegg.</td>
-            </tr>
-
-            <tr>
-              <td>CT</td>
-              <td>Current Transformer</td>
-              <td>Strømtransformator for måling og vern.</td>
-            </tr>
-
-            <tr>
-              <td>FF</td>
-              <td>Finish to Finish</td>
-              <td>Slutt-til-slutt-avhengighet.</td>
-            </tr>
-
-            <tr>
-              <td>FS</td>
-              <td>Finish to Start</td>
-              <td>Slutt-til-start-avhengighet.</td>
-            </tr>
-
-            <tr>
-              <td>GIS</td>
-              <td>Gas Insulated Switchgear</td>
-              <td>Gassisolert høyspenningsanlegg.</td>
-            </tr>
-
-            <tr>
-              <td>IED</td>
-              <td>Intelligent Electronic Device</td>
-              <td>Digital enhet for vern, kontroll eller måling.</td>
-            </tr>
-
-            <tr>
-              <td>kV</td>
-              <td>Kilovolt</td>
-              <td>1 000 volt.</td>
-            </tr>
-
-            <tr>
-              <td>MW</td>
-              <td>Megawatt</td>
-              <td>Én million watt.</td>
-            </tr>
-
-            <tr>
-              <td>MWh</td>
-              <td>Megawattime</td>
-              <td>Måleenhet for elektrisk energi.</td>
-            </tr>
-
-            <tr>
-              <td>RTU</td>
-              <td>Remote Terminal Unit</td>
-              <td>Enhet for signalutveksling mot driftssentral.</td>
-            </tr>
-
-            <tr>
-              <td>SCADA</td>
-              <td>Supervisory Control and Data Acquisition</td>
-              <td>System for fjernovervåking og styring.</td>
-            </tr>
-
-            <tr>
-              <td>SF</td>
-              <td>Start to Finish</td>
-              <td>Start-til-slutt-avhengighet.</td>
-            </tr>
-
-            <tr>
-              <td>SS</td>
-              <td>Start to Start</td>
-              <td>Start-til-start-avhengighet.</td>
-            </tr>
-
-            <tr>
-              <td>VT</td>
-              <td>Voltage Transformer</td>
-              <td>Spenningstransformator for måling og vern.</td>
-            </tr>
-
-            <tr>
-              <td>WBS</td>
-              <td>Work Breakdown Structure</td>
-              <td>Hierarkisk nedbrytning av prosjektets omfang.</td>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-
-    </section>
-
-    <section class="section compact-section">
-
-      <div class="card tile">
-
-        <div class="section-head">
-          <div>
-            <h2>Fortsett læringen</h2>
-
-            <p class="muted">
-              Bruk kapitlene for mer utfyllende forklaringer og eksempler.
-            </p>
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <a class="button secondary" href="index.html">
-            Se alle kapitler
-          </a>
-
-          <a class="button secondary" href="minenotater.html">
-            Mine notater
-          </a>
-
-          <a class="button primary" href="quiz.html">
-            Start quiz →
-          </a>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <footer class="footer">
-    <div class="container">
-      Oppslagsverk – Statnett Academy
-    </div>
-  </footer>
-
-  <script>
-    const searchInput = document.getElementById("glossarySearch");
-    const glossaryCards = document.querySelectorAll(".glossary-card");
-    const resultText = document.getElementById("resultText");
-
-    function filterGlossary() {
-      const searchValue = searchInput.value
-        .toLowerCase()
-        .trim();
-
-      let visibleCount = 0;
-
-      glossaryCards.forEach((card) => {
-        const heading = card
-          .querySelector("h3")
-          .textContent
-          .toLowerCase();
-
-        const description = card
-          .querySelector("p")
-          .textContent
-          .toLowerCase();
-
-        const keywords = (
-          card.dataset.search || ""
-        ).toLowerCase();
-
-        const searchableText =
-          heading + " " + description + " " + keywords;
-
-        const isVisible =
-          searchableText.includes(searchValue);
-
-        card.hidden = !isVisible;
-
-        if (isVisible) {
-          visibleCount++;
-        }
-      });
-
-      if (searchValue === "") {
-        resultText.textContent = "Viser alle begreper.";
-      } else if (visibleCount === 1) {
-        resultText.textContent = "Fant 1 begrep.";
-      } else {
-        resultText.textContent =
-          "Fant " + visibleCount + " begreper.";
-      }
-    }
-
-    searchInput.addEventListener("input", filterGlossary);
-  </script>
-
-</body>
-</html>
 /* Enkel passordlås for Academy */
 
 .academy-lock{
@@ -1581,8 +687,16 @@ h3{
   place-items:center;
   padding:20px;
   background:
-    radial-gradient(circle at top left, rgba(139,124,255,.13), transparent 30%),
-    radial-gradient(circle at top right, rgba(121,169,255,.10), transparent 25%),
+    radial-gradient(
+      circle at top left,
+      rgba(139,124,255,.13),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(121,169,255,.10),
+      transparent 25%
+    ),
     linear-gradient(180deg, var(--bg), var(--bg2));
 }
 
@@ -1624,7 +738,10 @@ h3{
   outline:none;
   color:var(--text);
   background:rgba(255,255,255,.05);
-  font:inherit;
+}
+
+.academy-lock-card input::placeholder{
+  color:var(--muted);
 }
 
 .academy-lock-card input:focus{
@@ -1642,4 +759,87 @@ h3{
   margin:0;
   color:var(--danger);
   font-size:.86rem;
+}
+
+/* Responsivt design */
+
+@media (max-width:1100px){
+  .portal-grid,
+  .academy-grid,
+  .glossary-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+
+  .info-grid,
+  .grid-3{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width:980px){
+  .hero-grid,
+  .grid-2{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width:760px){
+  .nav{
+    padding:10px 0;
+  }
+
+  .hero-panel{
+    padding:20px;
+  }
+
+  h1{
+    font-size:clamp(1.8rem, 8vw, 2.4rem);
+  }
+
+  .portal-grid,
+  .academy-grid,
+  .glossary-grid,
+  .info-grid,
+  .grid-3{
+    grid-template-columns:1fr;
+  }
+
+  .academy-card{
+    min-height:280px;
+  }
+
+  .glossary-card{
+    min-height:auto;
+  }
+
+  .academy-lock-card{
+    padding:24px;
+  }
+}
+
+@media (max-width:520px){
+  .container{
+    width:min(100% - 20px, var(--max));
+  }
+
+  .nav-links{
+    width:100%;
+  }
+
+  .nav-links a{
+    flex:1 1 auto;
+    text-align:center;
+  }
+
+  .hero-actions{
+    flex-direction:column;
+  }
+
+  .hero-actions .button{
+    width:100%;
+  }
+
+  .academy-card{
+    padding:18px;
+  }
 }
