@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Mine notater | Academy</title>
+  <title>Mine notater | Statnett Academy</title>
 
   <meta
     name="description"
@@ -14,300 +14,315 @@
   <link rel="stylesheet" href="../assets/styles.css">
 
   <style>
-    .notes-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 360px;
-      gap: 24px;
-      align-items: start;
-      margin-top: 24px;
+    .notes-layout{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) 360px;
+      gap:24px;
+      align-items:start;
+      margin-top:16px;
+      padding-bottom:20px;
     }
 
-    .notes-panel {
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
+    .notes-panel{
+      padding:24px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
       background:
         linear-gradient(
           180deg,
           rgba(255,255,255,.035),
           rgba(255,255,255,.015)
         );
-      box-shadow: var(--shadow);
+      box-shadow:var(--shadow);
     }
 
-    .notes-panel h2 {
-      margin: 0 0 6px;
-      font-size: 1.2rem;
+    .notes-panel h2{
+      margin:0 0 6px;
+      font-size:1.2rem;
     }
 
-    .notes-panel-description {
-      margin: 0 0 22px;
-      color: var(--muted);
-      line-height: 1.6;
+    .notes-panel-description{
+      margin:0 0 22px;
+      color:var(--muted);
+      line-height:1.6;
     }
 
-    .notes-form {
-      display: grid;
-      gap: 16px;
+    .notes-form{
+      display:grid;
+      gap:16px;
     }
 
-    .form-group {
-      display: grid;
-      gap: 8px;
+    .form-group{
+      display:grid;
+      gap:8px;
     }
 
-    .form-group label {
-      font-size: .86rem;
-      font-weight: 700;
-      color: var(--text);
+    .form-group label{
+      color:var(--text);
+      font-size:.86rem;
+      font-weight:700;
     }
 
     .notes-input,
     .notes-select,
     .notes-textarea,
-    .notes-search {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      font: inherit;
-      outline: none;
+    .notes-search{
+      width:100%;
+      padding:13px 14px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      outline:none;
+      color:var(--text);
+      background:rgba(0,0,0,.18);
+      font:inherit;
       transition:
         border-color .2s ease,
         box-shadow .2s ease,
         background .2s ease;
     }
 
+    .notes-input::placeholder,
+    .notes-textarea::placeholder,
+    .notes-search::placeholder{
+      color:var(--muted);
+    }
+
     .notes-input:focus,
     .notes-select:focus,
     .notes-textarea:focus,
-    .notes-search:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(121,169,255,.12);
-      background: rgba(0,0,0,.25);
+    .notes-search:focus{
+      border-color:var(--accent);
+      background:rgba(0,0,0,.25);
+      box-shadow:0 0 0 3px rgba(121,169,255,.12);
     }
 
-    .notes-select option {
-      background: var(--panel);
-      color: var(--text);
+    .notes-select option{
+      color:var(--text);
+      background:var(--panel);
     }
 
-    .notes-textarea {
-      min-height: 260px;
-      resize: vertical;
-      line-height: 1.65;
+    .notes-textarea{
+      min-height:260px;
+      resize:vertical;
+      line-height:1.65;
     }
 
-    .notes-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    .notes-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
     }
 
-    .notes-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 42px;
-      padding: 10px 16px;
-      border: 1px solid transparent;
-      border-radius: 11px;
-      font: inherit;
-      font-size: .9rem;
-      font-weight: 700;
-      cursor: pointer;
+    .notes-button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:42px;
+      padding:10px 16px;
+      border:1px solid transparent;
+      border-radius:11px;
+      font:inherit;
+      font-size:.9rem;
+      font-weight:700;
+      cursor:pointer;
       transition:
         transform .2s ease,
         opacity .2s ease,
-        border-color .2s ease;
+        border-color .2s ease,
+        background .2s ease;
     }
 
-    .notes-button:hover {
-      transform: translateY(-1px);
+    .notes-button:hover{
+      transform:translateY(-1px);
     }
 
-    .notes-button.primary {
-      background: linear-gradient(
-        135deg,
-        var(--accent),
-        var(--accent2)
-      );
-      color: #07111f;
+    .notes-button.primary{
+      color:#fff;
+      background:
+        linear-gradient(
+          135deg,
+          var(--accent),
+          var(--accent2)
+        );
     }
 
-    .notes-button.secondary {
-      border-color: var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
+    .notes-button.secondary{
+      color:var(--text);
+      border-color:var(--line);
+      background:rgba(255,255,255,.04);
     }
 
-    .notes-button.danger {
-      border-color: rgba(255,125,125,.3);
-      background: rgba(255,125,125,.08);
-      color: var(--danger);
+    .notes-button.danger{
+      color:var(--danger);
+      border-color:rgba(255,125,125,.3);
+      background:rgba(255,125,125,.08);
     }
 
-    .notes-button.small {
-      min-height: 34px;
-      padding: 7px 11px;
-      font-size: .78rem;
+    .notes-button.small{
+      min-height:34px;
+      padding:7px 11px;
+      font-size:.78rem;
     }
 
-    .notes-status {
-      min-height: 22px;
-      margin: 0;
-      color: var(--green);
-      font-size: .86rem;
+    .notes-status{
+      min-height:22px;
+      margin:0;
+      color:var(--green);
+      font-size:.86rem;
     }
 
-    .notes-sidebar {
-      position: sticky;
-      top: 92px;
+    .notes-sidebar{
+      position:sticky;
+      top:82px;
     }
 
-    .notes-toolbar {
-      display: grid;
-      gap: 12px;
-      margin-bottom: 18px;
+    .notes-toolbar{
+      display:grid;
+      gap:12px;
+      margin-bottom:18px;
     }
 
-    .notes-count {
-      color: var(--muted);
-      font-size: .84rem;
+    .notes-count{
+      color:var(--muted);
+      font-size:.84rem;
     }
 
-    .notes-list {
-      display: grid;
-      gap: 12px;
+    .notes-list{
+      display:grid;
+      gap:12px;
     }
 
-    .note-card {
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(255,255,255,.025);
-      cursor: pointer;
+    .note-card{
+      padding:16px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.025);
+      cursor:pointer;
       transition:
         transform .2s ease,
         border-color .2s ease,
         background .2s ease;
     }
 
-    .note-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(121,169,255,.35);
-      background: rgba(255,255,255,.045);
+    .note-card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(121,169,255,.35);
+      background:rgba(255,255,255,.045);
     }
 
-    .note-card.active {
-      border-color: var(--accent);
-      background: rgba(121,169,255,.08);
+    .note-card:focus-visible{
+      outline:2px solid var(--accent);
+      outline-offset:2px;
     }
 
-    .note-card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 8px;
+    .note-card.active{
+      border-color:var(--accent);
+      background:rgba(121,169,255,.08);
     }
 
-    .note-card h3 {
-      margin: 0;
-      font-size: .98rem;
-      line-height: 1.4;
+    .note-card-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:8px;
     }
 
-    .note-category {
-      flex-shrink: 0;
-      padding: 4px 8px;
-      border: 1px solid rgba(100,230,195,.22);
-      border-radius: 999px;
-      background: rgba(100,230,195,.07);
-      color: var(--green);
-      font-size: .68rem;
-      font-weight: 700;
+    .note-card h3{
+      margin:0;
+      font-size:.98rem;
+      line-height:1.4;
     }
 
-    .note-preview {
-      display: -webkit-box;
-      overflow: hidden;
-      margin: 0 0 10px;
-      color: var(--muted);
-      font-size: .84rem;
-      line-height: 1.5;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
+    .note-category{
+      flex-shrink:0;
+      padding:4px 8px;
+      border:1px solid rgba(100,230,195,.22);
+      border-radius:999px;
+      color:var(--green);
+      background:rgba(100,230,195,.07);
+      font-size:.68rem;
+      font-weight:700;
     }
 
-    .note-date {
-      color: var(--muted);
-      font-size: .72rem;
+    .note-preview{
+      display:-webkit-box;
+      overflow:hidden;
+      margin:0 0 10px;
+      color:var(--muted);
+      font-size:.84rem;
+      line-height:1.5;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:3;
     }
 
-    .notes-empty {
-      padding: 30px 18px;
-      border: 1px dashed var(--line);
-      border-radius: 14px;
-      text-align: center;
-      color: var(--muted);
+    .note-date{
+      color:var(--muted);
+      font-size:.72rem;
     }
 
-    .notes-help {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 24px;
+    .notes-empty{
+      padding:30px 18px;
+      border:1px dashed var(--line);
+      border-radius:14px;
+      color:var(--muted);
+      text-align:center;
     }
 
-    .notes-help-card {
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(255,255,255,.025);
+    .notes-help{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:14px;
+      margin-top:4px;
+      padding-bottom:20px;
     }
 
-    .notes-help-card strong {
-      display: block;
-      margin-bottom: 6px;
+    .notes-help-card{
+      padding:18px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.025);
     }
 
-    .notes-help-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: .84rem;
-      line-height: 1.55;
+    .notes-help-card strong{
+      display:block;
+      margin-bottom:6px;
     }
 
-    @media (max-width: 900px) {
-      .notes-layout {
-        grid-template-columns: 1fr;
+    .notes-help-card p{
+      margin:0;
+      color:var(--muted);
+      font-size:.84rem;
+      line-height:1.55;
+    }
+
+    @media (max-width:900px){
+      .notes-layout{
+        grid-template-columns:1fr;
       }
 
-      .notes-sidebar {
-        position: static;
+      .notes-sidebar{
+        position:static;
       }
 
-      .notes-help {
-        grid-template-columns: 1fr;
+      .notes-help{
+        grid-template-columns:1fr;
       }
     }
 
-    @media (max-width: 600px) {
-      .notes-panel {
-        padding: 18px;
+    @media (max-width:600px){
+      .notes-panel{
+        padding:18px;
       }
 
-      .notes-actions {
-        display: grid;
-        grid-template-columns: 1fr;
+      .notes-actions{
+        display:grid;
+        grid-template-columns:1fr;
       }
 
-      .notes-button {
-        width: 100%;
+      .notes-button{
+        width:100%;
       }
     }
   </style>
@@ -327,7 +342,10 @@
         <a href="/">Portal</a>
         <a href="/academy/">Kapitler</a>
         <a href="/academy/quiz.html">Quiz</a>
-        <a class="active" href="/academy/minenotater.html">
+        <a
+          class="active"
+          href="/academy/minenotater.html"
+        >
           Mine notater
         </a>
         <a href="/academy/ordliste.html">Ordliste</a>
@@ -339,25 +357,45 @@
   <main class="container">
 
     <section class="page-header">
-      <div class="card hero-panel portal-hero">
-        <span class="kicker">Personlig arbeidsområde</span>
+      <div class="card hero-panel academy-hero">
+        <div class="academy-hero-content">
 
-        <h1>Mine notater</h1>
+          <span class="kicker">
+            Personlig arbeidsområde
+          </span>
 
-        <p>
-          Samle egne notater, refleksjoner, spørsmål og viktige punkter
-          fra kapitlene i Academy.
-        </p>
+          <h1>Mine notater</h1>
+
+          <p>
+            Samle egne notater, refleksjoner, spørsmål og viktige punkter
+            fra kapitlene i Academy.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button secondary" href="/academy/">
+              ← Tilbake til kapitler
+            </a>
+
+            <a class="button primary" href="#notesWorkspace">
+              Skriv et notat
+            </a>
+          </div>
+
+        </div>
       </div>
     </section>
 
-    <section class="notes-layout">
+    <section
+      class="notes-layout"
+      id="notesWorkspace"
+    >
 
       <div class="notes-panel">
+
         <h2 id="formHeading">Nytt notat</h2>
 
         <p class="notes-panel-description">
-          Notatene lagres automatisk lokalt i nettleseren på denne enheten.
+          Notatene lagres lokalt i nettleseren på denne enheten.
         </p>
 
         <form id="notesForm" class="notes-form">
@@ -365,7 +403,9 @@
           <input type="hidden" id="noteId">
 
           <div class="form-group">
-            <label for="noteTitle">Tittel</label>
+            <label for="noteTitle">
+              Tittel
+            </label>
 
             <input
               class="notes-input"
@@ -378,28 +418,52 @@
           </div>
 
           <div class="form-group">
-            <label for="noteCategory">Tilhørende kapittel</label>
+            <label for="noteCategory">
+              Tilhørende kapittel
+            </label>
 
-            <select class="notes-select" id="noteCategory">
-              <option value="Generelt">Generelt</option>
-              <option value="Kapittel 1">Kapittel 1 – Kraftsystemet</option>
+            <select
+              class="notes-select"
+              id="noteCategory"
+            >
+              <option value="Generelt">
+                Generelt
+              </option>
+
+              <option value="Kapittel 1">
+                Kapittel 1 – Kraftsystemet
+              </option>
+
               <option value="Kapittel 2">
                 Kapittel 2 – Statnett og samfunnsoppdraget
               </option>
-              <option value="Kapittel 3">Kapittel 3 – 420 kV-nettet</option>
+
+              <option value="Kapittel 3">
+                Kapittel 3 – 420 kV-nettet
+              </option>
+
               <option value="Kapittel 4">
                 Kapittel 4 – Transformatorstasjoner
               </option>
+
               <option value="Kapittel 5">
                 Kapittel 5 – Planleggerrollen
               </option>
-              <option value="Spørsmål">Spørsmål jeg må undersøke</option>
-              <option value="Huskeliste">Huskeliste</option>
+
+              <option value="Spørsmål">
+                Spørsmål jeg må undersøke
+              </option>
+
+              <option value="Huskeliste">
+                Huskeliste
+              </option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="noteContent">Notat</label>
+            <label for="noteContent">
+              Notat
+            </label>
 
             <textarea
               class="notes-textarea"
@@ -410,7 +474,11 @@
           </div>
 
           <div class="notes-actions">
-            <button class="notes-button primary" type="submit">
+
+            <button
+              class="notes-button primary"
+              type="submit"
+            >
               Lagre notat
             </button>
 
@@ -430,6 +498,7 @@
             >
               Slett notat
             </button>
+
           </div>
 
           <p
@@ -443,6 +512,7 @@
       </div>
 
       <aside class="notes-panel notes-sidebar">
+
         <h2>Lagrede notater</h2>
 
         <p class="notes-panel-description">
@@ -450,6 +520,7 @@
         </p>
 
         <div class="notes-toolbar">
+
           <input
             class="notes-search"
             id="notesSearch"
@@ -457,19 +528,51 @@
             placeholder="Søk i notater..."
           >
 
-          <select class="notes-select" id="categoryFilter">
-            <option value="Alle">Alle kategorier</option>
-            <option value="Generelt">Generelt</option>
-            <option value="Kapittel 1">Kapittel 1</option>
-            <option value="Kapittel 2">Kapittel 2</option>
-            <option value="Kapittel 3">Kapittel 3</option>
-            <option value="Kapittel 4">Kapittel 4</option>
-            <option value="Kapittel 5">Kapittel 5</option>
-            <option value="Spørsmål">Spørsmål</option>
-            <option value="Huskeliste">Huskeliste</option>
+          <select
+            class="notes-select"
+            id="categoryFilter"
+          >
+            <option value="Alle">
+              Alle kategorier
+            </option>
+
+            <option value="Generelt">
+              Generelt
+            </option>
+
+            <option value="Kapittel 1">
+              Kapittel 1
+            </option>
+
+            <option value="Kapittel 2">
+              Kapittel 2
+            </option>
+
+            <option value="Kapittel 3">
+              Kapittel 3
+            </option>
+
+            <option value="Kapittel 4">
+              Kapittel 4
+            </option>
+
+            <option value="Kapittel 5">
+              Kapittel 5
+            </option>
+
+            <option value="Spørsmål">
+              Spørsmål
+            </option>
+
+            <option value="Huskeliste">
+              Huskeliste
+            </option>
           </select>
 
-          <span class="notes-count" id="notesCount">
+          <span
+            class="notes-count"
+            id="notesCount"
+          >
             0 notater
           </span>
 
@@ -480,9 +583,14 @@
           >
             Eksporter notater
           </button>
+
         </div>
 
-        <div class="notes-list" id="notesList"></div>
+        <div
+          class="notes-list"
+          id="notesList"
+        ></div>
+
       </aside>
 
     </section>
@@ -491,6 +599,7 @@
 
       <article class="notes-help-card">
         <strong>📌 Viktige punkter</strong>
+
         <p>
           Skriv ned begreper, arbeidsprosesser og tekniske detaljer du
           ønsker å huske.
@@ -499,6 +608,7 @@
 
       <article class="notes-help-card">
         <strong>❓ Egne spørsmål</strong>
+
         <p>
           Registrer spørsmål du vil undersøke eller ta opp med kolleger
           senere.
@@ -507,9 +617,10 @@
 
       <article class="notes-help-card">
         <strong>✅ Praktisk læring</strong>
+
         <p>
-          Noter hvordan kunnskapen kan brukes i planlegging,
-          drift og prosjektarbeid.
+          Noter hvordan kunnskapen kan brukes i planlegging, drift og
+          prosjektarbeid.
         </p>
       </article>
 
@@ -517,31 +628,54 @@
 
   </main>
 
-  <footer class="site-footer">
+  <footer class="footer">
     <div class="container">
-      Personlig læringsportal – Henrik Bergfjord
+      Mine notater – Statnett Academy
     </div>
   </footer>
 
   <script>
     const STORAGE_KEY = "statnettAcademyNotes";
 
-    const notesForm = document.getElementById("notesForm");
-    const noteId = document.getElementById("noteId");
-    const noteTitle = document.getElementById("noteTitle");
-    const noteCategory = document.getElementById("noteCategory");
-    const noteContent = document.getElementById("noteContent");
+    const notesForm =
+      document.getElementById("notesForm");
 
-    const formHeading = document.getElementById("formHeading");
-    const notesStatus = document.getElementById("notesStatus");
-    const notesList = document.getElementById("notesList");
-    const notesCount = document.getElementById("notesCount");
+    const noteId =
+      document.getElementById("noteId");
 
-    const notesSearch = document.getElementById("notesSearch");
-    const categoryFilter = document.getElementById("categoryFilter");
+    const noteTitle =
+      document.getElementById("noteTitle");
 
-    const newNoteButton = document.getElementById("newNoteButton");
-    const deleteNoteButton = document.getElementById("deleteNoteButton");
+    const noteCategory =
+      document.getElementById("noteCategory");
+
+    const noteContent =
+      document.getElementById("noteContent");
+
+    const formHeading =
+      document.getElementById("formHeading");
+
+    const notesStatus =
+      document.getElementById("notesStatus");
+
+    const notesList =
+      document.getElementById("notesList");
+
+    const notesCount =
+      document.getElementById("notesCount");
+
+    const notesSearch =
+      document.getElementById("notesSearch");
+
+    const categoryFilter =
+      document.getElementById("categoryFilter");
+
+    const newNoteButton =
+      document.getElementById("newNoteButton");
+
+    const deleteNoteButton =
+      document.getElementById("deleteNoteButton");
+
     const exportNotesButton =
       document.getElementById("exportNotesButton");
 
@@ -549,35 +683,76 @@
 
     function loadNotes() {
       try {
-        const savedNotes = localStorage.getItem(STORAGE_KEY);
-        return savedNotes ? JSON.parse(savedNotes) : [];
+        const savedNotes =
+          localStorage.getItem(STORAGE_KEY);
+
+        const parsedNotes =
+          savedNotes ? JSON.parse(savedNotes) : [];
+
+        return Array.isArray(parsedNotes)
+          ? parsedNotes
+          : [];
       } catch (error) {
-        console.error("Kunne ikke lese notatene:", error);
+        console.error(
+          "Kunne ikke lese notatene:",
+          error
+        );
+
         return [];
       }
     }
 
     function saveNotes() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      try {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify(notes)
+        );
+
+        return true;
+      } catch (error) {
+        console.error(
+          "Kunne ikke lagre notatene:",
+          error
+        );
+
+        showStatus(
+          "Notatet kunne ikke lagres i nettleseren.",
+          true
+        );
+
+        return false;
+      }
     }
 
     function createId() {
-      if (window.crypto && crypto.randomUUID) {
+      if (
+        window.crypto &&
+        typeof crypto.randomUUID === "function"
+      ) {
         return crypto.randomUUID();
       }
 
-      return Date.now().toString();
+      return `${Date.now()}-${Math.random()
+        .toString(16)
+        .slice(2)}`;
     }
 
     function formatDate(dateValue) {
+      const date = new Date(dateValue);
+
+      if (Number.isNaN(date.getTime())) {
+        return "Ukjent tidspunkt";
+      }
+
       return new Intl.DateTimeFormat("no-NO", {
-        dateStyle: "medium",
-        timeStyle: "short"
-      }).format(new Date(dateValue));
+        dateStyle:"medium",
+        timeStyle:"short"
+      }).format(date);
     }
 
     function escapeHtml(value) {
-      return value
+      return String(value)
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
@@ -585,39 +760,61 @@
         .replaceAll("'", "&#039;");
     }
 
-    function showStatus(message) {
+    function showStatus(message, isError = false) {
       notesStatus.textContent = message;
+
+      notesStatus.style.color = isError
+        ? "var(--danger)"
+        : "var(--green)";
 
       window.clearTimeout(showStatus.timeout);
 
-      showStatus.timeout = window.setTimeout(() => {
-        notesStatus.textContent = "";
-      }, 3000);
+      showStatus.timeout =
+        window.setTimeout(() => {
+          notesStatus.textContent = "";
+        }, 3500);
     }
 
     function resetForm() {
       notesForm.reset();
+
       noteId.value = "";
       formHeading.textContent = "Nytt notat";
       deleteNoteButton.hidden = true;
 
       document
         .querySelectorAll(".note-card")
-        .forEach(card => card.classList.remove("active"));
+        .forEach((card) => {
+          card.classList.remove("active");
+        });
 
       noteTitle.focus();
     }
 
     function renderNotes() {
-      const searchValue = notesSearch.value.trim().toLowerCase();
-      const selectedCategory = categoryFilter.value;
+      const searchValue =
+        notesSearch.value
+          .trim()
+          .toLowerCase();
+
+      const selectedCategory =
+        categoryFilter.value;
 
       const filteredNotes = notes
-        .filter(note => {
+        .filter((note) => {
+          const title =
+            String(note.title || "").toLowerCase();
+
+          const content =
+            String(note.content || "").toLowerCase();
+
+          const category =
+            String(note.category || "").toLowerCase();
+
           const matchesSearch =
-            note.title.toLowerCase().includes(searchValue) ||
-            note.content.toLowerCase().includes(searchValue) ||
-            note.category.toLowerCase().includes(searchValue);
+            title.includes(searchValue) ||
+            content.includes(searchValue) ||
+            category.includes(searchValue);
 
           const matchesCategory =
             selectedCategory === "Alle" ||
@@ -625,7 +822,12 @@
 
           return matchesSearch && matchesCategory;
         })
-        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+        .sort((a, b) => {
+          return (
+            new Date(b.updatedAt).getTime() -
+            new Date(a.updatedAt).getTime()
+          );
+        });
 
       notesCount.textContent =
         filteredNotes.length === 1
@@ -638,26 +840,35 @@
             Ingen notater funnet.
           </div>
         `;
+
         return;
       }
 
       notesList.innerHTML = filteredNotes
-        .map(note => {
+        .map((note) => {
           const activeClass =
-            note.id === noteId.value ? "active" : "";
+            note.id === noteId.value
+              ? "active"
+              : "";
 
           return `
             <article
               class="note-card ${activeClass}"
-              data-note-id="${note.id}"
+              data-note-id="${escapeHtml(note.id)}"
               tabindex="0"
+              role="button"
+              aria-label="Åpne notatet ${escapeHtml(note.title)}"
             >
               <div class="note-card-top">
-                <h3>${escapeHtml(note.title)}</h3>
+
+                <h3>
+                  ${escapeHtml(note.title)}
+                </h3>
 
                 <span class="note-category">
                   ${escapeHtml(note.category)}
                 </span>
+
               </div>
 
               <p class="note-preview">
@@ -672,22 +883,34 @@
         })
         .join("");
 
-      document.querySelectorAll(".note-card").forEach(card => {
-        card.addEventListener("click", () => {
-          openNote(card.dataset.noteId);
-        });
-
-        card.addEventListener("keydown", event => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
+      document
+        .querySelectorAll(".note-card")
+        .forEach((card) => {
+          card.addEventListener("click", () => {
             openNote(card.dataset.noteId);
-          }
+          });
+
+          card.addEventListener(
+            "keydown",
+            (event) => {
+              if (
+                event.key === "Enter" ||
+                event.key === " "
+              ) {
+                event.preventDefault();
+
+                openNote(
+                  card.dataset.noteId
+                );
+              }
+            }
+          );
         });
-      });
     }
 
     function openNote(id) {
-      const selectedNote = notes.find(note => note.id === id);
+      const selectedNote =
+        notes.find((note) => note.id === id);
 
       if (!selectedNote) {
         return;
@@ -703,132 +926,225 @@
 
       renderNotes();
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      document
+        .getElementById("notesWorkspace")
+        .scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        });
+
+      noteTitle.focus();
     }
 
-    notesForm.addEventListener("submit", event => {
-      event.preventDefault();
+    notesForm.addEventListener(
+      "submit",
+      (event) => {
+        event.preventDefault();
 
-      const title = noteTitle.value.trim();
-      const content = noteContent.value.trim();
-      const category = noteCategory.value;
-      const currentId = noteId.value;
+        const title =
+          noteTitle.value.trim();
 
-      if (!title || !content) {
-        showStatus("Skriv inn både tittel og notat.");
-        return;
-      }
+        const content =
+          noteContent.value.trim();
 
-      const currentDate = new Date().toISOString();
+        const category =
+          noteCategory.value;
 
-      if (currentId) {
-        const noteIndex = notes.findIndex(note => note.id === currentId);
+        const currentId =
+          noteId.value;
 
-        if (noteIndex !== -1) {
+        if (!title || !content) {
+          showStatus(
+            "Skriv inn både tittel og notat.",
+            true
+          );
+
+          return;
+        }
+
+        const currentDate =
+          new Date().toISOString();
+
+        if (currentId) {
+          const noteIndex =
+            notes.findIndex(
+              (note) => note.id === currentId
+            );
+
+          if (noteIndex === -1) {
+            showStatus(
+              "Notatet kunne ikke finnes.",
+              true
+            );
+
+            return;
+          }
+
           notes[noteIndex] = {
             ...notes[noteIndex],
             title,
             category,
             content,
-            updatedAt: currentDate
+            updatedAt:currentDate
           };
 
-          showStatus("Notatet er oppdatert.");
+          if (!saveNotes()) {
+            return;
+          }
+
+          resetForm();
+          renderNotes();
+
+          showStatus(
+            "Notatet er oppdatert."
+          );
+        } else {
+          notes.push({
+            id:createId(),
+            title,
+            category,
+            content,
+            createdAt:currentDate,
+            updatedAt:currentDate
+          });
+
+          if (!saveNotes()) {
+            return;
+          }
+
+          resetForm();
+          renderNotes();
+
+          showStatus(
+            "Notatet er lagret."
+          );
         }
-      } else {
-        notes.push({
-          id: createId(),
-          title,
-          category,
-          content,
-          createdAt: currentDate,
-          updatedAt: currentDate
-        });
-
-        showStatus("Notatet er lagret.");
       }
+    );
 
-      saveNotes();
-      resetForm();
-      renderNotes();
-    });
+    newNoteButton.addEventListener(
+      "click",
+      resetForm
+    );
 
-    newNoteButton.addEventListener("click", resetForm);
+    deleteNoteButton.addEventListener(
+      "click",
+      () => {
+        const currentId = noteId.value;
 
-    deleteNoteButton.addEventListener("click", () => {
-      const currentId = noteId.value;
+        if (!currentId) {
+          return;
+        }
 
-      if (!currentId) {
-        return;
+        const selectedNote =
+          notes.find(
+            (note) => note.id === currentId
+          );
+
+        const confirmed =
+          window.confirm(
+            `Vil du slette notatet "${selectedNote?.title || ""}"?`
+          );
+
+        if (!confirmed) {
+          return;
+        }
+
+        notes = notes.filter(
+          (note) => note.id !== currentId
+        );
+
+        if (!saveNotes()) {
+          return;
+        }
+
+        resetForm();
+        renderNotes();
+
+        showStatus(
+          "Notatet er slettet."
+        );
       }
+    );
 
-      const selectedNote = notes.find(note => note.id === currentId);
+    notesSearch.addEventListener(
+      "input",
+      renderNotes
+    );
 
-      const confirmed = window.confirm(
-        `Vil du slette notatet "${selectedNote?.title || ""}"?`
-      );
+    categoryFilter.addEventListener(
+      "change",
+      renderNotes
+    );
 
-      if (!confirmed) {
-        return;
+    exportNotesButton.addEventListener(
+      "click",
+      () => {
+        if (notes.length === 0) {
+          showStatus(
+            "Du har ingen notater å eksportere.",
+            true
+          );
+
+          return;
+        }
+
+        const sortedNotes = [...notes]
+          .sort((a, b) => {
+            return (
+              new Date(a.createdAt).getTime() -
+              new Date(b.createdAt).getTime()
+            );
+          });
+
+        const exportText = sortedNotes
+          .map((note) => {
+            return [
+              note.title,
+              `Kategori: ${note.category}`,
+              `Oppdatert: ${formatDate(note.updatedAt)}`,
+              "",
+              note.content,
+              "",
+              "----------------------------------------",
+              ""
+            ].join("\n");
+          })
+          .join("\n");
+
+        const blob = new Blob(
+          [exportText],
+          {
+            type:"text/plain;charset=utf-8"
+          }
+        );
+
+        const downloadUrl =
+          URL.createObjectURL(blob);
+
+        const downloadLink =
+          document.createElement("a");
+
+        downloadLink.href = downloadUrl;
+        downloadLink.download =
+          "mine-academy-notater.txt";
+
+        document.body.appendChild(
+          downloadLink
+        );
+
+        downloadLink.click();
+        downloadLink.remove();
+
+        URL.revokeObjectURL(
+          downloadUrl
+        );
+
+        showStatus(
+          "Notatene er eksportert."
+        );
       }
-
-      notes = notes.filter(note => note.id !== currentId);
-
-      saveNotes();
-      resetForm();
-      renderNotes();
-      showStatus("Notatet er slettet.");
-    });
-
-    notesSearch.addEventListener("input", renderNotes);
-    categoryFilter.addEventListener("change", renderNotes);
-
-    exportNotesButton.addEventListener("click", () => {
-      if (notes.length === 0) {
-        showStatus("Du har ingen notater å eksportere.");
-        return;
-      }
-
-      const sortedNotes = [...notes].sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-      );
-
-      const exportText = sortedNotes
-        .map(note => {
-          return [
-            note.title,
-            `Kategori: ${note.category}`,
-            `Oppdatert: ${formatDate(note.updatedAt)}`,
-            "",
-            note.content,
-            "",
-            "----------------------------------------",
-            ""
-          ].join("\n");
-        })
-        .join("\n");
-
-      const blob = new Blob([exportText], {
-        type: "text/plain;charset=utf-8"
-      });
-
-      const downloadUrl = URL.createObjectURL(blob);
-      const downloadLink = document.createElement("a");
-
-      downloadLink.href = downloadUrl;
-      downloadLink.download = "mine-academy-notater.txt";
-
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      downloadLink.remove();
-
-      URL.revokeObjectURL(downloadUrl);
-
-      showStatus("Notatene er eksportert.");
-    });
+    );
 
     renderNotes();
   </script>
