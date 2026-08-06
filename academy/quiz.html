@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Quiz – Statnett Academy</title>
+
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="container nav">
+
+      <a class="brand" href="../academy.html">
+        <span class="brand-mark"></span>
+        <span>Academy</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="../academy.html">Portal</a>
+        <a href="index.html">Kapitler</a>
+        <a class="active" href="quiz.html">Quiz</a>
+        <a href="minenotater.html">Mine notater</a>
+        <a href="ordliste.html">Ordliste</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="page-header">
+      <div class="card hero-panel portal-hero">
+
+        <span class="kicker">Statnett Academy</span>
+
+        <h1>Quiz</h1>
+
+        <p class="lead">
+          Test kunnskapen din om kraftsystemet, Statnetts samfunnsoppdrag,
+          420 kV-nettet, transformatorstasjoner og planleggerrollen.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button secondary" href="index.html">
+            ← Tilbake til kapitler
+          </a>
+
+          <a class="button primary" href="#quiz">
+            Start quiz
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section" id="quiz">
+
+      <div class="section-head">
+        <div>
+          <h2>Kunnskapstest</h2>
+
+          <p class="muted">
+            Velg ett svar på hvert spørsmål. Du får resultatet når alle
+            spørsmålene er besvart.
+          </p>
+        </div>
+
+        <span class="badge" id="quizProgress">
+          0 av 15 besvart
+        </span>
+      </div>
+
+      <form id="quizForm">
+
+        <!-- Spørsmål 1 -->
+        <article class="card quiz-question" data-question="1">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 1</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva er hovedoppgaven til transmisjonsnettet?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q1" value="a">
+            <span>
+              Å transportere store mengder kraft over lange avstander
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q1" value="b">
+            <span>
+              Å levere strøm direkte til alle boliger
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q1" value="c">
+            <span>
+              Å produsere elektrisk energi
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 2 -->
+        <article class="card quiz-question" data-question="2">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 2</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva er den nominelle frekvensen i det nordiske kraftsystemet?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q2" value="a">
+            <span>25 Hz</span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q2" value="b">
+            <span>50 Hz</span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q2" value="c">
+            <span>60 Hz</span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 3 -->
+        <article class="card quiz-question" data-question="3">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 3</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva innebærer Statnetts systemansvar?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="a">
+            <span>
+              Å bygge distribusjonsnett i alle kommuner
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="b">
+            <span>
+              Å sikre balanse og koordinere sikker drift av kraftsystemet
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="c">
+            <span>
+              Å bestemme strømprisen til sluttkundene
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 4 -->
+        <article class="card quiz-question" data-question="4">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 4</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva er en viktig fordel ved å øke spenningen fra 300 til 420 kV?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q4" value="a">
+            <span>
+              Det blir behov for høyere strøm for samme effekt
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q4" value="b">
+            <span>
+              Mer effekt kan overføres med lavere strøm
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q4" value="c">
+            <span>
+              Alle transformatorstasjoner kan fjernes
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 5 -->
+        <article class="card quiz-question" data-question="5">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 5</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva betyr duplexleder?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q5" value="a">
+            <span>
+              To parallelle delledere per fase
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q5" value="b">
+            <span>
+              To master per spenn</span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q5" value="c">
+            <span>
+              To transformatorstasjoner i samme anlegg
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 6 -->
+        <article class="card quiz-question" data-question="6">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 6</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva er hovedfunksjonen til en krafttransformator?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q6" value="a">
+            <span>
+              Å produsere elektrisk energi
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q6" value="b">
+            <span>
+              Å endre spenningsnivå
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q6" value="c">
+            <span>
+              Å registrere prosjektfremdrift
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 7 -->
+        <article class="card quiz-question" data-question="7">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 7</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva brukes en effektbryter til?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q7" value="a">
+            <span>
+              Å koble inn og ut strøm, også ved feilstrømmer
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q7" value="b">
+            <span>
+              Å måle prosjektets kostnader
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q7" value="c">
+            <span>
+              Å kjøle ned kontrollbygget
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 8 -->
+        <article class="card quiz-question" data-question="8">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 8</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva betyr GIS i en transformatorstasjon?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q8" value="a">
+            <span>
+              Ground Integrated System
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q8" value="b">
+            <span>
+              Gas Insulated Switchgear
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q8" value="c">
+            <span>
+              Grid Information Service
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 9 -->
+        <article class="card quiz-question" data-question="9">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 9</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva er kontrollanleggets hovedoppgave?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q9" value="a">
+            <span>
+              Å overvåke, styre og beskytte anlegget
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q9" value="b">
+            <span>
+              Å transportere transformatorer
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q9" value="c">
+            <span>
+              Å bygge master og fundamenter
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 10 -->
+        <article class="card quiz-question" data-question="10">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 10</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva betyr selektivitet i et vernsystem?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q10" value="a">
+            <span>
+              At hele kraftsystemet alltid kobles ut ved feil
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q10" value="b">
+            <span>
+              At den minste nødvendige delen kobles ut
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q10" value="c">
+            <span>
+              At bare manuell utkobling er tillatt
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 11 -->
+        <article class="card quiz-question" data-question="11">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 11</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva er en milepæl i en fremdriftsplan?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q11" value="a">
+            <span>
+              En aktivitet som alltid varer én uke
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q11" value="b">
+            <span>
+              Et viktig tidspunkt eller beslutningspunkt uten varighet
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q11" value="c">
+            <span>
+              En liste over alle prosjektkostnader
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 12 -->
+        <article class="card quiz-question" data-question="12">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 12</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva betyr Finish to Start?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q12" value="a">
+            <span>
+              Aktivitet B starter når aktivitet A er ferdig
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q12" value="b">
+            <span>
+              Aktivitetene må avsluttes samtidig
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q12" value="c">
+            <span>
+              Aktivitet B avsluttes før aktivitet A starter
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 13 -->
+        <article class="card quiz-question" data-question="13">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 13</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva er kritisk linje?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q13" value="a">
+            <span>
+              Listen over prosjektets dyreste aktiviteter
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q13" value="b">
+            <span>
+              Aktivitetskjeden som bestemmer prosjektets sluttdato
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q13" value="c">
+            <span>
+              Alle aktiviteter med mer enn ti dagers varighet
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 14 -->
+        <article class="card quiz-question" data-question="14">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 14</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hva er en baseline?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q14" value="a">
+            <span>
+              Den godkjente referanseplanen
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q14" value="b">
+            <span>
+              Den siste muntlige statusen fra leverandøren
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q14" value="c">
+            <span>
+              Prosjektets risikoregister
+            </span>
+          </label>
+        </article>
+
+        <!-- Spørsmål 15 -->
+        <article class="card quiz-question" data-question="15">
+          <div class="quiz-question-top">
+            <span class="badge">Spørsmål 15</span>
+            <span class="quiz-status" aria-live="polite"></span>
+          </div>
+
+          <h3>Hvorfor må utkoblinger planlegges nøye?</h3>
+
+          <label class="quiz-option">
+            <input type="radio" name="q15" value="a">
+            <span>
+              Fordi utkoblinger kan påvirke forsyningssikkerheten
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q15" value="b">
+            <span>
+              Fordi alle aktiviteter må foregå om vinteren
+            </span>
+          </label>
+
+          <label class="quiz-option">
+            <input type="radio" name="q15" value="c">
+            <span>
+              Fordi transformatorer ikke kan testes
+            </span>
+          </label>
+        </article>
+
+        <div class="card quiz-actions">
+
+          <div>
+            <h2>Klar til å se resultatet?</h2>
+
+            <p class="muted">
+              Alle spørsmål må besvares før resultatet beregnes.
+            </p>
+          </div>
+
+          <div class="hero-actions">
+            <button class="button secondary" type="button" id="resetQuiz">
+              Nullstill
+            </button>
+
+            <button class="button primary" type="submit">
+              Se resultat
+            </button>
+          </div>
+
+        </div>
+
+      </form>
+
+    </section>
+
+    <section class="section" id="quizResultSection" hidden>
+
+      <div class="card quiz-result" id="quizResult">
+
+        <span class="kicker">Resultat</span>
+
+        <h2 id="resultHeading">Resultatet ditt</h2>
+
+        <p class="quiz-score" id="resultScore"></p>
+
+        <p class="muted" id="resultMessage"></p>
+
+        <div class="quiz-result-bar" aria-hidden="true">
+          <div class="quiz-result-fill" id="resultFill"></div>
+        </div>
+
+        <div class="hero-actions">
+          <button class="button secondary" type="button" id="tryAgain">
+            Prøv igjen
+          </button>
+
+          <a class="button primary" href="index.html">
+            Tilbake til kapitler
+          </a>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      Quiz – Statnett Academy
+    </div>
+  </footer>
+
+  <script>
+    const answers = {
+      q1: "a",
+      q2: "b",
+      q3: "b",
+      q4: "b",
+      q5: "a",
+      q6: "b",
+      q7: "a",
+      q8: "b",
+      q9: "a",
+      q10: "b",
+      q11: "b",
+      q12: "a",
+      q13: "b",
+      q14: "a",
+      q15: "a"
+    };
+
+    const quizForm = document.getElementById("quizForm");
+    const questionCards = document.querySelectorAll(".quiz-question");
+    const progressText = document.getElementById("quizProgress");
+    const resultSection = document.getElementById("quizResultSection");
+    const resultHeading = document.getElementById("resultHeading");
+    const resultScore = document.getElementById("resultScore");
+    const resultMessage = document.getElementById("resultMessage");
+    const resultFill = document.getElementById("resultFill");
+    const resetButton = document.getElementById("resetQuiz");
+    const tryAgainButton = document.getElementById("tryAgain");
+
+    function updateQuizProgress() {
+      let answered = 0;
+
+      Object.keys(answers).forEach((questionName) => {
+        if (
+          document.querySelector(
+            `input[name="${questionName}"]:checked`
+          )
+        ) {
+          answered++;
+        }
+      });
+
+      progressText.textContent =
+        `${answered} av ${Object.keys(answers).length} besvart`;
+    }
+
+    function resetQuestionStyles() {
+      questionCards.forEach((card) => {
+        card.classList.remove(
+          "quiz-correct",
+          "quiz-incorrect",
+          "quiz-unanswered"
+        );
+
+        const status = card.querySelector(".quiz-status");
+
+        if (status) {
+          status.textContent = "";
+        }
+      });
+    }
+
+    function resetQuiz() {
+      quizForm.reset();
+      resetQuestionStyles();
+
+      resultSection.hidden = true;
+      resultFill.style.width = "0%";
+
+      updateQuizProgress();
+
+      window.scrollTo({
+        top: document.getElementById("quiz").offsetTop - 70,
+        behavior: "smooth"
+      });
+    }
+
+    quizForm.addEventListener("change", updateQuizProgress);
+
+    quizForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      resetQuestionStyles();
+
+      let score = 0;
+      let answered = 0;
+      let firstUnanswered = null;
+
+      Object.entries(answers).forEach(([questionName, correctAnswer]) => {
+        const selected = document.querySelector(
+          `input[name="${questionName}"]:checked`
+        );
+
+        const questionNumber = questionName.replace("q", "");
+        const questionCard = document.querySelector(
+          `[data-question="${questionNumber}"]`
+        );
+
+        const status = questionCard.querySelector(".quiz-status");
+
+        if (!selected) {
+          questionCard.classList.add("quiz-unanswered");
+          status.textContent = "Ikke besvart";
+
+          if (!firstUnanswered) {
+            firstUnanswered = questionCard;
+          }
+
+          return;
+        }
+
+        answered++;
+
+        if (selected.value === correctAnswer) {
+          score++;
+          questionCard.classList.add("quiz-correct");
+          status.textContent = "Riktig";
+        } else {
+          questionCard.classList.add("quiz-incorrect");
+          status.textContent = "Feil";
+        }
+      });
+
+      if (answered < Object.keys(answers).length) {
+        firstUnanswered.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+        return;
+      }
+
+      const total = Object.keys(answers).length;
+      const percentage = Math.round((score / total) * 100);
+
+      resultScore.textContent =
+        `${score} av ${total} riktige – ${percentage} %`;
+
+      resultFill.style.width = `${percentage}%`;
+
+      if (percentage === 100) {
+        resultHeading.textContent = "Full pott!";
+        resultMessage.textContent =
+          "Du svarte riktig på alle spørsmålene. Meget godt gjennomført.";
+      } else if (percentage >= 80) {
+        resultHeading.textContent = "Svært godt resultat";
+        resultMessage.textContent =
+          "Du har svært god forståelse av innholdet i Academy.";
+      } else if (percentage >= 60) {
+        resultHeading.textContent = "Godt resultat";
+        resultMessage.textContent =
+          "Du har fått med deg mye. Se gjennom spørsmålene som ble markert som feil.";
+      } else {
+        resultHeading.textContent = "Fortsett læringen";
+        resultMessage.textContent =
+          "Gå gjerne gjennom kapitlene en gang til og prøv quizen på nytt.";
+      }
+
+      resultSection.hidden = false;
+
+      resultSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+
+    resetButton.addEventListener("click", resetQuiz);
+    tryAgainButton.addEventListener("click", resetQuiz);
+
+    updateQuizProgress();
+  </script>
+
+  <script src="../assets/academy-lock.js"></script>
+
+</body>
+</html>
