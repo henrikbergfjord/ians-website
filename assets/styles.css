@@ -843,3 +843,15 @@ h3{
     padding:18px;
   }
 }
+.academy-hero{
+    background:
+        linear-gradient(
+            rgba(7,17,31,.72),
+            rgba(7,17,31,.72)
+        ),
+        url("../images/kraftledninger.jpg") center/cover no-repeat !important;
+
+    min-height:260px;
+    display:flex;
+    align-items:center;
+}
