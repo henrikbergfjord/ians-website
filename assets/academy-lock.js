@@ -1,72 +1,75 @@
-/* Enkel passordlås for Academy */
+(() => {
+  const PASSWORD = "Kraft2026";
+  const STORAGE_KEY = "academy_authenticated";
 
-.academy-lock{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:grid;
-  place-items:center;
-  padding:20px;
-  background:
-    radial-gradient(circle at top left, rgba(139,124,255,.13), transparent 30%),
-    radial-gradient(circle at top right, rgba(121,169,255,.10), transparent 25%),
-    linear-gradient(180deg, var(--bg), var(--bg2));
-}
+  if (sessionStorage.getItem(STORAGE_KEY) === "true") {
+    return;
+  }
 
-.academy-lock-card{
-  width:min(440px, 100%);
-  padding:30px;
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  background:var(--panel);
-  box-shadow:0 24px 60px rgba(0,0,0,.45);
-}
+  document.documentElement.style.visibility = "hidden";
 
-.academy-lock-logo{
-  margin-bottom:20px;
-}
+  document.addEventListener("DOMContentLoaded", () => {
+    document.documentElement.style.visibility = "visible";
 
-.academy-lock-card h1{
-  margin-bottom:12px;
-  font-size:2rem;
-}
+    const overlay = document.createElement("div");
+    overlay.className = "academy-lock";
 
-.academy-lock-card form{
-  display:grid;
-  gap:12px;
-  margin-top:24px;
-}
+    overlay.innerHTML = `
+      <div class="academy-lock-card">
+        <div class="brand-mark academy-lock-logo"></div>
 
-.academy-lock-card label{
-  color:var(--text);
-  font-size:.85rem;
-  font-weight:800;
-}
+        <span class="kicker">Privat læringsportal</span>
 
-.academy-lock-card input{
-  width:100%;
-  padding:14px 16px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  outline:none;
-  color:var(--text);
-  background:rgba(255,255,255,.05);
-  font:inherit;
-}
+        <h1>Statnett Academy</h1>
 
-.academy-lock-card input:focus{
-  border-color:rgba(121,169,255,.60);
-  box-shadow:0 0 0 4px rgba(121,169,255,.10);
-}
+        <p class="muted">
+          Skriv inn passordet for å åpne læringsportalen.
+        </p>
 
-.academy-lock-card .button{
-  width:100%;
-  margin-top:4px;
-}
+        <form id="academyLoginForm">
+          <label for="academyPassword">Passord</label>
 
-.academy-lock-error{
-  min-height:20px;
-  margin:0;
-  color:var(--danger);
-  font-size:.86rem;
-}
+          <input
+            id="academyPassword"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Skriv inn passord"
+            required
+          >
+
+          <p id="academyLoginError" class="academy-lock-error"></p>
+
+          <button class="button primary" type="submit">
+            Åpne Academy
+          </button>
+        </form>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const form = document.getElementById("academyLoginForm");
+    const input = document.getElementById("academyPassword");
+    const error = document.getElementById("academyLoginError");
+
+    if (!form || !input || !error) {
+      return;
+    }
+
+    input.focus();
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (input.value === PASSWORD) {
+        sessionStorage.setItem(STORAGE_KEY, "true");
+        overlay.remove();
+        return;
+      }
+
+      error.textContent = "Feil passord. Prøv igjen.";
+      input.value = "";
+      input.focus();
+    });
+  });
+})();
