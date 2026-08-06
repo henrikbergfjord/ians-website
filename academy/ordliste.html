@@ -2,7 +2,11 @@
 <html lang="no">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Ordliste – Statnett Academy</title>
 
@@ -12,6 +16,89 @@
   >
 
   <link rel="stylesheet" href="../assets/styles.css">
+
+  <style>
+    .ordliste-hero{
+      position:relative;
+      min-height:300px;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+      isolation:isolate;
+
+      background-image:
+        linear-gradient(
+          90deg,
+          rgba(7,17,31,.92) 0%,
+          rgba(7,17,31,.78) 42%,
+          rgba(7,17,31,.52) 72%,
+          rgba(7,17,31,.34) 100%
+        ),
+        url("/images/kraftledninger.jpg?v=4") !important;
+
+      background-size:cover !important;
+      background-position:center 35% !important;
+      background-repeat:no-repeat !important;
+    }
+
+    .ordliste-hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,.02),
+          rgba(0,0,0,.14)
+        );
+    }
+
+    .ordliste-hero-content{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:760px;
+    }
+
+    .ordliste-hero h1{
+      color:#fff;
+      text-shadow:0 2px 18px rgba(0,0,0,.38);
+    }
+
+    .ordliste-hero p{
+      max-width:680px;
+      margin:0;
+      color:#d3def0;
+      font-size:1rem;
+      line-height:1.65;
+      text-shadow:0 2px 12px rgba(0,0,0,.35);
+    }
+
+    @media (max-width:760px){
+      .ordliste-hero{
+        min-height:320px;
+        align-items:flex-end;
+
+        background-image:
+          linear-gradient(
+            180deg,
+            rgba(7,17,31,.35) 0%,
+            rgba(7,17,31,.76) 48%,
+            rgba(7,17,31,.96) 100%
+          ),
+          url("/images/kraftledninger.jpg?v=4") !important;
+
+        background-position:center !important;
+      }
+
+      .ordliste-hero-content{
+        max-width:100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -28,8 +115,15 @@
         <a href="/">Portal</a>
         <a href="/academy/">Kapitler</a>
         <a href="/academy/quiz.html">Quiz</a>
-        <a href="/academy/minenotater.html">Mine notater</a>
-        <a class="active" href="/academy/ordliste.html">Ordliste</a>
+        <a href="/academy/minenotater.html">
+          Mine notater
+        </a>
+        <a
+          class="active"
+          href="/academy/ordliste.html"
+        >
+          Ordliste
+        </a>
       </nav>
 
     </div>
@@ -38,10 +132,12 @@
   <main class="container">
 
     <section class="page-header">
-      <div class="card hero-panel academy-hero">
-        <div class="academy-hero-content">
+      <div class="card hero-panel ordliste-hero">
+        <div class="ordliste-hero-content">
 
-          <span class="kicker">Oppslagsverk</span>
+          <span class="kicker">
+            Oppslagsverk
+          </span>
 
           <h1>Ordliste</h1>
 
@@ -52,13 +148,21 @@
           </p>
 
           <div class="hero-actions">
-            <a class="button secondary" href="/academy/">
+
+            <a
+              class="button secondary"
+              href="/academy/"
+            >
               ← Tilbake til kapitler
             </a>
 
-            <a class="button primary" href="#ordliste">
+            <a
+              class="button primary"
+              href="#ordliste"
+            >
               Åpne ordlisten
             </a>
+
           </div>
 
         </div>
@@ -69,17 +173,22 @@
 
       <div class="section-head">
         <div>
+
           <h2>Søk etter begreper</h2>
 
           <p class="muted">
             Skriv inn et ord, en forkortelse eller en del av en forklaring.
           </p>
+
         </div>
       </div>
 
       <div class="card glossary-search-panel">
 
-        <label class="glossary-label" for="glossarySearch">
+        <label
+          class="glossary-label"
+          for="glossarySearch"
+        >
           Søk i ordlisten
         </label>
 
@@ -194,7 +303,8 @@
 
           <p class="muted">
             Kraftsystemets evne til å levere elektrisk energi til kundene,
-            også når det oppstår feil, vedlikeholdsbehov eller høy belastning.
+            også når det oppstår feil, vedlikeholdsbehov eller høy
+            belastning.
           </p>
         </article>
 
@@ -208,7 +318,8 @@
 
           <p class="muted">
             Hvordan elektrisk effekt beveger seg gjennom kraftsystemet
-            mellom produksjon, nettområder, forbruk og utenlandsforbindelser.
+            mellom produksjon, nettområder, forbruk og
+            utenlandsforbindelser.
           </p>
         </article>
 
@@ -437,20 +548,6 @@
 
         <article
           class="card glossary-card"
-          data-search="triplex tre delledere fase buntleder"
-        >
-          <span class="badge">T</span>
-
-          <h3>Triplexleder</h3>
-
-          <p class="muted">
-            En lederkonfigurasjon der hver elektriske fase består av tre
-            parallelle delledere.
-          </p>
-        </article>
-
-        <article
-          class="card glossary-card"
           data-search="overføringstap varmetap i2r strøm motstand"
         >
           <span class="badge">O</span>
@@ -460,6 +557,20 @@
           <p class="muted">
             Energi som går tapt, hovedsakelig som varme, når strøm
             transporteres gjennom ledninger og annet elektrisk utstyr.
+          </p>
+        </article>
+
+        <article
+          class="card glossary-card"
+          data-search="triplex tre delledere fase buntleder"
+        >
+          <span class="badge">T</span>
+
+          <h3>Triplexleder</h3>
+
+          <p class="muted">
+            En lederkonfigurasjon der hver elektriske fase består av tre
+            parallelle delledere.
           </p>
         </article>
 
@@ -619,20 +730,6 @@
 
         <article
           class="card glossary-card"
-          data-search="strømtransformator ct måling vern strøm"
-        >
-          <span class="badge">CT</span>
-
-          <h3>Strømtransformator</h3>
-
-          <p class="muted">
-            En måletransformator som reduserer store strømmer til et nivå
-            som kan brukes av vern, målere og kontrollanlegg.
-          </p>
-        </article>
-
-        <article
-          class="card glossary-card"
           data-search="spenningstransformator vt måling vern spenning"
         >
           <span class="badge">VT</span>
@@ -647,15 +744,15 @@
 
         <article
           class="card glossary-card"
-          data-search="trinnkobler tap changer transformator regulere spenning"
+          data-search="strømtransformator ct måling vern strøm"
         >
-          <span class="badge">T</span>
+          <span class="badge">CT</span>
 
-          <h3>Trinnkobler</h3>
+          <h3>Strømtransformator</h3>
 
           <p class="muted">
-            En mekanisme i transformatoren som endrer omsetningsforholdet
-            og dermed bidrar til å regulere spenningen.
+            En måletransformator som reduserer store strømmer til et nivå
+            som kan brukes av vern, målere og kontrollanlegg.
           </p>
         </article>
 
@@ -670,6 +767,20 @@
           <p class="muted">
             Et knutepunkt der elektrisk kraft transformeres mellom ulike
             spenningsnivåer, kobles, overvåkes og beskyttes.
+          </p>
+        </article>
+
+        <article
+          class="card glossary-card"
+          data-search="trinnkobler tap changer transformator regulere spenning"
+        >
+          <span class="badge">T</span>
+
+          <h3>Trinnkobler</h3>
+
+          <p class="muted">
+            En mekanisme i transformatoren som endrer omsetningsforholdet
+            og dermed bidrar til å regulere spenningen.
           </p>
         </article>
 
@@ -795,7 +906,8 @@
 
           <p class="muted">
             Remote Terminal Unit. En enhet som samler inn signaler og
-            formidler informasjon og kommandoer mellom stasjon og driftssentral.
+            formidler informasjon og kommandoer mellom stasjon og
+            driftssentral.
           </p>
         </article>
 
@@ -1102,8 +1214,8 @@
           <h3>Risiko</h3>
 
           <p class="muted">
-            En usikker hendelse eller et forhold som kan påvirke prosjektets
-            mål, tid, kostnad, kvalitet eller sikkerhet.
+            En usikker hendelse eller et forhold som kan påvirke
+            prosjektets mål, tid, kostnad, kvalitet eller sikkerhet.
           </p>
         </article>
 
@@ -1199,17 +1311,20 @@
 
       <div class="section-head">
         <div>
+
           <h2>Forkortelser</h2>
 
           <p class="muted">
             Vanlige forkortelser du kan møte i fagmiljøet.
           </p>
+
         </div>
       </div>
 
       <div class="card abbreviation-table-wrap">
 
         <table class="abbreviation-table">
+
           <thead>
             <tr>
               <th>Forkortelse</th>
@@ -1219,6 +1334,7 @@
           </thead>
 
           <tbody>
+
             <tr>
               <td>AIS</td>
               <td>Air Insulated Switchgear</td>
@@ -1308,7 +1424,9 @@
               <td>Work Breakdown Structure</td>
               <td>Hierarkisk nedbrytning av prosjektets omfang.</td>
             </tr>
+
           </tbody>
+
         </table>
 
       </div>
@@ -1321,16 +1439,22 @@
 
         <div class="section-head">
           <div>
+
             <h2>Fortsett læringen</h2>
 
             <p class="muted">
               Bruk kapitlene for mer utfyllende forklaringer og eksempler.
             </p>
+
           </div>
         </div>
 
         <div class="hero-actions">
-          <a class="button secondary" href="/academy/">
+
+          <a
+            class="button secondary"
+            href="/academy/"
+          >
             Se alle kapitler
           </a>
 
@@ -1347,6 +1471,7 @@
           >
             Start quiz →
           </a>
+
         </div>
 
       </div>
@@ -1395,9 +1520,10 @@
         const keywords =
           card.dataset.search || "";
 
-        const searchableText = normalizeText(
-          `${heading} ${description} ${keywords}`
-        );
+        const searchableText =
+          normalizeText(
+            `${heading} ${description} ${keywords}`
+          );
 
         const isVisible =
           searchValue === "" ||
