@@ -255,6 +255,7 @@
       line-height:1.5;
       -webkit-box-orient:vertical;
       -webkit-line-clamp:3;
+      line-clamp:3;
     }
 
     .note-date{
@@ -297,6 +298,32 @@
       line-height:1.55;
     }
 
+    .academy-hero{
+      min-height:300px;
+      display:flex;
+      align-items:center;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(7,17,31,.88) 0%,
+          rgba(7,17,31,.76) 42%,
+          rgba(7,17,31,.50) 72%,
+          rgba(7,17,31,.38) 100%
+        ),
+        url("../images/kraftledninger.jpg");
+
+      background-size:cover;
+      background-position:center 35%;
+      background-repeat:no-repeat;
+    }
+
+    .academy-hero-content{
+      position:relative;
+      z-index:1;
+      max-width:760px;
+    }
+
     @media (max-width:900px){
       .notes-layout{
         grid-template-columns:1fr;
@@ -312,36 +339,24 @@
     }
 
     @media (max-width:600px){
-   .academy-hero{
-  background-image:
-    linear-gradient(
-      90deg,
-      rgba(7,17,31,.88) 0%,
-      rgba(7,17,31,.76) 42%,
-      rgba(7,17,31,.50) 72%,
-      rgba(7,17,31,.38) 100%
-    ),
-    url("../images/kraftledninger.jpg");
+      .notes-panel{
+        padding:18px;
+      }
 
-  background-size:cover;
-  background-position:center 35%;
-  background-repeat:no-repeat;
-}
+      .notes-actions{
+        display:grid;
+        grid-template-columns:1fr;
+      }
 
-@media (max-width:600px){
-  .notes-panel{
-    padding:18px;
-  }
+      .notes-button{
+        width:100%;
+      }
 
-  .notes-actions{
-    display:grid;
-    grid-template-columns:1fr;
-  }
-
-  .notes-button{
-    width:100%;
-  }
-}
+      .academy-hero{
+        min-height:260px;
+        background-position:center;
+      }
+    }
   </style>
 </head>
 
@@ -359,13 +374,17 @@
         <a href="/">Portal</a>
         <a href="/academy/">Kapitler</a>
         <a href="/academy/quiz.html">Quiz</a>
+
         <a
           class="active"
           href="/academy/minenotater.html"
         >
           Mine notater
         </a>
-        <a href="/academy/ordliste.html">Ordliste</a>
+
+        <a href="/academy/ordliste.html">
+          Ordliste
+        </a>
       </nav>
 
     </div>
@@ -389,11 +408,17 @@
           </p>
 
           <div class="hero-actions">
-            <a class="button secondary" href="/academy/">
+            <a
+              class="button secondary"
+              href="/academy/"
+            >
               ← Tilbake til kapitler
             </a>
 
-            <a class="button primary" href="#notesWorkspace">
+            <a
+              class="button primary"
+              href="#notesWorkspace"
+            >
               Skriv et notat
             </a>
           </div>
@@ -409,17 +434,27 @@
 
       <div class="notes-panel">
 
-        <h2 id="formHeading">Nytt notat</h2>
+        <h2 id="formHeading">
+          Nytt notat
+        </h2>
 
         <p class="notes-panel-description">
-          Notatene lagres lokalt i nettleseren på denne enheten.
+          Notatene lagres lokalt i denne nettleseren. De følger ikke
+          automatisk med til andre enheter.
         </p>
 
-        <form id="notesForm" class="notes-form">
+        <form
+          id="notesForm"
+          class="notes-form"
+        >
 
-          <input type="hidden" id="noteId">
+          <input
+            type="hidden"
+            id="noteId"
+          >
 
           <div class="form-group">
+
             <label for="noteTitle">
               Tittel
             </label>
@@ -432,9 +467,11 @@
               maxlength="100"
               required
             >
+
           </div>
 
           <div class="form-group">
+
             <label for="noteCategory">
               Tilhørende kapittel
             </label>
@@ -475,9 +512,11 @@
                 Huskeliste
               </option>
             </select>
+
           </div>
 
           <div class="form-group">
+
             <label for="noteContent">
               Notat
             </label>
@@ -488,6 +527,7 @@
               placeholder="Skriv notatet ditt her..."
               required
             ></textarea>
+
           </div>
 
           <div class="notes-actions">
@@ -526,11 +566,14 @@
           ></p>
 
         </form>
+
       </div>
 
       <aside class="notes-panel notes-sidebar">
 
-        <h2>Lagrede notater</h2>
+        <h2>
+          Lagrede notater
+        </h2>
 
         <p class="notes-panel-description">
           Velg et notat for å åpne og redigere det.
@@ -615,30 +658,42 @@
     <section class="notes-help">
 
       <article class="notes-help-card">
-        <strong>📌 Viktige punkter</strong>
+
+        <strong>
+          📌 Viktige punkter
+        </strong>
 
         <p>
           Skriv ned begreper, arbeidsprosesser og tekniske detaljer du
           ønsker å huske.
         </p>
+
       </article>
 
       <article class="notes-help-card">
-        <strong>❓ Egne spørsmål</strong>
+
+        <strong>
+          ❓ Egne spørsmål
+        </strong>
 
         <p>
           Registrer spørsmål du vil undersøke eller ta opp med kolleger
           senere.
         </p>
+
       </article>
 
       <article class="notes-help-card">
-        <strong>✅ Praktisk læring</strong>
+
+        <strong>
+          ✅ Praktisk læring
+        </strong>
 
         <p>
           Noter hvordan kunnskapen kan brukes i planlegging, drift og
           prosjektarbeid.
         </p>
+
       </article>
 
     </section>
@@ -704,7 +759,9 @@
           localStorage.getItem(STORAGE_KEY);
 
         const parsedNotes =
-          savedNotes ? JSON.parse(savedNotes) : [];
+          savedNotes
+            ? JSON.parse(savedNotes)
+            : [];
 
         return Array.isArray(parsedNotes)
           ? parsedNotes
@@ -756,16 +813,20 @@
     }
 
     function formatDate(dateValue) {
-      const date = new Date(dateValue);
+      const date =
+        new Date(dateValue);
 
       if (Number.isNaN(date.getTime())) {
         return "Ukjent tidspunkt";
       }
 
-      return new Intl.DateTimeFormat("no-NO", {
-        dateStyle:"medium",
-        timeStyle:"short"
-      }).format(date);
+      return new Intl.DateTimeFormat(
+        "no-NO",
+        {
+          dateStyle:"medium",
+          timeStyle:"short"
+        }
+      ).format(date);
     }
 
     function escapeHtml(value) {
@@ -777,14 +838,20 @@
         .replaceAll("'", "&#039;");
     }
 
-    function showStatus(message, isError = false) {
+    function showStatus(
+      message,
+      isError = false
+    ) {
       notesStatus.textContent = message;
 
-      notesStatus.style.color = isError
-        ? "var(--danger)"
-        : "var(--green)";
+      notesStatus.style.color =
+        isError
+          ? "var(--danger)"
+          : "var(--green)";
 
-      window.clearTimeout(showStatus.timeout);
+      window.clearTimeout(
+        showStatus.timeout
+      );
 
       showStatus.timeout =
         window.setTimeout(() => {
@@ -820,13 +887,16 @@
       const filteredNotes = notes
         .filter((note) => {
           const title =
-            String(note.title || "").toLowerCase();
+            String(note.title || "")
+              .toLowerCase();
 
           const content =
-            String(note.content || "").toLowerCase();
+            String(note.content || "")
+              .toLowerCase();
 
           const category =
-            String(note.category || "").toLowerCase();
+            String(note.category || "")
+              .toLowerCase();
 
           const matchesSearch =
             title.includes(searchValue) ||
@@ -837,7 +907,10 @@
             selectedCategory === "Alle" ||
             note.category === selectedCategory;
 
-          return matchesSearch && matchesCategory;
+          return (
+            matchesSearch &&
+            matchesCategory
+          );
         })
         .sort((a, b) => {
           return (
@@ -861,51 +934,57 @@
         return;
       }
 
-      notesList.innerHTML = filteredNotes
-        .map((note) => {
-          const activeClass =
-            note.id === noteId.value
-              ? "active"
-              : "";
+      notesList.innerHTML =
+        filteredNotes
+          .map((note) => {
+            const activeClass =
+              note.id === noteId.value
+                ? "active"
+                : "";
 
-          return `
-            <article
-              class="note-card ${activeClass}"
-              data-note-id="${escapeHtml(note.id)}"
-              tabindex="0"
-              role="button"
-              aria-label="Åpne notatet ${escapeHtml(note.title)}"
-            >
-              <div class="note-card-top">
+            return `
+              <article
+                class="note-card ${activeClass}"
+                data-note-id="${escapeHtml(note.id)}"
+                tabindex="0"
+                role="button"
+                aria-label="Åpne notatet ${escapeHtml(note.title)}"
+              >
+                <div class="note-card-top">
 
-                <h3>
-                  ${escapeHtml(note.title)}
-                </h3>
+                  <h3>
+                    ${escapeHtml(note.title)}
+                  </h3>
 
-                <span class="note-category">
-                  ${escapeHtml(note.category)}
+                  <span class="note-category">
+                    ${escapeHtml(note.category)}
+                  </span>
+
+                </div>
+
+                <p class="note-preview">
+                  ${escapeHtml(note.content)}
+                </p>
+
+                <span class="note-date">
+                  Oppdatert ${formatDate(note.updatedAt)}
                 </span>
-
-              </div>
-
-              <p class="note-preview">
-                ${escapeHtml(note.content)}
-              </p>
-
-              <span class="note-date">
-                Oppdatert ${formatDate(note.updatedAt)}
-              </span>
-            </article>
-          `;
-        })
-        .join("");
+              </article>
+            `;
+          })
+          .join("");
 
       document
         .querySelectorAll(".note-card")
         .forEach((card) => {
-          card.addEventListener("click", () => {
-            openNote(card.dataset.noteId);
-          });
+          card.addEventListener(
+            "click",
+            () => {
+              openNote(
+                card.dataset.noteId
+              );
+            }
+          );
 
           card.addEventListener(
             "keydown",
@@ -927,18 +1006,29 @@
 
     function openNote(id) {
       const selectedNote =
-        notes.find((note) => note.id === id);
+        notes.find(
+          (note) => note.id === id
+        );
 
       if (!selectedNote) {
         return;
       }
 
-      noteId.value = selectedNote.id;
-      noteTitle.value = selectedNote.title;
-      noteCategory.value = selectedNote.category;
-      noteContent.value = selectedNote.content;
+      noteId.value =
+        selectedNote.id;
 
-      formHeading.textContent = "Rediger notat";
+      noteTitle.value =
+        selectedNote.title;
+
+      noteCategory.value =
+        selectedNote.category;
+
+      noteContent.value =
+        selectedNote.content;
+
+      formHeading.textContent =
+        "Rediger notat";
+
       deleteNoteButton.hidden = false;
 
       renderNotes();
@@ -985,7 +1075,8 @@
         if (currentId) {
           const noteIndex =
             notes.findIndex(
-              (note) => note.id === currentId
+              (note) =>
+                note.id === currentId
             );
 
           if (noteIndex === -1) {
@@ -1047,7 +1138,8 @@
     deleteNoteButton.addEventListener(
       "click",
       () => {
-        const currentId = noteId.value;
+        const currentId =
+          noteId.value;
 
         if (!currentId) {
           return;
@@ -1055,7 +1147,8 @@
 
         const selectedNote =
           notes.find(
-            (note) => note.id === currentId
+            (note) =>
+              note.id === currentId
           );
 
         const confirmed =
@@ -1067,9 +1160,11 @@
           return;
         }
 
-        notes = notes.filter(
-          (note) => note.id !== currentId
-        );
+        notes =
+          notes.filter(
+            (note) =>
+              note.id !== currentId
+          );
 
         if (!saveNotes()) {
           return;
@@ -1106,35 +1201,37 @@
           return;
         }
 
-        const sortedNotes = [...notes]
-          .sort((a, b) => {
+        const sortedNotes =
+          [...notes].sort((a, b) => {
             return (
               new Date(a.createdAt).getTime() -
               new Date(b.createdAt).getTime()
             );
           });
 
-        const exportText = sortedNotes
-          .map((note) => {
-            return [
-              note.title,
-              `Kategori: ${note.category}`,
-              `Oppdatert: ${formatDate(note.updatedAt)}`,
-              "",
-              note.content,
-              "",
-              "----------------------------------------",
-              ""
-            ].join("\n");
-          })
-          .join("\n");
+        const exportText =
+          sortedNotes
+            .map((note) => {
+              return [
+                note.title,
+                `Kategori: ${note.category}`,
+                `Oppdatert: ${formatDate(note.updatedAt)}`,
+                "",
+                note.content,
+                "",
+                "----------------------------------------",
+                ""
+              ].join("\n");
+            })
+            .join("\n");
 
-        const blob = new Blob(
-          [exportText],
-          {
-            type:"text/plain;charset=utf-8"
-          }
-        );
+        const blob =
+          new Blob(
+            [exportText],
+            {
+              type:"text/plain;charset=utf-8"
+            }
+          );
 
         const downloadUrl =
           URL.createObjectURL(blob);
@@ -1142,7 +1239,9 @@
         const downloadLink =
           document.createElement("a");
 
-        downloadLink.href = downloadUrl;
+        downloadLink.href =
+          downloadUrl;
+
         downloadLink.download =
           "mine-academy-notater.txt";
 
@@ -1166,8 +1265,7 @@
     renderNotes();
   </script>
 
-<script src="../assets/academy-lock.js"></script>
+  <script src="../assets/academy-lock.js"></script>
 
 </body>
-
 </html>
