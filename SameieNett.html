@@ -1,35 +1,2194 @@
-<!DOCTYPE html><html lang="no"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SameieNett – nettverk og digital infrastruktur for sameier | Henrik Bergfjord</title>
-<meta name="description" content="SameieNett er et konsept for moderne nettverk, Wi-Fi, VLAN, sikkerhet, adgang, kamera, IoT og digital infrastruktur i sameier og borettslag.">
-<meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://ians.no/SameieNett.html">
-<meta property="og:type" content="website"><meta property="og:title" content="SameieNett – den digitale grunnmuren for moderne boligbygg"><meta property="og:description" content="Nettverk, sikkerhet, adgang, energi og IoT på én strukturert plattform."><meta property="og:url" content="https://ians.no/SameieNett.html"><meta property="og:image" content="https://ians.no/images/sameienett-hero.jpg">
-<link rel="stylesheet" href="assets/styles.css"><link rel="stylesheet" href="assets/sameienett.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"SameieNett","url":"https://ians.no/SameieNett.html","description":"Konsept for nettverk og digital infrastruktur i sameier og borettslag.","author":{"@type":"Person","name":"Henrik Bergfjord"},"about":["nettverk i sameier","Wi-Fi borettslag","VLAN leiligheter","digital infrastruktur boligbygg","IoT boligbygg","adgangssystem sameie"]}</script>
-</head><body class="sn-page"><div class="sn-grid-bg"></div>
-<header class="topbar"><div class="container nav"><a class="brand" href="index.html"><span class="brand-mark"></span><span>Henrik Bergfjord</span></a><nav class="nav-links"><a href="index.html">Hjem</a><a class="active" href="SameieNett.html">SameieNett</a><a href="#arkitektur">Arkitektur</a><a href="#sikkerhet">Sikkerhet</a><a href="#okonomi">Økonomi</a><a href="#faq">FAQ</a></nav><a class="button primary" href="#kontakt">Kontakt</a></div></header>
-<main>
-<section><div class="sn-shell sn-hero"><div><div class="sn-eyebrow"><span class="sn-dot"></span> Concept & Architecture · Henrik Bergfjord</div><h1><span class="sn-gradient">SameieNett</span><br>digital grunnmur for boligbygg.</h1><p class="lead">Hva om et sameie kunne eie og forstå sin digitale infrastruktur på samme måte som det eier andre fellesanlegg? SameieNett samler nettverk, Wi-Fi, sikkerhet, adgang, kamera, IoT og teknisk drift i én skalerbar arkitektur.</p><div class="sn-actions"><a class="sn-btn primary" href="#plattform">Utforsk plattformen ↓</a><a class="sn-btn ghost" href="#arkitektur">Se arkitekturen</a></div></div>
-<div class="sn-visual"><picture><source srcset="images/sameienett-hero.webp" type="image/webp"><img src="images/sameienett-hero.jpg" alt="Moderne boligområde som illustrerer digital infrastruktur i SameieNett"></picture><div class="sn-network"><span class="sn-node n1">Fiber / Internet</span><span class="sn-node n2">204 boliger</span><span class="sn-node n3">Access / Security</span><span class="sn-node n4">Energy / IoT</span><span class="sn-node n5">SAMEIENETT CORE</span><i class="sn-line-anim" style="left:20%;top:30%;width:38%;transform:rotate(24deg)"></i><i class="sn-line-anim" style="left:48%;top:52%;width:34%;transform:rotate(-24deg)"></i><i class="sn-line-anim" style="left:24%;top:67%;width:30%;transform:rotate(-30deg)"></i></div></div></div></section>
-<div class="sn-shell sn-stats"><div class="sn-stat"><strong>1 plattform</strong><span>felles digital grunnmur</span></div><div class="sn-stat"><strong>VLAN-isolasjon</strong><span>separasjon mellom tjenester og boliger</span></div><div class="sn-stat"><strong>Zero-touch</strong><span>standardisert onboarding og drift</span></div><div class="sn-stat"><strong>Skalerbar</strong><span>fra nettverk til IoT og adgang</span></div></div>
-<section class="sn-section" id="plattform"><div class="sn-shell"><div class="sn-section-head"><div class="sn-kicker">Fra internett til digital plattform</div><h2>Wi-Fi er bare inngangen.</h2><p>SameieNett er tenkt som en arkitektur for hele byggets digitale økosystem. Når grunnmuren først er på plass, kan nye tjenester bygges på uten at infrastrukturen må oppfinnes på nytt hver gang.</p></div><div class="sn-card-grid">
-<article class="sn-card"><div class="sn-icon">◉</div><h3>Bolignett & Wi-Fi</h3><p>Profesjonelt aksesspunkt i boligen, sentral administrasjon og en struktur som er laget for stabilitet og forutsigbar dekning.</p><small>Wi-Fi · PoE · sentral styring</small></article>
-<article class="sn-card"><div class="sn-icon">⬡</div><h3>Sikker segmentering</h3><p>VLAN skiller management, beboere, TV, gjest, teknisk drift, IoT og service fra hverandre.</p><small>VLAN · WPA3 · policy</small></article>
-<article class="sn-card"><div class="sn-icon">⌁</div><h3>Overvåking</h3><p>RF-støy, portfeil, latency, packet loss og ressursbruk kan inngå i en samlet driftsmodell.</p><small>Observability · logging · drift</small></article>
-<article class="sn-card"><div class="sn-icon">▣</div><h3>Kamera & adgang</h3><p>Den samme infrastrukturen kan gi grunnlag for kamera, mobil adgang, NFC, logging og sentral administrasjon.</p><small>Protect · NFC · Mobile Access</small></article>
-<article class="sn-card"><div class="sn-icon">⚡</div><h3>Energi & tekniske anlegg</h3><p>Tekniske rom, energisentral, porter og andre fellesanlegg kan få egne sikre nett og tydelig driftsstruktur.</p><small>Energi · porter · automasjon</small></article>
-<article class="sn-card"><div class="sn-icon">∞</div><h3>IoT & sensorer</h3><p>Vannlekkasje, temperatur, luftkvalitet, energimåling og fremtidige sensorer kan bygges på samme fundament.</p><small>Sensorer · API · automasjon</small></article>
-</div></div></section>
-<section class="sn-section" id="arkitektur"><div class="sn-shell"><div class="sn-section-head"><div class="sn-kicker">Enterprise architecture</div><h2>Tre lag. Ett styrbart bygg.</h2><p>Prinsippet er enkelt: en sentral kjerne, en standardisert distribusjon og tydelig isolerte endepunkter. Det reduserer kompleksitet og gjør modellen gjenbrukbar.</p></div><div class="sn-arch"><div class="sn-stack"><div class="sn-layer core"><div><b>01 · Core</b><br><span>Gateway · firewall · controller · WAN</span></div><span class="sn-pill">CORE</span></div><div class="sn-layer"><div><b>02 · Distribusjon</b><br><span>Fiber · PoE-switcher · tekniske rom</span></div><span>Layer 2/3</span></div><div class="sn-layer"><div><b>03 · Boliger</b><br><span>AP · kablet nett · isolert segment</span></div><span>Endpoints</span></div><div class="sn-layer"><div><b>04 · Felles tjenester</b><br><span>Kamera · adgang · IoT · energi · service</span></div><span>Services</span></div></div><div class="sn-diagram"><div class="sn-orbit"><span class="sn-satellite s1">Wi-Fi</span><span class="sn-satellite s2">Access</span><span class="sn-satellite s3">IoT</span><span class="sn-satellite s4">Camera</span></div><div class="sn-orbit two"><span class="sn-satellite s1">Energy</span><span class="sn-satellite s2">Service</span><span class="sn-satellite s3">Guest</span><span class="sn-satellite s4">TV</span></div><div class="sn-core">SAMEIENETT<br>CORE</div></div></div></div></section>
-<section class="sn-section" id="sikkerhet"><div class="sn-shell"><div class="sn-section-head"><div class="sn-kicker">Segmentering & sikkerhet</div><h2>Et bygg skal ikke være ett stort hjemmenett.</h2><p>En standardisert VLAN-modell gjør det mulig å skille boliger og tjenester, forenkle feilsøking og bygge tydelige sikkerhetsgrenser.</p></div><div class="sn-table-wrap"><table class="sn-table"><thead><tr><th>VLAN</th><th>Navn</th><th>Formål</th><th>Prinsipp</th></tr></thead><tbody>
-<tr><td><strong>10</strong></td><td>SPS-MGMT</td><td>UniFi, switcher, AP-er og administrasjon</td><td><span class="sn-pill">Begrenset</span></td></tr><tr><td><strong>20</strong></td><td>SPS-BEBOER</td><td>Internett til beboere / boligsegmenter</td><td><span class="sn-pill">Isolert</span></td></tr><tr><td><strong>30</strong></td><td>SPS-TV-ALLENTE</td><td>TV, dekodere og IPTV</td><td><span class="sn-pill">Tjeneste</span></td></tr><tr><td><strong>40</strong></td><td>SPS-GUEST</td><td>Gjestenett og midlertidig tilgang</td><td><span class="sn-pill">Separert</span></td></tr><tr><td><strong>50</strong></td><td>SPS-DRIFT-TEKNISK</td><td>Teknisk rom, energisentral og porter</td><td><span class="sn-pill">Drift</span></td></tr><tr><td><strong>60</strong></td><td>SPS-IOT-KAMERA</td><td>Kamera, IoT og sensorer</td><td><span class="sn-pill">Policy</span></td></tr><tr><td><strong>70</strong></td><td>SPS-SERVICE</td><td>Leverandør- og servicetilgang</td><td><span class="sn-pill">Kontrollert</span></td></tr>
-</tbody></table></div></div></section>
-<section class="sn-section"><div class="sn-shell"><div class="sn-photo-band"><picture><source srcset="images/sameienett-drone.webp" type="image/webp"><img loading="lazy" src="images/sameienett-drone.jpg" alt="Oversiktsbilde av boligbygg og sameie"></picture><div class="sn-photo-copy"><div class="sn-kicker">Fra fysisk bygg til digital struktur</div><h2>Infrastrukturen finnes allerede. Den må organiseres.</h2><p>Fiber, tekniske rom, leilighetsskap og spredenett er den fysiske virkeligheten. SameieNett-konseptet handler om å bruke denne strukturen mer systematisk og gjøre den klar for flere tjenester over tid.</p><a class="sn-btn ghost" href="#voks">Se hvordan plattformen vokser →</a></div></div></div></section>
-<section class="sn-section" id="voks"><div class="sn-shell"><div class="sn-section-head"><div class="sn-kicker">Utvidbarhet</div><h2>Bygg én gang. Utvid i lag.</h2></div><div class="sn-roadmap"><div class="sn-step"><b>01 · Nettverk</b><span>Fiber, gateway, switching, Wi-Fi og segmentering.</span></div><div class="sn-step"><b>02 · Sikkerhet</b><span>Kamera, adgang, logging og kontrollerte serviceflater.</span></div><div class="sn-step"><b>03 · Drift</b><span>Overvåking, tekniske anlegg, porter og hendelser.</span></div><div class="sn-step"><b>04 · Smart bygg</b><span>Energi, sensorer, IoT, automasjon og nye digitale tjenester.</span></div></div></div></section>
-<section class="sn-section" id="okonomi"><div class="sn-shell"><div class="sn-section-head"><div class="sn-kicker">Konseptkalkulator</div><h2>Hva kan modellen se ut som?</h2><p>Under er en interaktiv modell basert på eksempelberegningen i konseptmaterialet. Den er laget for scenarioanalyse – ikke som tilbud eller dokumentert markedspris.</p></div><div class="sn-calc"><div class="sn-form">
-<div class="sn-field"><label>Antall boliger <strong id="unitsV">204</strong></label><input data-range="unitsV" id="snUnits" type="range" min="20" max="500" value="204"></div><div class="sn-field"><label>Total betaling per bolig/mnd <strong><span id="monthlyV">500</span> kr</strong></label><input data-range="monthlyV" id="snMonthly" type="range" min="200" max="900" step="10" value="500"></div><div class="sn-field"><label>TV/innhold per bolig/mnd <strong><span id="tvV">269</span> kr</strong></label><input data-range="tvV" id="snTv" type="range" min="0" max="500" step="1" value="269"></div><div class="sn-field"><label>Finansieringsperiode <strong><span id="monthsV">18</span> mnd</strong></label><input data-range="monthsV" id="snMonths" type="range" min="6" max="48" value="18"></div><input id="snCost" type="hidden" value="645704"><input id="snSla" type="hidden" value="10000"></div>
-<div class="sn-result"><div class="sn-result-grid"><div class="sn-result-box"><span>Inntekt i perioden</span><strong id="snRevenue">–</strong></div><div class="sn-result-box"><span>Prosjektmargin i modellen</span><strong id="snMargin">–</strong></div><div class="sn-result-box"><span>Teoretisk break-even</span><strong id="snBreakEven">–</strong></div><div class="sn-result-box"><span>10-års modell inkl. SLA</span><strong id="snTenYear">–</strong></div></div><p class="sn-disclaimer">Forutsetninger i eksemplet: prosjektkost 645 704 kr og SLA 10 000 kr/mnd etter etablering. Faktiske priser, installasjonsbehov, avtaler, utstyr, TV-tjenester og driftskostnader må valideres i hvert prosjekt.</p></div></div></div></section>
-<section class="sn-section"><div class="sn-shell"><div class="sn-section-head"><div class="sn-kicker">Teknisk design</div><h2>Standardisering gjør skalering mulig.</h2></div><div class="sn-table-wrap"><table class="sn-table"><thead><tr><th>Område</th><th>Designprinsipp</th><th>Eksempel</th><th>Verdi</th></tr></thead><tbody><tr><td><strong>Gateway</strong></td><td>Sentral policy og sikkerhet</td><td>Enterprise gateway/firewall</td><td>Kontroll og logging</td></tr><tr><td><strong>Switching</strong></td><td>PoE og strukturert distribusjon</td><td>Core + fordelingsswitcher</td><td>Standard drift</td></tr><tr><td><strong>Bolig</strong></td><td>Profesjonelt AP / kablet nett</td><td>In-Wall AP</td><td>Dekning og kapasitet</td></tr><tr><td><strong>Provisioning</strong></td><td>Zero-touch og sentral konfigurasjon</td><td>Auto-adopt / config push</td><td>Raskere utrulling</td></tr><tr><td><strong>Observability</strong></td><td>Samlet overvåking</td><td>RF, latency, porter, CPU/RAM</td><td>Proaktiv drift</td></tr><tr><td><strong>Utvidelser</strong></td><td>Egne tjenestesegmenter</td><td>Kamera, adgang, energi, IoT</td><td>Én digital grunnmur</td></tr></tbody></table></div></div></section>
-<section class="sn-section" id="faq"><div class="sn-shell"><div class="sn-section-head"><div class="sn-kicker">FAQ · nettverk i sameier</div><h2>Spørsmål styrer og utbyggere faktisk stiller.</h2></div><div class="sn-faq"><details><summary>Hva er SameieNett?</summary><p>SameieNett er et konsept for å standardisere nettverk og digital infrastruktur i sameier og borettslag, med sentral drift, segmentering og mulighet for å bygge videre med flere tjenester.</p></details><details><summary>Hvorfor bruke VLAN i et boligbygg?</summary><p>VLAN kan skille administrative systemer, beboere, gjestenett, TV, kamera, IoT og service. Det gir tydeligere sikkerhetsgrenser og enklere feilsøking.</p></details><details><summary>Er dette bare en Wi-Fi-løsning?</summary><p>Nei. Wi-Fi er én del. Arkitekturen er tenkt som fundament for adgang, kamera, tekniske anlegg, energi, sensorer og automasjon.</p></details><details><summary>Kan konseptet brukes i eksisterende bygg?</summary><p>Ja, men fysisk kabling, fiber, tekniske rom og leilighetsskap må kartlegges. En forhåndsbefaring vil være nødvendig før en reell løsning kan prosjekteres.</p></details><details><summary>Kan dette planlegges allerede i nybygg?</summary><p>Det er nettopp i tidlig prosjektering at strukturert kabling, tekniske rom, AP-plassering, kamera og adgang kan samordnes best.</p></details></div></div></section>
-<section class="sn-footer-cta" id="kontakt"><div class="sn-shell"><div class="sn-footer-box"><div class="sn-kicker">SameieNett · concept & architecture</div><h2>En idé er først verdifull når den kan forstås.</h2><p>SameieNett er utviklet som et selvstendig konsept av Henrik Bergfjord. Målet er å utforske hvordan norske sameier, borettslag og boligprosjekter kan få en mer strukturert, sikker og fremtidsrettet digital grunnmur.</p><div class="sn-actions"><a class="sn-btn primary" href="mailto:henrik.bergfjord@outlook.com?subject=SameieNett%20-%20henvendelse">Ta kontakt på e-post</a><a class="sn-btn ghost" href="index.html">Tilbake til ians.no</a></div><div class="sn-credit">© 2026 Henrik Bergfjord · SameieNett · Concept & Architecture</div></div></div></section>
-</main><footer class="footer"><div class="container">SameieNett · Nettverk · Wi-Fi · VLAN · Sikkerhet · Adgang · IoT · Digital infrastruktur for boligbygg</div></footer><script src="assets/sameienett.js" defer></script></body></html>
+<!DOCTYPE html>
+<html lang="no">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+  <title>
+   SameieNett &ndash; nettverk og digital infrastruktur for sameier | Henrik Bergfjord
+  </title>
+  <meta content="SameieNett er et konsept for moderne nettverk, Wi-Fi, VLAN, sikkerhet, adgang, kamera, IoT og digital infrastruktur i sameier og borettslag." name="description"/>
+  <meta content="index,follow,max-image-preview:large" name="robots"/>
+  <link href="https://ians.no/SameieNett.html" rel="canonical"/>
+  <meta content="website" property="og:type"/>
+  <meta content="SameieNett &ndash; den digitale grunnmuren for moderne boligbygg" property="og:title"/>
+  <meta content="Nettverk, sikkerhet, adgang, energi og IoT p&aring; &eacute;n strukturert plattform." property="og:description"/>
+  <meta content="https://ians.no/SameieNett.html" property="og:url"/>
+  <meta content="https://ians.no/images/sameienett-hero.jpg" property="og:image"/>
+  <link href="assets/styles.css" rel="stylesheet"/>
+  <link href="assets/sameienett.css" rel="stylesheet"/>
+  <script type="application/ld+json">
+   {"@context":"https://schema.org","@type":"WebPage","name":"SameieNett","url":"https://ians.no/SameieNett.html","description":"Konsept for nettverk og digital infrastruktur i sameier og borettslag.","author":{"@type":"Person","name":"Henrik Bergfjord"},"about":["nettverk i sameier","Wi-Fi borettslag","VLAN leiligheter","digital infrastruktur boligbygg","IoT boligbygg","adgangssystem sameie"]}
+  </script>
+  <style>
+   /* =========================================================
+   SAMEIENETT NETWORK EXPLORER · V15
+   Namespaced to avoid collisions with existing styles.
+   ========================================================= */
+
+.snx-wrap {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(330px, .85fr);
+    gap: 18px;
+}
+
+.snx-panel {
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at 50% 15%, rgba(72,196,255,.08), transparent 34%),
+        rgba(5,18,32,.76);
+    box-shadow: 0 22px 60px rgba(0,0,0,.18);
+}
+
+.snx-switch-panel {
+    padding: 22px;
+}
+
+.snx-panel-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: start;
+    margin-bottom: 18px;
+}
+
+.snx-panel-head small,
+.snx-panel-head strong {
+    display: block;
+}
+
+.snx-panel-head small {
+    color: #6f8ca7;
+    font-size: .62rem;
+    font-weight: 850;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.snx-panel-head strong {
+    margin-top: 5px;
+    font-size: 1rem;
+}
+
+.snx-demo-badge {
+    padding: 6px 9px;
+    border: 1px solid rgba(116,226,255,.2);
+    border-radius: 999px;
+    color: #71e4ff;
+    background: rgba(87,205,255,.06);
+    font-size: .58rem;
+    font-weight: 850;
+    white-space: nowrap;
+}
+
+.snx-path {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 18px;
+    color: #6c89a4;
+    font-size: .7rem;
+}
+
+.snx-path span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.snx-path span:not(:last-child)::after {
+    content: "›";
+    color: #365672;
+}
+
+.snx-switch {
+    position: relative;
+    min-height: 220px;
+    padding: 24px 22px 28px;
+    border: 1px solid rgba(182,222,243,.18);
+    border-radius: 18px;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.10), transparent 11%),
+        linear-gradient(155deg, #3a4e5d 0%, #1a2c3b 18%, #081622 82%);
+    box-shadow:
+        0 28px 55px rgba(0,0,0,.30),
+        inset 0 1px 0 rgba(255,255,255,.16),
+        inset 0 -16px 30px rgba(0,0,0,.18);
+}
+
+.snx-switch::after {
+    content: "";
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: -10px;
+    height: 15px;
+    border-radius: 50%;
+    background: rgba(0,0,0,.3);
+    filter: blur(8px);
+}
+
+.snx-switch-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.snx-switch-name strong,
+.snx-switch-name small {
+    display: block;
+}
+
+.snx-switch-name strong {
+    color: #e8f4fc;
+    font-size: .92rem;
+}
+
+.snx-switch-name small {
+    margin-top: 3px;
+    color: #708ba2;
+    font-size: .58rem;
+}
+
+.snx-led-row {
+    display: flex;
+    gap: 6px;
+}
+
+.snx-led-row i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6dffa6;
+    box-shadow: 0 0 8px rgba(109,255,166,.7);
+}
+
+.snx-ports {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(24px, 1fr));
+    gap: 8px 6px;
+    padding: 13px;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 12px;
+    background: #040b11;
+    box-shadow: inset 0 3px 12px rgba(0,0,0,.75);
+}
+
+.snx-port {
+    position: relative;
+    aspect-ratio: 1.18 / 1;
+    border: 1px solid rgba(148,177,193,.24);
+    border-radius: 3px;
+    background:
+        linear-gradient(180deg, #21323d, #071017);
+    color: #718ba0;
+    cursor: pointer;
+    transition: .15s ease;
+    font-size: .52rem;
+    font-weight: 800;
+}
+
+.snx-port::before {
+    content: "";
+    position: absolute;
+    left: 22%;
+    right: 22%;
+    bottom: 18%;
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.1);
+}
+
+.snx-port::after {
+    content: "";
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #667885;
+}
+
+.snx-port:hover,
+.snx-port:focus-visible,
+.snx-port.is-active {
+    outline: none;
+    transform: translateY(-2px);
+    border-color: rgba(111,232,255,.72);
+    background: rgba(84,198,255,.15);
+    box-shadow:
+        inset 0 0 10px rgba(90,218,255,.12),
+        0 0 11px rgba(90,218,255,.13);
+}
+
+.snx-port[data-kind="uplink"]::after {
+    background: #75ffa7;
+    box-shadow: 0 0 6px rgba(117,255,167,.75);
+}
+
+.snx-port[data-kind="ap"]::after {
+    background: #76e7ff;
+    box-shadow: 0 0 6px rgba(118,231,255,.8);
+}
+
+.snx-port[data-kind="camera"]::after {
+    background: #b886ff;
+    box-shadow: 0 0 6px rgba(184,134,255,.75);
+}
+
+.snx-port[data-kind="access"]::after {
+    background: #ffd16f;
+    box-shadow: 0 0 6px rgba(255,209,111,.75);
+}
+
+.snx-port[data-kind="drift"]::after {
+    background: #ff9d68;
+    box-shadow: 0 0 6px rgba(255,157,104,.75);
+}
+
+.snx-port[data-kind="service"]::after {
+    background: #f38aff;
+    box-shadow: 0 0 6px rgba(243,138,255,.75);
+}
+
+.snx-port span {
+    position: absolute;
+    left: 4px;
+    bottom: 3px;
+}
+
+.snx-port-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 13px;
+    margin-top: 14px;
+    color: #6d879e;
+    font-size: .59rem;
+}
+
+.snx-port-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.snx-port-legend i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.snx-port-legend .uplink { background: #75ffa7; }
+.snx-port-legend .ap { background: #76e7ff; }
+.snx-port-legend .camera { background: #b886ff; }
+.snx-port-legend .access { background: #ffd16f; }
+.snx-port-legend .drift { background: #ff9d68; }
+.snx-port-legend .idle { background: #667885; }
+
+.snx-device-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    overflow: hidden;
+}
+
+.snx-device-head {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.snx-device-kicker {
+    color: #6fe6ff;
+    font-size: .58rem;
+    font-weight: 900;
+    letter-spacing: .13em;
+}
+
+.snx-device-title {
+    margin: 6px 0 0;
+    font-size: 1.2rem;
+}
+
+.snx-device-body {
+    padding: 18px 20px 20px;
+}
+
+.snx-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    color: #94f3b8;
+    font-size: .72rem;
+    font-weight: 800;
+}
+
+.snx-status i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6ef49f;
+    box-shadow: 0 0 10px rgba(110,244,159,.65);
+}
+
+.snx-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.snx-meta div {
+    min-width: 0;
+    padding: 10px 11px;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 11px;
+    background: rgba(255,255,255,.025);
+}
+
+.snx-meta small,
+.snx-meta strong {
+    display: block;
+}
+
+.snx-meta small {
+    margin-bottom: 4px;
+    color: #627f9a;
+    font-size: .54rem;
+    font-weight: 850;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.snx-meta strong {
+    overflow-wrap: anywhere;
+    font-size: .73rem;
+}
+
+.snx-flow {
+    margin-top: 16px;
+    padding: 13px;
+    border: 1px solid rgba(111,225,255,.08);
+    border-radius: 12px;
+    background: rgba(52,151,218,.025);
+}
+
+.snx-flow small {
+    display: block;
+    margin-bottom: 8px;
+    color: #62809a;
+    font-size: .55rem;
+    font-weight: 850;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.snx-flow-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    color: #9eb5c8;
+    font-size: .68rem;
+}
+
+.snx-flow-line b {
+    color: #dcecff;
+}
+
+.snx-flow-line i {
+    color: #4d7698;
+    font-style: normal;
+}
+
+.snx-config-toggle {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px 12px;
+    border: 1px solid rgba(111,226,255,.18);
+    border-radius: 10px;
+    color: #72e1f8;
+    background: rgba(69,189,245,.04);
+    cursor: pointer;
+    font: inherit;
+    font-size: .7rem;
+    font-weight: 800;
+}
+
+.snx-config {
+    display: none;
+    margin-top: 10px;
+    padding: 13px;
+    overflow-x: auto;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 11px;
+    background: #030a10;
+    color: #89d9f2;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .62rem;
+    line-height: 1.55;
+    white-space: pre;
+}
+
+.snx-config.is-open {
+    display: block;
+}
+
+.snx-device-desc {
+    margin: 15px 0 0;
+    color: #8ca6bc;
+    font-size: .78rem;
+    line-height: 1.55;
+}
+
+.snx-vlan-strip {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 9px;
+    margin-top: 18px;
+}
+
+.snx-vlan {
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,.06);
+    border-radius: 11px;
+    background: rgba(255,255,255,.02);
+    text-align: center;
+}
+
+.snx-vlan small,
+.snx-vlan strong {
+    display: block;
+}
+
+.snx-vlan small {
+    color: #66839c;
+    font-size: .5rem;
+}
+
+.snx-vlan strong {
+    margin-top: 3px;
+    font-size: .65rem;
+}
+
+.snx-vlan.is-active {
+    border-color: rgba(111,228,255,.38);
+    background: rgba(90,211,255,.08);
+    box-shadow: 0 0 18px rgba(78,199,255,.07);
+}
+
+@media (max-width: 980px) {
+    .snx-wrap {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .snx-switch-panel {
+        padding: 14px;
+    }
+
+    .snx-ports {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .snx-vlan-strip {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .snx-meta {
+        grid-template-columns: 1fr;
+    }
+}
+  </style>
+ </head>
+ <body class="sn-page">
+  <div class="sn-grid-bg">
+  </div>
+  <header class="topbar">
+   <div class="container nav">
+    <a class="brand" href="index.html">
+     <span class="brand-mark">
+     </span>
+     <span>
+      Henrik Bergfjord
+     </span>
+    </a>
+    <nav class="nav-links">
+     <a href="index.html">
+      Hjem
+     </a>
+     <a class="active" href="SameieNett.html">
+      SameieNett
+     </a>
+     <a href="#arkitektur">
+      Arkitektur
+     </a>
+     <a href="#network-explorer">
+      Network Explorer
+     </a>
+     <a href="#sikkerhet">
+      Sikkerhet
+     </a>
+     <a href="#okonomi">
+      &Oslash;konomi
+     </a>
+     <a href="#faq">
+      FAQ
+     </a>
+    </nav>
+    <a class="button primary" href="#kontakt">
+     Kontakt
+    </a>
+   </div>
+  </header>
+  <main>
+   <section>
+    <div class="sn-shell sn-hero">
+     <div>
+      <div class="sn-eyebrow">
+       <span class="sn-dot">
+       </span>
+       Concept &amp; Architecture &middot; Henrik Bergfjord
+      </div>
+      <h1>
+       <span class="sn-gradient">
+        SameieNett
+       </span>
+       <br/>
+       digital grunnmur for boligbygg.
+      </h1>
+      <p class="lead">
+       Hva om et sameie kunne eie og forst&aring; sin digitale infrastruktur p&aring; samme m&aring;te som det eier andre fellesanlegg? SameieNett samler nettverk, Wi-Fi, sikkerhet, adgang, kamera, IoT og teknisk drift i &eacute;n skalerbar arkitektur.
+      </p>
+      <div class="sn-actions">
+       <a class="sn-btn primary" href="#plattform">
+        Utforsk plattformen &darr;
+       </a>
+       <a class="sn-btn ghost" href="#arkitektur">
+        Se arkitekturen
+       </a>
+      </div>
+     </div>
+     <div class="sn-visual">
+      <picture>
+       <source srcset="images/sameienett-hero.webp" type="image/webp"/>
+       <img alt="Moderne boligomr&aring;de som illustrerer digital infrastruktur i SameieNett" src="images/sameienett-hero.jpg"/>
+      </picture>
+      <div class="sn-network">
+       <span class="sn-node n1">
+        Fiber / Internet
+       </span>
+       <span class="sn-node n2">
+        204 boliger
+       </span>
+       <span class="sn-node n3">
+        Access / Security
+       </span>
+       <span class="sn-node n4">
+        Energy / IoT
+       </span>
+       <span class="sn-node n5">
+        SAMEIENETT CORE
+       </span>
+       <i class="sn-line-anim" style="left:20%;top:30%;width:38%;transform:rotate(24deg)">
+       </i>
+       <i class="sn-line-anim" style="left:48%;top:52%;width:34%;transform:rotate(-24deg)">
+       </i>
+       <i class="sn-line-anim" style="left:24%;top:67%;width:30%;transform:rotate(-30deg)">
+       </i>
+      </div>
+     </div>
+    </div>
+   </section>
+   <div class="sn-shell sn-stats">
+    <div class="sn-stat">
+     <strong>
+      1 plattform
+     </strong>
+     <span>
+      felles digital grunnmur
+     </span>
+    </div>
+    <div class="sn-stat">
+     <strong>
+      VLAN-isolasjon
+     </strong>
+     <span>
+      separasjon mellom tjenester og boliger
+     </span>
+    </div>
+    <div class="sn-stat">
+     <strong>
+      Zero-touch
+     </strong>
+     <span>
+      standardisert onboarding og drift
+     </span>
+    </div>
+    <div class="sn-stat">
+     <strong>
+      Skalerbar
+     </strong>
+     <span>
+      fra nettverk til IoT og adgang
+     </span>
+    </div>
+   </div>
+   <section class="sn-section" id="plattform">
+    <div class="sn-shell">
+     <div class="sn-section-head">
+      <div class="sn-kicker">
+       Fra internett til digital plattform
+      </div>
+      <h2>
+       Wi-Fi er bare inngangen.
+      </h2>
+      <p>
+       SameieNett er tenkt som en arkitektur for hele byggets digitale &oslash;kosystem. N&aring;r grunnmuren f&oslash;rst er p&aring; plass, kan nye tjenester bygges p&aring; uten at infrastrukturen m&aring; oppfinnes p&aring; nytt hver gang.
+      </p>
+     </div>
+     <div class="sn-card-grid">
+      <article class="sn-card">
+       <div class="sn-icon">
+        ◉
+       </div>
+       <h3>
+        Bolignett &amp; Wi-Fi
+       </h3>
+       <p>
+        Profesjonelt aksesspunkt i boligen, sentral administrasjon og en struktur som er laget for stabilitet og forutsigbar dekning.
+       </p>
+       <small>
+        Wi-Fi &middot; PoE &middot; sentral styring
+       </small>
+      </article>
+      <article class="sn-card">
+       <div class="sn-icon">
+        ⬡
+       </div>
+       <h3>
+        Sikker segmentering
+       </h3>
+       <p>
+        VLAN skiller management, beboere, TV, gjest, teknisk drift, IoT og service fra hverandre.
+       </p>
+       <small>
+        VLAN &middot; WPA3 &middot; policy
+       </small>
+      </article>
+      <article class="sn-card">
+       <div class="sn-icon">
+        ⌁
+       </div>
+       <h3>
+        Overv&aring;king
+       </h3>
+       <p>
+        RF-st&oslash;y, portfeil, latency, packet loss og ressursbruk kan inng&aring; i en samlet driftsmodell.
+       </p>
+       <small>
+        Observability &middot; logging &middot; drift
+       </small>
+      </article>
+      <article class="sn-card">
+       <div class="sn-icon">
+        ▣
+       </div>
+       <h3>
+        Kamera &amp; adgang
+       </h3>
+       <p>
+        Den samme infrastrukturen kan gi grunnlag for kamera, mobil adgang, NFC, logging og sentral administrasjon.
+       </p>
+       <small>
+        Protect &middot; NFC &middot; Mobile Access
+       </small>
+      </article>
+      <article class="sn-card">
+       <div class="sn-icon">
+        ⚡
+       </div>
+       <h3>
+        Energi &amp; tekniske anlegg
+       </h3>
+       <p>
+        Tekniske rom, energisentral, porter og andre fellesanlegg kan f&aring; egne sikre nett og tydelig driftsstruktur.
+       </p>
+       <small>
+        Energi &middot; porter &middot; automasjon
+       </small>
+      </article>
+      <article class="sn-card">
+       <div class="sn-icon">
+        &infin;
+       </div>
+       <h3>
+        IoT &amp; sensorer
+       </h3>
+       <p>
+        Vannlekkasje, temperatur, luftkvalitet, energim&aring;ling og fremtidige sensorer kan bygges p&aring; samme fundament.
+       </p>
+       <small>
+        Sensorer &middot; API &middot; automasjon
+       </small>
+      </article>
+     </div>
+    </div>
+   </section>
+   <section class="sn-section" id="arkitektur">
+    <div class="sn-shell">
+     <div class="sn-section-head">
+      <div class="sn-kicker">
+       Enterprise architecture
+      </div>
+      <h2>
+       Tre lag. Ett styrbart bygg.
+      </h2>
+      <p>
+       Prinsippet er enkelt: en sentral kjerne, en standardisert distribusjon og tydelig isolerte endepunkter. Det reduserer kompleksitet og gj&oslash;r modellen gjenbrukbar.
+      </p>
+     </div>
+     <div class="sn-arch">
+      <div class="sn-stack">
+       <div class="sn-layer core">
+        <div>
+         <b>
+          01 &middot; Core
+         </b>
+         <br/>
+         <span>
+          Gateway &middot; firewall &middot; controller &middot; WAN
+         </span>
+        </div>
+        <span class="sn-pill">
+         CORE
+        </span>
+       </div>
+       <div class="sn-layer">
+        <div>
+         <b>
+          02 &middot; Distribusjon
+         </b>
+         <br/>
+         <span>
+          Fiber &middot; PoE-switcher &middot; tekniske rom
+         </span>
+        </div>
+        <span>
+         Layer 2/3
+        </span>
+       </div>
+       <div class="sn-layer">
+        <div>
+         <b>
+          03 &middot; Boliger
+         </b>
+         <br/>
+         <span>
+          AP &middot; kablet nett &middot; isolert segment
+         </span>
+        </div>
+        <span>
+         Endpoints
+        </span>
+       </div>
+       <div class="sn-layer">
+        <div>
+         <b>
+          04 &middot; Felles tjenester
+         </b>
+         <br/>
+         <span>
+          Kamera &middot; adgang &middot; IoT &middot; energi &middot; service
+         </span>
+        </div>
+        <span>
+         Services
+        </span>
+       </div>
+      </div>
+      <div class="sn-diagram">
+       <div class="sn-orbit">
+        <span class="sn-satellite s1">
+         Wi-Fi
+        </span>
+        <span class="sn-satellite s2">
+         Access
+        </span>
+        <span class="sn-satellite s3">
+         IoT
+        </span>
+        <span class="sn-satellite s4">
+         Camera
+        </span>
+       </div>
+       <div class="sn-orbit two">
+        <span class="sn-satellite s1">
+         Energy
+        </span>
+        <span class="sn-satellite s2">
+         Service
+        </span>
+        <span class="sn-satellite s3">
+         Guest
+        </span>
+        <span class="sn-satellite s4">
+         TV
+        </span>
+       </div>
+       <div class="sn-core">
+        SAMEIENETT
+        <br/>
+        CORE
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="sn-section" id="network-explorer">
+    <div class="sn-shell">
+     <div class="sn-section-head">
+      <div class="sn-kicker">
+       Interactive network explorer
+      </div>
+      <h2>
+       Fra switchport til VLAN og konfigurasjon.
+      </h2>
+      <p>
+       Klikk p&aring; portene i eksempelswitchen. Panelet viser hvilken enhet
+                som er koblet til, VLAN, IP, linkhastighet og PoE-forbruk.
+                Derfra kan du &aring;pne en forenklet teknisk konfigurasjon.
+                Alt under er demo-data for &aring; forklare arkitekturen.
+      </p>
+     </div>
+     <div class="snx-wrap">
+      <div class="snx-panel snx-switch-panel">
+       <div class="snx-panel-head">
+        <div>
+         <small>
+          Distribusjon &middot; teknisk rom A
+         </small>
+         <strong>
+          SameieNett PoE Switch 01
+         </strong>
+        </div>
+        <span class="snx-demo-badge">
+         DEMO / EXAMPLE
+        </span>
+       </div>
+       <div class="snx-path" id="snxPath">
+        <span>
+         SameieNett
+        </span>
+        <span>
+         Distribusjon
+        </span>
+        <span>
+         Tech Room A
+        </span>
+        <span>
+         Switch 01
+        </span>
+        <span id="snxPathPort">
+         Port 02
+        </span>
+       </div>
+       <div class="snx-switch">
+        <div class="snx-switch-top">
+         <div class="snx-switch-name">
+          <strong>
+           24-Port PoE Distribution Switch
+          </strong>
+          <small>
+           10G uplink &middot; PoE+ &middot; VLAN trunk
+          </small>
+         </div>
+         <div aria-hidden="true" class="snx-led-row">
+          <i>
+          </i>
+          <i>
+          </i>
+          <i>
+          </i>
+         </div>
+        </div>
+        <div aria-label="Klikkbare switchporter" class="snx-ports" id="snxPorts">
+         <button class="snx-port" data-kind="uplink" data-port="1" type="button">
+          <span>
+           01
+          </span>
+         </button>
+         <button class="snx-port is-active" data-kind="ap" data-port="2" type="button">
+          <span>
+           02
+          </span>
+         </button>
+         <button class="snx-port" data-kind="camera" data-port="3" type="button">
+          <span>
+           03
+          </span>
+         </button>
+         <button class="snx-port" data-kind="access" data-port="4" type="button">
+          <span>
+           04
+          </span>
+         </button>
+         <button class="snx-port" data-kind="ap" data-port="5" type="button">
+          <span>
+           05
+          </span>
+         </button>
+         <button class="snx-port" data-kind="drift" data-port="6" type="button">
+          <span>
+           06
+          </span>
+         </button>
+         <button class="snx-port" data-kind="camera" data-port="7" type="button">
+          <span>
+           07
+          </span>
+         </button>
+         <button class="snx-port" data-kind="access" data-port="8" type="button">
+          <span>
+           08
+          </span>
+         </button>
+         <button class="snx-port" data-kind="ap" data-port="9" type="button">
+          <span>
+           09
+          </span>
+         </button>
+         <button class="snx-port" data-kind="service" data-port="10" type="button">
+          <span>
+           10
+          </span>
+         </button>
+         <button class="snx-port" data-kind="ap" data-port="11" type="button">
+          <span>
+           11
+          </span>
+         </button>
+         <button class="snx-port" data-kind="camera" data-port="12" type="button">
+          <span>
+           12
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="13" type="button">
+          <span>
+           13
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="14" type="button">
+          <span>
+           14
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="15" type="button">
+          <span>
+           15
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="16" type="button">
+          <span>
+           16
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="17" type="button">
+          <span>
+           17
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="18" type="button">
+          <span>
+           18
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="19" type="button">
+          <span>
+           19
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="20" type="button">
+          <span>
+           20
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="21" type="button">
+          <span>
+           21
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="22" type="button">
+          <span>
+           22
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="23" type="button">
+          <span>
+           23
+          </span>
+         </button>
+         <button class="snx-port" data-kind="idle" data-port="24" type="button">
+          <span>
+           24
+          </span>
+         </button>
+        </div>
+        <div class="snx-port-legend">
+         <span>
+          <i class="uplink">
+          </i>
+          Uplink
+         </span>
+         <span>
+          <i class="ap">
+          </i>
+          AP
+         </span>
+         <span>
+          <i class="camera">
+          </i>
+          Kamera
+         </span>
+         <span>
+          <i class="access">
+          </i>
+          Adgang
+         </span>
+         <span>
+          <i class="drift">
+          </i>
+          Drift
+         </span>
+         <span>
+          <i class="idle">
+          </i>
+          Ledig
+         </span>
+        </div>
+       </div>
+       <div class="snx-vlan-strip" id="snxVlanStrip">
+        <div class="snx-vlan" data-vlan-card="10">
+         <small>
+          VLAN 10
+         </small>
+         <strong>
+          MGMT
+         </strong>
+        </div>
+        <div class="snx-vlan is-active" data-vlan-card="187">
+         <small>
+          VLAN 187
+         </small>
+         <strong>
+          BOLIG 087
+         </strong>
+        </div>
+        <div class="snx-vlan" data-vlan-card="50">
+         <small>
+          VLAN 50
+         </small>
+         <strong>
+          DRIFT
+         </strong>
+        </div>
+        <div class="snx-vlan" data-vlan-card="60">
+         <small>
+          VLAN 60
+         </small>
+         <strong>
+          IOT / CAM
+         </strong>
+        </div>
+        <div class="snx-vlan" data-vlan-card="70">
+         <small>
+          VLAN 70
+         </small>
+         <strong>
+          SERVICE
+         </strong>
+        </div>
+        <div class="snx-vlan" data-vlan-card="0">
+         <small>
+          NO VLAN
+         </small>
+         <strong>
+          IDLE
+         </strong>
+        </div>
+       </div>
+      </div>
+      <aside class="snx-panel snx-device-panel">
+       <div class="snx-device-head">
+        <div class="snx-device-kicker" id="snxType">
+         HOME &middot; WIFI AP
+        </div>
+        <h3 class="snx-device-title" id="snxTitle">
+         AP bolig 087
+        </h3>
+       </div>
+       <div class="snx-device-body">
+        <div class="snx-status">
+         <i>
+         </i>
+         <span id="snxStatus">
+          Online &middot; 14 klienter
+         </span>
+        </div>
+        <div class="snx-meta">
+         <div>
+          <small>
+           Switchport
+          </small>
+          <strong id="snxPort">
+           Port 02
+          </strong>
+         </div>
+         <div>
+          <small>
+           VLAN
+          </small>
+          <strong id="snxVlan">
+           187 &middot; BOLIG 087
+          </strong>
+         </div>
+         <div>
+          <small>
+           IP
+          </small>
+          <strong id="snxIp">
+           10.187.0.87
+          </strong>
+         </div>
+         <div>
+          <small>
+           Link
+          </small>
+          <strong id="snxLink">
+           2.5 Gbps
+          </strong>
+         </div>
+         <div>
+          <small>
+           PoE
+          </small>
+          <strong id="snxPoe">
+           PoE+ &middot; 14.2 W
+          </strong>
+         </div>
+         <div>
+          <small>
+           Policy
+          </small>
+          <strong id="snxPolicy">
+           Internet allow &middot; inter-VLAN deny
+          </strong>
+         </div>
+        </div>
+        <div class="snx-flow">
+         <small>
+          Dataflyt
+         </small>
+         <div class="snx-flow-line" id="snxFlow">
+          <b>
+           Core
+          </b>
+          <i>
+           &rarr;
+          </i>
+          <b>
+           Switch 01
+          </b>
+          <i>
+           &rarr;
+          </i>
+          <b>
+           Port 02
+          </b>
+          <i>
+           &rarr;
+          </i>
+          <b>
+           AP bolig 087
+          </b>
+          <i>
+           &rarr;
+          </i>
+          <b>
+           Klienter
+          </b>
+         </div>
+        </div>
+        <button aria-expanded="false" class="snx-config-toggle" id="snxConfigToggle" type="button">
+         Vis teknisk config
+        </button>
+        <pre class="snx-config" id="snxConfig">PORT 02
+Mode: Access
+VLAN: 187
+PoE: Auto
+Speed: 2.5G
+Device: AP-087
+
+NETWORK
+Subnet: 10.187.0.0/24
+Gateway: 10.187.0.1
+DHCP: Enabled
+Client isolation: Enabled
+Inter-VLAN: Deny
+Internet: Allow</pre>
+        <p class="snx-device-desc" id="snxDesc">
+         Aksesspunkt i bolig 087. Eksemplet viser hvordan &eacute;n fysisk
+                        switchport kan kobles til en bestemt bolig, et eget VLAN og
+                        en tydelig sikkerhetspolicy.
+        </p>
+       </div>
+      </aside>
+     </div>
+    </div>
+   </section>
+   <section class="sn-section" id="sikkerhet">
+    <div class="sn-shell">
+     <div class="sn-section-head">
+      <div class="sn-kicker">
+       Segmentering &amp; sikkerhet
+      </div>
+      <h2>
+       Et bygg skal ikke v&aelig;re ett stort hjemmenett.
+      </h2>
+      <p>
+       En standardisert VLAN-modell gj&oslash;r det mulig &aring; skille boliger og tjenester, forenkle feils&oslash;king og bygge tydelige sikkerhetsgrenser.
+      </p>
+     </div>
+     <div class="sn-table-wrap">
+      <table class="sn-table">
+       <thead>
+        <tr>
+         <th>
+          VLAN
+         </th>
+         <th>
+          Navn
+         </th>
+         <th>
+          Form&aring;l
+         </th>
+         <th>
+          Prinsipp
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td>
+          <strong>
+           10
+          </strong>
+         </td>
+         <td>
+          SPS-MGMT
+         </td>
+         <td>
+          UniFi, switcher, AP-er og administrasjon
+         </td>
+         <td>
+          <span class="sn-pill">
+           Begrenset
+          </span>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           20
+          </strong>
+         </td>
+         <td>
+          SPS-BEBOER
+         </td>
+         <td>
+          Internett til beboere / boligsegmenter
+         </td>
+         <td>
+          <span class="sn-pill">
+           Isolert
+          </span>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           30
+          </strong>
+         </td>
+         <td>
+          SPS-TV-ALLENTE
+         </td>
+         <td>
+          TV, dekodere og IPTV
+         </td>
+         <td>
+          <span class="sn-pill">
+           Tjeneste
+          </span>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           40
+          </strong>
+         </td>
+         <td>
+          SPS-GUEST
+         </td>
+         <td>
+          Gjestenett og midlertidig tilgang
+         </td>
+         <td>
+          <span class="sn-pill">
+           Separert
+          </span>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           50
+          </strong>
+         </td>
+         <td>
+          SPS-DRIFT-TEKNISK
+         </td>
+         <td>
+          Teknisk rom, energisentral og porter
+         </td>
+         <td>
+          <span class="sn-pill">
+           Drift
+          </span>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           60
+          </strong>
+         </td>
+         <td>
+          SPS-IOT-KAMERA
+         </td>
+         <td>
+          Kamera, IoT og sensorer
+         </td>
+         <td>
+          <span class="sn-pill">
+           Policy
+          </span>
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           70
+          </strong>
+         </td>
+         <td>
+          SPS-SERVICE
+         </td>
+         <td>
+          Leverand&oslash;r- og servicetilgang
+         </td>
+         <td>
+          <span class="sn-pill">
+           Kontrollert
+          </span>
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </section>
+   <section class="sn-section">
+    <div class="sn-shell">
+     <div class="sn-photo-band">
+      <picture>
+       <source srcset="images/sameienett-drone.webp" type="image/webp"/>
+       <img alt="Oversiktsbilde av boligbygg og sameie" loading="lazy" src="images/sameienett-drone.jpg"/>
+      </picture>
+      <div class="sn-photo-copy">
+       <div class="sn-kicker">
+        Fra fysisk bygg til digital struktur
+       </div>
+       <h2>
+        Infrastrukturen finnes allerede. Den m&aring; organiseres.
+       </h2>
+       <p>
+        Fiber, tekniske rom, leilighetsskap og spredenett er den fysiske virkeligheten. SameieNett-konseptet handler om &aring; bruke denne strukturen mer systematisk og gj&oslash;re den klar for flere tjenester over tid.
+       </p>
+       <a class="sn-btn ghost" href="#voks">
+        Se hvordan plattformen vokser &rarr;
+       </a>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="sn-section" id="voks">
+    <div class="sn-shell">
+     <div class="sn-section-head">
+      <div class="sn-kicker">
+       Utvidbarhet
+      </div>
+      <h2>
+       Bygg &eacute;n gang. Utvid i lag.
+      </h2>
+     </div>
+     <div class="sn-roadmap">
+      <div class="sn-step">
+       <b>
+        01 &middot; Nettverk
+       </b>
+       <span>
+        Fiber, gateway, switching, Wi-Fi og segmentering.
+       </span>
+      </div>
+      <div class="sn-step">
+       <b>
+        02 &middot; Sikkerhet
+       </b>
+       <span>
+        Kamera, adgang, logging og kontrollerte serviceflater.
+       </span>
+      </div>
+      <div class="sn-step">
+       <b>
+        03 &middot; Drift
+       </b>
+       <span>
+        Overv&aring;king, tekniske anlegg, porter og hendelser.
+       </span>
+      </div>
+      <div class="sn-step">
+       <b>
+        04 &middot; Smart bygg
+       </b>
+       <span>
+        Energi, sensorer, IoT, automasjon og nye digitale tjenester.
+       </span>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="sn-section" id="okonomi">
+    <div class="sn-shell">
+     <div class="sn-section-head">
+      <div class="sn-kicker">
+       Konseptkalkulator
+      </div>
+      <h2>
+       Hva kan modellen se ut som?
+      </h2>
+      <p>
+       Under er en interaktiv modell basert p&aring; eksempelberegningen i konseptmaterialet. Den er laget for scenarioanalyse &ndash; ikke som tilbud eller dokumentert markedspris.
+      </p>
+     </div>
+     <div class="sn-calc">
+      <div class="sn-form">
+       <div class="sn-field">
+        <label>
+         Antall boliger
+         <strong id="unitsV">
+          204
+         </strong>
+        </label>
+        <input data-range="unitsV" id="snUnits" max="500" min="20" type="range" value="204"/>
+       </div>
+       <div class="sn-field">
+        <label>
+         Total betaling per bolig/mnd
+         <strong>
+          <span id="monthlyV">
+           500
+          </span>
+          kr
+         </strong>
+        </label>
+        <input data-range="monthlyV" id="snMonthly" max="900" min="200" step="10" type="range" value="500"/>
+       </div>
+       <div class="sn-field">
+        <label>
+         TV/innhold per bolig/mnd
+         <strong>
+          <span id="tvV">
+           269
+          </span>
+          kr
+         </strong>
+        </label>
+        <input data-range="tvV" id="snTv" max="500" min="0" step="1" type="range" value="269"/>
+       </div>
+       <div class="sn-field">
+        <label>
+         Finansieringsperiode
+         <strong>
+          <span id="monthsV">
+           18
+          </span>
+          mnd
+         </strong>
+        </label>
+        <input data-range="monthsV" id="snMonths" max="48" min="6" type="range" value="18"/>
+       </div>
+       <input id="snCost" type="hidden" value="645704"/>
+       <input id="snSla" type="hidden" value="10000"/>
+      </div>
+      <div class="sn-result">
+       <div class="sn-result-grid">
+        <div class="sn-result-box">
+         <span>
+          Inntekt i perioden
+         </span>
+         <strong id="snRevenue">
+          &ndash;
+         </strong>
+        </div>
+        <div class="sn-result-box">
+         <span>
+          Prosjektmargin i modellen
+         </span>
+         <strong id="snMargin">
+          &ndash;
+         </strong>
+        </div>
+        <div class="sn-result-box">
+         <span>
+          Teoretisk break-even
+         </span>
+         <strong id="snBreakEven">
+          &ndash;
+         </strong>
+        </div>
+        <div class="sn-result-box">
+         <span>
+          10-&aring;rs modell inkl. SLA
+         </span>
+         <strong id="snTenYear">
+          &ndash;
+         </strong>
+        </div>
+       </div>
+       <p class="sn-disclaimer">
+        Forutsetninger i eksemplet: prosjektkost 645 704 kr og SLA 10 000 kr/mnd etter etablering. Faktiske priser, installasjonsbehov, avtaler, utstyr, TV-tjenester og driftskostnader m&aring; valideres i hvert prosjekt.
+       </p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="sn-section">
+    <div class="sn-shell">
+     <div class="sn-section-head">
+      <div class="sn-kicker">
+       Teknisk design
+      </div>
+      <h2>
+       Standardisering gj&oslash;r skalering mulig.
+      </h2>
+     </div>
+     <div class="sn-table-wrap">
+      <table class="sn-table">
+       <thead>
+        <tr>
+         <th>
+          Omr&aring;de
+         </th>
+         <th>
+          Designprinsipp
+         </th>
+         <th>
+          Eksempel
+         </th>
+         <th>
+          Verdi
+         </th>
+        </tr>
+       </thead>
+       <tbody>
+        <tr>
+         <td>
+          <strong>
+           Gateway
+          </strong>
+         </td>
+         <td>
+          Sentral policy og sikkerhet
+         </td>
+         <td>
+          Enterprise gateway/firewall
+         </td>
+         <td>
+          Kontroll og logging
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           Switching
+          </strong>
+         </td>
+         <td>
+          PoE og strukturert distribusjon
+         </td>
+         <td>
+          Core + fordelingsswitcher
+         </td>
+         <td>
+          Standard drift
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           Bolig
+          </strong>
+         </td>
+         <td>
+          Profesjonelt AP / kablet nett
+         </td>
+         <td>
+          In-Wall AP
+         </td>
+         <td>
+          Dekning og kapasitet
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           Provisioning
+          </strong>
+         </td>
+         <td>
+          Zero-touch og sentral konfigurasjon
+         </td>
+         <td>
+          Auto-adopt / config push
+         </td>
+         <td>
+          Raskere utrulling
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           Observability
+          </strong>
+         </td>
+         <td>
+          Samlet overv&aring;king
+         </td>
+         <td>
+          RF, latency, porter, CPU/RAM
+         </td>
+         <td>
+          Proaktiv drift
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <strong>
+           Utvidelser
+          </strong>
+         </td>
+         <td>
+          Egne tjenestesegmenter
+         </td>
+         <td>
+          Kamera, adgang, energi, IoT
+         </td>
+         <td>
+          &Eacute;n digital grunnmur
+         </td>
+        </tr>
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </section>
+   <section class="sn-section" id="faq">
+    <div class="sn-shell">
+     <div class="sn-section-head">
+      <div class="sn-kicker">
+       FAQ &middot; nettverk i sameier
+      </div>
+      <h2>
+       Sp&oslash;rsm&aring;l styrer og utbyggere faktisk stiller.
+      </h2>
+     </div>
+     <div class="sn-faq">
+      <details>
+       <summary>
+        Hva er SameieNett?
+       </summary>
+       <p>
+        SameieNett er et konsept for &aring; standardisere nettverk og digital infrastruktur i sameier og borettslag, med sentral drift, segmentering og mulighet for &aring; bygge videre med flere tjenester.
+       </p>
+      </details>
+      <details>
+       <summary>
+        Hvorfor bruke VLAN i et boligbygg?
+       </summary>
+       <p>
+        VLAN kan skille administrative systemer, beboere, gjestenett, TV, kamera, IoT og service. Det gir tydeligere sikkerhetsgrenser og enklere feils&oslash;king.
+       </p>
+      </details>
+      <details>
+       <summary>
+        Er dette bare en Wi-Fi-l&oslash;sning?
+       </summary>
+       <p>
+        Nei. Wi-Fi er &eacute;n del. Arkitekturen er tenkt som fundament for adgang, kamera, tekniske anlegg, energi, sensorer og automasjon.
+       </p>
+      </details>
+      <details>
+       <summary>
+        Kan konseptet brukes i eksisterende bygg?
+       </summary>
+       <p>
+        Ja, men fysisk kabling, fiber, tekniske rom og leilighetsskap m&aring; kartlegges. En forh&aring;ndsbefaring vil v&aelig;re n&oslash;dvendig f&oslash;r en reell l&oslash;sning kan prosjekteres.
+       </p>
+      </details>
+      <details>
+       <summary>
+        Kan dette planlegges allerede i nybygg?
+       </summary>
+       <p>
+        Det er nettopp i tidlig prosjektering at strukturert kabling, tekniske rom, AP-plassering, kamera og adgang kan samordnes best.
+       </p>
+      </details>
+     </div>
+    </div>
+   </section>
+   <section class="sn-footer-cta" id="kontakt">
+    <div class="sn-shell">
+     <div class="sn-footer-box">
+      <div class="sn-kicker">
+       SameieNett &middot; concept &amp; architecture
+      </div>
+      <h2>
+       En id&eacute; er f&oslash;rst verdifull n&aring;r den kan forst&aring;s.
+      </h2>
+      <p>
+       SameieNett er utviklet som et selvstendig konsept av Henrik Bergfjord. M&aring;let er &aring; utforske hvordan norske sameier, borettslag og boligprosjekter kan f&aring; en mer strukturert, sikker og fremtidsrettet digital grunnmur.
+      </p>
+      <div class="sn-actions">
+       <a class="sn-btn primary" href="mailto:henrik.bergfjord@outlook.com?subject=SameieNett%20-%20henvendelse">
+        Ta kontakt p&aring; e-post
+       </a>
+       <a class="sn-btn ghost" href="index.html">
+        Tilbake til ians.no
+       </a>
+      </div>
+      <div class="sn-credit">
+       &copy; 2026 Henrik Bergfjord &middot; SameieNett &middot; Concept &amp; Architecture
+      </div>
+     </div>
+    </div>
+   </section>
+  </main>
+  <footer class="footer">
+   <div class="container">
+    SameieNett &middot; Nettverk &middot; Wi-Fi &middot; VLAN &middot; Sikkerhet &middot; Adgang &middot; IoT &middot; Digital infrastruktur for boligbygg
+   </div>
+  </footer>
+  <script>
+   (function () {
+    const devices = {
+        1: {
+            kind: "CORE · UPLINK",
+            title: "Fiber uplink mot Core",
+            status: "Online · trunk active",
+            vlan: "10 / trunk",
+            vlanCard: "10",
+            ip: "10.10.1.2",
+            link: "10 Gbps fiber",
+            poe: "Ikke relevant",
+            policy: "Tagged VLAN trunk",
+            flow: ["SameieNett Core", "Core Switch", "Port 01", "Distribution Switch 01"],
+            desc: "Fiberuplink mellom distribusjonsswitchen og SameieNett Core. Denne porten transporterer flere VLAN som trunk.",
+            config: `PORT 01
+Mode: Trunk
+Native VLAN: 10
+Allowed VLANs: 10,50,60,70,187-390
+Speed: 10G
+Medium: Fiber
+
+POLICY
+Management: VLAN 10
+Tagged networks: Enabled
+Loop protection: Enabled`
+        },
+        2: {
+            kind: "HOME · WIFI AP",
+            title: "AP bolig 087",
+            status: "Online · 14 klienter",
+            vlan: "187 · BOLIG 087",
+            vlanCard: "187",
+            ip: "10.187.0.87",
+            link: "2.5 Gbps",
+            poe: "PoE+ · 14.2 W",
+            policy: "Internet allow · inter-VLAN deny",
+            flow: ["Core", "Switch 01", "Port 02", "AP bolig 087", "Klienter"],
+            desc: "Aksesspunkt i bolig 087. Eksemplet viser hvordan én fysisk switchport kan kobles til en bestemt bolig, et eget VLAN og en tydelig sikkerhetspolicy.",
+            config: `PORT 02
+Mode: Access
+VLAN: 187
+PoE: Auto
+Speed: 2.5G
+Device: AP-087
+
+NETWORK
+Subnet: 10.187.0.0/24
+Gateway: 10.187.0.1
+DHCP: Enabled
+Client isolation: Enabled
+Inter-VLAN: Deny
+Internet: Allow`
+        },
+        3: {
+            kind: "SERVICES · CAMERA",
+            title: "Camera U1",
+            status: "Online · recording",
+            vlan: "60 · IOT/KAMERA",
+            vlanCard: "60",
+            ip: "10.60.0.41",
+            link: "1 Gbps",
+            poe: "PoE · 8.4 W",
+            policy: "Controller allow · client deny",
+            flow: ["Core", "Switch 01", "Port 03", "Camera U1", "Recorder"],
+            desc: "Kamera i fellesareal U1. Kamera ligger i et eget tjenestesegment og skal ikke kunne nå boligsegmentene.",
+            config: `PORT 03
+Mode: Access
+VLAN: 60
+PoE: Auto
+Speed: 1G
+Device: CAM-U1-01
+
+POLICY
+Camera → Recorder: Allow
+Camera → Management: Restricted
+Camera → Home VLANs: Deny
+Internet: Deny`
+        },
+        4: {
+            kind: "SERVICES · ACCESS",
+            title: "Access Garage",
+            status: "Online",
+            vlan: "60 · IOT/KAMERA",
+            vlanCard: "60",
+            ip: "10.60.0.51",
+            link: "1 Gbps",
+            poe: "PoE · 5.8 W",
+            policy: "Controller only",
+            flow: ["Core", "Switch 01", "Port 04", "Access Garage", "Door / Gate"],
+            desc: "Adgangsleser for garasje. Enheten får kun tilgang til nødvendige kontrolltjenester.",
+            config: `PORT 04
+Mode: Access
+VLAN: 60
+PoE: Auto
+Speed: 1G
+Device: ACCESS-GARAGE
+
+POLICY
+Access → Controller: Allow
+Access → Management: Restricted
+Access → Home VLANs: Deny`
+        },
+        5: {
+            kind: "HOME · WIFI AP",
+            title: "AP bolig 088",
+            status: "Online · 9 klienter",
+            vlan: "188 · BOLIG 088",
+            vlanCard: "187",
+            ip: "10.188.0.88",
+            link: "2.5 Gbps",
+            poe: "PoE+ · 13.8 W",
+            policy: "Internet allow · isolation on",
+            flow: ["Core", "Switch 01", "Port 05", "AP bolig 088", "Klienter"],
+            desc: "Aksesspunkt i bolig 088. Boligsegmentet er logisk isolert fra andre boenheter.",
+            config: `PORT 05
+Mode: Access
+VLAN: 188
+PoE: Auto
+Speed: 2.5G
+Device: AP-088
+
+NETWORK
+Subnet: 10.188.0.0/24
+Gateway: 10.188.0.1
+Client isolation: Enabled`
+        },
+        6: {
+            kind: "DRIFT · AUTOMATION",
+            title: "Garage Controller",
+            status: "Online · gate closed",
+            vlan: "50 · DRIFT",
+            vlanCard: "50",
+            ip: "10.50.0.31",
+            link: "1 Gbps",
+            poe: "PoE · 6.1 W",
+            policy: "Drift allow · homes deny",
+            flow: ["Core", "Switch 01", "Port 06", "Garage Controller", "Port"],
+            desc: "Garasjekontroller i driftssegmentet. Tilgang begrenses til drifts- og automasjonstjenester.",
+            config: `PORT 06
+Mode: Access
+VLAN: 50
+PoE: Auto
+Speed: 1G
+Device: GARAGE-CTRL
+
+POLICY
+Controller → Automation: Allow
+Controller → Home VLANs: Deny
+Remote service: Controlled`
+        },
+        7: {
+            kind: "SERVICES · CAMERA",
+            title: "Camera Entrance",
+            status: "Online · recording",
+            vlan: "60 · IOT/KAMERA",
+            vlanCard: "60",
+            ip: "10.60.0.42",
+            link: "1 Gbps",
+            poe: "PoE · 7.9 W",
+            policy: "Recorder allow",
+            flow: ["Core", "Switch 01", "Port 07", "Camera Entrance", "Recorder"],
+            desc: "Eksempelkamera ved hovedinngang.",
+            config: `PORT 07
+Mode: Access
+VLAN: 60
+PoE: Auto
+Speed: 1G
+Device: CAM-ENTRY-01`
+        },
+        8: {
+            kind: "SERVICES · ACCESS",
+            title: "Access Entrance",
+            status: "Online",
+            vlan: "60 · IOT/KAMERA",
+            vlanCard: "60",
+            ip: "10.60.0.52",
+            link: "1 Gbps",
+            poe: "PoE · 5.2 W",
+            policy: "Controller only",
+            flow: ["Core", "Switch 01", "Port 08", "Access Entrance", "Door"],
+            desc: "Eksempel på adgangsleser ved hovedinngang.",
+            config: `PORT 08
+Mode: Access
+VLAN: 60
+PoE: Auto
+Device: ACCESS-ENTRY`
+        },
+        9: {
+            kind: "HOME · WIFI AP",
+            title: "AP bolig 089",
+            status: "Online · 11 klienter",
+            vlan: "189 · BOLIG 089",
+            vlanCard: "187",
+            ip: "10.189.0.89",
+            link: "2.5 Gbps",
+            poe: "PoE+ · 13.6 W",
+            policy: "Internet allow · isolation on",
+            flow: ["Core", "Switch 01", "Port 09", "AP bolig 089", "Klienter"],
+            desc: "Eksempel på neste boligsegment.",
+            config: `PORT 09
+Mode: Access
+VLAN: 189
+PoE: Auto
+Speed: 2.5G
+Device: AP-089`
+        },
+        10: {
+            kind: "SERVICE · VENDOR",
+            title: "Vendor Service Port",
+            status: "Restricted",
+            vlan: "70 · SERVICE",
+            vlanCard: "70",
+            ip: "10.70.0.10",
+            link: "1 Gbps",
+            poe: "0 W",
+            policy: "VPN / allow-list only",
+            flow: ["Core", "Switch 01", "Port 10", "Service VLAN", "Vendor"],
+            desc: "Kontrollert serviceport for leverandørtilgang. Tanken er å gi nødvendig tilgang uten å åpne resten av byggets nettverk.",
+            config: `PORT 10
+Mode: Access
+VLAN: 70
+Speed: 1G
+PoE: Off
+
+POLICY
+Vendor VPN: Required
+Allow-list: Enabled
+Home VLANs: Deny
+Management: Restricted`
+        },
+        11: {
+            kind: "HOME · WIFI AP",
+            title: "AP bolig 090",
+            status: "Online · 8 klienter",
+            vlan: "190 · BOLIG 090",
+            vlanCard: "187",
+            ip: "10.190.0.90",
+            link: "2.5 Gbps",
+            poe: "PoE+ · 13.2 W",
+            policy: "Internet allow · isolation on",
+            flow: ["Core", "Switch 01", "Port 11", "AP bolig 090", "Klienter"],
+            desc: "Eksempel på standardisert onboarding av neste boenhet.",
+            config: `PORT 11
+Mode: Access
+VLAN: 190
+PoE: Auto
+Speed: 2.5G
+Device: AP-090`
+        },
+        12: {
+            kind: "SERVICES · CAMERA",
+            title: "Camera Garage",
+            status: "Online · recording",
+            vlan: "60 · IOT/KAMERA",
+            vlanCard: "60",
+            ip: "10.60.0.61",
+            link: "1 Gbps",
+            poe: "PoE · 8.6 W",
+            policy: "Recorder allow",
+            flow: ["Core", "Switch 01", "Port 12", "Camera Garage", "Recorder"],
+            desc: "Eksempelkamera i garasje.",
+            config: `PORT 12
+Mode: Access
+VLAN: 60
+PoE: Auto
+Device: CAM-GARAGE-01`
+        }
+    };
+
+    for (let i = 13; i <= 24; i++) {
+        devices[i] = {
+            kind: "SWITCH PORT",
+            title: "Ledig port " + String(i).padStart(2, "0"),
+            status: "Idle · no link",
+            vlan: "—",
+            vlanCard: "0",
+            ip: "—",
+            link: "1 / 2.5 Gbps capable",
+            poe: "0 W",
+            policy: "Ingen aktiv profil",
+            flow: ["Switch 01", "Port " + String(i).padStart(2, "0"), "Ledig"],
+            desc: "Ledig port. I en virkelig løsning kan porten få profil automatisk eller konfigureres ved behov.",
+            config: `PORT ${String(i).padStart(2, "0")}
+State: Idle
+Link: Down
+PoE: Off
+Profile: None`
+        };
+    }
+
+    const ports = document.querySelectorAll(".snx-port");
+    const title = document.getElementById("snxTitle");
+    const type = document.getElementById("snxType");
+    const status = document.getElementById("snxStatus");
+    const portText = document.getElementById("snxPort");
+    const vlan = document.getElementById("snxVlan");
+    const ip = document.getElementById("snxIp");
+    const link = document.getElementById("snxLink");
+    const poe = document.getElementById("snxPoe");
+    const policy = document.getElementById("snxPolicy");
+    const flow = document.getElementById("snxFlow");
+    const desc = document.getElementById("snxDesc");
+    const config = document.getElementById("snxConfig");
+    const pathPort = document.getElementById("snxPathPort");
+    const toggle = document.getElementById("snxConfigToggle");
+    const vlanCards = document.querySelectorAll("[data-vlan-card]");
+
+    function renderFlow(items) {
+        flow.innerHTML = "";
+
+        items.forEach((item, index) => {
+            const node = document.createElement("b");
+            node.textContent = item;
+            flow.appendChild(node);
+
+            if (index < items.length - 1) {
+                const arrow = document.createElement("i");
+                arrow.textContent = "→";
+                flow.appendChild(arrow);
+            }
+        });
+    }
+
+    function selectPort(portNumber) {
+        const data = devices[portNumber];
+
+        if (!data) {
+            return;
+        }
+
+        ports.forEach((port) => {
+            port.classList.toggle(
+                "is-active",
+                Number(port.dataset.port) === portNumber
+            );
+        });
+
+        title.textContent = data.title;
+        type.textContent = data.kind;
+        status.textContent = data.status;
+        portText.textContent = "Port " + String(portNumber).padStart(2, "0");
+        vlan.textContent = data.vlan;
+        ip.textContent = data.ip;
+        link.textContent = data.link;
+        poe.textContent = data.poe;
+        policy.textContent = data.policy;
+        desc.textContent = data.desc;
+        config.textContent = data.config;
+        pathPort.textContent = "Port " + String(portNumber).padStart(2, "0");
+
+        renderFlow(data.flow);
+
+        vlanCards.forEach((card) => {
+            card.classList.toggle(
+                "is-active",
+                card.dataset.vlanCard === data.vlanCard
+            );
+        });
+
+        config.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.textContent = "Vis teknisk config";
+    }
+
+    ports.forEach((port) => {
+        port.addEventListener("click", () => {
+            selectPort(Number(port.dataset.port));
+        });
+    });
+
+    toggle.addEventListener("click", () => {
+        const open = config.classList.toggle("is-open");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.textContent = open
+            ? "Skjul teknisk config"
+            : "Vis teknisk config";
+    });
+
+    selectPort(2);
+})();
+  </script>
+  <script defer="" src="assets/sameienett.js">
+  </script>
+ </body>
+</html>
