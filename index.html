@@ -1,50 +1,1441 @@
 <!DOCTYPE html>
 <html lang="no">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Henrik Bergfjord | Portal</title>
-  <meta name="description" content="Henrik Bergfjords portal med Statnett Academy, verktøy, strøm, DNS, kalender, Volvo C40, Maimyra, galleri, SameieNett og hverdagssider." />
-  <link rel="stylesheet" href="assets/styles.css" />
-  <style>
-    html{scroll-behavior:smooth}.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px)}
-    .nav-links{display:flex;gap:6px;flex-wrap:wrap}.nav-links a{white-space:nowrap}.tool-nav-link{border:1px solid rgba(105,210,255,.3);background:rgba(105,210,255,.08)}
-    .portal-hero{position:relative;overflow:hidden}.portal-hero::after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;right:-180px;top:-190px;background:radial-gradient(circle,rgba(65,190,255,.18),transparent 68%);pointer-events:none}
-    .hero-eyebrow{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}.hero-chip{font-size:.78rem;font-weight:750;padding:7px 10px;border:1px solid rgba(255,255,255,.11);border-radius:999px;background:rgba(255,255,255,.045)}
-    .hero-metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0 0}.hero-metric{padding:12px 14px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.025)}.hero-metric strong{display:block;font-size:1rem}.hero-metric span{opacity:.64;font-size:.78rem}
-    .clock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}.clock-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:16px;backdrop-filter:blur(8px)}.clock-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}.clock-title{font-size:.95rem;font-weight:700}.clock-sub{font-size:.82rem;opacity:.65}.digital-clock{font-size:1.65rem;font-weight:800;letter-spacing:.04em;margin:7px 0 2px}.digital-date{font-size:.84rem;opacity:.72;margin-bottom:12px}.analog-wrap{display:flex;justify-content:center;align-items:center}.analog-clock{width:116px;height:116px;border-radius:50%;position:relative;border:3px solid rgba(255,255,255,.15);background:radial-gradient(circle at center,rgba(255,255,255,.12) 0 5px,transparent 6px),rgba(255,255,255,.025);box-shadow:inset 0 0 20px rgba(255,255,255,.04),0 10px 24px rgba(0,0,0,.22)}.analog-clock .marker{position:absolute;left:50%;top:50%;width:2px;height:52px;transform-origin:center bottom;margin-left:-1px;margin-top:-52px}.analog-clock .marker::after{content:"";display:block;width:2px;height:8px;margin:0 auto;background:rgba(255,255,255,.5);border-radius:2px}.analog-clock .marker.hour::after{width:3px;height:11px;background:rgba(255,255,255,.8)}.hand{position:absolute;left:50%;top:50%;transform-origin:bottom center;border-radius:999px}.hand.hour{width:5px;height:29px;margin-left:-2.5px;margin-top:-29px;background:#fff}.hand.minute{width:3px;height:40px;margin-left:-1.5px;margin-top:-40px;background:#9fd0ff}.hand.second{width:1.5px;height:46px;margin-left:-.75px;margin-top:-46px;background:#ff8a8a}.clock-center{position:absolute;left:50%;top:50%;width:10px;height:10px;margin-left:-5px;margin-top:-5px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.13)}
-    .academy-card{position:relative;overflow:hidden}.academy-card::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(180deg,#00d084,#46e0b0)}.academy-card .card-icon{background:rgba(0,208,132,.14)}.academy-badge{background:rgba(0,208,132,.15);border-color:rgba(0,208,132,.35)}
-    .tools-section{padding-top:14px}.tools-intro{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:18px}.tools-intro p{max-width:680px}.tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.tool-card{position:relative;overflow:hidden;min-height:330px;display:flex;flex-direction:column}.tool-card::after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-80px;top:-70px;background:radial-gradient(circle,rgba(104,205,255,.15),transparent 70%)}.tool-card.money::after{background:radial-gradient(circle,rgba(82,224,166,.17),transparent 70%)}.tool-card.pro::after{background:radial-gradient(circle,rgba(177,120,255,.18),transparent 70%)}.tool-number{font-size:.72rem;letter-spacing:.13em;font-weight:800;opacity:.55}.tool-icon{font-size:2rem;margin:18px 0 4px}.tool-card h3{font-size:1.35rem;margin-bottom:8px}.tool-card p{opacity:.72;line-height:1.55}.tool-list{display:grid;gap:7px;margin:14px 0 20px;font-size:.86rem}.tool-list span::before{content:"✓";margin-right:8px;opacity:.7}.tool-actions{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap}.tool-link{display:inline-flex;align-items:center;gap:6px;padding:10px 13px;border-radius:11px;text-decoration:none;font-weight:750;border:1px solid rgba(255,255,255,.1)}.tool-link.primary{background:rgba(105,210,255,.13);border-color:rgba(105,210,255,.28)}.money .tool-link.primary{background:rgba(82,224,166,.11);border-color:rgba(82,224,166,.27)}.pro .tool-link.primary{background:rgba(177,120,255,.12);border-color:rgba(177,120,255,.28)}.tool-badge{position:absolute;right:18px;top:18px}
-    .portal-grid .portal-card{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.portal-grid .portal-card:hover,.tool-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.17);box-shadow:0 18px 50px rgba(0,0,0,.15)}
-    @media(max-width:1080px){.nav-links{display:none}.tool-grid{grid-template-columns:1fr}.hero-metric-grid{grid-template-columns:1fr 1fr 1fr}}@media(max-width:720px){.digital-clock{font-size:1.45rem}.analog-clock{width:104px;height:104px}.tools-intro{align-items:start;flex-direction:column}.hero-metric-grid{grid-template-columns:1fr}.topbar .button.primary{display:none}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Henrik Bergfjord | Portal</title>
+
+    <meta
+        name="description"
+        content="Henrik Bergfjords personlige portal for teknologi, læring, verktøy, prosjekter og hverdag."
+    >
+
+    <link rel="stylesheet" href="assets/styles.css">
+
+    <style>
+        /* =========================================================
+           IANS.NO – PORTAL HOMEPAGE
+           Clean structure for hero, navigation, tools and projects.
+           ========================================================= */
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ---------------------------------------------------------
+           TOP NAVIGATION
+           --------------------------------------------------------- */
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(18px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            white-space: nowrap;
+        }
+
+        .nav-links .highlight-link {
+            border: 1px solid rgba(105, 210, 255, 0.3);
+            background: rgba(105, 210, 255, 0.08);
+        }
+
+        /* ---------------------------------------------------------
+           HERO
+           --------------------------------------------------------- */
+
+        .portal-hero {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-hero::before {
+            content: "";
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            top: -290px;
+            right: -220px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(65, 190, 255, 0.2),
+                transparent 68%
+            );
+            pointer-events: none;
+        }
+
+        .portal-hero::after {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            bottom: -140px;
+            left: -120px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(82, 224, 166, 0.12),
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .hero-chip {
+            padding: 7px 11px;
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.045);
+            font-size: 0.78rem;
+            font-weight: 750;
+        }
+
+        .portal-hero h1 {
+            max-width: 760px;
+        }
+
+        .portal-hero .lead {
+            max-width: 760px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .hero-metric-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .hero-metric {
+            padding: 13px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        .hero-metric strong {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 1rem;
+        }
+
+        .hero-metric span {
+            font-size: 0.78rem;
+            opacity: 0.64;
+        }
+
+        /* ---------------------------------------------------------
+           WORLD CLOCKS
+           --------------------------------------------------------- */
+
+        .clock-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .clock-card {
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(8px);
+        }
+
+        .clock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .clock-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+
+        .clock-sub {
+            font-size: 0.82rem;
+            opacity: 0.65;
+        }
+
+        .digital-clock {
+            margin: 7px 0 2px;
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        .digital-date {
+            margin-bottom: 12px;
+            font-size: 0.84rem;
+            opacity: 0.72;
+        }
+
+        .analog-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .analog-clock {
+            position: relative;
+            width: 116px;
+            height: 116px;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(255, 255, 255, 0.12) 0 5px,
+                    transparent 6px
+                ),
+                rgba(255, 255, 255, 0.025);
+            box-shadow:
+                inset 0 0 20px rgba(255, 255, 255, 0.04),
+                0 10px 24px rgba(0, 0, 0, 0.22);
+        }
+
+        .analog-clock .marker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 52px;
+            margin-top: -52px;
+            margin-left: -1px;
+            transform-origin: center bottom;
+        }
+
+        .analog-clock .marker::after {
+            content: "";
+            display: block;
+            width: 2px;
+            height: 8px;
+            margin: 0 auto;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .analog-clock .marker.hour::after {
+            width: 3px;
+            height: 11px;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .hand {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 999px;
+            transform-origin: bottom center;
+        }
+
+        .hand.hour {
+            width: 5px;
+            height: 29px;
+            margin-top: -29px;
+            margin-left: -2.5px;
+            background: #fff;
+        }
+
+        .hand.minute {
+            width: 3px;
+            height: 40px;
+            margin-top: -40px;
+            margin-left: -1.5px;
+            background: #9fd0ff;
+        }
+
+        .hand.second {
+            width: 1.5px;
+            height: 46px;
+            margin-top: -46px;
+            margin-left: -0.75px;
+            background: #ff8a8a;
+        }
+
+        .clock-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            margin-top: -5px;
+            margin-left: -5px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.13);
+        }
+
+        /* ---------------------------------------------------------
+           FEATURED AREAS
+           --------------------------------------------------------- */
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 18px;
+        }
+
+        .feature-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 270px;
+        }
+
+        .feature-card::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            top: -110px;
+            right: -95px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(105, 210, 255, 0.15),
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+        .feature-card.sameienett::after {
+            background: radial-gradient(
+                circle,
+                rgba(177, 120, 255, 0.18),
+                transparent 70%
+            );
+        }
+
+        .feature-card.academy::after {
+            background: radial-gradient(
+                circle,
+                rgba(0, 208, 132, 0.16),
+                transparent 70%
+            );
+        }
+
+        .feature-card h3 {
+            margin-top: 18px;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            max-width: 620px;
+            line-height: 1.6;
+            opacity: 0.75;
+        }
+
+        .feature-icon {
+            font-size: 2.1rem;
+        }
+
+        /* ---------------------------------------------------------
+           INTERACTIVE TOOLS
+           --------------------------------------------------------- */
+
+        .tools-section {
+            padding-top: 16px;
+        }
+
+        .section-intro {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-intro p {
+            max-width: 720px;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .tool-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 330px;
+            overflow: hidden;
+        }
+
+        .tool-card::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            top: -70px;
+            right: -80px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(104, 205, 255, 0.15),
+                transparent 70%
+            );
+        }
+
+        .tool-card.money::after {
+            background: radial-gradient(
+                circle,
+                rgba(82, 224, 166, 0.17),
+                transparent 70%
+            );
+        }
+
+        .tool-card.pro::after {
+            background: radial-gradient(
+                circle,
+                rgba(177, 120, 255, 0.18),
+                transparent 70%
+            );
+        }
+
+        .tool-number {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.13em;
+            opacity: 0.55;
+        }
+
+        .tool-icon {
+            margin: 18px 0 4px;
+            font-size: 2rem;
+        }
+
+        .tool-card h3 {
+            margin-bottom: 8px;
+            font-size: 1.35rem;
+        }
+
+        .tool-card p {
+            line-height: 1.55;
+            opacity: 0.72;
+        }
+
+        .tool-list {
+            display: grid;
+            gap: 7px;
+            margin: 14px 0 20px;
+            font-size: 0.86rem;
+        }
+
+        .tool-list span::before {
+            content: "✓";
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+
+        .tool-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .tool-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 13px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 11px;
+            font-weight: 750;
+            text-decoration: none;
+        }
+
+        .tool-link.primary {
+            border-color: rgba(105, 210, 255, 0.28);
+            background: rgba(105, 210, 255, 0.13);
+        }
+
+        .money .tool-link.primary {
+            border-color: rgba(82, 224, 166, 0.27);
+            background: rgba(82, 224, 166, 0.11);
+        }
+
+        .pro .tool-link.primary {
+            border-color: rgba(177, 120, 255, 0.28);
+            background: rgba(177, 120, 255, 0.12);
+        }
+
+        .tool-badge {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+        }
+
+        /* ---------------------------------------------------------
+           PORTAL OVERVIEW
+           --------------------------------------------------------- */
+
+        .portal-grid .portal-card,
+        .tool-card,
+        .feature-card {
+            transition:
+                transform 0.18s ease,
+                border-color 0.18s ease,
+                box-shadow 0.18s ease;
+        }
+
+        .portal-grid .portal-card:hover,
+        .tool-card:hover,
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.17);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ---------------------------------------------------------
+           RESPONSIVE
+           --------------------------------------------------------- */
+
+        @media (max-width: 1080px) {
+            .nav-links {
+                display: none;
+            }
+
+            .featured-grid,
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-metric-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 720px) {
+            .topbar .button.primary {
+                display: none;
+            }
+
+            .hero-metric-grid,
+            .clock-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-intro {
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .digital-clock {
+                font-size: 1.45rem;
+            }
+
+            .analog-clock {
+                width: 104px;
+                height: 104px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header class="topbar"><div class="container nav"><a class="brand" href="index.html"><span class="brand-mark"></span><span>Henrik Bergfjord</span></a><nav class="nav-links" aria-label="Hovedmeny"><a href="index.html" class="active">Hjem</a><a href="#verktoy" class="tool-nav-link">Verktøy</a><a href="academy/index.html">Academy</a><a href="strom.html">Strøm</a><a href="dns-sjekk.html">DNS</a><a href="kalender.html">Kalender</a><a href="middag.html">Middag</a><a href="dessert.html">Dessert</a><a href="boller.html">Boller</a><a href="volvo-c40.html">Volvo C40</a><a href="maimyra.html">Maimyra</a><a href="galleri.html">Galleri</a><a href="SameieNett.html">SameieNett</a></nav><a class="button primary" href="#verktoy">Åpne verktøy</a></div></header>
-<main><section class="page-header"><div class="container hero-grid"><div class="card hero-panel portal-hero"><div class="hero-eyebrow"><span class="hero-chip">Personlig portal</span><span class="hero-chip">Academy</span><span class="hero-chip">Nye verktøy</span></div><div class="kicker">Portal · læring · teknologi · videre bygging</div><h1>En samlet inngang til hele nettstedet</h1><p class="lead">Forsiden gir raske snarveier til Statnett Academy, nye interaktive verktøy, strøm, DNS, kalender, Volvo C40, Maimyra, galleri, SameieNett og hverdagssidene.</p><div class="hero-actions"><a class="button primary" href="#verktoy">🧰 Se nye verktøy</a><a class="button secondary" href="academy/index.html">🎓 Åpne Academy</a><a class="button secondary" href="#oversikt">Se portaloversikt</a></div><div class="hero-metric-grid"><div class="hero-metric"><strong>3 nye verktøy</strong><span>Bygging · økonomi · pro</span></div><div class="hero-metric"><strong>Alt samlet</strong><span>Én portal og felles uttrykk</span></div><div class="hero-metric"><strong>Videre bygging</strong><span>Enkel å utvide</span></div></div>
-<div class="clock-grid"><div class="clock-card"><div class="clock-header"><div><div class="clock-title">Norge</div><div class="clock-sub">Lokal tid</div></div><span class="badge ok">NO</span></div><div class="digital-clock" id="clock-no-digital">--:--:--</div><div class="digital-date" id="clock-no-date">Laster dato...</div><div class="analog-wrap"><div class="analog-clock" aria-label="Analog klokke for Norge"><div class="marker hour" style="transform: rotate(0deg)"></div><div class="marker " style="transform: rotate(30deg)"></div><div class="marker " style="transform: rotate(60deg)"></div><div class="marker hour" style="transform: rotate(90deg)"></div><div class="marker " style="transform: rotate(120deg)"></div><div class="marker " style="transform: rotate(150deg)"></div><div class="marker hour" style="transform: rotate(180deg)"></div><div class="marker " style="transform: rotate(210deg)"></div><div class="marker " style="transform: rotate(240deg)"></div><div class="marker hour" style="transform: rotate(270deg)"></div><div class="marker " style="transform: rotate(300deg)"></div><div class="marker " style="transform: rotate(330deg)"></div><div class="hand hour" id="clock-no-hour"></div><div class="hand minute" id="clock-no-minute"></div><div class="hand second" id="clock-no-second"></div><div class="clock-center"></div></div></div></div><div class="clock-card"><div class="clock-header"><div><div class="clock-title">Filippinene</div><div class="clock-sub">Manila / PH-tid</div></div><span class="badge ">PH</span></div><div class="digital-clock" id="clock-ph-digital">--:--:--</div><div class="digital-date" id="clock-ph-date">Laster dato...</div><div class="analog-wrap"><div class="analog-clock" aria-label="Analog klokke for Filippinene"><div class="marker hour" style="transform: rotate(0deg)"></div><div class="marker " style="transform: rotate(30deg)"></div><div class="marker " style="transform: rotate(60deg)"></div><div class="marker hour" style="transform: rotate(90deg)"></div><div class="marker " style="transform: rotate(120deg)"></div><div class="marker " style="transform: rotate(150deg)"></div><div class="marker hour" style="transform: rotate(180deg)"></div><div class="marker " style="transform: rotate(210deg)"></div><div class="marker " style="transform: rotate(240deg)"></div><div class="marker hour" style="transform: rotate(270deg)"></div><div class="marker " style="transform: rotate(300deg)"></div><div class="marker " style="transform: rotate(330deg)"></div><div class="hand hour" id="clock-ph-hour"></div><div class="hand minute" id="clock-ph-minute"></div><div class="hand second" id="clock-ph-second"></div><div class="clock-center"></div></div></div></div></div></div>
-<aside class="card side-stack"><div class="mini-card"><div class="mini-top"><strong>Statnett Academy</strong><span class="badge academy-badge">Ny</span></div><div class="mini-value">Personlig læringsplattform</div><p class="muted">Kapitler, illustrasjoner, begreper og quiz om kraftsystemet, transmisjonsnettet, prosjektgjennomføring og planleggerrollen.</p><a class="card-link" href="academy/index.html">Start læringen →</a></div><div class="mini-card"><div class="mini-top"><strong>Verktøy</strong><span class="badge ok">3</span></div><div class="mini-value">Fra idé til konkret resultat</div><p class="muted">Bygg nettside, analyser privatøkonomi eller bruk Pro-versjonen for en mer avansert webside.</p><a class="card-link" href="#verktoy">Åpne verktøy →</a></div><div class="mini-card"><div class="mini-top"><strong>Status</strong><span class="badge ok">Live</span></div><div class="mini-value">Klar for videre bygging</div><p class="muted">Forsiden beholder de eksisterende områdene og får en tydeligere struktur for nye tjenester.</p></div></aside></div></section>
-<section class="section tools-section" id="verktoy"><div class="container"><div class="tools-intro"><div><div class="kicker">IANS LAB · INTERAKTIVE VERKTØY</div><h2>Tre verktøy du faktisk kan bruke</h2><p>De nye sidene ligger som egne områder i portalen. De kan utvikles videre uten å blande kode eller funksjoner med resten av nettstedet.</p></div><span class="badge ok">Ny seksjon</span></div><div class="tool-grid">
-<article class="card tool-card"><span class="badge tool-badge">LIGHT</span><div class="tool-number">VERKTØY 01</div><div class="tool-icon">✨</div><h3>Website Builder Light</h3><p>En enkel veiviser for personer som vil lage sin første hjemmeside uten å måtte forstå alt på forhånd.</p><div class="tool-list"><span>Spørsmål steg for steg</span><span>Live forhåndsvisning</span><span>Genererer ferdig HTML</span><span>A–Å læringsguide</span></div><div class="tool-actions"><a class="tool-link primary" href="tools/website-builder-light/index.html">Åpne Builder →</a></div></article>
-<article class="card tool-card money"><span class="badge ok tool-badge">ØKONOMI</span><div class="tool-number">VERKTØY 02</div><div class="tool-icon">📊</div><h3>Money Planner</h3><p>Privat økonomisjekk med inntekter, utgifter, lån, kreditt og en handlingsplan som gjør tallene forståelige.</p><div class="tool-list"><span>Månedsbudsjett</span><span>Gjeld og renter</span><span>Belåningsgrad</span><span>Personlig handlingsplan</span></div><div class="tool-actions"><a class="tool-link primary" href="tools/money-planner/index.html">Åpne Money Planner →</a></div></article>
-<article class="card tool-card pro"><span class="badge tool-badge">PRO</span><div class="tool-number">VERKTØY 03</div><div class="tool-icon">🚀</div><h3>Website Builder Pro</h3><p>En mer avansert generator med bransjevalg, designmodus, valgfrie seksjoner, live preview og eksport av komplett HTML.</p><div class="tool-list"><span>Flere designvalg</span><span>Valgfrie seksjoner</span><span>Responsiv preview</span><span>Direkte HTML-eksport</span></div><div class="tool-actions"><a class="tool-link primary" href="tools/website-builder-pro/index.html">Åpne Pro →</a></div></article>
-</div></div></section>
-<section class="section" id="oversikt"><div class="container"><div class="section-head"><div><h2>Portaloversikt</h2><p>Læring, teknologi, prosjekter og hverdag samlet på ett sted.</p></div></div><div class="portal-grid">
-<article class="card portal-card academy-card"><div class="card-top"><div class="card-icon">🎓</div><span class="badge academy-badge">Academy</span></div><h3>Statnett Academy</h3><p>Personlig læringsportal om kraftsystemet, transmisjonsnettet, 420 kV-stasjoner, kontrollanlegg, prosjektgjennomføring, planlegging og sentrale fagbegreper.</p><a class="card-link" href="academy/index.html">Åpne Academy →</a></article>
-<article class="card portal-card"><div class="card-top"><div class="card-icon">⚡</div><span class="badge">Tech</span></div><h3>Strøm</h3><p>Teknisk strømvisning med paneler, graf og videre muligheter for data, analyser og eksterne koblinger.</p><a class="card-link" href="strom.html">Åpne strøm →</a></article>
-<article class="card portal-card"><div class="card-top"><div class="card-icon">🌐</div><span class="badge">Verktøy</span></div><h3>DNS-sjekk</h3><p>DNS-oppslag direkte i nettleseren for raske kontroller av domener, webtjenester og infrastruktur.</p><a class="card-link" href="dns-sjekk.html">Åpne DNS →</a></article>
-<article class="card portal-card"><div class="card-top"><div class="card-icon">🗓️</div><span class="badge">Plan</span></div><h3>Kalender</h3><p>Samlet kalenderoversikt med planer, avtaler, aktiviteter og viktige datoer.</p><a class="card-link" href="kalender.html">Åpne kalender →</a></article>
-<article class="card portal-card"><div class="card-top"><div class="card-icon">🚗</div><span class="badge">EV</span></div><h3>Volvo C40</h3><p>Egen bilside med bilprofil, rekkevidde og plass for lading, service, reiser og kostnader.</p><a class="card-link" href="volvo-c40.html">Åpne Volvo C40 →</a></article>
-<article class="card portal-card"><div class="card-top"><div class="card-icon">🏠</div><span class="badge">Prosjekt</span></div><h3>Maimyra</h3><p>Samlet side for bolig, planer, prioriteringer, dokumentasjon og videre utvikling av hjemmet.</p><a class="card-link" href="maimyra.html">Åpne Maimyra →</a></article>
-<article class="card portal-card"><div class="card-top"><div class="card-icon">🖼️</div><span class="badge">Media</span></div><h3>Galleri</h3><p>Bilder, visuelle inntrykk, minner og plass for mer presentasjon og inspirasjon.</p><a class="card-link" href="galleri.html">Åpne galleri →</a></article>
-<article class="card portal-card"><div class="card-top"><div class="card-icon">🏢</div><span class="badge">Infrastruktur</span></div><h3>SameieNett</h3><p>Enterprise-konsept for nettverk, Wi-Fi, VLAN, sikkerhet, adgang, IoT og digital infrastruktur i sameier og borettslag.</p><a class="card-link" href="SameieNett.html">Utforsk SameieNett →</a></article>
-<article class="card portal-card"><div class="card-top"><div class="card-icon">🍽️</div><span class="badge">Hverdag</span></div><h3>Middag</h3><p>Hverdagsmat, forslag, oppskrifter og struktur for ukemeny og middag.</p><a class="card-link" href="middag.html">Åpne middag →</a></article>
-<article class="card portal-card"><div class="card-top"><div class="card-icon">🍰</div><span class="badge">Hverdag</span></div><h3>Dessert</h3><p>Egen side for dessertforslag, favoritter og søtere innhold i familieportalen.</p><a class="card-link" href="dessert.html">Åpne dessert →</a></article>
-<article class="card portal-card"><div class="card-top"><div class="card-icon">🥐</div><span class="badge">Hverdag</span></div><h3>Boller</h3><p>En egen side for boller, bakst og oppskrifter i samme stil som resten av nettstedet.</p><a class="card-link" href="boller.html">Åpne boller →</a></article>
-</div></div></section>
-<section class="section compact-section"><div class="container info-grid"><div class="card info-card"><h3>Academy</h3><p class="muted">Statnett Academy skal bli en personlig kunnskapsbase med kapitler, ordliste, quiz, illustrasjoner og egne erfaringer fra rollen som planlegger.</p></div><div class="card info-card"><h3>Portal</h3><p class="muted">Forsiden skal være enkel: oversikt, navigasjon og raske valg. Detaljert innhold legges på undersidene.</p></div><div class="card info-card"><h3>Verktøy</h3><p class="muted">Interaktive løsninger får egne mapper og kan bygges videre uavhengig av resten av portalen.</p></div><div class="card info-card"><h3>Neste steg</h3><p class="muted">Videreutvikle Money Planner, bygge mer innhold i Website Builder og koble på guider, rapporter og bedre eksport.</p></div></div></section></main>
-<footer class="footer"><div class="container">Henrik Bergfjord · Portal · Verktøy · Statnett Academy · Strøm · DNS · Kalender · Volvo C40 · Maimyra · Galleri · SameieNett · Middag · Dessert · Boller</div></footer>
-<script>
-function updateClock(timeZone,digitalId,dateId,hourId,minuteId,secondId,locale="no-NO"){const now=new Date();const tf=new Intl.DateTimeFormat("en-GB",{timeZone,hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});const df=new Intl.DateTimeFormat(locale,{timeZone,weekday:"long",day:"2-digit",month:"long",year:"numeric"});const parts=tf.formatToParts(now);const gp=t=>Number(parts.find(p=>p.type===t)?.value||0);const h=gp("hour"),m=gp("minute"),s=gp("second");const d=document.getElementById(digitalId),da=document.getElementById(dateId),he=document.getElementById(hourId),mi=document.getElementById(minuteId),se=document.getElementById(secondId);if(!d||!da||!he||!mi||!se)return;d.textContent=tf.format(now);da.textContent=df.format(now);he.style.transform=`rotate(${(h%12)*30+m*.5+s/120}deg)`;mi.style.transform=`rotate(${m*6+s*.1}deg)`;se.style.transform=`rotate(${s*6}deg)`}
-function tickClocks(){updateClock("Europe/Oslo","clock-no-digital","clock-no-date","clock-no-hour","clock-no-minute","clock-no-second","no-NO");updateClock("Asia/Manila","clock-ph-digital","clock-ph-date","clock-ph-hour","clock-ph-minute","clock-ph-second","en-PH")}tickClocks();setInterval(tickClocks,1000);
-</script></body></html>
+
+    <!-- =========================================================
+         TOP NAVIGATION
+         ========================================================= -->
+
+    <header class="topbar">
+        <div class="container nav">
+
+            <a class="brand" href="index.html">
+                <span class="brand-mark"></span>
+                <span>Henrik Bergfjord</span>
+            </a>
+
+            <nav class="nav-links" aria-label="Hovedmeny">
+                <a href="index.html" class="active">Hjem</a>
+                <a href="#fokus">Fokus</a>
+                <a href="#verktoy" class="highlight-link">Verktøy</a>
+                <a href="academy/index.html">Academy</a>
+                <a href="SameieNett.html">SameieNett</a>
+                <a href="#portal">Portal</a>
+            </nav>
+
+            <a class="button primary" href="#verktoy">
+                Åpne verktøy
+            </a>
+
+        </div>
+    </header>
+
+    <main>
+
+        <!-- =====================================================
+             HERO
+             ===================================================== -->
+
+        <section class="page-header">
+            <div class="container hero-grid">
+
+                <div class="card hero-panel portal-hero">
+
+                    <div class="hero-eyebrow">
+                        <span class="hero-chip">Personlig portal</span>
+                        <span class="hero-chip">Teknologi</span>
+                        <span class="hero-chip">Læring</span>
+                        <span class="hero-chip">Prosjekter</span>
+                    </div>
+
+                    <div class="kicker">
+                        IANS.NO · IDEER · KUNNSKAP · VERKTØY
+                    </div>
+
+                    <h1>
+                        Et sted for det jeg lærer, bygger og utvikler.
+                    </h1>
+
+                    <p class="lead">
+                        ians.no er min personlige portal for teknologi,
+                        læring, egne konsepter, praktiske verktøy og prosjekter.
+                        Her samler jeg ting jeg faktisk bruker og ønsker
+                        å utvikle videre.
+                    </p>
+
+                    <div class="hero-actions">
+
+                        <a class="button primary" href="#fokus">
+                            Utforsk portalen
+                        </a>
+
+                        <a class="button secondary" href="SameieNett.html">
+                            SameieNett
+                        </a>
+
+                        <a class="button secondary" href="academy/index.html">
+                            Statnett Academy
+                        </a>
+
+                    </div>
+
+                    <div class="hero-metric-grid">
+
+                        <div class="hero-metric">
+                            <strong>Læring</strong>
+                            <span>Academy og faglig utvikling</span>
+                        </div>
+
+                        <div class="hero-metric">
+                            <strong>Konsepter</strong>
+                            <span>SameieNett og nye ideer</span>
+                        </div>
+
+                        <div class="hero-metric">
+                            <strong>Verktøy</strong>
+                            <span>Bygging, økonomi og teknologi</span>
+                        </div>
+
+                    </div>
+
+                    <!-- WORLD CLOCKS -->
+
+                    <div class="clock-grid">
+
+                        <div class="clock-card">
+
+                            <div class="clock-header">
+                                <div>
+                                    <div class="clock-title">Norge</div>
+                                    <div class="clock-sub">Lokal tid</div>
+                                </div>
+
+                                <span class="badge ok">NO</span>
+                            </div>
+
+                            <div
+                                class="digital-clock"
+                                id="clock-no-digital"
+                            >
+                                --:--:--
+                            </div>
+
+                            <div
+                                class="digital-date"
+                                id="clock-no-date"
+                            >
+                                Laster dato...
+                            </div>
+
+                            <div class="analog-wrap">
+                                <div
+                                    class="analog-clock"
+                                    aria-label="Analog klokke for Norge"
+                                >
+
+                                    <div class="marker hour" style="transform: rotate(0deg)"></div>
+                                    <div class="marker" style="transform: rotate(30deg)"></div>
+                                    <div class="marker" style="transform: rotate(60deg)"></div>
+                                    <div class="marker hour" style="transform: rotate(90deg)"></div>
+                                    <div class="marker" style="transform: rotate(120deg)"></div>
+                                    <div class="marker" style="transform: rotate(150deg)"></div>
+                                    <div class="marker hour" style="transform: rotate(180deg)"></div>
+                                    <div class="marker" style="transform: rotate(210deg)"></div>
+                                    <div class="marker" style="transform: rotate(240deg)"></div>
+                                    <div class="marker hour" style="transform: rotate(270deg)"></div>
+                                    <div class="marker" style="transform: rotate(300deg)"></div>
+                                    <div class="marker" style="transform: rotate(330deg)"></div>
+
+                                    <div class="hand hour" id="clock-no-hour"></div>
+                                    <div class="hand minute" id="clock-no-minute"></div>
+                                    <div class="hand second" id="clock-no-second"></div>
+                                    <div class="clock-center"></div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="clock-card">
+
+                            <div class="clock-header">
+                                <div>
+                                    <div class="clock-title">Filippinene</div>
+                                    <div class="clock-sub">Manila / PH-tid</div>
+                                </div>
+
+                                <span class="badge">PH</span>
+                            </div>
+
+                            <div
+                                class="digital-clock"
+                                id="clock-ph-digital"
+                            >
+                                --:--:--
+                            </div>
+
+                            <div
+                                class="digital-date"
+                                id="clock-ph-date"
+                            >
+                                Laster dato...
+                            </div>
+
+                            <div class="analog-wrap">
+                                <div
+                                    class="analog-clock"
+                                    aria-label="Analog klokke for Filippinene"
+                                >
+
+                                    <div class="marker hour" style="transform: rotate(0deg)"></div>
+                                    <div class="marker" style="transform: rotate(30deg)"></div>
+                                    <div class="marker" style="transform: rotate(60deg)"></div>
+                                    <div class="marker hour" style="transform: rotate(90deg)"></div>
+                                    <div class="marker" style="transform: rotate(120deg)"></div>
+                                    <div class="marker" style="transform: rotate(150deg)"></div>
+                                    <div class="marker hour" style="transform: rotate(180deg)"></div>
+                                    <div class="marker" style="transform: rotate(210deg)"></div>
+                                    <div class="marker" style="transform: rotate(240deg)"></div>
+                                    <div class="marker hour" style="transform: rotate(270deg)"></div>
+                                    <div class="marker" style="transform: rotate(300deg)"></div>
+                                    <div class="marker" style="transform: rotate(330deg)"></div>
+
+                                    <div class="hand hour" id="clock-ph-hour"></div>
+                                    <div class="hand minute" id="clock-ph-minute"></div>
+                                    <div class="hand second" id="clock-ph-second"></div>
+                                    <div class="clock-center"></div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- HERO SIDE PANEL -->
+
+                <aside class="card side-stack">
+
+                    <div class="mini-card">
+                        <div class="mini-top">
+                            <strong>SameieNett</strong>
+                            <span class="badge">Konsept</span>
+                        </div>
+
+                        <div class="mini-value">
+                            Digital grunnmur for moderne boligbygg
+                        </div>
+
+                        <p class="muted">
+                            Enterprise-konsept for nettverk, Wi-Fi,
+                            sikkerhet, adgang, IoT, energi og fremtidig
+                            digital infrastruktur.
+                        </p>
+
+                        <a class="card-link" href="SameieNett.html">
+                            Utforsk konseptet →
+                        </a>
+                    </div>
+
+                    <div class="mini-card">
+                        <div class="mini-top">
+                            <strong>Statnett Academy</strong>
+                            <span class="badge academy-badge">Læring</span>
+                        </div>
+
+                        <div class="mini-value">
+                            Personlig læringsplattform
+                        </div>
+
+                        <p class="muted">
+                            Kraftsystemet, transmisjonsnettet,
+                            prosjektgjennomføring, planlegging,
+                            begreper og quiz.
+                        </p>
+
+                        <a class="card-link" href="academy/index.html">
+                            Start læringen →
+                        </a>
+                    </div>
+
+                    <div class="mini-card">
+                        <div class="mini-top">
+                            <strong>IANS Lab</strong>
+                            <span class="badge ok">3 verktøy</span>
+                        </div>
+
+                        <div class="mini-value">
+                            Fra idé til praktisk løsning
+                        </div>
+
+                        <p class="muted">
+                            Website Builder Light, Money Planner
+                            og Website Builder Pro.
+                        </p>
+
+                        <a class="card-link" href="#verktoy">
+                            Se verktøyene →
+                        </a>
+                    </div>
+
+                </aside>
+
+            </div>
+        </section>
+
+        <!-- =====================================================
+             FEATURED FOCUS
+             ===================================================== -->
+
+        <section class="section" id="fokus">
+            <div class="container">
+
+                <div class="section-intro">
+                    <div>
+                        <div class="kicker">
+                            DET JEG JOBBER MED NÅ
+                        </div>
+
+                        <h2>
+                            Tre områder med hver sin retning
+                        </h2>
+
+                        <p>
+                            Forsiden skal ikke forklare alt.
+                            Den skal gjøre det enkelt å forstå
+                            hva som er viktigst og hvor du kan gå videre.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="featured-grid">
+
+                    <article class="card feature-card sameienett">
+
+                        <div class="feature-icon">🏢</div>
+
+                        <span class="badge">
+                            Konsept & arkitektur
+                        </span>
+
+                        <h3>SameieNett</h3>
+
+                        <p>
+                            Et enterprise-konsept for hvordan sameier
+                            og borettslag kan eie en moderne digital
+                            grunnmur for nettverk, Wi-Fi, sikkerhet,
+                            adgang, kamera, energi og IoT.
+                        </p>
+
+                        <a class="card-link" href="SameieNett.html">
+                            Utforsk SameieNett →
+                        </a>
+
+                    </article>
+
+                    <article class="card feature-card academy">
+
+                        <div class="feature-icon">🎓</div>
+
+                        <span class="badge academy-badge">
+                            Læring
+                        </span>
+
+                        <h3>Statnett Academy</h3>
+
+                        <p>
+                            Min egen kunnskapsbase for rollen som
+                            planlegger, kraftsystemet, transmisjonsnettet
+                            og prosjektgjennomføring.
+                        </p>
+
+                        <a class="card-link" href="academy/index.html">
+                            Åpne Academy →
+                        </a>
+
+                    </article>
+
+                    <article class="card feature-card">
+
+                        <div class="feature-icon">🧰</div>
+
+                        <span class="badge ok">
+                            IANS Lab
+                        </span>
+
+                        <h3>Interaktive verktøy</h3>
+
+                        <p>
+                            Små løsninger som gjør ideer konkrete:
+                            bygg hjemmesider, analyser privatøkonomi
+                            og test nye konsepter direkte i nettleseren.
+                        </p>
+
+                        <a class="card-link" href="#verktoy">
+                            Se verktøyene →
+                        </a>
+
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =====================================================
+             TOOLS
+             ===================================================== -->
+
+        <section class="section tools-section" id="verktoy">
+            <div class="container">
+
+                <div class="section-intro">
+
+                    <div>
+                        <div class="kicker">
+                            IANS LAB · INTERAKTIVE VERKTØY
+                        </div>
+
+                        <h2>
+                            Verktøy som skal være nyttige
+                        </h2>
+
+                        <p>
+                            Hvert verktøy ligger som et eget område
+                            og kan utvikles videre uten å gjøre resten
+                            av portalen unødvendig komplisert.
+                        </p>
+                    </div>
+
+                    <span class="badge ok">
+                        3 tilgjengelige
+                    </span>
+
+                </div>
+
+                <div class="tool-grid">
+
+                    <!-- TOOL 01 -->
+
+                    <article class="card tool-card">
+
+                        <span class="badge tool-badge">
+                            LIGHT
+                        </span>
+
+                        <div class="tool-number">
+                            VERKTØY 01
+                        </div>
+
+                        <div class="tool-icon">
+                            ✨
+                        </div>
+
+                        <h3>
+                            Website Builder Light
+                        </h3>
+
+                        <p>
+                            En enkel veiviser for personer som vil
+                            lage sin første hjemmeside uten å måtte
+                            forstå alt på forhånd.
+                        </p>
+
+                        <div class="tool-list">
+                            <span>Spørsmål steg for steg</span>
+                            <span>Live forhåndsvisning</span>
+                            <span>Genererer ferdig HTML</span>
+                            <span>A–Å læringsguide</span>
+                        </div>
+
+                        <div class="tool-actions">
+                            <a
+                                class="tool-link primary"
+                                href="tools/website-builder-light/index.html"
+                            >
+                                Åpne Builder →
+                            </a>
+                        </div>
+
+                    </article>
+
+                    <!-- TOOL 02 -->
+
+                    <article class="card tool-card money">
+
+                        <span class="badge ok tool-badge">
+                            ØKONOMI
+                        </span>
+
+                        <div class="tool-number">
+                            VERKTØY 02
+                        </div>
+
+                        <div class="tool-icon">
+                            📊
+                        </div>
+
+                        <h3>
+                            Money Planner
+                        </h3>
+
+                        <p>
+                            Privat økonomisjekk med inntekter, utgifter,
+                            lån, kreditt og en handlingsplan som gjør
+                            tallene enklere å forstå.
+                        </p>
+
+                        <div class="tool-list">
+                            <span>Månedsbudsjett</span>
+                            <span>Gjeld og renter</span>
+                            <span>Belåningsgrad</span>
+                            <span>Personlig handlingsplan</span>
+                        </div>
+
+                        <div class="tool-actions">
+                            <a
+                                class="tool-link primary"
+                                href="tools/money-planner/index.html"
+                            >
+                                Åpne Money Planner →
+                            </a>
+                        </div>
+
+                    </article>
+
+                    <!-- TOOL 03 -->
+
+                    <article class="card tool-card pro">
+
+                        <span class="badge tool-badge">
+                            PRO
+                        </span>
+
+                        <div class="tool-number">
+                            VERKTØY 03
+                        </div>
+
+                        <div class="tool-icon">
+                            🚀
+                        </div>
+
+                        <h3>
+                            Website Builder Pro
+                        </h3>
+
+                        <p>
+                            En mer avansert generator med bransjevalg,
+                            designmodus, valgfrie seksjoner,
+                            live preview og eksport av komplett HTML.
+                        </p>
+
+                        <div class="tool-list">
+                            <span>Flere designvalg</span>
+                            <span>Valgfrie seksjoner</span>
+                            <span>Responsiv preview</span>
+                            <span>Direkte HTML-eksport</span>
+                        </div>
+
+                        <div class="tool-actions">
+                            <a
+                                class="tool-link primary"
+                                href="tools/website-builder-pro/index.html"
+                            >
+                                Åpne Pro →
+                            </a>
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =====================================================
+             PORTAL OVERVIEW
+             ===================================================== -->
+
+        <section class="section" id="portal">
+            <div class="container">
+
+                <div class="section-head">
+                    <div>
+                        <h2>
+                            Resten av portalen
+                        </h2>
+
+                        <p>
+                            Teknologi, prosjekter og hverdag.
+                            Alt er fortsatt tilgjengelig,
+                            men trenger ikke konkurrere om oppmerksomheten
+                            øverst på forsiden.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="portal-grid">
+
+                    <article class="card portal-card">
+
+                        <div class="card-top">
+                            <div class="card-icon">⚡</div>
+                            <span class="badge">Tech</span>
+                        </div>
+
+                        <h3>Strøm</h3>
+
+                        <p>
+                            Teknisk strømvisning med paneler,
+                            graf og videre muligheter for analyser.
+                        </p>
+
+                        <a class="card-link" href="strom.html">
+                            Åpne strøm →
+                        </a>
+
+                    </article>
+
+                    <article class="card portal-card">
+
+                        <div class="card-top">
+                            <div class="card-icon">🌐</div>
+                            <span class="badge">Verktøy</span>
+                        </div>
+
+                        <h3>DNS-sjekk</h3>
+
+                        <p>
+                            DNS-oppslag direkte i nettleseren
+                            for raske kontroller av domener
+                            og webtjenester.
+                        </p>
+
+                        <a class="card-link" href="dns-sjekk.html">
+                            Åpne DNS →
+                        </a>
+
+                    </article>
+
+                    <article class="card portal-card">
+
+                        <div class="card-top">
+                            <div class="card-icon">🗓️</div>
+                            <span class="badge">Plan</span>
+                        </div>
+
+                        <h3>Kalender</h3>
+
+                        <p>
+                            Planer, avtaler, aktiviteter
+                            og viktige datoer samlet på ett sted.
+                        </p>
+
+                        <a class="card-link" href="kalender.html">
+                            Åpne kalender →
+                        </a>
+
+                    </article>
+
+                    <article class="card portal-card">
+
+                        <div class="card-top">
+                            <div class="card-icon">🚗</div>
+                            <span class="badge">EV</span>
+                        </div>
+
+                        <h3>Volvo C40</h3>
+
+                        <p>
+                            Bilprofil med plass for rekkevidde,
+                            lading, service, reiser og kostnader.
+                        </p>
+
+                        <a class="card-link" href="volvo-c40.html">
+                            Åpne Volvo C40 →
+                        </a>
+
+                    </article>
+
+                    <article class="card portal-card">
+
+                        <div class="card-top">
+                            <div class="card-icon">🏠</div>
+                            <span class="badge">Prosjekt</span>
+                        </div>
+
+                        <h3>Maimyra</h3>
+
+                        <p>
+                            Bolig, planer, prioriteringer,
+                            dokumentasjon og videre utvikling.
+                        </p>
+
+                        <a class="card-link" href="maimyra.html">
+                            Åpne Maimyra →
+                        </a>
+
+                    </article>
+
+                    <article class="card portal-card">
+
+                        <div class="card-top">
+                            <div class="card-icon">🖼️</div>
+                            <span class="badge">Media</span>
+                        </div>
+
+                        <h3>Galleri</h3>
+
+                        <p>
+                            Bilder, visuelle inntrykk,
+                            minner og inspirasjon.
+                        </p>
+
+                        <a class="card-link" href="galleri.html">
+                            Åpne galleri →
+                        </a>
+
+                    </article>
+
+                    <article class="card portal-card">
+
+                        <div class="card-top">
+                            <div class="card-icon">🍽️</div>
+                            <span class="badge">Hverdag</span>
+                        </div>
+
+                        <h3>Middag</h3>
+
+                        <p>
+                            Hverdagsmat, forslag,
+                            oppskrifter og ukemeny.
+                        </p>
+
+                        <a class="card-link" href="middag.html">
+                            Åpne middag →
+                        </a>
+
+                    </article>
+
+                    <article class="card portal-card">
+
+                        <div class="card-top">
+                            <div class="card-icon">🍰</div>
+                            <span class="badge">Hverdag</span>
+                        </div>
+
+                        <h3>Dessert</h3>
+
+                        <p>
+                            Dessertforslag, favoritter
+                            og søtere innhold i portalen.
+                        </p>
+
+                        <a class="card-link" href="dessert.html">
+                            Åpne dessert →
+                        </a>
+
+                    </article>
+
+                    <article class="card portal-card">
+
+                        <div class="card-top">
+                            <div class="card-icon">🥐</div>
+                            <span class="badge">Hverdag</span>
+                        </div>
+
+                        <h3>Boller</h3>
+
+                        <p>
+                            Boller, bakst og oppskrifter
+                            i samme stil som resten av nettstedet.
+                        </p>
+
+                        <a class="card-link" href="boller.html">
+                            Åpne boller →
+                        </a>
+
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+
+    <footer class="footer">
+        <div class="container">
+            Henrik Bergfjord · ians.no · Teknologi · Læring · Prosjekter · Verktøy
+        </div>
+    </footer>
+
+    <!-- =========================================================
+         WORLD CLOCK SCRIPT
+         ========================================================= -->
+
+    <script>
+        function updateClock(
+            timeZone,
+            digitalId,
+            dateId,
+            hourId,
+            minuteId,
+            secondId,
+            locale = "no-NO"
+        ) {
+            const now = new Date();
+
+            const timeFormatter = new Intl.DateTimeFormat("en-GB", {
+                timeZone,
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false
+            });
+
+            const dateFormatter = new Intl.DateTimeFormat(locale, {
+                timeZone,
+                weekday: "long",
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            });
+
+            const parts = timeFormatter.formatToParts(now);
+
+            const getPart = (type) => {
+                return Number(
+                    parts.find((part) => part.type === type)?.value || 0
+                );
+            };
+
+            const hour = getPart("hour");
+            const minute = getPart("minute");
+            const second = getPart("second");
+
+            const digital = document.getElementById(digitalId);
+            const date = document.getElementById(dateId);
+            const hourHand = document.getElementById(hourId);
+            const minuteHand = document.getElementById(minuteId);
+            const secondHand = document.getElementById(secondId);
+
+            if (
+                !digital ||
+                !date ||
+                !hourHand ||
+                !minuteHand ||
+                !secondHand
+            ) {
+                return;
+            }
+
+            digital.textContent = timeFormatter.format(now);
+            date.textContent = dateFormatter.format(now);
+
+            hourHand.style.transform =
+                `rotate(${(hour % 12) * 30 + minute * 0.5 + second / 120}deg)`;
+
+            minuteHand.style.transform =
+                `rotate(${minute * 6 + second * 0.1}deg)`;
+
+            secondHand.style.transform =
+                `rotate(${second * 6}deg)`;
+        }
+
+        function tickClocks() {
+            updateClock(
+                "Europe/Oslo",
+                "clock-no-digital",
+                "clock-no-date",
+                "clock-no-hour",
+                "clock-no-minute",
+                "clock-no-second",
+                "no-NO"
+            );
+
+            updateClock(
+                "Asia/Manila",
+                "clock-ph-digital",
+                "clock-ph-date",
+                "clock-ph-hour",
+                "clock-ph-minute",
+                "clock-ph-second",
+                "en-PH"
+            );
+        }
+
+        tickClocks();
+        setInterval(tickClocks, 1000);
+    </script>
+
+</body>
+</html>
