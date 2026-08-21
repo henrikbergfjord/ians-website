@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SameieNett Boliger | Henrik Bergfjord</title>
+
+    <meta
+        name="description"
+        content="Boliglaget handler om god dekning og tydelige digitale grenser. Hver boenhet kan få eget segment, profesjonelt Wi-Fi og kablet nett uten at naboenes trafikk blandes sammen."
+    >
+
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="assets/sameienett.css">
+
+    <style>
+        .depth-page {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 72% 25%, rgba(69, 192, 255, .12), transparent 28%),
+                #050e18;
+        }
+
+        .depth-hero {
+            padding: 82px 0 48px;
+        }
+
+        .depth-grid {
+            display: grid;
+            grid-template-columns: .9fr 1.1fr;
+            gap: 44px;
+            align-items: center;
+        }
+
+        .depth-copy h1 {
+            margin: 10px 0 18px;
+            font-size: clamp(3rem, 6vw, 5.6rem);
+            line-height: .96;
+            letter-spacing: -.055em;
+        }
+
+        .depth-copy p {
+            max-width: 650px;
+            color: #9bb1c8;
+            font-size: 1.08rem;
+            line-height: 1.7;
+        }
+
+        .depth-orbit {
+            position: relative;
+            min-height: 560px;
+        }
+
+        .depth-ring {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(102, 215, 255, .16);
+            border-radius: 50%;
+        }
+
+        .depth-ring.r1 {
+            width: 270px;
+            height: 270px;
+        }
+
+        .depth-ring.r2 {
+            width: 400px;
+            height: 400px;
+            border-style: dashed;
+        }
+
+        .depth-ring.r3 {
+            width: 515px;
+            height: 515px;
+            border-style: dotted;
+            border-color: rgba(164, 115, 255, .24);
+        }
+
+        .depth-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 180px;
+            height: 180px;
+            transform: translate(-50%, -50%);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            border: 1px solid rgba(97, 226, 255, .4);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 40% 35%, rgba(102, 219, 255, .20), transparent 40%),
+                #0a1c2d;
+            box-shadow: 0 0 60px rgba(54, 180, 255, .15);
+        }
+
+        .depth-center strong {
+            font-size: 1rem;
+            letter-spacing: .06em;
+        }
+
+        .depth-center small {
+            display: block;
+            margin-top: 5px;
+            color: #7894ad;
+        }
+
+        .depth-node {
+            position: absolute;
+            width: 88px;
+            min-height: 76px;
+            transform: translate(-50%, -50%);
+            display: grid;
+            place-items: center;
+            padding: 8px;
+            border: 1px solid rgba(255,255,255,.11);
+            border-radius: 16px;
+            background: rgba(8, 24, 42, .96);
+            text-align: center;
+            animation: depthFloat 4s ease-in-out infinite;
+        }
+
+        .depth-node strong,
+        .depth-node small {
+            display: block;
+        }
+
+        .depth-node strong {
+            font-size: .68rem;
+        }
+
+        .depth-node small {
+            margin-top: 3px;
+            color: #6f8da7;
+            font-size: .52rem;
+        }
+
+        .dn1 { left: 50%; top: 7%; }
+        .dn2 { left: 86%; top: 28%; animation-delay: -.6s; }
+        .dn3 { left: 89%; top: 70%; animation-delay: -1.2s; }
+        .dn4 { left: 50%; top: 93%; animation-delay: -1.8s; }
+        .dn5 { left: 13%; top: 70%; animation-delay: -2.4s; }
+        .dn6 { left: 10%; top: 28%; animation-delay: -3s; }
+
+        @keyframes depthFloat {
+            50% {
+                margin-top: -7px;
+                box-shadow: 0 12px 30px rgba(59, 181, 255, .11);
+            }
+        }
+
+        .depth-content {
+            padding: 30px 0 90px;
+        }
+
+        .depth-card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .depth-card {
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 20px;
+            background: rgba(8, 23, 40, .66);
+        }
+
+        .depth-card > span {
+            color: #71e6ff;
+            font-size: .7rem;
+            font-weight: 900;
+            letter-spacing: .13em;
+        }
+
+        .depth-card h2 {
+            margin: 12px 0 8px;
+            font-size: 1.3rem;
+        }
+
+        .depth-card p {
+            margin: 0;
+            color: #8fa8bf;
+            line-height: 1.65;
+        }
+
+        @media (max-width: 900px) {
+            .depth-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .depth-orbit {
+                max-width: 650px;
+                width: 100%;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .depth-orbit {
+                width: calc(100% + 100px);
+                margin: -35px -50px;
+                transform: scale(.76);
+            }
+
+            .depth-card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .depth-node {
+                animation: none;
+            }
+        }
+    
+        /* =========================================================
+           TECHNICAL PRODUCT VISUAL
+           ========================================================= */
+
+        .tech-visual-section {
+            padding: 18px 0 74px;
+        }
+
+        .tech-visual-head {
+            display: grid;
+            grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+            gap: 30px;
+            align-items: end;
+            margin-bottom: 24px;
+        }
+
+        .tech-visual-head p {
+            margin: 0;
+            color: #8fa8bf;
+            line-height: 1.65;
+        }
+
+        .tech-canvas {
+            position: relative;
+            min-height: 520px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 24px;
+            background:
+                linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(73,181,255,.08), transparent 42%),
+                rgba(6,18,32,.84);
+            background-size: 36px 36px, 36px 36px, auto, auto;
+        }
+
+        .tech-canvas::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(
+                180deg,
+                transparent 0%,
+                rgba(74,201,255,.035) 50%,
+                transparent 100%
+            );
+            animation: techScan 5.5s linear infinite;
+        }
+
+        @keyframes techScan {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(100%); }
+        }
+
+        .tech-label {
+            position: absolute;
+            z-index: 8;
+            display: inline-flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 8px 10px;
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 10px;
+            background: rgba(5,18,32,.9);
+            box-shadow: 0 8px 26px rgba(0,0,0,.22);
+        }
+
+        .tech-label strong {
+            font-size: .68rem;
+        }
+
+        .tech-label small {
+            color: #6f8ca7;
+            font-size: .53rem;
+        }
+
+        .tech-line {
+            position: absolute;
+            z-index: 2;
+            height: 1px;
+            transform-origin: left center;
+            background: linear-gradient(90deg, rgba(95,226,255,.58), rgba(92,127,255,.18));
+        }
+
+        .tech-line::after {
+            content: "";
+            position: absolute;
+            right: -2px;
+            top: -2px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #70e7ff;
+            box-shadow: 0 0 12px rgba(112,231,255,.6);
+        }
+
+        .tech-kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .tech-kpi {
+            padding: 15px 16px;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 16px;
+            background: rgba(8,23,40,.58);
+        }
+
+        .tech-kpi small,
+        .tech-kpi strong {
+            display: block;
+        }
+
+        .tech-kpi small {
+            margin-bottom: 5px;
+            color: #6f8ca8;
+            font-size: .64rem;
+        }
+
+        .tech-kpi strong {
+            font-size: .95rem;
+        }
+
+        .tech-device {
+            position: absolute;
+            z-index: 4;
+            border: 1px solid rgba(108,220,255,.24);
+            background:
+                linear-gradient(145deg, rgba(20,45,69,.94), rgba(7,22,38,.96));
+            box-shadow:
+                0 18px 50px rgba(0,0,0,.28),
+                inset 0 0 30px rgba(102,218,255,.035);
+        }
+
+        .tech-device .device-title {
+            position: absolute;
+            left: 14px;
+            bottom: 11px;
+            color: #8fb1cb;
+            font-size: .57rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .tech-led {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #65e5ff;
+            box-shadow: 0 0 12px rgba(101,229,255,.65);
+        }
+
+        @media (max-width: 860px) {
+            .tech-visual-head {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-kpi-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tech-canvas {
+                min-height: 470px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .tech-kpi-row {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-canvas {
+                min-height: 430px;
+            }
+        }
+
+        /* CORE */
+        .core-gateway {
+            left: 50%;
+            top: 50%;
+            width: 330px;
+            height: 178px;
+            transform: translate(-50%, -50%);
+            border-radius: 22px;
+        }
+
+        .core-screen {
+            position: absolute;
+            left: 26px;
+            right: 26px;
+            top: 50px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px 16px;
+            align-items: center;
+            padding: 18px;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 14px;
+            background: rgba(3,13,24,.72);
+        }
+
+        .core-screen span,
+        .core-screen small {
+            color: #6f8fa8;
+            font-size: .58rem;
+        }
+
+        .core-screen strong {
+            color: #70e7ff;
+            font-size: 1rem;
+        }
+
+        .core-policy-ring {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 430px;
+            height: 430px;
+            transform: translate(-50%, -50%);
+            display: grid;
+            place-items: start center;
+            padding-top: 12px;
+            border: 1px dashed rgba(100,219,255,.18);
+            border-radius: 50%;
+            color: #4d718e;
+            font-size: .57rem;
+            font-weight: 900;
+            letter-spacing: .12em;
+        }
+
+        .core-wan { left: 5%; top: 44%; }
+        .core-controller { right: 6%; top: 18%; }
+        .core-logging { right: 5%; bottom: 17%; }
+        .core-vlan { left: 7%; bottom: 16%; }
+        .core-backbone { left: 50%; bottom: 4%; transform: translateX(-50%); }
+
+        .core-line-wan { left: 19%; top: 48%; width: 185px; }
+        .core-line-controller { left: 66%; top: 35%; width: 150px; transform: rotate(-28deg); }
+        .core-line-logging { left: 65%; top: 65%; width: 158px; transform: rotate(26deg); }
+        .core-line-vlan { left: 20%; top: 67%; width: 170px; transform: rotate(-25deg); }
+        .core-line-backbone { left: 50%; top: 67%; width: 128px; transform: rotate(90deg); }
+
+        /* DISTRIBUTION */
+        .rack-core,
+        .rack-a,
+        .rack-b,
+        .rack-c {
+            width: 205px;
+            height: 105px;
+            border-radius: 18px;
+        }
+
+        .rack-core {
+            left: 50%;
+            top: 20%;
+            transform: translate(-50%, -50%);
+        }
+
+        .rack-a { left: 20%; bottom: 13%; }
+        .rack-b { left: 50%; bottom: 8%; transform: translateX(-50%); }
+        .rack-c { right: 20%; bottom: 13%; }
+
+        .rack-face {
+            position: absolute;
+            left: 15px;
+            right: 15px;
+            top: 16px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .rack-face > span {
+            color: #7694ac;
+            font-size: .58rem;
+            font-weight: 800;
+        }
+
+        .rack-ports {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 5px;
+        }
+
+        .rack-ports i {
+            height: 10px;
+            border: 1px solid rgba(102,220,255,.2);
+            border-radius: 2px;
+            background: rgba(98,213,255,.08);
+        }
+
+        .fiber-path {
+            position: absolute;
+            height: 2px;
+            transform-origin: left center;
+            background: linear-gradient(90deg, #75e7ff, rgba(97,118,255,.26));
+            box-shadow: 0 0 14px rgba(105,221,255,.18);
+        }
+
+        .fp1 { left: 45%; top: 35%; width: 220px; transform: rotate(132deg); }
+        .fp2 { left: 50%; top: 35%; width: 205px; transform: rotate(90deg); }
+        .fp3 { left: 55%; top: 35%; width: 220px; transform: rotate(48deg); }
+
+        .dist-fiber { left: 5%; top: 13%; }
+        .dist-poe { right: 5%; top: 14%; }
+        .dist-vlan { left: 50%; top: 48%; transform: translate(-50%, -50%); }
+
+        /* HOMES */
+        .apartment-frame {
+            position: absolute;
+            inset: 55px 70px;
+            border: 2px solid rgba(255,255,255,.10);
+            border-radius: 20px;
+            background: rgba(8,24,42,.32);
+        }
+
+        .apartment-frame::before {
+            content: "";
+            position: absolute;
+            left: 56%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255,255,255,.08);
+        }
+
+        .apartment-room {
+            position: absolute;
+            color: #4e708a;
+            font-size: .58rem;
+            font-weight: 900;
+            letter-spacing: .1em;
+        }
+
+        .living { left: 22px; top: 18px; }
+        .bedroom { right: 22px; top: 18px; }
+
+        .apartment-cabinet {
+            left: 11%;
+            bottom: 12%;
+            width: 170px;
+            height: 205px;
+            border-radius: 18px;
+        }
+
+        .cabinet-title {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            color: #7896ae;
+            font-size: .56rem;
+            font-weight: 900;
+        }
+
+        .cabinet-module {
+            position: absolute;
+            top: 48px;
+            width: 54px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(102,220,255,.18);
+            border-radius: 8px;
+            color: #6fdef5;
+            font-size: .52rem;
+            font-weight: 900;
+        }
+
+        .fiber-module { left: 17px; }
+        .rj-module { right: 17px; }
+
+        .cabinet-ports {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            top: 110px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 7px;
+        }
+
+        .cabinet-ports i {
+            height: 18px;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 3px;
+        }
+
+        .inwall-ap {
+            right: 16%;
+            top: 28%;
+            width: 115px;
+            height: 155px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            text-align: center;
+        }
+
+        .inwall-ap strong {
+            margin-top: 22px;
+            font-size: 1.6rem;
+        }
+
+        .inwall-ap small {
+            margin-top: -25px;
+            color: #7694ab;
+            font-size: .55rem;
+            font-weight: 800;
+        }
+
+        .ap-led {
+            position: absolute;
+            top: 18px;
+            width: 34px;
+            height: 3px;
+            border-radius: 999px;
+            background: #6ce7ff;
+            box-shadow: 0 0 12px rgba(108,231,255,.5);
+        }
+
+        .wifi-wave {
+            position: absolute;
+            right: 8%;
+            top: 38%;
+            border: 1px solid rgba(103,218,255,.18);
+            border-radius: 50%;
+        }
+
+        .w1 { width: 190px; height: 190px; }
+        .w2 { width: 270px; height: 270px; right: 2%; top: 30%; }
+        .w3 { width: 355px; height: 355px; right: -4%; top: 20%; }
+
+        .wall-port {
+            position: absolute;
+            width: 50px;
+            height: 31px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 6px;
+            background: rgba(5,18,32,.85);
+            color: #7c9ab1;
+            font-size: .5rem;
+            font-weight: 900;
+        }
+
+        .port-living { left: 47%; bottom: 15%; }
+        .port-bedroom { right: 7%; bottom: 15%; }
+
+        .cable-run {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(91,224,255,.5), rgba(101,117,255,.18));
+        }
+
+        .cr1 { left: 30%; bottom: 22%; width: 220px; }
+        .cr2 { left: 30%; bottom: 22%; width: 420px; transform: rotate(-1deg); }
+        .cr3 { left: 30%; bottom: 22%; width: 360px; transform: rotate(-28deg); transform-origin: left center; }
+
+        .home-vlan { left: 43%; top: 12%; }
+        .home-wpa { right: 5%; top: 12%; }
+
+        /* SERVICES */
+        .service-core {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 180px;
+            height: 180px;
+            transform: translate(-50%, -50%);
+            display: grid;
+            place-items: center;
+            text-align: center;
+            border: 1px solid rgba(101,225,255,.36);
+            border-radius: 50%;
+            background: radial-gradient(circle at 45% 35%, rgba(104,220,255,.16), transparent 42%), #0a1d30;
+            box-shadow: 0 0 48px rgba(76,190,255,.14);
+        }
+
+        .service-core strong,
+        .service-core small {
+            display: block;
+        }
+
+        .service-core small {
+            margin-top: -54px;
+            color: #6f8ea6;
+            font-size: .47rem;
+            letter-spacing: .07em;
+        }
+
+        .service-device {
+            position: absolute;
+            width: 105px;
+            min-height: 105px;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 18px;
+            background: rgba(7,23,40,.95);
+            text-align: center;
+            box-shadow: 0 12px 34px rgba(0,0,0,.24);
+        }
+
+        .service-device strong,
+        .service-device small {
+            display: block;
+        }
+
+        .service-device strong {
+            margin-top: 8px;
+            font-size: .62rem;
+        }
+
+        .service-device small {
+            margin-top: 2px;
+            color: #6e8ba5;
+            font-size: .5rem;
+        }
+
+        .camera-device { left: 50%; top: 5%; transform: translateX(-50%); }
+        .access-device { right: 8%; top: 20%; }
+        .energy-device { right: 5%; bottom: 14%; }
+        .iot-device { left: 50%; bottom: 4%; transform: translateX(-50%); }
+        .garage-device { left: 5%; bottom: 14%; }
+        .service-vendor { left: 8%; top: 20%; }
+
+        .camera-body {
+            width: 56px;
+            height: 34px;
+            margin: 6px auto 0;
+            border-radius: 18px 18px 10px 10px;
+            background: linear-gradient(145deg, #dce8ef, #6d8394);
+            box-shadow: inset -8px -5px 12px rgba(0,0,0,.15);
+        }
+
+        .camera-body::after {
+            content: "";
+            display: block;
+            width: 18px;
+            height: 18px;
+            margin: 8px auto 0;
+            border-radius: 50%;
+            background: #09131d;
+            box-shadow: inset 0 0 0 4px #263849, 0 0 8px rgba(94,213,255,.2);
+        }
+
+        .reader-body,
+        .meter-body,
+        .sensor-body,
+        .garage-body,
+        .vendor-body {
+            width: 54px;
+            height: 54px;
+            margin: 4px auto 0;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(104,221,255,.18);
+            border-radius: 12px;
+            background: linear-gradient(145deg, rgba(31,59,81,.9), rgba(10,29,46,.96));
+            color: #75e7ff;
+            font-size: .66rem;
+            font-weight: 900;
+        }
+
+        .meter-body span {
+            font-size: .78rem;
+        }
+
+        .meter-body small {
+            color: #7896ad;
+            font-size: .42rem;
+        }
+
+        .service-link {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 190px;
+            height: 1px;
+            transform-origin: left center;
+            background: linear-gradient(90deg, rgba(111,228,255,.42), rgba(142,99,255,.12));
+        }
+
+        .sl1 { transform: rotate(-90deg); }
+        .sl2 { transform: rotate(-35deg); }
+        .sl3 { transform: rotate(32deg); }
+        .sl4 { transform: rotate(90deg); }
+        .sl5 { transform: rotate(148deg); }
+        .sl6 { transform: rotate(213deg); }
+
+        @media (max-width: 860px) {
+            .core-gateway {
+                width: 280px;
+            }
+
+            .core-policy-ring {
+                width: 365px;
+                height: 365px;
+            }
+
+            .rack-a { left: 8%; }
+            .rack-c { right: 8%; }
+
+            .apartment-frame {
+                inset: 45px 30px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .core-policy-ring {
+                width: 320px;
+                height: 320px;
+            }
+
+            .core-controller,
+            .core-logging,
+            .core-vlan,
+            .core-wan {
+                transform: scale(.85);
+            }
+
+            .rack-core,
+            .rack-a,
+            .rack-b,
+            .rack-c {
+                width: 150px;
+                height: 92px;
+            }
+
+            .rack-a { left: 3%; }
+            .rack-c { right: 3%; }
+
+            .apartment-frame {
+                inset: 35px 18px;
+            }
+
+            .apartment-cabinet {
+                transform: scale(.78);
+                transform-origin: bottom left;
+            }
+
+            .inwall-ap {
+                transform: scale(.8);
+                transform-origin: top right;
+            }
+
+            .service-device {
+                transform: scale(.82);
+            }
+
+            .camera-device,
+            .iot-device {
+                transform: translateX(-50%) scale(.82);
+            }
+        }
+
+    </style>
+</head>
+
+<body class="sn-page depth-page">
+
+    <header class="topbar">
+        <div class="container nav">
+
+            <a class="brand" href="index.html">
+                <span class="brand-mark"></span>
+                <span>Henrik Bergfjord</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="SameieNett.html">SameieNett</a>
+                <a class="active" href="sameienett-boliger.html">03 · Boliger</a>
+            </nav>
+
+            <a class="button secondary" href="SameieNett.html#arkitektur">
+                ← Arkitekturen
+            </a>
+
+        </div>
+    </header>
+
+    <main>
+
+        <section class="depth-hero">
+            <div class="sn-shell depth-grid">
+
+                <div class="depth-copy">
+
+                    <div class="sn-kicker">
+                        SAMEIENETT · HOMES · PRIVATE ZONES
+                    </div>
+
+                    <h1>
+                        Hver bolig som en egen sikker sone.
+                    </h1>
+
+                    <p>
+                        Boliglaget handler om god dekning og tydelige digitale grenser. Hver boenhet kan få eget segment, profesjonelt Wi-Fi og kablet nett uten at naboenes trafikk blandes sammen.
+                    </p>
+
+                    <div class="sn-actions">
+                        <a class="sn-btn primary" href="#detaljer">
+                            Gå i dybden ↓
+                        </a>
+
+                        <a class="sn-btn ghost" href="SameieNett.html#arkitektur">
+                            Tilbake til 01–04
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="depth-orbit">
+
+                    <div class="depth-ring r1"></div>
+                    <div class="depth-ring r2"></div>
+                    <div class="depth-ring r3"></div>
+
+                    <div class="depth-center">
+                        <div>
+                            <strong>BOLIGNETT</strong>
+                            <small>03 · SAMEIENETT</small>
+                        </div>
+                    </div>
+
+                        <span class="depth-node dn1">
+                            <strong>AP</strong>
+                            <small>Wi-Fi</small>
+                        </span>
+                        <span class="depth-node dn2">
+                            <strong>VLAN</strong>
+                            <small>Isolation</small>
+                        </span>
+                        <span class="depth-node dn3">
+                            <strong>WPA3</strong>
+                            <small>Security</small>
+                        </span>
+                        <span class="depth-node dn4">
+                            <strong>Ethernet</strong>
+                            <small>Wired</small>
+                        </span>
+                        <span class="depth-node dn5">
+                            <strong>TV</strong>
+                            <small>Optional</small>
+                        </span>
+                        <span class="depth-node dn6">
+                            <strong>Guest</strong>
+                            <small>Access</small>
+                        </span>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <section class="tech-visual-section">
+            <div class="sn-shell">
+
+                <div class="tech-visual-head">
+                    <div>
+                        <div class="sn-kicker">TEKNISK VISUALISERING</div>
+                        <h2>Fra leilighetsskap til Wi-Fi</h2>
+                    </div>
+
+                    <p>
+                        Hver bolig kan behandles som en egen digital sone. Illustrasjonen viser
+                        et forenklet leilighetsskap med fiber/RJ45-overgang, kablet spredenett
+                        og et profesjonelt In-Wall-aksesspunkt i boligen.
+                    </p>
+                </div>
+
+                <div class="tech-canvas homes-tech">
+
+                    <div class="apartment-frame">
+
+                        <div class="apartment-room living">
+                            <span>STUE</span>
+                        </div>
+
+                        <div class="apartment-room bedroom">
+                            <span>SOVEROM</span>
+                        </div>
+
+                        <div class="tech-device apartment-cabinet">
+                            <div class="cabinet-title">LEILIGHETSSKAP</div>
+
+                            <div class="cabinet-module fiber-module">
+                                FIBER
+                            </div>
+
+                            <div class="cabinet-module rj-module">
+                                RJ45
+                            </div>
+
+                            <div class="cabinet-ports">
+                                <i></i><i></i><i></i><i></i>
+                            </div>
+
+                            <div class="device-title">
+                                PATCH / CONVERTER
+                            </div>
+                        </div>
+
+                        <div class="tech-device inwall-ap">
+                            <div class="ap-led"></div>
+                            <strong>U7</strong>
+                            <small>IN-WALL</small>
+                            <div class="device-title">WI-FI AP</div>
+                        </div>
+
+                        <div class="wifi-wave w1"></div>
+                        <div class="wifi-wave w2"></div>
+                        <div class="wifi-wave w3"></div>
+
+                        <div class="wall-port port-living">RJ45</div>
+                        <div class="wall-port port-bedroom">RJ45</div>
+
+                        <div class="cable-run cr1"></div>
+                        <div class="cable-run cr2"></div>
+                        <div class="cable-run cr3"></div>
+
+                    </div>
+
+                    <div class="tech-label home-vlan">
+                        <strong>Eget VLAN</strong>
+                        <small>Isolert boenhet</small>
+                    </div>
+
+                    <div class="tech-label home-wpa">
+                        <strong>WPA3</strong>
+                        <small>Wireless security</small>
+                    </div>
+
+                </div>
+
+                <div class="tech-kpi-row">
+                    <div class="tech-kpi">
+                        <small>WIFI</small>
+                        <strong>AP i riktig sone</strong>
+                    </div>
+
+                    <div class="tech-kpi">
+                        <small>WIRED</small>
+                        <strong>RJ45-spredenett</strong>
+                    </div>
+
+                    <div class="tech-kpi">
+                        <small>SECURITY</small>
+                        <strong>Eget VLAN</strong>
+                    </div>
+
+                    <div class="tech-kpi">
+                        <small>CHOICE</small>
+                        <strong>TV som eget lag</strong>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <section class="depth-content" id="detaljer">
+            <div class="sn-shell">
+
+                <div class="depth-card-grid">
+                    <article class="depth-card">
+                        <span>03A</span>
+                        <h2>Profesjonelt Wi-Fi</h2>
+                        <p>Aksesspunktet plasseres for dekning og kapasitet, ikke bare der leverandørboksen står.</p>
+                    </article>
+                    <article class="depth-card">
+                        <span>03B</span>
+                        <h2>Isolasjon</h2>
+                        <p>Hver bolig kan få eget logisk segment og kontrollerte grenser.</p>
+                    </article>
+                    <article class="depth-card">
+                        <span>03C</span>
+                        <h2>Kablet nett</h2>
+                        <p>Spredenett kan brukes for TV, arbeidsplass og faste enheter.</p>
+                    </article>
+                    <article class="depth-card">
+                        <span>03D</span>
+                        <h2>Tjenestefrihet</h2>
+                        <p>Infrastruktur og innhold kan behandles som separate lag.</p>
+                    </article>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+</body>
+
+</html>
