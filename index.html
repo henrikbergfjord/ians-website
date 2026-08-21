@@ -133,6 +133,20 @@
             background: #64d9ff;
         }
 
+        .nav-links a.axion-nav {
+            color: #ffc06c;
+        }
+
+        .nav-links a.axion-nav::before {
+            content: "PRIVATE";
+            position: absolute;
+            top: 0;
+            right: 5px;
+            font-size: 0.42rem;
+            letter-spacing: 0.08em;
+            color: rgba(255, 192, 108, 0.72);
+        }
+
         .local-time {
             display: flex;
             align-items: center;
@@ -343,8 +357,6 @@
             color: rgba(255, 255, 255, 0.62);
         }
 
-        /* IANS CORE is fully namespaced to prevent conflicts
-           with assets/styles.css */
         .ians-core-stage {
             position: relative;
             width: 100%;
@@ -510,6 +522,41 @@
         .ians-core-stage .ians-planet.projects { left: 46%; top: 94%; }
         .ians-core-stage .ians-planet.power { left: 13%; top: 72%; }
         .ians-core-stage .ians-planet.dns { left: 9%; top: 35%; }
+
+        /* AXION GRID */
+        .ians-core-stage .ians-planet.axion {
+            left: 22%;
+            top: 11%;
+            border-color: rgba(255, 178, 87, 0.52);
+            background:
+                radial-gradient(circle at 34% 28%, rgba(255, 195, 113, 0.22), transparent 44%),
+                linear-gradient(145deg, rgba(38, 29, 29, 0.98), rgba(17, 23, 35, 0.98));
+            box-shadow:
+                0 0 34px rgba(255, 158, 61, 0.15),
+                0 12px 30px rgba(0, 0, 0, 0.30);
+        }
+
+        .ians-core-stage .ians-planet.axion::before {
+            content: "";
+            position: absolute;
+            inset: -8px;
+            border: 1px dashed rgba(255, 189, 103, 0.18);
+            border-radius: 50%;
+            animation: axionOrbitHalo 16s linear infinite;
+            pointer-events: none;
+        }
+
+        .ians-core-stage .ians-planet.axion strong {
+            color: #ffc06c;
+        }
+
+        .ians-core-stage .ians-planet.axion small {
+            color: rgba(255, 222, 181, 0.66);
+        }
+
+        @keyframes axionOrbitHalo {
+            to { transform: rotate(360deg); }
+        }
 
         /* =========================================================
            FOUR MAIN CARDS
@@ -940,6 +987,51 @@
             color: rgba(255, 255, 255, 0.36);
         }
 
+        .axion-compact-link {
+            border-color: rgba(255, 184, 92, 0.18);
+            background:
+                radial-gradient(circle at 12% 50%, rgba(255, 166, 70, 0.09), transparent 36%),
+                rgba(255, 255, 255, 0.025);
+        }
+
+        .axion-compact-link:hover {
+            border-color: rgba(255, 184, 92, 0.38);
+            box-shadow: 0 12px 32px rgba(255, 153, 54, 0.08);
+        }
+
+        .private-glyph {
+            position: relative;
+            border: 1px solid rgba(255, 184, 92, 0.24);
+            background: rgba(255, 169, 70, 0.07);
+        }
+
+        .private-glyph::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 17px;
+            width: 16px;
+            height: 13px;
+            transform: translateX(-50%);
+            border: 2px solid #ffc06c;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .private-glyph::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 9px;
+            width: 10px;
+            height: 10px;
+            transform: translateX(-50%);
+            border: 2px solid #ffc06c;
+            border-bottom: 0;
+            border-radius: 8px 8px 0 0;
+            box-sizing: border-box;
+        }
+
         /* =========================================================
            RESPONSIVE
            ========================================================= */
@@ -987,6 +1079,11 @@
                 transform: scale(0.86);
                 margin-top: -24px;
                 margin-bottom: -28px;
+            }
+
+            .ians-core-stage .ians-planet.axion {
+                left: 22%;
+                top: 12%;
             }
 
             .area-card {
@@ -1087,6 +1184,15 @@
                 <a href="tools/money-planner/index.html">Økonomi</a>
                 <a href="#lab">IANS Lab</a>
                 <a href="#portal">Portal</a>
+                <a
+                    href="#"
+                    class="axion-nav"
+                    data-axion-link
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    AXION GRID
+                </a>
             </nav>
 
             <div class="local-time">
@@ -1112,10 +1218,6 @@
     </header>
 
     <main>
-
-        <!-- =====================================================
-             HERO + IANS CORE
-             ===================================================== -->
 
         <section class="ians-hero">
 
@@ -1238,15 +1340,25 @@
                         </span>
                     </a>
 
+                    <a
+                        class="ians-planet axion"
+                        href="#"
+                        data-axion-link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Åpne AXION GRID privat firmakonsept"
+                    >
+                        <span>
+                            <strong>AXION GRID</strong>
+                            <small>Private</small>
+                        </span>
+                    </a>
+
                 </div>
 
             </div>
 
         </section>
-
-        <!-- =====================================================
-             FOUR MAIN AREAS
-             ===================================================== -->
 
         <section class="focus-section" id="hovedomrader">
 
@@ -1463,10 +1575,6 @@
 
         </section>
 
-        <!-- =====================================================
-             REST OF PORTAL
-             ===================================================== -->
-
         <section class="compact-section" id="portal">
 
             <div class="compact-wrap">
@@ -1532,6 +1640,21 @@
                         <span class="compact-arrow">→</span>
                     </a>
 
+                    <a
+                        class="compact-link axion-compact-link"
+                        href="#"
+                        data-axion-link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <span class="compact-glyph private-glyph" aria-hidden="true"></span>
+                        <span>
+                            <strong>AXION GRID</strong>
+                            <small>Privat firmakonsept · tilgang kreves</small>
+                        </span>
+                        <span class="compact-arrow">→</span>
+                    </a>
+
                 </div>
 
             </div>
@@ -1547,6 +1670,24 @@
     </footer>
 
     <script>
+        /*
+         * AXION GRID URL
+         * Bytt bare denne linjen når Azure Static Web App-adressen er klar.
+         */
+        const AXION_URL = "https://REPLACE-WITH-YOUR-AXION-AZURE-URL";
+
+        document.querySelectorAll("[data-axion-link]").forEach((link) => {
+            if (AXION_URL.includes("REPLACE-WITH-YOUR-AXION-AZURE-URL")) {
+                link.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    alert("AXION GRID er lagt inn på ians.no, men Azure-adressen må legges inn før lenken kan åpnes.");
+                });
+                link.title = "Privat AXION GRID · Azure-adresse mangler";
+            } else {
+                link.href = AXION_URL;
+            }
+        });
+
         function updateLocalDateTime() {
             const now = new Date();
 
