@@ -1339,6 +1339,195 @@
                 inset 0 1px 0 rgba(255,255,255,.07);
         }
 
+    
+        /* =========================================================
+           V9 · INTERACTIVE DEVICE INSPECTOR
+           ========================================================= */
+
+        [data-device] {
+            cursor: pointer;
+            transition:
+                transform .18s ease,
+                box-shadow .18s ease,
+                border-color .18s ease,
+                filter .18s ease;
+        }
+
+        [data-device]:hover {
+            filter: brightness(1.08);
+            border-color: rgba(114, 230, 255, .45);
+        }
+
+        [data-device].is-selected {
+            box-shadow:
+                0 0 0 1px rgba(114, 230, 255, .55),
+                0 0 32px rgba(92, 211, 255, .20),
+                0 18px 50px rgba(0,0,0,.34);
+        }
+
+        .device-inspector {
+            position: fixed;
+            z-index: 999;
+            right: 24px;
+            bottom: 24px;
+            width: min(390px, calc(100vw - 32px));
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 20px;
+            background:
+                linear-gradient(160deg, rgba(255,255,255,.055), transparent 30%),
+                rgba(6, 20, 35, .96);
+            box-shadow:
+                0 28px 80px rgba(0,0,0,.42),
+                inset 0 1px 0 rgba(255,255,255,.05);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            transform: translateY(18px);
+            opacity: 0;
+            pointer-events: none;
+            transition: .22s ease;
+        }
+
+        .device-inspector.is-open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .inspector-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 20px;
+            padding: 18px 18px 14px;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+        }
+
+        .inspector-kicker {
+            color: #6fe7ff;
+            font-size: .58rem;
+            font-weight: 900;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .inspector-title {
+            margin: 5px 0 0;
+            font-size: 1.12rem;
+        }
+
+        .inspector-close {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 10px;
+            background: rgba(255,255,255,.035);
+            color: #d4e4ef;
+            cursor: pointer;
+        }
+
+        .inspector-body {
+            padding: 16px 18px 18px;
+        }
+
+        .inspector-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 14px;
+            color: #98f4bd;
+            font-size: .75rem;
+            font-weight: 800;
+        }
+
+        .inspector-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #71f4a6;
+            box-shadow: 0 0 12px rgba(113,244,166,.6);
+        }
+
+        .inspector-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .inspector-cell {
+            padding: 11px 12px;
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 12px;
+            background: rgba(255,255,255,.025);
+        }
+
+        .inspector-cell small,
+        .inspector-cell strong {
+            display: block;
+        }
+
+        .inspector-cell small {
+            margin-bottom: 4px;
+            color: #65829d;
+            font-size: .56rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .inspector-cell strong {
+            font-size: .75rem;
+        }
+
+        .inspector-desc {
+            margin: 14px 0 0;
+            color: #8fa9c0;
+            line-height: 1.55;
+            font-size: .82rem;
+        }
+
+        .port-hit {
+            cursor: pointer;
+            transition: .15s ease;
+        }
+
+        .port-hit:hover {
+            transform: translateY(-1px);
+            border-color: rgba(111,232,255,.52) !important;
+            box-shadow: inset 0 0 8px rgba(93,216,255,.12);
+        }
+
+        .tech-hint {
+            position: absolute;
+            z-index: 12;
+            right: 16px;
+            top: 16px;
+            padding: 7px 10px;
+            border: 1px solid rgba(111,232,255,.16);
+            border-radius: 999px;
+            background: rgba(8,24,42,.78);
+            color: #73dff6;
+            font-size: .58rem;
+            font-weight: 850;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+
+        @media (max-width: 600px) {
+            .device-inspector {
+                right: 16px;
+                bottom: 16px;
+                width: calc(100vw - 32px);
+            }
+
+            .inspector-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
     </style>
 </head>
 
@@ -1457,6 +1646,8 @@
 
                 <div class="tech-canvas homes-tech">
 
+                    <div class="tech-hint">Klikk på utstyr for status</div>
+
                     <div class="apartment-frame">
 
                         <div class="apartment-room living">
@@ -1467,7 +1658,16 @@
                             <span>SOVEROM</span>
                         </div>
 
-                        <div class="tech-device apartment-cabinet">
+                        <div class="tech-device apartment-cabinet"
+                        data-device
+                        data-name="Leilighetsskap"
+                        data-type="HOME · PATCH / CONVERTER"
+                        data-status="Online"
+                        data-ip="—"
+                        data-vlan="187 · BOLIG"
+                        data-link="1 Gbps Ethernet"
+                        data-poe="Passiv terminering"
+                        data-desc="Forenklet eksempel på overgang fra fiber til RJ45 og strukturert spredenett videre til boligens uttak og AP.">
                             <div class="cabinet-title">LEILIGHETSSKAP</div>
 
                             <div class="cabinet-module fiber-module">
@@ -1487,7 +1687,16 @@
                             </div>
                         </div>
 
-                        <div class="tech-device inwall-ap">
+                        <div class="tech-device inwall-ap"
+                        data-device
+                        data-name="In-Wall Access Point"
+                        data-type="HOME · WIFI AP"
+                        data-status="Online · 14 klienter"
+                        data-ip="10.10.30.87"
+                        data-vlan="187 · BOLIG"
+                        data-link="2.5 Gbps"
+                        data-poe="PoE+ · 14.2 W"
+                        data-desc="Profesjonelt aksesspunkt plassert i boligen for bedre dekning, stabilitet og sentral administrasjon.">
                             <div class="ap-led"></div>
                             <strong>U7</strong>
                             <small>IN-WALL</small>
@@ -1498,8 +1707,26 @@
                         <div class="wifi-wave w2"></div>
                         <div class="wifi-wave w3"></div>
 
-                        <div class="wall-port port-living">RJ45</div>
-                        <div class="wall-port port-bedroom">RJ45</div>
+                        <div class="wall-port port-living port-hit"
+                        data-device
+                        data-name="RJ45 · Stue"
+                        data-type="HOME · WIRED PORT"
+                        data-status="Link up"
+                        data-ip="DHCP"
+                        data-vlan="187 · BOLIG"
+                        data-link="1 Gbps"
+                        data-poe="—"
+                        data-desc="Kablet uttak for TV, arbeidsplass, spillkonsoll eller annet fast utstyr.">RJ45</div>
+                        <div class="wall-port port-bedroom port-hit"
+                        data-device
+                        data-name="RJ45 · Soverom"
+                        data-type="HOME · WIRED PORT"
+                        data-status="Idle"
+                        data-ip="—"
+                        data-vlan="187 · BOLIG"
+                        data-link="1 Gbps capable"
+                        data-poe="—"
+                        data-desc="Ekstra kablet uttak som del av boligens strukturerte spredenett.">RJ45</div>
 
                         <div class="cable-run cr1"></div>
                         <div class="cable-run cr2"></div>
@@ -1575,6 +1802,155 @@
         </section>
 
     </main>
+
+
+    <!-- =========================================================
+         INTERACTIVE DEVICE INSPECTOR
+         Example/demo data – not live production telemetry.
+         ========================================================= -->
+
+    <aside
+        class="device-inspector"
+        id="deviceInspector"
+        aria-live="polite"
+        aria-hidden="true"
+    >
+        <div class="inspector-head">
+
+            <div>
+                <div class="inspector-kicker" id="inspectorType">
+                    DEVICE
+                </div>
+
+                <h2 class="inspector-title" id="inspectorTitle">
+                    Velg en komponent
+                </h2>
+            </div>
+
+            <button
+                class="inspector-close"
+                type="button"
+                id="inspectorClose"
+                aria-label="Lukk statuspanel"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="inspector-body">
+
+            <div class="inspector-status">
+                <span class="inspector-status-dot"></span>
+                <span id="inspectorStatus">Online</span>
+            </div>
+
+            <div class="inspector-grid">
+
+                <div class="inspector-cell">
+                    <small>IP</small>
+                    <strong id="inspectorIp">—</strong>
+                </div>
+
+                <div class="inspector-cell">
+                    <small>VLAN</small>
+                    <strong id="inspectorVlan">—</strong>
+                </div>
+
+                <div class="inspector-cell">
+                    <small>Link</small>
+                    <strong id="inspectorLink">—</strong>
+                </div>
+
+                <div class="inspector-cell">
+                    <small>Power / PoE</small>
+                    <strong id="inspectorPoe">—</strong>
+                </div>
+
+            </div>
+
+            <p class="inspector-desc" id="inspectorDesc">
+                Klikk på en komponent i visualiseringen.
+            </p>
+
+        </div>
+    </aside>
+
+
+
+    <script>
+        (function () {
+            const inspector = document.getElementById("deviceInspector");
+
+            if (!inspector) {
+                return;
+            }
+
+            const title = document.getElementById("inspectorTitle");
+            const type = document.getElementById("inspectorType");
+            const status = document.getElementById("inspectorStatus");
+            const ip = document.getElementById("inspectorIp");
+            const vlan = document.getElementById("inspectorVlan");
+            const link = document.getElementById("inspectorLink");
+            const poe = document.getElementById("inspectorPoe");
+            const desc = document.getElementById("inspectorDesc");
+            const close = document.getElementById("inspectorClose");
+
+            function openInspector(element) {
+                document.querySelectorAll("[data-device].is-selected")
+                    .forEach((item) => item.classList.remove("is-selected"));
+
+                element.classList.add("is-selected");
+
+                title.textContent = element.dataset.name || "Komponent";
+                type.textContent = element.dataset.type || "DEVICE";
+                status.textContent = element.dataset.status || "Online";
+                ip.textContent = element.dataset.ip || "—";
+                vlan.textContent = element.dataset.vlan || "—";
+                link.textContent = element.dataset.link || "—";
+                poe.textContent = element.dataset.poe || "—";
+                desc.textContent =
+                    element.dataset.desc ||
+                    "Eksempeldata for å illustrere hvordan komponenten kan presenteres i SameieNett.";
+
+                inspector.classList.add("is-open");
+                inspector.setAttribute("aria-hidden", "false");
+            }
+
+            function closeInspector() {
+                inspector.classList.remove("is-open");
+                inspector.setAttribute("aria-hidden", "true");
+
+                document.querySelectorAll("[data-device].is-selected")
+                    .forEach((item) => item.classList.remove("is-selected"));
+            }
+
+            document.querySelectorAll("[data-device]").forEach((element) => {
+                element.setAttribute("tabindex", "0");
+                element.setAttribute("role", "button");
+
+                element.addEventListener("click", () => {
+                    openInspector(element);
+                });
+
+                element.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        openInspector(element);
+                    }
+                });
+            });
+
+            close.addEventListener("click", closeInspector);
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    closeInspector();
+                }
+            });
+        })();
+    </script>
+
 
 </body>
 

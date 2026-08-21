@@ -1339,6 +1339,290 @@
                 inset 0 1px 0 rgba(255,255,255,.07);
         }
 
+    
+        /* =========================================================
+           V9 · INTERACTIVE DEVICE INSPECTOR
+           ========================================================= */
+
+        [data-device] {
+            cursor: pointer;
+            transition:
+                transform .18s ease,
+                box-shadow .18s ease,
+                border-color .18s ease,
+                filter .18s ease;
+        }
+
+        [data-device]:hover {
+            filter: brightness(1.08);
+            border-color: rgba(114, 230, 255, .45);
+        }
+
+        [data-device].is-selected {
+            box-shadow:
+                0 0 0 1px rgba(114, 230, 255, .55),
+                0 0 32px rgba(92, 211, 255, .20),
+                0 18px 50px rgba(0,0,0,.34);
+        }
+
+        .device-inspector {
+            position: fixed;
+            z-index: 999;
+            right: 24px;
+            bottom: 24px;
+            width: min(390px, calc(100vw - 32px));
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 20px;
+            background:
+                linear-gradient(160deg, rgba(255,255,255,.055), transparent 30%),
+                rgba(6, 20, 35, .96);
+            box-shadow:
+                0 28px 80px rgba(0,0,0,.42),
+                inset 0 1px 0 rgba(255,255,255,.05);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            transform: translateY(18px);
+            opacity: 0;
+            pointer-events: none;
+            transition: .22s ease;
+        }
+
+        .device-inspector.is-open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .inspector-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 20px;
+            padding: 18px 18px 14px;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+        }
+
+        .inspector-kicker {
+            color: #6fe7ff;
+            font-size: .58rem;
+            font-weight: 900;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        .inspector-title {
+            margin: 5px 0 0;
+            font-size: 1.12rem;
+        }
+
+        .inspector-close {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 10px;
+            background: rgba(255,255,255,.035);
+            color: #d4e4ef;
+            cursor: pointer;
+        }
+
+        .inspector-body {
+            padding: 16px 18px 18px;
+        }
+
+        .inspector-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 14px;
+            color: #98f4bd;
+            font-size: .75rem;
+            font-weight: 800;
+        }
+
+        .inspector-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #71f4a6;
+            box-shadow: 0 0 12px rgba(113,244,166,.6);
+        }
+
+        .inspector-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .inspector-cell {
+            padding: 11px 12px;
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 12px;
+            background: rgba(255,255,255,.025);
+        }
+
+        .inspector-cell small,
+        .inspector-cell strong {
+            display: block;
+        }
+
+        .inspector-cell small {
+            margin-bottom: 4px;
+            color: #65829d;
+            font-size: .56rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .inspector-cell strong {
+            font-size: .75rem;
+        }
+
+        .inspector-desc {
+            margin: 14px 0 0;
+            color: #8fa9c0;
+            line-height: 1.55;
+            font-size: .82rem;
+        }
+
+        .port-hit {
+            cursor: pointer;
+            transition: .15s ease;
+        }
+
+        .port-hit:hover {
+            transform: translateY(-1px);
+            border-color: rgba(111,232,255,.52) !important;
+            box-shadow: inset 0 0 8px rgba(93,216,255,.12);
+        }
+
+        .tech-hint {
+            position: absolute;
+            z-index: 12;
+            right: 16px;
+            top: 16px;
+            padding: 7px 10px;
+            border: 1px solid rgba(111,232,255,.16);
+            border-radius: 999px;
+            background: rgba(8,24,42,.78);
+            color: #73dff6;
+            font-size: .58rem;
+            font-weight: 850;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+
+        @media (max-width: 600px) {
+            .device-inspector {
+                right: 16px;
+                bottom: 16px;
+                width: calc(100vw - 32px);
+            }
+
+            .inspector-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    
+        /* =========================================================
+           V11 · CLICKABLE SWITCH PORTS
+           ========================================================= */
+
+        .rack-ports {
+            position: relative;
+        }
+
+        .rack-ports i {
+            cursor: pointer;
+            transition:
+                transform .15s ease,
+                border-color .15s ease,
+                box-shadow .15s ease,
+                background .15s ease;
+        }
+
+        .rack-ports i:hover {
+            transform: translateY(-2px);
+            border-color: rgba(111, 232, 255, .65);
+            background: rgba(89, 213, 255, .16);
+            box-shadow:
+                inset 0 0 10px rgba(91, 220, 255, .16),
+                0 0 10px rgba(91, 220, 255, .12);
+        }
+
+        .rack-ports i.is-selected {
+            border-color: rgba(111, 232, 255, .95);
+            background: rgba(89, 213, 255, .22);
+            box-shadow:
+                inset 0 0 12px rgba(91, 220, 255, .22),
+                0 0 14px rgba(91, 220, 255, .22);
+        }
+
+        .rack-ports i[data-port-status="idle"]::after {
+            background: #6f7f8c !important;
+            box-shadow: none !important;
+        }
+
+        .rack-ports i[data-port-status="camera"]::after {
+            background: #b784ff !important;
+            box-shadow: 0 0 6px rgba(183,132,255,.8) !important;
+        }
+
+        .rack-ports i[data-port-status="access"]::after {
+            background: #f6ca6b !important;
+            box-shadow: 0 0 6px rgba(246,202,107,.8) !important;
+        }
+
+        .rack-ports i[data-port-status="ap"]::after {
+            background: #74e8ff !important;
+            box-shadow: 0 0 6px rgba(116,232,255,.85) !important;
+        }
+
+        .rack-ports i[data-port-status="uplink"]::after {
+            background: #77ffa6 !important;
+            box-shadow: 0 0 6px rgba(119,255,166,.85) !important;
+        }
+
+        .port-legend {
+            position: absolute;
+            z-index: 10;
+            right: 15px;
+            bottom: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            padding: 8px 10px;
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 11px;
+            background: rgba(6,18,32,.78);
+            color: #6f8da6;
+            font-size: .56rem;
+        }
+
+        .port-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .port-legend b {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .port-legend .p-uplink { background: #77ffa6; }
+        .port-legend .p-ap { background: #74e8ff; }
+        .port-legend .p-camera { background: #b784ff; }
+        .port-legend .p-access { background: #f6ca6b; }
+        .port-legend .p-idle { background: #6f7f8c; }
+
     </style>
 </head>
 
@@ -1457,45 +1741,563 @@
 
                 <div class="tech-canvas distribution-tech">
 
-                    <div class="tech-device rack-core">
+                    <div class="port-legend" aria-label="Portstatus forklaring">
+                        <span><b class="p-uplink"></b> Uplink</span>
+                        <span><b class="p-ap"></b> AP</span>
+                        <span><b class="p-camera"></b> Kamera</span>
+                        <span><b class="p-access"></b> Adgang</span>
+                        <span><b class="p-idle"></b> Ledig</span>
+                    </div>
+
+                    <div class="tech-hint">Klikk på utstyr for status</div>
+
+                    <div class="tech-device rack-core"
+                        data-device
+                        data-name="Core Switch"
+                        data-type="DISTRIBUTION · CORE SWITCH"
+                        data-status="Online · redundant uplink"
+                        data-ip="10.10.1.2"
+                        data-vlan="10 · MGMT"
+                        data-link="10 Gbps fiber"
+                        data-poe="0 W"
+                        data-desc="Sentralt switchpunkt som transporterer VLAN og kapasitet videre til byggets tekniske rom.">
                         <div class="rack-face">
                             <span>CORE UPLINK</span>
                             <div class="rack-ports">
-                                <i></i><i></i><i></i><i></i>
-                                <i></i><i></i><i></i><i></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="uplink"
+                                data-port-number="1"
+                                data-port-name="Core Uplink"
+                                data-port-switch="Core Switch"
+                                data-status="Trunk"
+                                data-link="10 Gbps"
+                                data-poe="—"
+                                data-vlan="10 · MGMT"
+                                data-ip="10.10.1.2"
+                                data-desc="Fiber uplink mot SameieNett Core."
+                                title="Port 1 · Core Uplink"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="ap"
+                                data-port-number="2"
+                                data-port-name="AP bolig 087"
+                                data-port-switch="Core Switch"
+                                data-status="Online"
+                                data-link="2.5 Gbps"
+                                data-poe="14.2 W"
+                                data-vlan="187 · BOLIG"
+                                data-ip="10.10.30.87"
+                                data-desc="Profesjonelt aksesspunkt i bolig 087."
+                                title="Port 2 · AP bolig 087"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="camera"
+                                data-port-number="3"
+                                data-port-name="Camera U1"
+                                data-port-switch="Core Switch"
+                                data-status="Recording"
+                                data-link="1 Gbps"
+                                data-poe="8.4 W"
+                                data-vlan="60 · IOT/KAMERA"
+                                data-ip="10.60.0.41"
+                                data-desc="4K kamera i fellesareal U1."
+                                title="Port 3 · Camera U1"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="access"
+                                data-port-number="4"
+                                data-port-name="Access Garage"
+                                data-port-switch="Core Switch"
+                                data-status="Online"
+                                data-link="1 Gbps"
+                                data-poe="5.8 W"
+                                data-vlan="60 · IOT/KAMERA"
+                                data-ip="10.60.0.51"
+                                data-desc="Adgangsleser for garasje."
+                                title="Port 4 · Access Garage"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="ap"
+                                data-port-number="5"
+                                data-port-name="AP bolig 088"
+                                data-port-switch="Core Switch"
+                                data-status="Online"
+                                data-link="2.5 Gbps"
+                                data-poe="13.8 W"
+                                data-vlan="188 · BOLIG"
+                                data-ip="10.10.30.88"
+                                data-desc="Aksesspunkt i bolig 088."
+                                title="Port 5 · AP bolig 088"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="access"
+                                data-port-number="6"
+                                data-port-name="Garage Controller"
+                                data-port-switch="Core Switch"
+                                data-status="Online"
+                                data-link="1 Gbps"
+                                data-poe="6.1 W"
+                                data-vlan="50 · DRIFT"
+                                data-ip="10.50.0.31"
+                                data-desc="Kontroller for garasjeport."
+                                title="Port 6 · Garage Controller"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="idle"
+                                data-port-number="7"
+                                data-port-name="Service Port"
+                                data-port-switch="Core Switch"
+                                data-status="Idle"
+                                data-link="1 Gbps capable"
+                                data-poe="0 W"
+                                data-vlan="70 · SERVICE"
+                                data-ip="—"
+                                data-desc="Reservert serviceport."
+                                title="Port 7 · Service Port"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="idle"
+                                data-port-number="8"
+                                data-port-name="Spare"
+                                data-port-switch="Core Switch"
+                                data-status="Idle"
+                                data-link="1 Gbps capable"
+                                data-poe="0 W"
+                                data-vlan="—"
+                                data-ip="—"
+                                data-desc="Ledig port."
+                                title="Port 8 · Spare"
+                            ></i>
                             </div>
                         </div>
                         <div class="device-title">CORE SWITCH</div>
                     </div>
 
-                    <div class="tech-device rack-a">
+                    <div class="tech-device rack-a"
+                        data-device
+                        data-name="PoE Switch · Tech Room A"
+                        data-type="DISTRIBUTION · ACCESS SWITCH"
+                        data-status="Online · 22 porter aktive"
+                        data-ip="10.10.1.11"
+                        data-vlan="10 · MGMT"
+                        data-link="10 Gbps fiber"
+                        data-poe="286 W / 600 W"
+                        data-desc="PoE-switch for AP-er, kamera, adgang og andre endepunkter i denne delen av bygget.">
                         <div class="rack-face">
                             <span>TECH ROOM A</span>
                             <div class="rack-ports">
-                                <i></i><i></i><i></i><i></i>
-                                <i></i><i></i><i></i><i></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="uplink"
+                                data-port-number="1"
+                                data-port-name="Fiber Uplink"
+                                data-port-switch="Tech Room A"
+                                data-status="Online"
+                                data-link="10 Gbps"
+                                data-poe="—"
+                                data-vlan="10 · MGMT"
+                                data-ip="10.10.1.11"
+                                data-desc="Fiberuplink til core switch."
+                                title="Port 1 · Fiber Uplink"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="ap"
+                                data-port-number="2"
+                                data-port-name="AP bolig 041"
+                                data-port-switch="Tech Room A"
+                                data-status="Online"
+                                data-link="2.5 Gbps"
+                                data-poe="12.7 W"
+                                data-vlan="141 · BOLIG"
+                                data-ip="10.10.20.41"
+                                data-desc="AP i bolig 041."
+                                title="Port 2 · AP bolig 041"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="ap"
+                                data-port-number="3"
+                                data-port-name="AP bolig 042"
+                                data-port-switch="Tech Room A"
+                                data-status="Online"
+                                data-link="2.5 Gbps"
+                                data-poe="13.0 W"
+                                data-vlan="142 · BOLIG"
+                                data-ip="10.10.20.42"
+                                data-desc="AP i bolig 042."
+                                title="Port 3 · AP bolig 042"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="camera"
+                                data-port-number="4"
+                                data-port-name="Camera Entrance"
+                                data-port-switch="Tech Room A"
+                                data-status="Recording"
+                                data-link="1 Gbps"
+                                data-poe="7.9 W"
+                                data-vlan="60 · IOT/KAMERA"
+                                data-ip="10.60.0.12"
+                                data-desc="Kamera ved hovedinngang."
+                                title="Port 4 · Camera Entrance"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="access"
+                                data-port-number="5"
+                                data-port-name="Access Entrance"
+                                data-port-switch="Tech Room A"
+                                data-status="Online"
+                                data-link="1 Gbps"
+                                data-poe="5.2 W"
+                                data-vlan="60 · IOT/KAMERA"
+                                data-ip="10.60.0.13"
+                                data-desc="Adgangskontroll hovedinngang."
+                                title="Port 5 · Access Entrance"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="camera"
+                                data-port-number="6"
+                                data-port-name="IoT Sensor"
+                                data-port-switch="Tech Room A"
+                                data-status="Online"
+                                data-link="1 Gbps"
+                                data-poe="3.1 W"
+                                data-vlan="60 · IOT/KAMERA"
+                                data-ip="10.60.0.21"
+                                data-desc="Sensor i fellesareal."
+                                title="Port 6 · IoT Sensor"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="idle"
+                                data-port-number="7"
+                                data-port-name="Spare"
+                                data-port-switch="Tech Room A"
+                                data-status="Idle"
+                                data-link="1 Gbps capable"
+                                data-poe="0 W"
+                                data-vlan="—"
+                                data-ip="—"
+                                data-desc="Ledig port."
+                                title="Port 7 · Spare"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="idle"
+                                data-port-number="8"
+                                data-port-name="Spare"
+                                data-port-switch="Tech Room A"
+                                data-status="Idle"
+                                data-link="1 Gbps capable"
+                                data-poe="0 W"
+                                data-vlan="—"
+                                data-ip="—"
+                                data-desc="Ledig port."
+                                title="Port 8 · Spare"
+                            ></i>
                             </div>
                         </div>
                         <div class="device-title">PoE SWITCH</div>
                     </div>
 
-                    <div class="tech-device rack-b">
+                    <div class="tech-device rack-b"
+                        data-device
+                        data-name="PoE Switch · Tech Room B"
+                        data-type="DISTRIBUTION · ACCESS SWITCH"
+                        data-status="Online · 19 porter aktive"
+                        data-ip="10.10.1.12"
+                        data-vlan="10 · MGMT"
+                        data-link="10 Gbps fiber"
+                        data-poe="241 W / 600 W"
+                        data-desc="Distribuerer nett og PoE videre til lokale endepunkter og transporterer segmenterte VLAN.">
                         <div class="rack-face">
                             <span>TECH ROOM B</span>
                             <div class="rack-ports">
-                                <i></i><i></i><i></i><i></i>
-                                <i></i><i></i><i></i><i></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="uplink"
+                                data-port-number="1"
+                                data-port-name="Fiber Uplink"
+                                data-port-switch="Tech Room B"
+                                data-status="Online"
+                                data-link="10 Gbps"
+                                data-poe="—"
+                                data-vlan="10 · MGMT"
+                                data-ip="10.10.1.12"
+                                data-desc="Fiberuplink til core switch."
+                                title="Port 1 · Fiber Uplink"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="ap"
+                                data-port-number="2"
+                                data-port-name="AP bolig 101"
+                                data-port-switch="Tech Room B"
+                                data-status="Online"
+                                data-link="2.5 Gbps"
+                                data-poe="13.9 W"
+                                data-vlan="201 · BOLIG"
+                                data-ip="10.10.40.101"
+                                data-desc="AP i bolig 101."
+                                title="Port 2 · AP bolig 101"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="ap"
+                                data-port-number="3"
+                                data-port-name="AP bolig 102"
+                                data-port-switch="Tech Room B"
+                                data-status="Online"
+                                data-link="2.5 Gbps"
+                                data-poe="14.1 W"
+                                data-vlan="202 · BOLIG"
+                                data-ip="10.10.40.102"
+                                data-desc="AP i bolig 102."
+                                title="Port 3 · AP bolig 102"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="camera"
+                                data-port-number="4"
+                                data-port-name="Camera Hallway"
+                                data-port-switch="Tech Room B"
+                                data-status="Recording"
+                                data-link="1 Gbps"
+                                data-poe="8.1 W"
+                                data-vlan="60 · IOT/KAMERA"
+                                data-ip="10.60.0.31"
+                                data-desc="Kamera i felles korridor."
+                                title="Port 4 · Camera Hallway"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="camera"
+                                data-port-number="5"
+                                data-port-name="Energy Meter"
+                                data-port-switch="Tech Room B"
+                                data-status="Online"
+                                data-link="100 Mbps"
+                                data-poe="—"
+                                data-vlan="50 · DRIFT"
+                                data-ip="10.50.0.21"
+                                data-desc="Energimåler for teknisk drift."
+                                title="Port 5 · Energy Meter"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="access"
+                                data-port-number="6"
+                                data-port-name="Access Storage"
+                                data-port-switch="Tech Room B"
+                                data-status="Online"
+                                data-link="1 Gbps"
+                                data-poe="5.0 W"
+                                data-vlan="60 · IOT/KAMERA"
+                                data-ip="10.60.0.33"
+                                data-desc="Adgang til bodområde."
+                                title="Port 6 · Access Storage"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="idle"
+                                data-port-number="7"
+                                data-port-name="Spare"
+                                data-port-switch="Tech Room B"
+                                data-status="Idle"
+                                data-link="1 Gbps capable"
+                                data-poe="0 W"
+                                data-vlan="—"
+                                data-ip="—"
+                                data-desc="Ledig port."
+                                title="Port 7 · Spare"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="idle"
+                                data-port-number="8"
+                                data-port-name="Spare"
+                                data-port-switch="Tech Room B"
+                                data-status="Idle"
+                                data-link="1 Gbps capable"
+                                data-poe="0 W"
+                                data-vlan="—"
+                                data-ip="—"
+                                data-desc="Ledig port."
+                                title="Port 8 · Spare"
+                            ></i>
                             </div>
                         </div>
                         <div class="device-title">PoE SWITCH</div>
                     </div>
 
-                    <div class="tech-device rack-c">
+                    <div class="tech-device rack-c"
+                        data-device
+                        data-name="PoE Switch · Tech Room C"
+                        data-type="DISTRIBUTION · ACCESS SWITCH"
+                        data-status="Online · 24 porter aktive"
+                        data-ip="10.10.1.13"
+                        data-vlan="10 · MGMT"
+                        data-link="10 Gbps fiber"
+                        data-poe="318 W / 600 W"
+                        data-desc="Lokalt fordelingspunkt for nettverk, strøm via PoE og videre tilkobling mot boliger og felles tjenester.">
                         <div class="rack-face">
                             <span>TECH ROOM C</span>
                             <div class="rack-ports">
-                                <i></i><i></i><i></i><i></i>
-                                <i></i><i></i><i></i><i></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="uplink"
+                                data-port-number="1"
+                                data-port-name="Fiber Uplink"
+                                data-port-switch="Tech Room C"
+                                data-status="Online"
+                                data-link="10 Gbps"
+                                data-poe="—"
+                                data-vlan="10 · MGMT"
+                                data-ip="10.10.1.13"
+                                data-desc="Fiberuplink til core switch."
+                                title="Port 1 · Fiber Uplink"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="ap"
+                                data-port-number="2"
+                                data-port-name="AP bolig 161"
+                                data-port-switch="Tech Room C"
+                                data-status="Online"
+                                data-link="2.5 Gbps"
+                                data-poe="13.4 W"
+                                data-vlan="261 · BOLIG"
+                                data-ip="10.10.50.161"
+                                data-desc="AP i bolig 161."
+                                title="Port 2 · AP bolig 161"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="ap"
+                                data-port-number="3"
+                                data-port-name="AP bolig 162"
+                                data-port-switch="Tech Room C"
+                                data-status="Online"
+                                data-link="2.5 Gbps"
+                                data-poe="13.5 W"
+                                data-vlan="262 · BOLIG"
+                                data-ip="10.10.50.162"
+                                data-desc="AP i bolig 162."
+                                title="Port 3 · AP bolig 162"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="camera"
+                                data-port-number="4"
+                                data-port-name="Camera Garage"
+                                data-port-switch="Tech Room C"
+                                data-status="Recording"
+                                data-link="1 Gbps"
+                                data-poe="8.6 W"
+                                data-vlan="60 · IOT/KAMERA"
+                                data-ip="10.60.0.61"
+                                data-desc="Kamera i garasje."
+                                title="Port 4 · Camera Garage"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="access"
+                                data-port-number="5"
+                                data-port-name="Access Garage B"
+                                data-port-switch="Tech Room C"
+                                data-status="Online"
+                                data-link="1 Gbps"
+                                data-poe="5.7 W"
+                                data-vlan="60 · IOT/KAMERA"
+                                data-ip="10.60.0.62"
+                                data-desc="Adgangsleser garasje B."
+                                title="Port 5 · Access Garage B"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="idle"
+                                data-port-number="6"
+                                data-port-name="Vendor Service"
+                                data-port-switch="Tech Room C"
+                                data-status="Restricted"
+                                data-link="1 Gbps"
+                                data-poe="0 W"
+                                data-vlan="70 · SERVICE"
+                                data-ip="10.70.0.10"
+                                data-desc="Kontrollert serviceport for leverandør."
+                                title="Port 6 · Vendor Service"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="idle"
+                                data-port-number="7"
+                                data-port-name="Spare"
+                                data-port-switch="Tech Room C"
+                                data-status="Idle"
+                                data-link="1 Gbps capable"
+                                data-poe="0 W"
+                                data-vlan="—"
+                                data-ip="—"
+                                data-desc="Ledig port."
+                                title="Port 7 · Spare"
+                            ></i>
+                                <i
+                                class="port-hit"
+                                data-port
+                                data-port-status="idle"
+                                data-port-number="8"
+                                data-port-name="Spare"
+                                data-port-switch="Tech Room C"
+                                data-status="Idle"
+                                data-link="1 Gbps capable"
+                                data-poe="0 W"
+                                data-vlan="—"
+                                data-ip="—"
+                                data-desc="Ledig port."
+                                title="Port 8 · Spare"
+                            ></i>
                             </div>
                         </div>
                         <div class="device-title">PoE SWITCH</div>
@@ -1578,6 +2380,230 @@
         </section>
 
     </main>
+
+
+    <!-- =========================================================
+         INTERACTIVE DEVICE INSPECTOR
+         Example/demo data – not live production telemetry.
+         ========================================================= -->
+
+    <aside
+        class="device-inspector"
+        id="deviceInspector"
+        aria-live="polite"
+        aria-hidden="true"
+    >
+        <div class="inspector-head">
+
+            <div>
+                <div class="inspector-kicker" id="inspectorType">
+                    DEVICE
+                </div>
+
+                <h2 class="inspector-title" id="inspectorTitle">
+                    Velg en komponent
+                </h2>
+            </div>
+
+            <button
+                class="inspector-close"
+                type="button"
+                id="inspectorClose"
+                aria-label="Lukk statuspanel"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="inspector-body">
+
+            <div class="inspector-status">
+                <span class="inspector-status-dot"></span>
+                <span id="inspectorStatus">Online</span>
+            </div>
+
+            <div class="inspector-grid">
+
+                <div class="inspector-cell">
+                    <small>IP</small>
+                    <strong id="inspectorIp">—</strong>
+                </div>
+
+                <div class="inspector-cell">
+                    <small>VLAN</small>
+                    <strong id="inspectorVlan">—</strong>
+                </div>
+
+                <div class="inspector-cell">
+                    <small>Link</small>
+                    <strong id="inspectorLink">—</strong>
+                </div>
+
+                <div class="inspector-cell">
+                    <small>Power / PoE</small>
+                    <strong id="inspectorPoe">—</strong>
+                </div>
+
+            </div>
+
+            <p class="inspector-desc" id="inspectorDesc">
+                Klikk på en komponent i visualiseringen.
+            </p>
+
+        </div>
+    </aside>
+
+
+
+    <script>
+        (function () {
+            const inspector = document.getElementById("deviceInspector");
+
+            if (!inspector) {
+                return;
+            }
+
+            const title = document.getElementById("inspectorTitle");
+            const type = document.getElementById("inspectorType");
+            const status = document.getElementById("inspectorStatus");
+            const ip = document.getElementById("inspectorIp");
+            const vlan = document.getElementById("inspectorVlan");
+            const link = document.getElementById("inspectorLink");
+            const poe = document.getElementById("inspectorPoe");
+            const desc = document.getElementById("inspectorDesc");
+            const close = document.getElementById("inspectorClose");
+
+            function openInspector(element) {
+                document.querySelectorAll("[data-device].is-selected")
+                    .forEach((item) => item.classList.remove("is-selected"));
+
+                element.classList.add("is-selected");
+
+                title.textContent = element.dataset.name || "Komponent";
+                type.textContent = element.dataset.type || "DEVICE";
+                status.textContent = element.dataset.status || "Online";
+                ip.textContent = element.dataset.ip || "—";
+                vlan.textContent = element.dataset.vlan || "—";
+                link.textContent = element.dataset.link || "—";
+                poe.textContent = element.dataset.poe || "—";
+                desc.textContent =
+                    element.dataset.desc ||
+                    "Eksempeldata for å illustrere hvordan komponenten kan presenteres i SameieNett.";
+
+                inspector.classList.add("is-open");
+                inspector.setAttribute("aria-hidden", "false");
+            }
+
+            function closeInspector() {
+                inspector.classList.remove("is-open");
+                inspector.setAttribute("aria-hidden", "true");
+
+                document.querySelectorAll("[data-device].is-selected")
+                    .forEach((item) => item.classList.remove("is-selected"));
+            }
+
+            document.querySelectorAll("[data-device]").forEach((element) => {
+                element.setAttribute("tabindex", "0");
+                element.setAttribute("role", "button");
+
+                element.addEventListener("click", () => {
+                    openInspector(element);
+                });
+
+                element.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        openInspector(element);
+                    }
+                });
+            });
+
+            close.addEventListener("click", closeInspector);
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    closeInspector();
+                }
+            });
+        })();
+    </script>
+
+
+
+    <script>
+        (function () {
+            const inspector = document.getElementById("deviceInspector");
+
+            if (!inspector) {
+                return;
+            }
+
+            const title = document.getElementById("inspectorTitle");
+            const type = document.getElementById("inspectorType");
+            const status = document.getElementById("inspectorStatus");
+            const ip = document.getElementById("inspectorIp");
+            const vlan = document.getElementById("inspectorVlan");
+            const link = document.getElementById("inspectorLink");
+            const poe = document.getElementById("inspectorPoe");
+            const desc = document.getElementById("inspectorDesc");
+
+            function clearSelection() {
+                document.querySelectorAll("[data-device].is-selected, [data-port].is-selected")
+                    .forEach((item) => item.classList.remove("is-selected"));
+            }
+
+            function openPort(port) {
+                clearSelection();
+                port.classList.add("is-selected");
+
+                title.textContent =
+                    "Port " + (port.dataset.portNumber || "?") +
+                    " · " + (port.dataset.portName || "Port");
+
+                type.textContent =
+                    "SWITCH PORT · " + (port.dataset.portSwitch || "SWITCH");
+
+                status.textContent = port.dataset.status || "Online";
+                ip.textContent = port.dataset.ip || "—";
+                vlan.textContent = port.dataset.vlan || "—";
+                link.textContent = port.dataset.link || "—";
+                poe.textContent = port.dataset.poe || "—";
+                desc.textContent =
+                    port.dataset.desc ||
+                    "Eksempel på hvordan portinformasjon kan presenteres.";
+
+                inspector.classList.add("is-open");
+                inspector.setAttribute("aria-hidden", "false");
+            }
+
+            document.querySelectorAll("[data-port]").forEach((port) => {
+                port.setAttribute("tabindex", "0");
+                port.setAttribute("role", "button");
+                port.setAttribute(
+                    "aria-label",
+                    "Port " +
+                    (port.dataset.portNumber || "") +
+                    " " +
+                    (port.dataset.portName || "")
+                );
+
+                port.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    openPort(port);
+                });
+
+                port.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        openPort(port);
+                    }
+                });
+            });
+        })();
+    </script>
+
 
 </body>
 
