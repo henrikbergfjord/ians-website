@@ -5,558 +5,779 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Henrik Bergfjord | Portal</title>
+    <title>Henrik Bergfjord | ians.no</title>
 
     <meta
         name="description"
-        content="Henrik Bergfjords personlige portal for teknologi, læring, verktøy, prosjekter og hverdag."
+        content="ians.no – Henrik Bergfjords personlige portal for teknologi, læring, konsepter, verktøy og prosjekter."
     >
 
     <link rel="stylesheet" href="assets/styles.css">
 
     <style>
         /* =========================================================
-           IANS.NO – PORTAL HOMEPAGE
-           Clean structure for hero, navigation, tools and projects.
+           IANS.NO – ENTERPRISE PORTAL HOMEPAGE
+           Only this file is changed.
            ========================================================= */
 
         html {
             scroll-behavior: smooth;
         }
 
+        body {
+            overflow-x: hidden;
+        }
+
         /* ---------------------------------------------------------
-           TOP NAVIGATION
+           TOPBAR
            --------------------------------------------------------- */
 
         .topbar {
             position: sticky;
             top: 0;
-            z-index: 50;
-            backdrop-filter: blur(18px);
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            background: rgba(7, 12, 20, 0.78);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .nav-links {
             display: flex;
             gap: 6px;
-            flex-wrap: wrap;
+            align-items: center;
         }
 
         .nav-links a {
             white-space: nowrap;
         }
 
-        .nav-links .highlight-link {
-            border: 1px solid rgba(105, 210, 255, 0.3);
-            background: rgba(105, 210, 255, 0.08);
+        .nav-links .nav-featured {
+            border: 1px solid rgba(102, 206, 255, 0.28);
+            background: rgba(102, 206, 255, 0.08);
         }
 
         /* ---------------------------------------------------------
-           HERO
+           HERO / IANS CORE
            --------------------------------------------------------- */
 
-        .portal-hero {
+        .ians-hero {
             position: relative;
-            overflow: hidden;
-        }
-
-        .portal-hero::before {
-            content: "";
-            position: absolute;
-            width: 520px;
-            height: 520px;
-            top: -290px;
-            right: -220px;
-            border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                rgba(65, 190, 255, 0.2),
-                transparent 68%
-            );
-            pointer-events: none;
-        }
-
-        .portal-hero::after {
-            content: "";
-            position: absolute;
-            width: 260px;
-            height: 260px;
-            bottom: -140px;
-            left: -120px;
-            border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                rgba(82, 224, 166, 0.12),
-                transparent 70%
-            );
-            pointer-events: none;
-        }
-
-        .hero-eyebrow {
+            min-height: 780px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 16px;
+            align-items: center;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background:
+                radial-gradient(circle at 73% 35%, rgba(83, 177, 255, 0.13), transparent 25%),
+                radial-gradient(circle at 84% 54%, rgba(130, 91, 255, 0.11), transparent 28%),
+                radial-gradient(circle at 20% 20%, rgba(0, 208, 132, 0.07), transparent 22%),
+                linear-gradient(180deg, #080d16 0%, #0b111c 56%, #0b1018 100%);
         }
 
-        .hero-chip {
+        .ians-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0.34;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(to bottom, #000 15%, transparent 100%);
+        }
+
+        .hero-shell {
+            position: relative;
+            z-index: 2;
+            width: min(1280px, calc(100% - 40px));
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 0.92fr) minmax(500px, 1.08fr);
+            gap: 42px;
+            align-items: center;
+            padding: 72px 0 82px;
+        }
+
+        .hero-copy {
+            max-width: 650px;
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 18px;
             padding: 7px 11px;
-            border: 1px solid rgba(255, 255, 255, 0.11);
+            border: 1px solid rgba(114, 210, 255, 0.18);
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.045);
-            font-size: 0.78rem;
-            font-weight: 750;
+            background: rgba(114, 210, 255, 0.06);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.11em;
+            text-transform: uppercase;
         }
 
-        .portal-hero h1 {
-            max-width: 760px;
+        .hero-kicker .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #67d8ff;
+            box-shadow: 0 0 0 0 rgba(103, 216, 255, 0.45);
+            animation: heroPulse 2s infinite;
         }
 
-        .portal-hero .lead {
-            max-width: 760px;
+        @keyframes heroPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(103, 216, 255, 0.42);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(103, 216, 255, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(103, 216, 255, 0);
+            }
+        }
+
+        .hero-copy h1 {
+            margin: 0 0 20px;
+            max-width: 680px;
+            font-size: clamp(3rem, 6vw, 5.9rem);
+            line-height: 0.95;
+            letter-spacing: -0.055em;
+        }
+
+        .hero-copy h1 span {
+            display: block;
+            color: #7ddcff;
+        }
+
+        .hero-copy .lead {
+            max-width: 620px;
+            margin: 0;
+            font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.74);
         }
 
         .hero-actions {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 22px;
+            margin-top: 28px;
         }
 
-        .hero-metric-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 24px;
+        .hero-note {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 28px;
         }
 
-        .hero-metric {
-            padding: 13px 15px;
+        .hero-note span {
+            padding: 7px 10px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.025);
-        }
-
-        .hero-metric strong {
-            display: block;
-            margin-bottom: 3px;
-            font-size: 1rem;
-        }
-
-        .hero-metric span {
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.035);
             font-size: 0.78rem;
-            opacity: 0.64;
+            color: rgba(255, 255, 255, 0.62);
         }
 
         /* ---------------------------------------------------------
-           WORLD CLOCKS
+           ORBIT VISUAL
            --------------------------------------------------------- */
 
-        .clock-grid {
+        .core-stage {
+            position: relative;
+            min-height: 590px;
+        }
+
+        .core-glow {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 470px;
+            height: 470px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                rgba(70, 189, 255, 0.14),
+                rgba(92, 102, 255, 0.05) 45%,
+                transparent 72%
+            );
+            filter: blur(4px);
+        }
+
+        .orbit {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            border: 1px solid rgba(135, 205, 255, 0.14);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .orbit.one {
+            width: 260px;
+            height: 260px;
+            animation: orbitSpin 18s linear infinite;
+        }
+
+        .orbit.two {
+            width: 390px;
+            height: 390px;
+            animation: orbitSpinReverse 27s linear infinite;
+        }
+
+        .orbit.three {
+            width: 520px;
+            height: 520px;
+            animation: orbitSpin 38s linear infinite;
+        }
+
+        @keyframes orbitSpin {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes orbitSpinReverse {
+            from {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+        }
+
+        .core-center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 172px;
+            height: 172px;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(113, 218, 255, 0.38);
+            border-radius: 50%;
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 14px;
-            margin-top: 20px;
+            place-items: center;
+            text-align: center;
+            background:
+                radial-gradient(circle at 40% 35%, rgba(125, 225, 255, 0.24), transparent 38%),
+                linear-gradient(145deg, #102334, #101723 72%);
+            box-shadow:
+                0 0 50px rgba(65, 184, 255, 0.19),
+                inset 0 0 30px rgba(131, 220, 255, 0.05);
         }
 
-        .clock-card {
-            padding: 16px;
+        .core-center::after {
+            content: "";
+            position: absolute;
+            inset: 10px;
+            border: 1px dashed rgba(145, 221, 255, 0.18);
+            border-radius: 50%;
+            animation: coreRotate 18s linear infinite;
+        }
+
+        @keyframes coreRotate {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .core-center strong {
+            display: block;
+            font-size: 1.1rem;
+            letter-spacing: 0.08em;
+        }
+
+        .core-center span {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .planet {
+            position: absolute;
+            width: 82px;
+            min-height: 82px;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            background: rgba(14, 24, 36, 0.94);
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.3);
+            transform: translate(-50%, -50%);
+            z-index: 4;
+            transition: 0.2s ease;
+        }
+
+        .planet:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+            border-color: rgba(122, 219, 255, 0.42);
+            box-shadow: 0 0 28px rgba(86, 192, 255, 0.17);
+        }
+
+        .planet strong {
+            display: block;
+            font-size: 0.73rem;
+        }
+
+        .planet small {
+            display: block;
+            margin-top: 2px;
+            font-size: 0.58rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .planet.sameienett {
+            left: 50%;
+            top: 7%;
+        }
+
+        .planet.academy {
+            left: 85%;
+            top: 27%;
+        }
+
+        .planet.tools {
+            left: 90%;
+            top: 68%;
+        }
+
+        .planet.projects {
+            left: 52%;
+            top: 93%;
+        }
+
+        .planet.power {
+            left: 13%;
+            top: 69%;
+        }
+
+        .planet.dns {
+            left: 11%;
+            top: 28%;
+        }
+
+        .planet.sameienett,
+        .planet.academy,
+        .planet.tools {
+            border-color: rgba(126, 217, 255, 0.23);
+        }
+
+        /* ---------------------------------------------------------
+           MINI CLOCK BAR
+           --------------------------------------------------------- */
+
+        .world-strip {
+            position: relative;
+            z-index: 4;
+            margin-top: -34px;
+        }
+
+        .world-strip-inner {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(8px);
+            border-radius: 22px;
+            background: rgba(12, 19, 30, 0.94);
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
         }
 
-        .clock-header {
+        .world-time {
             display: flex;
+            align-items: center;
             justify-content: space-between;
+            gap: 20px;
+            padding: 18px 22px;
+        }
+
+        .world-time + .world-time {
+            border-left: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .world-label {
+            display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 8px;
         }
 
-        .clock-title {
-            font-size: 0.95rem;
-            font-weight: 700;
+        .world-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #6bd7ff;
+            box-shadow: 0 0 20px rgba(107, 215, 255, 0.4);
         }
 
-        .clock-sub {
-            font-size: 0.82rem;
-            opacity: 0.65;
+        .world-time.ph .world-dot {
+            background: #a88cff;
+            box-shadow: 0 0 20px rgba(168, 140, 255, 0.4);
         }
 
-        .digital-clock {
-            margin: 7px 0 2px;
-            font-size: 1.65rem;
-            font-weight: 800;
+        .world-label strong,
+        .world-label small {
+            display: block;
+        }
+
+        .world-label small {
+            margin-top: 2px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .world-clock {
+            text-align: right;
+        }
+
+        .world-clock strong {
+            display: block;
+            font-size: 1.35rem;
             letter-spacing: 0.04em;
         }
 
-        .digital-date {
-            margin-bottom: 12px;
-            font-size: 0.84rem;
-            opacity: 0.72;
-        }
-
-        .analog-wrap {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .analog-clock {
-            position: relative;
-            width: 116px;
-            height: 116px;
-            border: 3px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            background:
-                radial-gradient(
-                    circle at center,
-                    rgba(255, 255, 255, 0.12) 0 5px,
-                    transparent 6px
-                ),
-                rgba(255, 255, 255, 0.025);
-            box-shadow:
-                inset 0 0 20px rgba(255, 255, 255, 0.04),
-                0 10px 24px rgba(0, 0, 0, 0.22);
-        }
-
-        .analog-clock .marker {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 2px;
-            height: 52px;
-            margin-top: -52px;
-            margin-left: -1px;
-            transform-origin: center bottom;
-        }
-
-        .analog-clock .marker::after {
-            content: "";
-            display: block;
-            width: 2px;
-            height: 8px;
-            margin: 0 auto;
-            border-radius: 2px;
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        .analog-clock .marker.hour::after {
-            width: 3px;
-            height: 11px;
-            background: rgba(255, 255, 255, 0.8);
-        }
-
-        .hand {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            border-radius: 999px;
-            transform-origin: bottom center;
-        }
-
-        .hand.hour {
-            width: 5px;
-            height: 29px;
-            margin-top: -29px;
-            margin-left: -2.5px;
-            background: #fff;
-        }
-
-        .hand.minute {
-            width: 3px;
-            height: 40px;
-            margin-top: -40px;
-            margin-left: -1.5px;
-            background: #9fd0ff;
-        }
-
-        .hand.second {
-            width: 1.5px;
-            height: 46px;
-            margin-top: -46px;
-            margin-left: -0.75px;
-            background: #ff8a8a;
-        }
-
-        .clock-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 10px;
-            height: 10px;
-            margin-top: -5px;
-            margin-left: -5px;
-            border-radius: 50%;
-            background: #fff;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.13);
+        .world-clock small {
+            color: rgba(255, 255, 255, 0.48);
         }
 
         /* ---------------------------------------------------------
-           FEATURED AREAS
+           MAIN AREAS
            --------------------------------------------------------- */
 
-        .featured-grid {
+        .portal-section {
+            padding: 92px 0 18px;
+        }
+
+        .section-heading {
+            max-width: 760px;
+            margin-bottom: 30px;
+        }
+
+        .section-heading .kicker {
+            margin-bottom: 10px;
+        }
+
+        .section-heading h2 {
+            margin-bottom: 12px;
+        }
+
+        .section-heading p {
+            margin: 0;
+            line-height: 1.65;
+            opacity: 0.68;
+        }
+
+        .main-area-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr;
+            grid-template-columns: 1.25fr 1fr 1fr;
             gap: 18px;
         }
 
-        .feature-card {
+        .main-area {
             position: relative;
+            min-height: 345px;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-            min-height: 270px;
         }
 
-        .feature-card::after {
+        .main-area::before {
             content: "";
             position: absolute;
-            width: 220px;
-            height: 220px;
-            top: -110px;
-            right: -95px;
+            width: 280px;
+            height: 280px;
+            top: -155px;
+            right: -120px;
             border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                rgba(105, 210, 255, 0.15),
-                transparent 70%
-            );
-            pointer-events: none;
+            background: radial-gradient(circle, rgba(99, 201, 255, 0.16), transparent 70%);
         }
 
-        .feature-card.sameienett::after {
-            background: radial-gradient(
-                circle,
-                rgba(177, 120, 255, 0.18),
-                transparent 70%
-            );
+        .main-area.sameie::before {
+            background: radial-gradient(circle, rgba(141, 116, 255, 0.19), transparent 70%);
         }
 
-        .feature-card.academy::after {
-            background: radial-gradient(
-                circle,
-                rgba(0, 208, 132, 0.16),
-                transparent 70%
-            );
+        .main-area.academy::before {
+            background: radial-gradient(circle, rgba(0, 211, 139, 0.16), transparent 70%);
         }
 
-        .feature-card h3 {
-            margin-top: 18px;
-            font-size: 1.5rem;
+        .main-area .area-number {
+            font-size: 0.68rem;
+            font-weight: 850;
+            letter-spacing: 0.14em;
+            opacity: 0.46;
         }
 
-        .feature-card p {
-            max-width: 620px;
-            line-height: 1.6;
-            opacity: 0.75;
+        .main-area .area-icon {
+            margin: 20px 0 8px;
+            font-size: 2.4rem;
         }
 
-        .feature-icon {
-            font-size: 2.1rem;
+        .main-area h3 {
+            margin-bottom: 10px;
+            font-size: 1.65rem;
+        }
+
+        .main-area p {
+            max-width: 590px;
+            line-height: 1.62;
+            opacity: 0.7;
+        }
+
+        .main-area .area-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin: 13px 0 24px;
+        }
+
+        .main-area .area-tags span {
+            padding: 6px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            font-size: 0.72rem;
+            opacity: 0.72;
+        }
+
+        .main-area .card-link {
+            margin-top: auto;
         }
 
         /* ---------------------------------------------------------
-           INTERACTIVE TOOLS
+           TOOLS
            --------------------------------------------------------- */
 
-        .tools-section {
-            padding-top: 16px;
+        .lab-section {
+            padding-top: 54px;
         }
 
-        .section-intro {
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .section-intro p {
-            max-width: 720px;
-        }
-
-        .tool-grid {
+        .lab-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 18px;
         }
 
-        .tool-card {
-            position: relative;
+        .lab-card {
+            min-height: 270px;
             display: flex;
             flex-direction: column;
-            min-height: 330px;
-            overflow: hidden;
         }
 
-        .tool-card::after {
-            content: "";
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            top: -70px;
-            right: -80px;
-            border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                rgba(104, 205, 255, 0.15),
-                transparent 70%
-            );
+        .lab-card .lab-number {
+            font-size: 0.7rem;
+            font-weight: 850;
+            letter-spacing: 0.12em;
+            opacity: 0.44;
         }
 
-        .tool-card.money::after {
-            background: radial-gradient(
-                circle,
-                rgba(82, 224, 166, 0.17),
-                transparent 70%
-            );
+        .lab-card .lab-icon {
+            margin: 16px 0 5px;
+            font-size: 1.8rem;
         }
 
-        .tool-card.pro::after {
-            background: radial-gradient(
-                circle,
-                rgba(177, 120, 255, 0.18),
-                transparent 70%
-            );
-        }
-
-        .tool-number {
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 0.13em;
-            opacity: 0.55;
-        }
-
-        .tool-icon {
-            margin: 18px 0 4px;
-            font-size: 2rem;
-        }
-
-        .tool-card h3 {
-            margin-bottom: 8px;
-            font-size: 1.35rem;
-        }
-
-        .tool-card p {
+        .lab-card p {
             line-height: 1.55;
-            opacity: 0.72;
+            opacity: 0.68;
         }
 
-        .tool-list {
-            display: grid;
-            gap: 7px;
-            margin: 14px 0 20px;
-            font-size: 0.86rem;
-        }
-
-        .tool-list span::before {
-            content: "✓";
-            margin-right: 8px;
-            opacity: 0.7;
-        }
-
-        .tool-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+        .lab-card .card-link {
             margin-top: auto;
         }
 
-        .tool-link {
-            display: inline-flex;
+        /* ---------------------------------------------------------
+           COMPACT PORTAL GRID
+           --------------------------------------------------------- */
+
+        .more-section {
+            padding-top: 58px;
+            padding-bottom: 80px;
+        }
+
+        .compact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .compact-card {
+            min-height: 118px;
+            display: grid;
+            grid-template-columns: 46px 1fr auto;
+            gap: 14px;
             align-items: center;
-            gap: 6px;
-            padding: 10px 13px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 11px;
-            font-weight: 750;
+            padding: 16px 17px;
             text-decoration: none;
+            transition: 0.18s ease;
         }
 
-        .tool-link.primary {
-            border-color: rgba(105, 210, 255, 0.28);
-            background: rgba(105, 210, 255, 0.13);
+        .compact-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.16);
         }
 
-        .money .tool-link.primary {
-            border-color: rgba(82, 224, 166, 0.27);
-            background: rgba(82, 224, 166, 0.11);
+        .compact-icon {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.045);
+            font-size: 1.25rem;
         }
 
-        .pro .tool-link.primary {
-            border-color: rgba(177, 120, 255, 0.28);
-            background: rgba(177, 120, 255, 0.12);
+        .compact-card strong,
+        .compact-card small {
+            display: block;
         }
 
-        .tool-badge {
-            position: absolute;
-            top: 18px;
-            right: 18px;
+        .compact-card small {
+            margin-top: 4px;
+            line-height: 1.35;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .compact-arrow {
+            opacity: 0.44;
         }
 
         /* ---------------------------------------------------------
-           PORTAL OVERVIEW
+           FOOTER
            --------------------------------------------------------- */
 
-        .portal-grid .portal-card,
-        .tool-card,
-        .feature-card {
-            transition:
-                transform 0.18s ease,
-                border-color 0.18s ease,
-                box-shadow 0.18s ease;
-        }
-
-        .portal-grid .portal-card:hover,
-        .tool-card:hover,
-        .feature-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255, 255, 255, 0.17);
-            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.15);
+        .footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         /* ---------------------------------------------------------
            RESPONSIVE
            --------------------------------------------------------- */
 
-        @media (max-width: 1080px) {
+        @media (max-width: 1120px) {
             .nav-links {
                 display: none;
             }
 
-            .featured-grid,
-            .tool-grid {
+            .hero-shell {
+                grid-template-columns: 1fr;
+                padding-top: 62px;
+            }
+
+            .hero-copy {
+                max-width: 760px;
+            }
+
+            .core-stage {
+                min-height: 560px;
+                max-width: 720px;
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            .main-area-grid {
                 grid-template-columns: 1fr;
             }
 
-            .hero-metric-grid {
-                grid-template-columns: repeat(3, 1fr);
+            .main-area {
+                min-height: 280px;
             }
         }
 
-        @media (max-width: 720px) {
+        @media (max-width: 820px) {
+            .ians-hero {
+                min-height: auto;
+            }
+
+            .hero-shell {
+                width: min(100% - 28px, 1280px);
+                gap: 22px;
+            }
+
+            .hero-copy h1 {
+                font-size: clamp(2.7rem, 13vw, 4.6rem);
+            }
+
+            .core-stage {
+                min-height: 470px;
+                transform: scale(0.86);
+                margin-top: -24px;
+                margin-bottom: -28px;
+            }
+
+            .world-strip {
+                margin-top: -10px;
+            }
+
+            .world-strip-inner {
+                width: calc(100% - 28px);
+                grid-template-columns: 1fr;
+            }
+
+            .world-time + .world-time {
+                border-left: 0;
+                border-top: 1px solid rgba(255, 255, 255, 0.07);
+            }
+
+            .lab-grid,
+            .compact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
             .topbar .button.primary {
                 display: none;
             }
 
-            .hero-metric-grid,
-            .clock-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-intro {
-                align-items: start;
+            .hero-actions {
                 flex-direction: column;
             }
 
-            .digital-clock {
-                font-size: 1.45rem;
+            .hero-actions .button {
+                justify-content: center;
             }
 
-            .analog-clock {
-                width: 104px;
-                height: 104px;
+            .core-stage {
+                min-height: 390px;
+                transform: scale(0.68);
+                margin: -55px -70px -55px;
+                width: calc(100% + 140px);
+                max-width: none;
+            }
+
+            .portal-section {
+                padding-top: 70px;
+            }
+
+            .world-time {
+                padding: 15px 17px;
+            }
+
+            .world-clock strong {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
             }
         }
     </style>
@@ -578,15 +799,15 @@
 
             <nav class="nav-links" aria-label="Hovedmeny">
                 <a href="index.html" class="active">Hjem</a>
-                <a href="#fokus">Fokus</a>
-                <a href="#verktoy" class="highlight-link">Verktøy</a>
+                <a href="#hovedomrader">Fokus</a>
+                <a href="SameieNett.html" class="nav-featured">SameieNett</a>
                 <a href="academy/index.html">Academy</a>
-                <a href="SameieNett.html">SameieNett</a>
+                <a href="#lab">IANS Lab</a>
                 <a href="#portal">Portal</a>
             </nav>
 
-            <a class="button primary" href="#verktoy">
-                Åpne verktøy
+            <a class="button primary" href="#hovedomrader">
+                Utforsk
             </a>
 
         </div>
@@ -598,298 +819,230 @@
              HERO
              ===================================================== -->
 
-        <section class="page-header">
-            <div class="container hero-grid">
+        <section class="ians-hero">
 
-                <div class="card hero-panel portal-hero">
+            <div class="hero-shell">
 
-                    <div class="hero-eyebrow">
-                        <span class="hero-chip">Personlig portal</span>
-                        <span class="hero-chip">Teknologi</span>
-                        <span class="hero-chip">Læring</span>
-                        <span class="hero-chip">Prosjekter</span>
-                    </div>
+                <!-- HERO COPY -->
 
-                    <div class="kicker">
-                        IANS.NO · IDEER · KUNNSKAP · VERKTØY
+                <div class="hero-copy">
+
+                    <div class="hero-kicker">
+                        <span class="pulse"></span>
+                        ians.no · personlig teknologiplattform
                     </div>
 
                     <h1>
-                        Et sted for det jeg lærer, bygger og utvikler.
+                        Idéer.
+                        <span>Teknologi.</span>
+                        Muligheter.
                     </h1>
 
                     <p class="lead">
-                        ians.no er min personlige portal for teknologi,
-                        læring, egne konsepter, praktiske verktøy og prosjekter.
-                        Her samler jeg ting jeg faktisk bruker og ønsker
-                        å utvikle videre.
+                        Et personlig sted for det jeg lærer, bygger og utvikler.
+                        Fra kraftsystem og faglig læring til digitale konsepter,
+                        webverktøy, infrastruktur og egne prosjekter.
                     </p>
 
                     <div class="hero-actions">
 
-                        <a class="button primary" href="#fokus">
-                            Utforsk portalen
-                        </a>
-
-                        <a class="button secondary" href="SameieNett.html">
-                            SameieNett
+                        <a class="button primary" href="SameieNett.html">
+                            Utforsk SameieNett
                         </a>
 
                         <a class="button secondary" href="academy/index.html">
-                            Statnett Academy
+                            Åpne Academy
+                        </a>
+
+                        <a class="button secondary" href="#lab">
+                            Se verktøy
                         </a>
 
                     </div>
 
-                    <div class="hero-metric-grid">
-
-                        <div class="hero-metric">
-                            <strong>Læring</strong>
-                            <span>Academy og faglig utvikling</span>
-                        </div>
-
-                        <div class="hero-metric">
-                            <strong>Konsepter</strong>
-                            <span>SameieNett og nye ideer</span>
-                        </div>
-
-                        <div class="hero-metric">
-                            <strong>Verktøy</strong>
-                            <span>Bygging, økonomi og teknologi</span>
-                        </div>
-
-                    </div>
-
-                    <!-- WORLD CLOCKS -->
-
-                    <div class="clock-grid">
-
-                        <div class="clock-card">
-
-                            <div class="clock-header">
-                                <div>
-                                    <div class="clock-title">Norge</div>
-                                    <div class="clock-sub">Lokal tid</div>
-                                </div>
-
-                                <span class="badge ok">NO</span>
-                            </div>
-
-                            <div
-                                class="digital-clock"
-                                id="clock-no-digital"
-                            >
-                                --:--:--
-                            </div>
-
-                            <div
-                                class="digital-date"
-                                id="clock-no-date"
-                            >
-                                Laster dato...
-                            </div>
-
-                            <div class="analog-wrap">
-                                <div
-                                    class="analog-clock"
-                                    aria-label="Analog klokke for Norge"
-                                >
-
-                                    <div class="marker hour" style="transform: rotate(0deg)"></div>
-                                    <div class="marker" style="transform: rotate(30deg)"></div>
-                                    <div class="marker" style="transform: rotate(60deg)"></div>
-                                    <div class="marker hour" style="transform: rotate(90deg)"></div>
-                                    <div class="marker" style="transform: rotate(120deg)"></div>
-                                    <div class="marker" style="transform: rotate(150deg)"></div>
-                                    <div class="marker hour" style="transform: rotate(180deg)"></div>
-                                    <div class="marker" style="transform: rotate(210deg)"></div>
-                                    <div class="marker" style="transform: rotate(240deg)"></div>
-                                    <div class="marker hour" style="transform: rotate(270deg)"></div>
-                                    <div class="marker" style="transform: rotate(300deg)"></div>
-                                    <div class="marker" style="transform: rotate(330deg)"></div>
-
-                                    <div class="hand hour" id="clock-no-hour"></div>
-                                    <div class="hand minute" id="clock-no-minute"></div>
-                                    <div class="hand second" id="clock-no-second"></div>
-                                    <div class="clock-center"></div>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="clock-card">
-
-                            <div class="clock-header">
-                                <div>
-                                    <div class="clock-title">Filippinene</div>
-                                    <div class="clock-sub">Manila / PH-tid</div>
-                                </div>
-
-                                <span class="badge">PH</span>
-                            </div>
-
-                            <div
-                                class="digital-clock"
-                                id="clock-ph-digital"
-                            >
-                                --:--:--
-                            </div>
-
-                            <div
-                                class="digital-date"
-                                id="clock-ph-date"
-                            >
-                                Laster dato...
-                            </div>
-
-                            <div class="analog-wrap">
-                                <div
-                                    class="analog-clock"
-                                    aria-label="Analog klokke for Filippinene"
-                                >
-
-                                    <div class="marker hour" style="transform: rotate(0deg)"></div>
-                                    <div class="marker" style="transform: rotate(30deg)"></div>
-                                    <div class="marker" style="transform: rotate(60deg)"></div>
-                                    <div class="marker hour" style="transform: rotate(90deg)"></div>
-                                    <div class="marker" style="transform: rotate(120deg)"></div>
-                                    <div class="marker" style="transform: rotate(150deg)"></div>
-                                    <div class="marker hour" style="transform: rotate(180deg)"></div>
-                                    <div class="marker" style="transform: rotate(210deg)"></div>
-                                    <div class="marker" style="transform: rotate(240deg)"></div>
-                                    <div class="marker hour" style="transform: rotate(270deg)"></div>
-                                    <div class="marker" style="transform: rotate(300deg)"></div>
-                                    <div class="marker" style="transform: rotate(330deg)"></div>
-
-                                    <div class="hand hour" id="clock-ph-hour"></div>
-                                    <div class="hand minute" id="clock-ph-minute"></div>
-                                    <div class="hand second" id="clock-ph-second"></div>
-                                    <div class="clock-center"></div>
-
-                                </div>
-                            </div>
-
-                        </div>
-
+                    <div class="hero-note">
+                        <span>Concept & Architecture</span>
+                        <span>Learning by building</span>
+                        <span>Independent projects</span>
                     </div>
 
                 </div>
 
-                <!-- HERO SIDE PANEL -->
+                <!-- IANS CORE VISUAL -->
 
-                <aside class="card side-stack">
+                <div class="core-stage" aria-label="Visuell oversikt over ians.no">
 
-                    <div class="mini-card">
-                        <div class="mini-top">
+                    <div class="core-glow"></div>
+
+                    <div class="orbit one"></div>
+                    <div class="orbit two"></div>
+                    <div class="orbit three"></div>
+
+                    <div class="core-center">
+                        <div>
+                            <strong>IANS CORE</strong>
+                            <span>ideas · tech · projects</span>
+                        </div>
+                    </div>
+
+                    <a class="planet sameienett" href="SameieNett.html">
+                        <span>
                             <strong>SameieNett</strong>
-                            <span class="badge">Konsept</span>
-                        </div>
+                            <small>Concept</small>
+                        </span>
+                    </a>
 
-                        <div class="mini-value">
-                            Digital grunnmur for moderne boligbygg
-                        </div>
+                    <a class="planet academy" href="academy/index.html">
+                        <span>
+                            <strong>Academy</strong>
+                            <small>Learning</small>
+                        </span>
+                    </a>
 
-                        <p class="muted">
-                            Enterprise-konsept for nettverk, Wi-Fi,
-                            sikkerhet, adgang, IoT, energi og fremtidig
-                            digital infrastruktur.
-                        </p>
-
-                        <a class="card-link" href="SameieNett.html">
-                            Utforsk konseptet →
-                        </a>
-                    </div>
-
-                    <div class="mini-card">
-                        <div class="mini-top">
-                            <strong>Statnett Academy</strong>
-                            <span class="badge academy-badge">Læring</span>
-                        </div>
-
-                        <div class="mini-value">
-                            Personlig læringsplattform
-                        </div>
-
-                        <p class="muted">
-                            Kraftsystemet, transmisjonsnettet,
-                            prosjektgjennomføring, planlegging,
-                            begreper og quiz.
-                        </p>
-
-                        <a class="card-link" href="academy/index.html">
-                            Start læringen →
-                        </a>
-                    </div>
-
-                    <div class="mini-card">
-                        <div class="mini-top">
+                    <a class="planet tools" href="#lab">
+                        <span>
                             <strong>IANS Lab</strong>
-                            <span class="badge ok">3 verktøy</span>
-                        </div>
+                            <small>Tools</small>
+                        </span>
+                    </a>
 
-                        <div class="mini-value">
-                            Fra idé til praktisk løsning
-                        </div>
+                    <a class="planet projects" href="maimyra.html">
+                        <span>
+                            <strong>Projects</strong>
+                            <small>Build</small>
+                        </span>
+                    </a>
 
-                        <p class="muted">
-                            Website Builder Light, Money Planner
-                            og Website Builder Pro.
-                        </p>
+                    <a class="planet power" href="strom.html">
+                        <span>
+                            <strong>Strøm</strong>
+                            <small>Energy</small>
+                        </span>
+                    </a>
 
-                        <a class="card-link" href="#verktoy">
-                            Se verktøyene →
-                        </a>
-                    </div>
+                    <a class="planet dns" href="dns-sjekk.html">
+                        <span>
+                            <strong>DNS</strong>
+                            <small>Network</small>
+                        </span>
+                    </a>
 
-                </aside>
+                </div>
 
             </div>
+
         </section>
 
         <!-- =====================================================
-             FEATURED FOCUS
+             WORLD TIME STRIP
              ===================================================== -->
 
-        <section class="section" id="fokus">
-            <div class="container">
+        <section class="world-strip" aria-label="Tid i Norge og Filippinene">
 
-                <div class="section-intro">
-                    <div>
-                        <div class="kicker">
-                            DET JEG JOBBER MED NÅ
+            <div class="world-strip-inner">
+
+                <div class="world-time">
+
+                    <div class="world-label">
+                        <span class="world-dot"></span>
+
+                        <div>
+                            <strong>Norge</strong>
+                            <small>Europe / Oslo</small>
                         </div>
-
-                        <h2>
-                            Tre områder med hver sin retning
-                        </h2>
-
-                        <p>
-                            Forsiden skal ikke forklare alt.
-                            Den skal gjøre det enkelt å forstå
-                            hva som er viktigst og hvor du kan gå videre.
-                        </p>
                     </div>
+
+                    <div class="world-clock">
+                        <strong id="clock-no-digital">--:--:--</strong>
+                        <small id="clock-no-date">Laster dato...</small>
+                    </div>
+
                 </div>
 
-                <div class="featured-grid">
+                <div class="world-time ph">
 
-                    <article class="card feature-card sameienett">
+                    <div class="world-label">
+                        <span class="world-dot"></span>
 
-                        <div class="feature-icon">🏢</div>
+                        <div>
+                            <strong>Filippinene</strong>
+                            <small>Asia / Manila</small>
+                        </div>
+                    </div>
+
+                    <div class="world-clock">
+                        <strong id="clock-ph-digital">--:--:--</strong>
+                        <small id="clock-ph-date">Laster dato...</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+             MAIN AREAS
+             ===================================================== -->
+
+        <section class="section portal-section" id="hovedomrader">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div class="kicker">
+                        HOVEDOMRÅDER
+                    </div>
+
+                    <h2>
+                        Det viktigste på ians.no
+                    </h2>
+
+                    <p>
+                        Tre tydelige innganger. Resten av portalen ligger fortsatt
+                        tilgjengelig, men får ikke konkurrere om oppmerksomheten
+                        på toppen av forsiden.
+                    </p>
+
+                </div>
+
+                <div class="main-area-grid">
+
+                    <!-- SAMEIENETT -->
+
+                    <article class="card main-area sameie">
+
+                        <div class="area-number">
+                            01 · CONCEPT
+                        </div>
+
+                        <div class="area-icon">
+                            ◉
+                        </div>
 
                         <span class="badge">
-                            Konsept & arkitektur
+                            Concept & Architecture
                         </span>
 
-                        <h3>SameieNett</h3>
+                        <h3>
+                            SameieNett
+                        </h3>
 
                         <p>
-                            Et enterprise-konsept for hvordan sameier
-                            og borettslag kan eie en moderne digital
-                            grunnmur for nettverk, Wi-Fi, sikkerhet,
-                            adgang, kamera, energi og IoT.
+                            En digital grunnmur for moderne boligbygg.
+                            Nettverk, Wi-Fi, VLAN, sikkerhet, adgang,
+                            kamera, energi, IoT og automasjon samlet
+                            som én skalerbar plattform.
                         </p>
+
+                        <div class="area-tags">
+                            <span>Enterprise Wi-Fi</span>
+                            <span>Security</span>
+                            <span>Access</span>
+                            <span>IoT</span>
+                            <span>Energy</span>
+                        </div>
 
                         <a class="card-link" href="SameieNett.html">
                             Utforsk SameieNett →
@@ -897,21 +1050,38 @@
 
                     </article>
 
-                    <article class="card feature-card academy">
+                    <!-- ACADEMY -->
 
-                        <div class="feature-icon">🎓</div>
+                    <article class="card main-area academy">
+
+                        <div class="area-number">
+                            02 · LEARNING
+                        </div>
+
+                        <div class="area-icon">
+                            ◫
+                        </div>
 
                         <span class="badge academy-badge">
-                            Læring
+                            Knowledge
                         </span>
 
-                        <h3>Statnett Academy</h3>
+                        <h3>
+                            Statnett Academy
+                        </h3>
 
                         <p>
-                            Min egen kunnskapsbase for rollen som
-                            planlegger, kraftsystemet, transmisjonsnettet
-                            og prosjektgjennomføring.
+                            Min personlige læringsplattform for kraftsystemet,
+                            transmisjonsnettet, stasjoner, kontrollanlegg,
+                            prosjektgjennomføring og planleggerrollen.
                         </p>
+
+                        <div class="area-tags">
+                            <span>Kraftsystem</span>
+                            <span>420 kV</span>
+                            <span>Prosjekt</span>
+                            <span>Quiz</span>
+                        </div>
 
                         <a class="card-link" href="academy/index.html">
                             Åpne Academy →
@@ -919,24 +1089,40 @@
 
                     </article>
 
-                    <article class="card feature-card">
+                    <!-- IANS LAB -->
 
-                        <div class="feature-icon">🧰</div>
+                    <article class="card main-area">
+
+                        <div class="area-number">
+                            03 · BUILD
+                        </div>
+
+                        <div class="area-icon">
+                            ◇
+                        </div>
 
                         <span class="badge ok">
                             IANS Lab
                         </span>
 
-                        <h3>Interaktive verktøy</h3>
+                        <h3>
+                            Verktøy & eksperimenter
+                        </h3>
 
                         <p>
-                            Små løsninger som gjør ideer konkrete:
-                            bygg hjemmesider, analyser privatøkonomi
-                            og test nye konsepter direkte i nettleseren.
+                            Praktiske småverktøy og ideer som kan testes
+                            direkte i nettleseren og utvikles videre
+                            uavhengig av resten av portalen.
                         </p>
 
-                        <a class="card-link" href="#verktoy">
-                            Se verktøyene →
+                        <div class="area-tags">
+                            <span>Web Builder</span>
+                            <span>Money Planner</span>
+                            <span>HTML</span>
+                        </div>
+
+                        <a class="card-link" href="#lab">
+                            Se IANS Lab →
                         </a>
 
                     </article>
@@ -944,55 +1130,43 @@
                 </div>
 
             </div>
+
         </section>
 
         <!-- =====================================================
-             TOOLS
+             IANS LAB
              ===================================================== -->
 
-        <section class="section tools-section" id="verktoy">
+        <section class="section lab-section" id="lab">
+
             <div class="container">
 
-                <div class="section-intro">
+                <div class="section-heading">
 
-                    <div>
-                        <div class="kicker">
-                            IANS LAB · INTERAKTIVE VERKTØY
-                        </div>
-
-                        <h2>
-                            Verktøy som skal være nyttige
-                        </h2>
-
-                        <p>
-                            Hvert verktøy ligger som et eget område
-                            og kan utvikles videre uten å gjøre resten
-                            av portalen unødvendig komplisert.
-                        </p>
+                    <div class="kicker">
+                        IANS LAB
                     </div>
 
-                    <span class="badge ok">
-                        3 tilgjengelige
-                    </span>
+                    <h2>
+                        Interaktive verktøy
+                    </h2>
+
+                    <p>
+                        Ikke bare sider å lese. Verktøy som gjør noe.
+                    </p>
 
                 </div>
 
-                <div class="tool-grid">
+                <div class="lab-grid">
 
-                    <!-- TOOL 01 -->
+                    <article class="card lab-card">
 
-                    <article class="card tool-card">
-
-                        <span class="badge tool-badge">
-                            LIGHT
-                        </span>
-
-                        <div class="tool-number">
-                            VERKTØY 01
+                        <div class="lab-number">
+                            TOOL 01
                         </div>
 
-                        <div class="tool-icon">
-                            ✨
+                        <div class="lab-icon">
+                            ✦
                         </div>
 
                         <h3>
@@ -1000,43 +1174,27 @@
                         </h3>
 
                         <p>
-                            En enkel veiviser for personer som vil
-                            lage sin første hjemmeside uten å måtte
-                            forstå alt på forhånd.
+                            Enkel steg-for-steg generator med live preview
+                            og ferdig HTML.
                         </p>
 
-                        <div class="tool-list">
-                            <span>Spørsmål steg for steg</span>
-                            <span>Live forhåndsvisning</span>
-                            <span>Genererer ferdig HTML</span>
-                            <span>A–Å læringsguide</span>
-                        </div>
-
-                        <div class="tool-actions">
-                            <a
-                                class="tool-link primary"
-                                href="tools/website-builder-light/index.html"
-                            >
-                                Åpne Builder →
-                            </a>
-                        </div>
+                        <a
+                            class="card-link"
+                            href="tools/website-builder-light/index.html"
+                        >
+                            Åpne Builder →
+                        </a>
 
                     </article>
 
-                    <!-- TOOL 02 -->
+                    <article class="card lab-card">
 
-                    <article class="card tool-card money">
-
-                        <span class="badge ok tool-badge">
-                            ØKONOMI
-                        </span>
-
-                        <div class="tool-number">
-                            VERKTØY 02
+                        <div class="lab-number">
+                            TOOL 02
                         </div>
 
-                        <div class="tool-icon">
-                            📊
+                        <div class="lab-icon">
+                            ▥
                         </div>
 
                         <h3>
@@ -1044,43 +1202,27 @@
                         </h3>
 
                         <p>
-                            Privat økonomisjekk med inntekter, utgifter,
-                            lån, kreditt og en handlingsplan som gjør
-                            tallene enklere å forstå.
+                            Privat økonomisjekk for inntekter, utgifter,
+                            lån, kreditt og handlingsplan.
                         </p>
 
-                        <div class="tool-list">
-                            <span>Månedsbudsjett</span>
-                            <span>Gjeld og renter</span>
-                            <span>Belåningsgrad</span>
-                            <span>Personlig handlingsplan</span>
-                        </div>
-
-                        <div class="tool-actions">
-                            <a
-                                class="tool-link primary"
-                                href="tools/money-planner/index.html"
-                            >
-                                Åpne Money Planner →
-                            </a>
-                        </div>
+                        <a
+                            class="card-link"
+                            href="tools/money-planner/index.html"
+                        >
+                            Åpne Money Planner →
+                        </a>
 
                     </article>
 
-                    <!-- TOOL 03 -->
+                    <article class="card lab-card">
 
-                    <article class="card tool-card pro">
-
-                        <span class="badge tool-badge">
-                            PRO
-                        </span>
-
-                        <div class="tool-number">
-                            VERKTØY 03
+                        <div class="lab-number">
+                            TOOL 03
                         </div>
 
-                        <div class="tool-icon">
-                            🚀
+                        <div class="lab-icon">
+                            △
                         </div>
 
                         <h3>
@@ -1088,242 +1230,136 @@
                         </h3>
 
                         <p>
-                            En mer avansert generator med bransjevalg,
-                            designmodus, valgfrie seksjoner,
-                            live preview og eksport av komplett HTML.
+                            Mer avansert sidebygger med designvalg,
+                            seksjoner, preview og HTML-eksport.
                         </p>
 
-                        <div class="tool-list">
-                            <span>Flere designvalg</span>
-                            <span>Valgfrie seksjoner</span>
-                            <span>Responsiv preview</span>
-                            <span>Direkte HTML-eksport</span>
-                        </div>
-
-                        <div class="tool-actions">
-                            <a
-                                class="tool-link primary"
-                                href="tools/website-builder-pro/index.html"
-                            >
-                                Åpne Pro →
-                            </a>
-                        </div>
+                        <a
+                            class="card-link"
+                            href="tools/website-builder-pro/index.html"
+                        >
+                            Åpne Pro →
+                        </a>
 
                     </article>
 
                 </div>
 
             </div>
+
         </section>
 
         <!-- =====================================================
-             PORTAL OVERVIEW
+             REST OF PORTAL
              ===================================================== -->
 
-        <section class="section" id="portal">
+        <section class="section more-section" id="portal">
+
             <div class="container">
 
-                <div class="section-head">
-                    <div>
-                        <h2>
-                            Resten av portalen
-                        </h2>
+                <div class="section-heading">
 
-                        <p>
-                            Teknologi, prosjekter og hverdag.
-                            Alt er fortsatt tilgjengelig,
-                            men trenger ikke konkurrere om oppmerksomheten
-                            øverst på forsiden.
-                        </p>
+                    <div class="kicker">
+                        PORTAL
                     </div>
+
+                    <h2>
+                        Mer på ians.no
+                    </h2>
+
+                    <p>
+                        Prosjekter, praktiske sider og ting jeg bruker i hverdagen.
+                    </p>
+
                 </div>
 
-                <div class="portal-grid">
+                <div class="compact-grid">
 
-                    <article class="card portal-card">
+                    <a class="card compact-card" href="strom.html">
+                        <span class="compact-icon">⚡</span>
+                        <span>
+                            <strong>Strøm</strong>
+                            <small>Energi, visning og analyse</small>
+                        </span>
+                        <span class="compact-arrow">→</span>
+                    </a>
 
-                        <div class="card-top">
-                            <div class="card-icon">⚡</div>
-                            <span class="badge">Tech</span>
-                        </div>
+                    <a class="card compact-card" href="dns-sjekk.html">
+                        <span class="compact-icon">🌐</span>
+                        <span>
+                            <strong>DNS-sjekk</strong>
+                            <small>Domener og infrastruktur</small>
+                        </span>
+                        <span class="compact-arrow">→</span>
+                    </a>
 
-                        <h3>Strøm</h3>
+                    <a class="card compact-card" href="kalender.html">
+                        <span class="compact-icon">🗓</span>
+                        <span>
+                            <strong>Kalender</strong>
+                            <small>Planer og datoer</small>
+                        </span>
+                        <span class="compact-arrow">→</span>
+                    </a>
 
-                        <p>
-                            Teknisk strømvisning med paneler,
-                            graf og videre muligheter for analyser.
-                        </p>
+                    <a class="card compact-card" href="volvo-c40.html">
+                        <span class="compact-icon">🚗</span>
+                        <span>
+                            <strong>Volvo C40</strong>
+                            <small>Bil, lading og kostnader</small>
+                        </span>
+                        <span class="compact-arrow">→</span>
+                    </a>
 
-                        <a class="card-link" href="strom.html">
-                            Åpne strøm →
-                        </a>
+                    <a class="card compact-card" href="maimyra.html">
+                        <span class="compact-icon">🏠</span>
+                        <span>
+                            <strong>Maimyra</strong>
+                            <small>Bolig og prosjekter</small>
+                        </span>
+                        <span class="compact-arrow">→</span>
+                    </a>
 
-                    </article>
+                    <a class="card compact-card" href="galleri.html">
+                        <span class="compact-icon">🖼</span>
+                        <span>
+                            <strong>Galleri</strong>
+                            <small>Bilder og minner</small>
+                        </span>
+                        <span class="compact-arrow">→</span>
+                    </a>
 
-                    <article class="card portal-card">
+                    <a class="card compact-card" href="middag.html">
+                        <span class="compact-icon">🍽</span>
+                        <span>
+                            <strong>Middag</strong>
+                            <small>Mat og oppskrifter</small>
+                        </span>
+                        <span class="compact-arrow">→</span>
+                    </a>
 
-                        <div class="card-top">
-                            <div class="card-icon">🌐</div>
-                            <span class="badge">Verktøy</span>
-                        </div>
+                    <a class="card compact-card" href="dessert.html">
+                        <span class="compact-icon">🍰</span>
+                        <span>
+                            <strong>Dessert</strong>
+                            <small>Favoritter og ideer</small>
+                        </span>
+                        <span class="compact-arrow">→</span>
+                    </a>
 
-                        <h3>DNS-sjekk</h3>
-
-                        <p>
-                            DNS-oppslag direkte i nettleseren
-                            for raske kontroller av domener
-                            og webtjenester.
-                        </p>
-
-                        <a class="card-link" href="dns-sjekk.html">
-                            Åpne DNS →
-                        </a>
-
-                    </article>
-
-                    <article class="card portal-card">
-
-                        <div class="card-top">
-                            <div class="card-icon">🗓️</div>
-                            <span class="badge">Plan</span>
-                        </div>
-
-                        <h3>Kalender</h3>
-
-                        <p>
-                            Planer, avtaler, aktiviteter
-                            og viktige datoer samlet på ett sted.
-                        </p>
-
-                        <a class="card-link" href="kalender.html">
-                            Åpne kalender →
-                        </a>
-
-                    </article>
-
-                    <article class="card portal-card">
-
-                        <div class="card-top">
-                            <div class="card-icon">🚗</div>
-                            <span class="badge">EV</span>
-                        </div>
-
-                        <h3>Volvo C40</h3>
-
-                        <p>
-                            Bilprofil med plass for rekkevidde,
-                            lading, service, reiser og kostnader.
-                        </p>
-
-                        <a class="card-link" href="volvo-c40.html">
-                            Åpne Volvo C40 →
-                        </a>
-
-                    </article>
-
-                    <article class="card portal-card">
-
-                        <div class="card-top">
-                            <div class="card-icon">🏠</div>
-                            <span class="badge">Prosjekt</span>
-                        </div>
-
-                        <h3>Maimyra</h3>
-
-                        <p>
-                            Bolig, planer, prioriteringer,
-                            dokumentasjon og videre utvikling.
-                        </p>
-
-                        <a class="card-link" href="maimyra.html">
-                            Åpne Maimyra →
-                        </a>
-
-                    </article>
-
-                    <article class="card portal-card">
-
-                        <div class="card-top">
-                            <div class="card-icon">🖼️</div>
-                            <span class="badge">Media</span>
-                        </div>
-
-                        <h3>Galleri</h3>
-
-                        <p>
-                            Bilder, visuelle inntrykk,
-                            minner og inspirasjon.
-                        </p>
-
-                        <a class="card-link" href="galleri.html">
-                            Åpne galleri →
-                        </a>
-
-                    </article>
-
-                    <article class="card portal-card">
-
-                        <div class="card-top">
-                            <div class="card-icon">🍽️</div>
-                            <span class="badge">Hverdag</span>
-                        </div>
-
-                        <h3>Middag</h3>
-
-                        <p>
-                            Hverdagsmat, forslag,
-                            oppskrifter og ukemeny.
-                        </p>
-
-                        <a class="card-link" href="middag.html">
-                            Åpne middag →
-                        </a>
-
-                    </article>
-
-                    <article class="card portal-card">
-
-                        <div class="card-top">
-                            <div class="card-icon">🍰</div>
-                            <span class="badge">Hverdag</span>
-                        </div>
-
-                        <h3>Dessert</h3>
-
-                        <p>
-                            Dessertforslag, favoritter
-                            og søtere innhold i portalen.
-                        </p>
-
-                        <a class="card-link" href="dessert.html">
-                            Åpne dessert →
-                        </a>
-
-                    </article>
-
-                    <article class="card portal-card">
-
-                        <div class="card-top">
-                            <div class="card-icon">🥐</div>
-                            <span class="badge">Hverdag</span>
-                        </div>
-
-                        <h3>Boller</h3>
-
-                        <p>
-                            Boller, bakst og oppskrifter
-                            i samme stil som resten av nettstedet.
-                        </p>
-
-                        <a class="card-link" href="boller.html">
-                            Åpne boller →
-                        </a>
-
-                    </article>
+                    <a class="card compact-card" href="boller.html">
+                        <span class="compact-icon">🥐</span>
+                        <span>
+                            <strong>Boller</strong>
+                            <small>Bakst og oppskrifter</small>
+                        </span>
+                        <span class="compact-arrow">→</span>
+                    </a>
 
                 </div>
 
             </div>
+
         </section>
 
     </main>
@@ -1334,28 +1370,25 @@
 
     <footer class="footer">
         <div class="container">
-            Henrik Bergfjord · ians.no · Teknologi · Læring · Prosjekter · Verktøy
+            Henrik Bergfjord · ians.no · Ideas · Technology · Learning · Projects
         </div>
     </footer>
 
     <!-- =========================================================
-         WORLD CLOCK SCRIPT
+         CLOCK SCRIPT
          ========================================================= -->
 
     <script>
-        function updateClock(
+        function updateWorldClock(
             timeZone,
             digitalId,
             dateId,
-            hourId,
-            minuteId,
-            secondId,
-            locale = "no-NO"
+            locale
         ) {
             const now = new Date();
 
             const timeFormatter = new Intl.DateTimeFormat("en-GB", {
-                timeZone,
+                timeZone: timeZone,
                 hour: "2-digit",
                 minute: "2-digit",
                 second: "2-digit",
@@ -1363,72 +1396,35 @@
             });
 
             const dateFormatter = new Intl.DateTimeFormat(locale, {
-                timeZone,
-                weekday: "long",
+                timeZone: timeZone,
+                weekday: "short",
                 day: "2-digit",
-                month: "long",
-                year: "numeric"
+                month: "short"
             });
-
-            const parts = timeFormatter.formatToParts(now);
-
-            const getPart = (type) => {
-                return Number(
-                    parts.find((part) => part.type === type)?.value || 0
-                );
-            };
-
-            const hour = getPart("hour");
-            const minute = getPart("minute");
-            const second = getPart("second");
 
             const digital = document.getElementById(digitalId);
             const date = document.getElementById(dateId);
-            const hourHand = document.getElementById(hourId);
-            const minuteHand = document.getElementById(minuteId);
-            const secondHand = document.getElementById(secondId);
 
-            if (
-                !digital ||
-                !date ||
-                !hourHand ||
-                !minuteHand ||
-                !secondHand
-            ) {
+            if (!digital || !date) {
                 return;
             }
 
             digital.textContent = timeFormatter.format(now);
             date.textContent = dateFormatter.format(now);
-
-            hourHand.style.transform =
-                `rotate(${(hour % 12) * 30 + minute * 0.5 + second / 120}deg)`;
-
-            minuteHand.style.transform =
-                `rotate(${minute * 6 + second * 0.1}deg)`;
-
-            secondHand.style.transform =
-                `rotate(${second * 6}deg)`;
         }
 
         function tickClocks() {
-            updateClock(
+            updateWorldClock(
                 "Europe/Oslo",
                 "clock-no-digital",
                 "clock-no-date",
-                "clock-no-hour",
-                "clock-no-minute",
-                "clock-no-second",
                 "no-NO"
             );
 
-            updateClock(
+            updateWorldClock(
                 "Asia/Manila",
                 "clock-ph-digital",
                 "clock-ph-date",
-                "clock-ph-hour",
-                "clock-ph-minute",
-                "clock-ph-second",
                 "en-PH"
             );
         }
@@ -1438,4 +1434,5 @@
     </script>
 
 </body>
+
 </html>
