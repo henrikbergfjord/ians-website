@@ -878,6 +878,467 @@
             }
         }
 
+    
+        /* =========================================================
+           V8 · REALISTIC TECH PRODUCT RENDERING
+           CSS-only product-style visual treatment.
+           ========================================================= */
+
+        .tech-device,
+        .service-device,
+        .depth-node {
+            -webkit-font-smoothing: antialiased;
+            transform-style: preserve-3d;
+        }
+
+        .tech-device {
+            border-color: rgba(186, 226, 248, .22);
+            background:
+                linear-gradient(165deg, rgba(255,255,255,.13), transparent 12%),
+                linear-gradient(145deg, #26394a 0%, #122436 42%, #081522 100%);
+            box-shadow:
+                0 28px 65px rgba(0,0,0,.34),
+                0 5px 12px rgba(0,0,0,.32),
+                inset 0 1px 0 rgba(255,255,255,.17),
+                inset 0 -12px 28px rgba(0,0,0,.18);
+        }
+
+        .tech-device::before {
+            content: "";
+            position: absolute;
+            inset: 1px 1px auto 1px;
+            height: 42%;
+            border-radius: inherit;
+            background: linear-gradient(
+                180deg,
+                rgba(255,255,255,.08),
+                rgba(255,255,255,.01)
+            );
+            pointer-events: none;
+        }
+
+        .tech-device::after {
+            content: "";
+            position: absolute;
+            left: 9%;
+            right: 9%;
+            bottom: -8px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0,0,0,.3);
+            filter: blur(7px);
+            z-index: -1;
+        }
+
+        .tech-led {
+            width: 5px;
+            height: 5px;
+            background: #80f0ff;
+            box-shadow:
+                0 0 6px rgba(128,240,255,.9),
+                0 0 13px rgba(128,240,255,.45);
+        }
+
+        /* ---------------------------------------------------------
+           CORE · realistic gateway / firewall
+           --------------------------------------------------------- */
+
+        .core-gateway {
+            perspective: 900px;
+            border-radius: 19px 19px 23px 23px;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.015) 15%),
+                linear-gradient(155deg, #3b5061 0%, #1b3042 20%, #0a1825 72%);
+        }
+
+        .core-gateway::before {
+            height: 19px;
+            background: linear-gradient(180deg, rgba(255,255,255,.16), transparent);
+            border-radius: 18px 18px 0 0;
+        }
+
+        .core-screen {
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, rgba(101,226,255,.05), transparent),
+                #030b12;
+            border-color: rgba(120,222,255,.18);
+            box-shadow:
+                inset 0 0 22px rgba(56,199,255,.04),
+                0 1px 0 rgba(255,255,255,.05);
+        }
+
+        .core-screen::after {
+            content: "";
+            position: absolute;
+            left: 14px;
+            right: 14px;
+            bottom: 10px;
+            height: 18px;
+            opacity: .55;
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent 0 6%,
+                    #4ee1ff 6% 9%,
+                    transparent 9% 17%,
+                    #4ee1ff 17% 20%,
+                    transparent 20% 31%,
+                    #65ffa9 31% 36%,
+                    transparent 36% 48%,
+                    #4ee1ff 48% 51%,
+                    transparent 51% 67%,
+                    #4ee1ff 67% 71%,
+                    transparent 71%
+                );
+            clip-path: polygon(
+                0 100%, 0 62%, 8% 65%, 13% 33%, 20% 50%,
+                29% 20%, 39% 58%, 47% 38%, 56% 65%, 64% 28%,
+                73% 46%, 84% 18%, 91% 54%, 100% 31%, 100% 100%
+            );
+        }
+
+        .core-gateway .device-title {
+            color: rgba(210,230,244,.7);
+        }
+
+        .core-policy-ring {
+            border-color: rgba(103,217,255,.22);
+            box-shadow:
+                0 0 45px rgba(63,187,255,.035),
+                inset 0 0 50px rgba(71,189,255,.025);
+        }
+
+        /* ---------------------------------------------------------
+           DISTRIBUTION · realistic rack switches
+           --------------------------------------------------------- */
+
+        .rack-core,
+        .rack-a,
+        .rack-b,
+        .rack-c {
+            border-radius: 13px;
+            background:
+                linear-gradient(180deg, #334958 0%, #182b3b 14%, #0b1926 100%);
+        }
+
+        .rack-core::before,
+        .rack-a::before,
+        .rack-b::before,
+        .rack-c::before {
+            content: "";
+            position: absolute;
+            left: 8px;
+            right: 8px;
+            top: 7px;
+            height: 5px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(255,255,255,.12), rgba(255,255,255,.02));
+        }
+
+        .rack-face {
+            top: 23px;
+        }
+
+        .rack-ports {
+            padding: 6px;
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 7px;
+            background: #050c12;
+            box-shadow: inset 0 2px 7px rgba(0,0,0,.7);
+        }
+
+        .rack-ports i {
+            position: relative;
+            height: 13px;
+            border-color: rgba(158,184,199,.25);
+            background:
+                linear-gradient(180deg, #1d2d37, #081016);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,.5);
+        }
+
+        .rack-ports i:nth-child(2n)::after,
+        .rack-ports i:nth-child(5)::after {
+            content: "";
+            position: absolute;
+            right: 1px;
+            top: 1px;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: #7cffb5;
+            box-shadow: 0 0 5px rgba(124,255,181,.8);
+        }
+
+        .fiber-path {
+            height: 3px;
+            border-radius: 999px;
+            background:
+                linear-gradient(90deg, #6ceaff, #729eff 52%, rgba(122,116,255,.18));
+            box-shadow:
+                0 0 9px rgba(108,234,255,.25),
+                0 0 18px rgba(114,158,255,.08);
+        }
+
+        /* ---------------------------------------------------------
+           HOMES · realistic cabinet + AP
+           --------------------------------------------------------- */
+
+        .apartment-cabinet {
+            border-radius: 9px;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,.06), transparent 10%),
+                linear-gradient(145deg, #424b51, #222d34 38%, #111a20);
+            border-color: rgba(213,226,232,.22);
+            box-shadow:
+                12px 18px 40px rgba(0,0,0,.25),
+                inset 0 0 0 2px rgba(255,255,255,.025);
+        }
+
+        .apartment-cabinet::before {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            border: 1px solid rgba(0,0,0,.38);
+            border-radius: 5px;
+            background: rgba(7,11,14,.25);
+        }
+
+        .cabinet-title,
+        .cabinet-module,
+        .cabinet-ports,
+        .apartment-cabinet .device-title {
+            z-index: 2;
+        }
+
+        .cabinet-module {
+            background:
+                linear-gradient(180deg, rgba(255,255,255,.08), transparent),
+                #121d24;
+            box-shadow: inset 0 0 12px rgba(0,0,0,.4);
+        }
+
+        .cabinet-ports i {
+            position: relative;
+            background:
+                linear-gradient(180deg, #25333b, #0a1014);
+            box-shadow: inset 0 0 7px rgba(0,0,0,.6);
+        }
+
+        .cabinet-ports i::after {
+            content: "";
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            right: 2px;
+            top: 2px;
+            border-radius: 50%;
+            background: #6ce9ff;
+            box-shadow: 0 0 5px rgba(108,233,255,.7);
+        }
+
+        .inwall-ap {
+            border-radius: 16px;
+            border-color: rgba(226,239,246,.32);
+            background:
+                linear-gradient(145deg, rgba(255,255,255,.72), rgba(208,221,229,.96) 25%, rgba(154,174,187,.94) 100%);
+            box-shadow:
+                18px 24px 45px rgba(0,0,0,.28),
+                inset 0 1px 0 rgba(255,255,255,.85),
+                inset -8px -12px 18px rgba(73,91,104,.18);
+            color: #102131;
+        }
+
+        .inwall-ap::before {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            border: 1px solid rgba(27,47,61,.08);
+            border-radius: 11px;
+            background: linear-gradient(145deg, rgba(255,255,255,.32), transparent 55%);
+        }
+
+        .inwall-ap strong {
+            z-index: 2;
+            color: #162c3d;
+            text-shadow: 0 1px 0 rgba(255,255,255,.5);
+        }
+
+        .inwall-ap small {
+            z-index: 2;
+            color: #577083;
+        }
+
+        .inwall-ap .device-title {
+            color: rgba(21,48,67,.62);
+        }
+
+        .ap-led {
+            z-index: 3;
+            height: 2px;
+            background: #31c6ff;
+            box-shadow:
+                0 0 6px rgba(49,198,255,.8),
+                0 0 15px rgba(49,198,255,.4);
+        }
+
+        .wall-port {
+            background:
+                linear-gradient(145deg, #e9eef1, #9aabb5);
+            border-color: rgba(255,255,255,.36);
+            color: #233b4c;
+            box-shadow:
+                5px 7px 15px rgba(0,0,0,.22),
+                inset 0 1px 0 rgba(255,255,255,.8);
+        }
+
+        /* ---------------------------------------------------------
+           SERVICES · realistic devices
+           --------------------------------------------------------- */
+
+        .service-device {
+            background:
+                linear-gradient(150deg, rgba(255,255,255,.09), transparent 20%),
+                linear-gradient(145deg, #263c4d, #122537 45%, #081622);
+            border-color: rgba(183,220,242,.19);
+            box-shadow:
+                0 22px 45px rgba(0,0,0,.3),
+                inset 0 1px 0 rgba(255,255,255,.1);
+        }
+
+        .camera-body {
+            position: relative;
+            width: 60px;
+            height: 38px;
+            border: 1px solid rgba(255,255,255,.55);
+            background:
+                linear-gradient(145deg, #ffffff 0%, #d2dde4 45%, #879aa8 100%);
+            box-shadow:
+                6px 9px 15px rgba(0,0,0,.25),
+                inset 0 1px 0 rgba(255,255,255,.9);
+        }
+
+        .camera-body::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 9px;
+            width: 24px;
+            height: 24px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 42% 38%, #315b76 0 11%, #07131c 15% 41%, #253c4b 44% 60%, #0a141b 64%);
+            box-shadow:
+                0 0 0 2px rgba(255,255,255,.42),
+                inset 0 0 7px #000;
+        }
+
+        .camera-body::after {
+            content: "";
+            position: absolute;
+            left: 11px;
+            right: 11px;
+            bottom: -6px;
+            height: 7px;
+            border-radius: 0 0 12px 12px;
+            background: #788d9d;
+        }
+
+        .reader-body {
+            border-color: rgba(255,255,255,.28);
+            background:
+                linear-gradient(145deg, #263641, #0e171e);
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.12),
+                5px 8px 13px rgba(0,0,0,.2);
+        }
+
+        .reader-body span {
+            width: 24px;
+            height: 24px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(103,232,255,.5);
+            border-radius: 50%;
+            color: #70ebff;
+            box-shadow:
+                0 0 0 5px rgba(112,235,255,.035),
+                0 0 14px rgba(112,235,255,.14);
+        }
+
+        .meter-body {
+            background:
+                linear-gradient(145deg, #e3eaee, #8798a4);
+            color: #10222f;
+            border-color: rgba(255,255,255,.36);
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.8),
+                4px 8px 13px rgba(0,0,0,.2);
+        }
+
+        .meter-body span {
+            padding: 4px 5px;
+            border-radius: 4px;
+            background: #14241d;
+            color: #8dffb2;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            box-shadow: inset 0 0 6px rgba(0,0,0,.75);
+        }
+
+        .meter-body small {
+            color: #1c3646;
+        }
+
+        .sensor-body {
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 35% 30%, #f3f7f8, #b3c1ca 52%, #667d8b 100%);
+            color: #173043;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.8),
+                5px 8px 14px rgba(0,0,0,.2);
+        }
+
+        .garage-body {
+            background:
+                linear-gradient(180deg, #263847 0 19%, #0c1720 20% 100%);
+            color: #78eaff;
+            box-shadow: inset 0 0 11px rgba(0,0,0,.4);
+        }
+
+        .garage-body::after {
+            content: "";
+            position: absolute;
+            width: 37px;
+            height: 2px;
+            margin-top: 29px;
+            background: repeating-linear-gradient(
+                90deg,
+                #557082 0 5px,
+                transparent 5px 7px
+            );
+        }
+
+        .vendor-body {
+            background:
+                linear-gradient(145deg, #202f3b, #080f15);
+            box-shadow:
+                inset 0 0 14px rgba(0,0,0,.5),
+                4px 8px 13px rgba(0,0,0,.2);
+        }
+
+        /* Detail nodes get a more polished instrument look. */
+        .depth-node {
+            border-color: rgba(162,212,239,.17);
+            background:
+                linear-gradient(150deg, rgba(255,255,255,.07), transparent 22%),
+                linear-gradient(145deg, #162b3d, #081725);
+            box-shadow:
+                0 15px 34px rgba(0,0,0,.26),
+                inset 0 1px 0 rgba(255,255,255,.07);
+        }
+
     </style>
 </head>
 
