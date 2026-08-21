@@ -9,15 +9,15 @@
 
     <meta
         name="description"
-        content="ians.no – Henrik Bergfjords personlige portal for teknologi, læring, økonomi, konsepter, verktøy og prosjekter."
+        content="ians.no – Henrik Bergfjords personlige portal for teknologi, læring, konsepter, verktøy og prosjekter."
     >
 
     <link rel="stylesheet" href="assets/styles.css">
 
     <style>
         /* =========================================================
-           IANS.NO · ENTERPRISE PORTAL
-           v10 – corrected homepage
+           IANS.NO – ENTERPRISE PORTAL HOMEPAGE
+           Only this file is changed.
            ========================================================= */
 
         html {
@@ -37,12 +37,8 @@
             top: 0;
             z-index: 100;
             backdrop-filter: blur(20px);
-            background: rgba(7, 12, 20, 0.86);
+            background: rgba(7, 12, 20, 0.78);
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .topbar .nav {
-            gap: 14px;
         }
 
         .nav-links {
@@ -60,53 +56,13 @@
             background: rgba(102, 206, 255, 0.08);
         }
 
-        .nav-links .nav-money {
-            border: 1px solid rgba(78, 224, 166, 0.25);
-            background: rgba(78, 224, 166, 0.07);
-        }
-
-        .local-time {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            margin-left: auto;
-            padding: 7px 11px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.035);
-            white-space: nowrap;
-        }
-
-        .local-time-dot {
-            width: 7px;
-            height: 7px;
-            flex: 0 0 auto;
-            border-radius: 50%;
-            background: #6bdcff;
-            box-shadow: 0 0 14px rgba(107, 220, 255, 0.55);
-        }
-
-        .local-time-text {
-            display: flex;
-            align-items: baseline;
-            gap: 7px;
-            font-size: 0.74rem;
-            color: rgba(255, 255, 255, 0.62);
-        }
-
-        .local-time-text strong {
-            color: #fff;
-            font-size: 0.78rem;
-            letter-spacing: 0.02em;
-        }
-
         /* ---------------------------------------------------------
-           HERO
+           HERO / IANS CORE
            --------------------------------------------------------- */
 
         .ians-hero {
             position: relative;
-            min-height: 760px;
+            min-height: 780px;
             display: flex;
             align-items: center;
             overflow: hidden;
@@ -140,7 +96,7 @@
             grid-template-columns: minmax(0, 0.92fr) minmax(500px, 1.08fr);
             gap: 42px;
             align-items: center;
-            padding: 70px 0 76px;
+            padding: 72px 0 82px;
         }
 
         .hero-copy {
@@ -230,7 +186,7 @@
         }
 
         /* ---------------------------------------------------------
-           IANS CORE ORBIT
+           ORBIT VISUAL
            --------------------------------------------------------- */
 
         .core-stage {
@@ -352,8 +308,8 @@
 
         .planet {
             position: absolute;
-            width: 84px;
-            min-height: 84px;
+            width: 82px;
+            min-height: 82px;
             padding: 10px;
             border: 1px solid rgba(255, 255, 255, 0.13);
             border-radius: 50%;
@@ -375,51 +331,128 @@
 
         .planet strong {
             display: block;
-            font-size: 0.72rem;
+            font-size: 0.73rem;
         }
 
         .planet small {
             display: block;
             margin-top: 2px;
-            font-size: 0.57rem;
+            font-size: 0.58rem;
             color: rgba(255, 255, 255, 0.5);
         }
 
         .planet.sameienett {
             left: 50%;
-            top: 6%;
+            top: 7%;
         }
 
         .planet.academy {
-            left: 84%;
-            top: 24%;
-        }
-
-        .planet.money {
-            left: 92%;
-            top: 54%;
-            border-color: rgba(89, 232, 174, 0.28);
-            box-shadow: 0 0 26px rgba(72, 210, 153, 0.08);
+            left: 85%;
+            top: 27%;
         }
 
         .planet.tools {
-            left: 78%;
-            top: 85%;
+            left: 90%;
+            top: 68%;
         }
 
         .planet.projects {
-            left: 46%;
-            top: 94%;
+            left: 52%;
+            top: 93%;
         }
 
         .planet.power {
             left: 13%;
-            top: 72%;
+            top: 69%;
         }
 
         .planet.dns {
-            left: 9%;
-            top: 35%;
+            left: 11%;
+            top: 28%;
+        }
+
+        .planet.sameienett,
+        .planet.academy,
+        .planet.tools {
+            border-color: rgba(126, 217, 255, 0.23);
+        }
+
+        /* ---------------------------------------------------------
+           MINI CLOCK BAR
+           --------------------------------------------------------- */
+
+        .world-strip {
+            position: relative;
+            z-index: 4;
+            margin-top: -34px;
+        }
+
+        .world-strip-inner {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 22px;
+            background: rgba(12, 19, 30, 0.94);
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+        }
+
+        .world-time {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 18px 22px;
+        }
+
+        .world-time + .world-time {
+            border-left: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .world-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .world-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #6bd7ff;
+            box-shadow: 0 0 20px rgba(107, 215, 255, 0.4);
+        }
+
+        .world-time.ph .world-dot {
+            background: #a88cff;
+            box-shadow: 0 0 20px rgba(168, 140, 255, 0.4);
+        }
+
+        .world-label strong,
+        .world-label small {
+            display: block;
+        }
+
+        .world-label small {
+            margin-top: 2px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .world-clock {
+            text-align: right;
+        }
+
+        .world-clock strong {
+            display: block;
+            font-size: 1.35rem;
+            letter-spacing: 0.04em;
+        }
+
+        .world-clock small {
+            color: rgba(255, 255, 255, 0.48);
         }
 
         /* ---------------------------------------------------------
@@ -427,11 +460,11 @@
            --------------------------------------------------------- */
 
         .portal-section {
-            padding: 74px 0 18px;
+            padding: 92px 0 18px;
         }
 
         .section-heading {
-            max-width: 790px;
+            max-width: 760px;
             margin-bottom: 30px;
         }
 
@@ -451,13 +484,13 @@
 
         .main-area-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: 1.25fr 1fr 1fr;
             gap: 18px;
         }
 
         .main-area {
             position: relative;
-            min-height: 335px;
+            min-height: 345px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -471,35 +504,15 @@
             top: -155px;
             right: -120px;
             border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                rgba(99, 201, 255, 0.16),
-                transparent 70%
-            );
+            background: radial-gradient(circle, rgba(99, 201, 255, 0.16), transparent 70%);
         }
 
         .main-area.sameie::before {
-            background: radial-gradient(
-                circle,
-                rgba(141, 116, 255, 0.19),
-                transparent 70%
-            );
+            background: radial-gradient(circle, rgba(141, 116, 255, 0.19), transparent 70%);
         }
 
         .main-area.academy::before {
-            background: radial-gradient(
-                circle,
-                rgba(0, 211, 139, 0.15),
-                transparent 70%
-            );
-        }
-
-        .main-area.money::before {
-            background: radial-gradient(
-                circle,
-                rgba(82, 224, 166, 0.20),
-                transparent 70%
-            );
+            background: radial-gradient(circle, rgba(0, 211, 139, 0.16), transparent 70%);
         }
 
         .main-area .area-number {
@@ -509,98 +522,9 @@
             opacity: 0.46;
         }
 
-        /* ---------------------------------------------------------
-           RELIABLE CSS ICONS
-           No Unicode glyph dependency.
-           --------------------------------------------------------- */
-
-        .area-icon {
-            position: relative;
-            width: 50px;
-            height: 50px;
-            margin: 20px 0 10px;
-        }
-
-        .area-icon::before,
-        .area-icon::after {
-            content: "";
-            position: absolute;
-            box-sizing: border-box;
-        }
-
-        .icon-network::before {
-            inset: 7px;
-            border: 3px solid #dcecff;
-            border-radius: 50%;
-        }
-
-        .icon-network::after {
-            width: 8px;
-            height: 8px;
-            left: 21px;
-            top: 21px;
-            border-radius: 50%;
-            background: #78dcff;
-            box-shadow:
-                -18px -7px 0 -1px #8299ff,
-                18px -7px 0 -1px #8299ff,
-                0 19px 0 -1px #8299ff;
-        }
-
-        .icon-academy::before {
-            left: 7px;
-            top: 9px;
-            width: 36px;
-            height: 30px;
-            border: 3px solid #dcecff;
-            border-radius: 4px;
-        }
-
-        .icon-academy::after {
-            left: 24px;
-            top: 9px;
-            width: 3px;
-            height: 30px;
-            background: #dcecff;
-        }
-
-        .icon-money::before {
-            left: 5px;
-            top: 7px;
-            width: 40px;
-            height: 34px;
-            border: 3px solid #78e2b2;
-            border-radius: 8px;
-        }
-
-        .icon-money::after {
-            left: 13px;
-            top: 17px;
-            width: 24px;
-            height: 14px;
-            border-left: 5px solid #78e2b2;
-            border-bottom: 5px solid #78e2b2;
-            transform: skew(-18deg);
-            box-shadow: 8px -7px 0 -3px rgba(120, 226, 178, 0.7);
-        }
-
-        .icon-lab::before {
-            left: 11px;
-            top: 4px;
-            width: 28px;
-            height: 38px;
-            border: 3px solid #dcecff;
-            border-radius: 5px 5px 15px 15px;
-            clip-path: polygon(27% 0, 73% 0, 73% 34%, 100% 100%, 0 100%, 27% 34%);
-        }
-
-        .icon-lab::after {
-            left: 15px;
-            top: 29px;
-            width: 20px;
-            height: 8px;
-            border-radius: 0 0 10px 10px;
-            background: #7bdcff;
+        .main-area .area-icon {
+            margin: 20px 0 8px;
+            font-size: 2.4rem;
         }
 
         .main-area h3 {
@@ -609,19 +533,19 @@
         }
 
         .main-area p {
-            max-width: 610px;
+            max-width: 590px;
             line-height: 1.62;
             opacity: 0.7;
         }
 
-        .area-tags {
+        .main-area .area-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 7px;
             margin: 13px 0 24px;
         }
 
-        .area-tags span {
+        .main-area .area-tags span {
             padding: 6px 8px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 999px;
@@ -634,93 +558,7 @@
         }
 
         /* ---------------------------------------------------------
-           ECONOMY FEATURE
-           --------------------------------------------------------- */
-
-        .money-feature {
-            padding-top: 54px;
-        }
-
-        .money-shell {
-            position: relative;
-            overflow: hidden;
-            display: grid;
-            grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-            gap: 28px;
-            align-items: center;
-            padding: 30px;
-        }
-
-        .money-shell::after {
-            content: "";
-            position: absolute;
-            width: 430px;
-            height: 430px;
-            right: -190px;
-            top: -220px;
-            border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                rgba(82, 224, 166, 0.18),
-                transparent 70%
-            );
-            pointer-events: none;
-        }
-
-        .money-copy {
-            position: relative;
-            z-index: 2;
-        }
-
-        .money-copy h2 {
-            margin: 10px 0 12px;
-        }
-
-        .money-copy p {
-            max-width: 650px;
-            line-height: 1.65;
-            opacity: 0.7;
-        }
-
-        .money-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 22px;
-        }
-
-        .money-dashboard {
-            position: relative;
-            z-index: 2;
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .money-stat {
-            padding: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.025);
-        }
-
-        .money-stat small,
-        .money-stat strong {
-            display: block;
-        }
-
-        .money-stat small {
-            margin-bottom: 6px;
-            color: rgba(255, 255, 255, 0.48);
-            font-size: 0.68rem;
-        }
-
-        .money-stat strong {
-            font-size: 1rem;
-        }
-
-        /* ---------------------------------------------------------
-           IANS LAB
+           TOOLS
            --------------------------------------------------------- */
 
         .lab-section {
@@ -734,7 +572,7 @@
         }
 
         .lab-card {
-            min-height: 260px;
+            min-height: 270px;
             display: flex;
             flex-direction: column;
         }
@@ -747,20 +585,8 @@
         }
 
         .lab-card .lab-icon {
-            width: 38px;
-            height: 38px;
-            margin: 17px 0 7px;
-            border: 2px solid rgba(221, 239, 255, 0.8);
-            border-radius: 11px;
-            position: relative;
-        }
-
-        .lab-card .lab-icon::after {
-            content: "";
-            position: absolute;
-            inset: 9px;
-            border: 2px solid #7bdcff;
-            border-radius: 4px;
+            margin: 16px 0 5px;
+            font-size: 1.8rem;
         }
 
         .lab-card p {
@@ -773,7 +599,7 @@
         }
 
         /* ---------------------------------------------------------
-           REST OF PORTAL
+           COMPACT PORTAL GRID
            --------------------------------------------------------- */
 
         .more-section {
@@ -829,16 +655,22 @@
         }
 
         /* ---------------------------------------------------------
+           FOOTER
+           --------------------------------------------------------- */
+
+        .footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* ---------------------------------------------------------
            RESPONSIVE
            --------------------------------------------------------- */
 
-        @media (max-width: 1180px) {
+        @media (max-width: 1120px) {
             .nav-links {
                 display: none;
             }
-        }
 
-        @media (max-width: 1120px) {
             .hero-shell {
                 grid-template-columns: 1fr;
                 padding-top: 62px;
@@ -855,12 +687,20 @@
                 margin: 0 auto;
             }
 
-            .money-shell {
+            .main-area-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .main-area {
+                min-height: 280px;
             }
         }
 
         @media (max-width: 820px) {
+            .ians-hero {
+                min-height: auto;
+            }
+
             .hero-shell {
                 width: min(100% - 28px, 1280px);
                 gap: 22px;
@@ -877,29 +717,36 @@
                 margin-bottom: -28px;
             }
 
-            .main-area-grid,
+            .world-strip {
+                margin-top: -10px;
+            }
+
+            .world-strip-inner {
+                width: calc(100% - 28px);
+                grid-template-columns: 1fr;
+            }
+
+            .world-time + .world-time {
+                border-left: 0;
+                border-top: 1px solid rgba(255, 255, 255, 0.07);
+            }
+
             .lab-grid,
             .compact-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        @media (max-width: 650px) {
-            .local-time-date {
-                display: none;
-            }
-
+        @media (max-width: 560px) {
             .topbar .button.primary {
                 display: none;
             }
 
-            .hero-actions,
-            .money-actions {
+            .hero-actions {
                 flex-direction: column;
             }
 
-            .hero-actions .button,
-            .money-actions .button {
+            .hero-actions .button {
                 justify-content: center;
             }
 
@@ -911,8 +758,16 @@
                 max-width: none;
             }
 
-            .money-dashboard {
-                grid-template-columns: 1fr;
+            .portal-section {
+                padding-top: 70px;
+            }
+
+            .world-time {
+                padding: 15px 17px;
+            }
+
+            .world-clock strong {
+                font-size: 1.1rem;
             }
         }
 
@@ -947,23 +802,9 @@
                 <a href="#hovedomrader">Fokus</a>
                 <a href="SameieNett.html" class="nav-featured">SameieNett</a>
                 <a href="academy/index.html">Academy</a>
-                <a href="tools/money-planner/index.html" class="nav-money">Økonomi</a>
                 <a href="#lab">IANS Lab</a>
                 <a href="#portal">Portal</a>
             </nav>
-
-            <div
-                class="local-time"
-                aria-label="Lokal dato og tid"
-                title="Viser tid fra enheten og tidssonen din"
-            >
-                <span class="local-time-dot"></span>
-
-                <span class="local-time-text">
-                    <span class="local-time-date" id="local-date">--</span>
-                    <strong id="local-time">--:--:--</strong>
-                </span>
-            </div>
 
             <a class="button primary" href="#hovedomrader">
                 Utforsk
@@ -982,6 +823,8 @@
 
             <div class="hero-shell">
 
+                <!-- HERO COPY -->
+
                 <div class="hero-copy">
 
                     <div class="hero-kicker">
@@ -998,7 +841,7 @@
                     <p class="lead">
                         Et personlig sted for det jeg lærer, bygger og utvikler.
                         Fra kraftsystem og faglig læring til digitale konsepter,
-                        økonomiverktøy, infrastruktur og egne prosjekter.
+                        webverktøy, infrastruktur og egne prosjekter.
                     </p>
 
                     <div class="hero-actions">
@@ -1011,11 +854,8 @@
                             Åpne Academy
                         </a>
 
-                        <a
-                            class="button secondary"
-                            href="tools/money-planner/index.html"
-                        >
-                            Åpne økonomi
+                        <a class="button secondary" href="#lab">
+                            Se verktøy
                         </a>
 
                     </div>
@@ -1023,18 +863,14 @@
                     <div class="hero-note">
                         <span>Concept & Architecture</span>
                         <span>Learning by building</span>
-                        <span>Personal finance</span>
                         <span>Independent projects</span>
                     </div>
 
                 </div>
 
-                <!-- IANS CORE -->
+                <!-- IANS CORE VISUAL -->
 
-                <div
-                    class="core-stage"
-                    aria-label="Visuell oversikt over ians.no"
-                >
+                <div class="core-stage" aria-label="Visuell oversikt over ians.no">
 
                     <div class="core-glow"></div>
 
@@ -1045,7 +881,7 @@
                     <div class="core-center">
                         <div>
                             <strong>IANS CORE</strong>
-                            <span>ideas · tech · finance · projects</span>
+                            <span>ideas · tech · projects</span>
                         </div>
                     </div>
 
@@ -1060,16 +896,6 @@
                         <span>
                             <strong>Academy</strong>
                             <small>Learning</small>
-                        </span>
-                    </a>
-
-                    <a
-                        class="planet money"
-                        href="tools/money-planner/index.html"
-                    >
-                        <span>
-                            <strong>Økonomi</strong>
-                            <small>Money</small>
                         </span>
                     </a>
 
@@ -1108,7 +934,55 @@
         </section>
 
         <!-- =====================================================
-             FOUR MAIN AREAS
+             WORLD TIME STRIP
+             ===================================================== -->
+
+        <section class="world-strip" aria-label="Tid i Norge og Filippinene">
+
+            <div class="world-strip-inner">
+
+                <div class="world-time">
+
+                    <div class="world-label">
+                        <span class="world-dot"></span>
+
+                        <div>
+                            <strong>Norge</strong>
+                            <small>Europe / Oslo</small>
+                        </div>
+                    </div>
+
+                    <div class="world-clock">
+                        <strong id="clock-no-digital">--:--:--</strong>
+                        <small id="clock-no-date">Laster dato...</small>
+                    </div>
+
+                </div>
+
+                <div class="world-time ph">
+
+                    <div class="world-label">
+                        <span class="world-dot"></span>
+
+                        <div>
+                            <strong>Filippinene</strong>
+                            <small>Asia / Manila</small>
+                        </div>
+                    </div>
+
+                    <div class="world-clock">
+                        <strong id="clock-ph-digital">--:--:--</strong>
+                        <small id="clock-ph-date">Laster dato...</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- =====================================================
+             MAIN AREAS
              ===================================================== -->
 
         <section class="section portal-section" id="hovedomrader">
@@ -1122,20 +996,20 @@
                     </div>
 
                     <h2>
-                        Fire tydelige innganger
+                        Det viktigste på ians.no
                     </h2>
 
                     <p>
-                        Forsiden skal vise retningen, ikke være hele nettstedet
-                        på én side. Hvert hovedområde leder videre til egne sider
-                        med mer innhold og funksjonalitet.
+                        Tre tydelige innganger. Resten av portalen ligger fortsatt
+                        tilgjengelig, men får ikke konkurrere om oppmerksomheten
+                        på toppen av forsiden.
                     </p>
 
                 </div>
 
                 <div class="main-area-grid">
 
-                    <!-- 01 SAMEIENETT -->
+                    <!-- SAMEIENETT -->
 
                     <article class="card main-area sameie">
 
@@ -1143,10 +1017,9 @@
                             01 · CONCEPT
                         </div>
 
-                        <div
-                            class="area-icon icon-network"
-                            aria-hidden="true"
-                        ></div>
+                        <div class="area-icon">
+                            ◉
+                        </div>
 
                         <span class="badge">
                             Concept & Architecture
@@ -1177,7 +1050,7 @@
 
                     </article>
 
-                    <!-- 02 ACADEMY -->
+                    <!-- ACADEMY -->
 
                     <article class="card main-area academy">
 
@@ -1185,10 +1058,9 @@
                             02 · LEARNING
                         </div>
 
-                        <div
-                            class="area-icon icon-academy"
-                            aria-hidden="true"
-                        ></div>
+                        <div class="area-icon">
+                            ◫
+                        </div>
 
                         <span class="badge academy-badge">
                             Knowledge
@@ -1217,64 +1089,19 @@
 
                     </article>
 
-                    <!-- 03 ECONOMY -->
-
-                    <article class="card main-area money">
-
-                        <div class="area-number">
-                            03 · ECONOMY
-                        </div>
-
-                        <div
-                            class="area-icon icon-money"
-                            aria-hidden="true"
-                        ></div>
-
-                        <span class="badge ok">
-                            Personlig økonomi
-                        </span>
-
-                        <h3>
-                            Økonomi & Money Planner
-                        </h3>
-
-                        <p>
-                            Budsjett, inntekter, utgifter, lån, renter,
-                            kreditt og handlingsplan samlet i en interaktiv
-                            økonomisjekk som gjør tallene enklere å forstå.
-                        </p>
-
-                        <div class="area-tags">
-                            <span>Budsjett</span>
-                            <span>Lån</span>
-                            <span>Renter</span>
-                            <span>Kreditt</span>
-                            <span>Plan</span>
-                        </div>
-
-                        <a
-                            class="card-link"
-                            href="tools/money-planner/index.html"
-                        >
-                            Åpne økonomisiden →
-                        </a>
-
-                    </article>
-
-                    <!-- 04 IANS LAB -->
+                    <!-- IANS LAB -->
 
                     <article class="card main-area">
 
                         <div class="area-number">
-                            04 · BUILD
+                            03 · BUILD
                         </div>
 
-                        <div
-                            class="area-icon icon-lab"
-                            aria-hidden="true"
-                        ></div>
+                        <div class="area-icon">
+                            ◇
+                        </div>
 
-                        <span class="badge">
+                        <span class="badge ok">
                             IANS Lab
                         </span>
 
@@ -1283,15 +1110,15 @@
                         </h3>
 
                         <p>
-                            Praktiske verktøy og ideer som kan testes
+                            Praktiske småverktøy og ideer som kan testes
                             direkte i nettleseren og utvikles videre
                             uavhengig av resten av portalen.
                         </p>
 
                         <div class="area-tags">
                             <span>Web Builder</span>
+                            <span>Money Planner</span>
                             <span>HTML</span>
-                            <span>Prototyper</span>
                         </div>
 
                         <a class="card-link" href="#lab">
@@ -1299,83 +1126,6 @@
                         </a>
 
                     </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- =====================================================
-             ECONOMY FEATURE
-             ===================================================== -->
-
-        <section class="section money-feature" id="okonomi">
-
-            <div class="container">
-
-                <div class="card money-shell">
-
-                    <div class="money-copy">
-
-                        <div class="kicker">
-                            PERSONLIG ØKONOMI
-                        </div>
-
-                        <h2>
-                            Få oversikt før du tar beslutninger
-                        </h2>
-
-                        <p>
-                            Money Planner samler inntekter, faste utgifter,
-                            lån, renter og kreditt på ett sted. Målet er ikke
-                            bare et budsjett, men å finne hvor pengene går,
-                            hva som kan forbedres og hvilke tiltak som betyr mest.
-                        </p>
-
-                        <div class="money-actions">
-
-                            <a
-                                class="button primary"
-                                href="tools/money-planner/index.html"
-                            >
-                                Åpne Money Planner
-                            </a>
-
-                            <a
-                                class="button secondary"
-                                href="tools/money-planner/index.html"
-                            >
-                                Start økonomisjekk
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                    <div class="money-dashboard">
-
-                        <div class="money-stat">
-                            <small>01 · OVERSIKT</small>
-                            <strong>Inntekter & utgifter</strong>
-                        </div>
-
-                        <div class="money-stat">
-                            <small>02 · GJELD</small>
-                            <strong>Lån & renter</strong>
-                        </div>
-
-                        <div class="money-stat">
-                            <small>03 · RISIKO</small>
-                            <strong>Kreditt & belastning</strong>
-                        </div>
-
-                        <div class="money-stat">
-                            <small>04 · TILTAK</small>
-                            <strong>Personlig handlingsplan</strong>
-                        </div>
-
-                    </div>
 
                 </div>
 
@@ -1402,7 +1152,7 @@
                     </h2>
 
                     <p>
-                        Små løsninger som gjør noe, ikke bare sider å lese.
+                        Ikke bare sider å lese. Verktøy som gjør noe.
                     </p>
 
                 </div>
@@ -1415,7 +1165,9 @@
                             TOOL 01
                         </div>
 
-                        <div class="lab-icon" aria-hidden="true"></div>
+                        <div class="lab-icon">
+                            ✦
+                        </div>
 
                         <h3>
                             Website Builder Light
@@ -1441,7 +1193,9 @@
                             TOOL 02
                         </div>
 
-                        <div class="lab-icon" aria-hidden="true"></div>
+                        <div class="lab-icon">
+                            ▥
+                        </div>
 
                         <h3>
                             Money Planner
@@ -1467,7 +1221,9 @@
                             TOOL 03
                         </div>
 
-                        <div class="lab-icon" aria-hidden="true"></div>
+                        <div class="lab-icon">
+                            △
+                        </div>
 
                         <h3>
                             Website Builder Pro
@@ -1608,44 +1364,73 @@
 
     </main>
 
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+
     <footer class="footer">
         <div class="container">
-            Henrik Bergfjord · ians.no · Ideas · Technology · Finance · Learning · Projects
+            Henrik Bergfjord · ians.no · Ideas · Technology · Learning · Projects
         </div>
     </footer>
 
     <!-- =========================================================
-         LOCAL DATE & TIME
-         Uses visitor's browser/device timezone.
-         No geolocation permission required.
+         CLOCK SCRIPT
          ========================================================= -->
 
     <script>
-        function updateLocalDateTime() {
+        function updateWorldClock(
+            timeZone,
+            digitalId,
+            dateId,
+            locale
+        ) {
             const now = new Date();
 
-            const timeElement = document.getElementById("local-time");
-            const dateElement = document.getElementById("local-date");
-
-            if (!timeElement || !dateElement) {
-                return;
-            }
-
-            timeElement.textContent = new Intl.DateTimeFormat("no-NO", {
+            const timeFormatter = new Intl.DateTimeFormat("en-GB", {
+                timeZone: timeZone,
                 hour: "2-digit",
                 minute: "2-digit",
-                second: "2-digit"
-            }).format(now);
+                second: "2-digit",
+                hour12: false
+            });
 
-            dateElement.textContent = new Intl.DateTimeFormat("no-NO", {
+            const dateFormatter = new Intl.DateTimeFormat(locale, {
+                timeZone: timeZone,
                 weekday: "short",
                 day: "2-digit",
                 month: "short"
-            }).format(now);
+            });
+
+            const digital = document.getElementById(digitalId);
+            const date = document.getElementById(dateId);
+
+            if (!digital || !date) {
+                return;
+            }
+
+            digital.textContent = timeFormatter.format(now);
+            date.textContent = dateFormatter.format(now);
         }
 
-        updateLocalDateTime();
-        setInterval(updateLocalDateTime, 1000);
+        function tickClocks() {
+            updateWorldClock(
+                "Europe/Oslo",
+                "clock-no-digital",
+                "clock-no-date",
+                "no-NO"
+            );
+
+            updateWorldClock(
+                "Asia/Manila",
+                "clock-ph-digital",
+                "clock-ph-date",
+                "en-PH"
+            );
+        }
+
+        tickClocks();
+        setInterval(tickClocks, 1000);
     </script>
 
 </body>
