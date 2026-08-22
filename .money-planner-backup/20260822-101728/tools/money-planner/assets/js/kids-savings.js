@@ -3,16 +3,12 @@
   const num=v=>{const x=Number(String(v||'').replace(/\s/g,'').replace(',','.'));return Number.isFinite(x)?x:0};
   const money=v=>new Intl.NumberFormat('nb-NO',{maximumFractionDigits:0}).format(Math.round(v))+' kr';
   const jobs=[
-    ['🛏️','Rydde rommet skikkelig','Tidy your room properly'],
-    ['📚','Gjøre lekser eller lese uten påminnelse','Do homework or reading without being reminded'],
-    ['🍽️','Dekke på eller rydde av bordet','Set or clear the table'],
-    ['🧺','Hjelpe med å sortere eller brette klær','Help sort or fold laundry'],
-    ['🛒','Hjelpe en voksen med å bære inn varer','Help an adult carry in groceries'],
-    ['🧹','Gjøre en avtalt ekstra ryddejobb hjemme','Do an agreed extra tidy-up job at home'],
-    ['🌱','Hjelpe litt ekstra i hagen','Do an extra garden job'],
+    ['🚗','Vaske bilen sammen med en voksen','Wash the car with an adult'],
     ['♻️','Samle og pante flasker','Collect and return bottles'],
-    ['🐕','Hjelpe med kjæledyr etter avtale med en voksen','Help with a pet as agreed with an adult'],
-    ['🤝','Hjelpe en voksen med en liten avtalt oppgave','Help an adult with a small agreed task']
+    ['🌱','Hjelpe ekstra i hagen','Do an extra garden job'],
+    ['📦','Hjelpe til å rydde bod eller garasje','Help tidy storage or garage'],
+    ['🧹','Gjøre en avtalt ekstra ryddejobb','Do an agreed extra cleaning job'],
+    ['🐕','Hjelpe familie med en avtalt oppgave','Help family with an agreed task']
   ];
   function renderJobs(){
     const en=window.MoneyI18n?.lang()==='en';
