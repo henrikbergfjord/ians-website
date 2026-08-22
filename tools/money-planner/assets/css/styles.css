@@ -697,3 +697,72 @@ footer{display:grid;grid-template-columns:1.4fr 1fr 1fr .7fr;gap:25px;background
   color: #7b8f88 !important;
 }
 
+
+/* =========================================================
+   IANS MONEY PLANNER – SELL GENERATOR READABILITY FIX
+   ========================================================= */
+
+/* Samtykkeboksen */
+.money-v4 .ai-consent {
+  background: #f7f8f5 !important;
+  color: #17352d !important;
+  border: 1px solid rgba(23, 53, 45, 0.14) !important;
+}
+
+.money-v4 .ai-consent span {
+  color: #17352d !important;
+  opacity: 1 !important;
+}
+
+.money-v4 .ai-consent input[type="checkbox"] {
+  accent-color: #176b56;
+}
+
+/* Status under AI-knappen */
+.money-v4 #sellStatus {
+  color: #d7e4df !important;
+  opacity: 1 !important;
+}
+
+/* Ferdig AI-generert annonse */
+.money-v4 #adResult,
+.money-v4 .ad-result {
+  color: #17352d !important;
+}
+
+.money-v4 #adResult label,
+.money-v4 .ad-result label {
+  color: #17352d !important;
+}
+
+.money-v4 #adResult input,
+.money-v4 #adResult textarea,
+.money-v4 .ad-result input,
+.money-v4 .ad-result textarea {
+  color: #17352d !important;
+  background: #ffffff !important;
+}
+
+/* Prisfeltene */
+.money-v4 .price-grid {
+  color: #17352d !important;
+}
+
+.money-v4 .price-grid span {
+  color: #526b63 !important;
+}
+
+.money-v4 .price-grid strong {
+  color: #0b2f27 !important;
+}
+
+/* Den lyse informasjonsboksen på venstre side */
+.money-v4 .sell-note {
+  color: #17352d !important;
+  background: #dce7e2 !important;
+}
+
+.money-v4 .sell-note strong {
+  color: #0b2f27 !important;
+}
+

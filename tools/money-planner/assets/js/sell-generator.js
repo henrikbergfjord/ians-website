@@ -27,7 +27,7 @@
     $('#sellStatus').textContent='Lager annonseforslag…';
     $('#generateAd').disabled=true;
     try{
-      const res=await fetch('/api/sell-ad',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product,details,condition,images})});
+      const res=await fetch('https://ians-moneyplanner-ai-dudrgwdtfwe2btcn.norwayeast-01.azurewebsites.net/api/sell-ad',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product,details,condition,images})});
       const body=await res.json().catch(()=>({}));
       if(!res.ok) throw new Error(body.error||`HTTP ${res.status}`);
       $('#adTitle').value=body.title||'';
