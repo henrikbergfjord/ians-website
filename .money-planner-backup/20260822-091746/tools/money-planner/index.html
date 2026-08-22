@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Money Planner 2.0 | IANS</title>
+  <meta name="description" content="Personlig økonomisk helsesjekk, budsjett, sparing, lån, handlingsplan og inspirerende PDF-rapport.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+  <script defer src="assets/js/finance-engine.js"></script>
+  <script defer src="assets/js/charts.js"></script>
+  <script defer src="assets/js/report.js"></script>
+  <script defer src="assets/js/app.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="../../index.html">IANS<span>Money Planner</span></a>
+  <nav>
+    <a href="#planner">Planlegger</a>
+    <a href="#insights">Innsikt</a>
+    <a href="#report">Rapport</a>
+    <a href="../../index.html">Til ians.no</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="eyebrow">PERSONLIG ØKONOMI · PRIVAT OG FORKLART</span>
+      <h1>Få kontroll på pengene.<br><em>Bygg økonomien du ønsker deg.</em></h1>
+      <p>Money Planner kombinerer budsjett, lån, buffer, sparing, scenarioer og en personlig handlingsplan. Tallene beregnes lokalt i nettleseren. AI er valgfritt og brukes kun når du aktivt ber om en analyse.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#planner">Start min plan</a>
+        <button class="btn ghost" type="button" data-demo>Fyll med eksempel</button>
+      </div>
+      <div class="trust-row">
+        <span>✓ Lokal beregning</span><span>✓ Forklaringer underveis</span><span>✓ PDF-rapport</span><span>✓ Valgfri AI</span>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="orb one"></div><div class="orb two"></div>
+      <div class="hero-card">
+        <small>DIN ØKONOMISKE RETNING</small>
+        <strong id="heroMargin">0 kr</strong>
+        <span>månedlig margin</span>
+        <div class="mini-progress"><i id="heroProgress"></i></div>
+        <p id="heroText">Fyll inn noen tall – så begynner bildet å ta form.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="planner-shell" id="planner">
+    <div class="form-column">
+      <div class="step-nav" id="stepNav">
+        <button class="active" data-step-target="1">1 <span>Om deg</span></button>
+        <button data-step-target="2">2 <span>Inntekt</span></button>
+        <button data-step-target="3">3 <span>Utgifter</span></button>
+        <button data-step-target="4">4 <span>Årsutgifter</span></button>
+        <button data-step-target="5">5 <span>Lån</span></button>
+        <button data-step-target="6">6 <span>Sparing</span></button>
+      </div>
+
+      <form id="moneyForm" autocomplete="off">
+        <section class="form-step active" data-step="1">
+          <div class="section-head">
+            <span class="step-label">STEG 1 AV 6</span>
+            <h2>Fortell litt om situasjonen din</h2>
+            <p>Navnet brukes bare i rapporten i nettleseren. Det sendes ikke til AI.</p>
+          </div>
+          <div class="grid two">
+            <label>Navn <input name="name" placeholder="F.eks. Henrik"></label>
+            <label>Aldersgruppe
+              <select name="ageGroup"><option value="">Velg</option><option>18–29</option><option>30–39</option><option>40–49</option><option>50–59</option><option>60+</option></select>
+            </label>
+            <label>Husholdning
+              <select name="household"><option>1 voksen</option><option>2 voksne</option><option>1 voksen med barn</option><option>2 voksne med barn</option><option>Annet</option></select>
+            </label>
+            <label>Boligsituasjon
+              <select name="housing"><option>Leier</option><option>Eier med lån</option><option>Eier uten lån</option><option>Bor hjemme / annet</option></select>
+            </label>
+          </div>
+          <label>Hva vil du først og fremst oppnå?
+            <select name="goal"><option value="control">Bedre kontroll</option><option value="buffer">Bygge buffer</option><option value="debt">Redusere gjeld</option><option value="save">Spare mer</option><option value="home">Kjøpe bolig</option><option value="retire">Langsiktig trygghet / pensjon</option></select>
+          </label>
+          <label>Et konkret mål i kroner <input name="goalAmount" inputmode="numeric" placeholder="F.eks. 100 000"></label>
+        </section>
+
+        <section class="form-step" data-step="2">
+          <div class="section-head"><span class="step-label">STEG 2 AV 6</span><h2>Hva kommer inn hver måned?</h2><p>Bruk netto beløp – det du faktisk får disponibelt på konto.</p></div>
+          <div class="grid two">
+            <label>Lønn / hovedinntekt <input name="incomeMain" inputmode="numeric" placeholder="0"></label>
+            <label>Ekstrainntekt <input name="incomeExtra" inputmode="numeric" placeholder="0"></label>
+            <label>Stønad / bidrag <input name="incomeBenefits" inputmode="numeric" placeholder="0"></label>
+            <label>Annen inntekt <input name="incomeOther" inputmode="numeric" placeholder="0"></label>
+          </div>
+          <div class="explain"><strong>Hvorfor netto?</strong><span>Et budsjett skal vise hva du faktisk kan bruke. Bruttoinntekt er nyttig for enkelte bankberegninger, men netto er best for den daglige økonomien.</span></div>
+        </section>
+
+        <section class="form-step" data-step="3">
+          <div class="section-head"><span class="step-label">STEG 3 AV 6</span><h2>Hva bruker du i en normal måned?</h2><p>Du trenger ikke være perfekt. Et realistisk anslag er bedre enn å la felt stå tomt.</p></div>
+          <div class="grid two">
+            <label>Bolig / husleie / termin <input name="expenseHousing" inputmode="numeric" placeholder="0"></label>
+            <label>Strøm / energi <input name="expenseEnergy" inputmode="numeric" placeholder="0"></label>
+            <label>Mat og dagligvarer <input name="expenseFood" inputmode="numeric" placeholder="0"></label>
+            <label>Transport / bil <input name="expenseTransport" inputmode="numeric" placeholder="0"></label>
+            <label>Forsikringer <input name="expenseInsurance" inputmode="numeric" placeholder="0"></label>
+            <label>Telefon / internett <input name="expenseTelecom" inputmode="numeric" placeholder="0"></label>
+            <label>Barn / skole / aktiviteter <input name="expenseChildren" inputmode="numeric" placeholder="0"></label>
+            <label>Abonnementer <input name="expenseSubscriptions" inputmode="numeric" placeholder="0"></label>
+            <label>Klær / fritid / restaurant <input name="expenseLifestyle" inputmode="numeric" placeholder="0"></label>
+            <label>Annet <input name="expenseOther" inputmode="numeric" placeholder="0"></label>
+          </div>
+        </section>
+
+        <section class="form-step" data-step="4">
+          <div class="section-head"><span class="step-label">STEG 4 AV 6</span><h2>Kostnadene som «plutselig» kommer</h2><p>Årsutgifter er ofte grunnen til at et budsjett ser bra ut på papiret, men sprekker i praksis. Vi fordeler dem over 12 måneder.</p></div>
+          <div class="grid two">
+            <label>Bilservice / dekk per år <input name="annualCar" inputmode="numeric" placeholder="0"></label>
+            <label>Ferie / reiser per år <input name="annualTravel" inputmode="numeric" placeholder="0"></label>
+            <label>Jul / gaver per år <input name="annualGifts" inputmode="numeric" placeholder="0"></label>
+            <label>Tannlege / helse per år <input name="annualHealth" inputmode="numeric" placeholder="0"></label>
+            <label>Boligvedlikehold per år <input name="annualHome" inputmode="numeric" placeholder="0"></label>
+            <label>Andre større kostnader per år <input name="annualOther" inputmode="numeric" placeholder="0"></label>
+          </div>
+          <div class="explain accent"><strong id="annualReserveExplain">0 kr/mnd</strong><span>anbefalt avsetning til registrerte årsutgifter.</span></div>
+        </section>
+
+        <section class="form-step" data-step="5">
+          <div class="section-head"><span class="step-label">STEG 5 AV 6</span><h2>Lån og gjeld</h2><p>Legg inn saldo og nominell rente. Effektiv rente kan være høyere fordi den også inkluderer gebyrer og andre kostnader.</p></div>
+          <div class="loan-card">
+            <h3>Boliglån</h3>
+            <div class="grid three"><label>Saldo <input name="mortgageBalance" inputmode="numeric" placeholder="0"></label><label>Rente % <input name="mortgageRate" inputmode="decimal" placeholder="0,00"></label><label>Termin / mnd <input name="mortgagePayment" inputmode="numeric" placeholder="0"></label></div>
+          </div>
+          <div class="loan-card">
+            <h3>Billån / annen sikret gjeld</h3>
+            <div class="grid three"><label>Saldo <input name="carLoanBalance" inputmode="numeric" placeholder="0"></label><label>Rente % <input name="carLoanRate" inputmode="decimal" placeholder="0,00"></label><label>Termin / mnd <input name="carLoanPayment" inputmode="numeric" placeholder="0"></label></div>
+          </div>
+          <div class="loan-card warn">
+            <h3>Kredittkort / forbrukslån</h3>
+            <div class="grid three"><label>Saldo <input name="consumerBalance" inputmode="numeric" placeholder="0"></label><label>Rente % <input name="consumerRate" inputmode="decimal" placeholder="0,00"></label><label>Betaling / mnd <input name="consumerPayment" inputmode="numeric" placeholder="0"></label></div>
+          </div>
+          <div class="grid two">
+            <label>Estimert boligverdi <input name="homeValue" inputmode="numeric" placeholder="0"></label>
+            <label>Årlig bruttoinntekt <input name="grossAnnual" inputmode="numeric" placeholder="0"></label>
+          </div>
+          <div class="explain"><strong>Belåningsgrad</strong><span>Boliglån delt på boligverdi. Lavere belåningsgrad kan i noen tilfeller gi bedre forhandlingsposisjon hos banken, men bankenes priser og vilkår varierer.</span></div>
+        </section>
+
+        <section class="form-step" data-step="6">
+          <div class="section-head"><span class="step-label">STEG 6 AV 6</span><h2>Buffer, sparing og fremtid</h2><p>Her ser du hvordan små, faste beløp kan bli store over tid. Avkastning er kun et scenario – ikke en garanti.</p></div>
+          <div class="grid two">
+            <label>Buffer i dag <input name="buffer" inputmode="numeric" placeholder="0"></label>
+            <label>Fast sparing per måned <input name="monthlySaving" inputmode="numeric" placeholder="0"></label>
+            <label>Forventet årlig avkastning %
+              <input name="returnRate" inputmode="decimal" value="4">
+            </label>
+            <label>Ønsket buffer (valgfritt) <input name="bufferGoal" inputmode="numeric" placeholder="Auto: 2–3 mnd nødvendige kostnader"></label>
+          </div>
+          <div class="micro-save">
+            <h3>Småsparing-effekten</h3>
+            <div class="micro-row"><label>Beløp <input name="microAmount" inputmode="numeric" value="50"></label><label>Hvor ofte?
+              <select name="microFrequency"><option value="daily">per dag</option><option value="weekly">per uke</option><option value="monthly">per måned</option></select></label></div>
+            <div class="micro-result" id="microResult">50 kr per dag tilsvarer omtrent 18 250 kr i året.</div>
+          </div>
+        </section>
+
+        <div class="form-actions">
+          <button type="button" class="btn ghost" id="prevStep">← Forrige</button>
+          <button type="button" class="btn primary" id="nextStep">Neste →</button>
+        </div>
+      </form>
+    </div>
+
+    <aside class="live-panel" id="insights">
+      <div class="live-kicker">OPPDATERES MENS DU SKRIVER</div>
+      <div class="metric-grid">
+        <div class="metric"><span>Inntekt</span><strong id="metricIncome">0 kr</strong></div>
+        <div class="metric"><span>Utgifter inkl. årsreserve</span><strong id="metricExpenses">0 kr</strong></div>
+        <div class="metric highlight"><span>Margin</span><strong id="metricMargin">0 kr</strong></div>
+        <div class="metric"><span>Sparegrad</span><strong id="metricSavingsRate">0 %</strong></div>
+      </div>
+
+      <div class="chart-card"><div class="chart-head"><h3>Hvor går pengene?</h3><span id="expenseChartHint">Legg inn utgifter</span></div><canvas id="expenseChart" height="220"></canvas></div>
+      <div class="chart-card"><div class="chart-head"><h3>Sparing over tid</h3><span>scenario</span></div><canvas id="savingsChart" height="220"></canvas></div>
+
+      <div class="health-card">
+        <div class="score-ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42"/><circle id="scoreArc" class="arc" cx="50" cy="50" r="42"/></svg><strong id="healthScore">0</strong></div>
+        <div><span class="live-kicker">ØKONOMISK HELSEINDIKATOR</span><h3 id="healthLabel">Vi trenger noen tall</h3><p id="healthExplain">Scoren er en pedagogisk indikator, ikke en kredittscore eller bankvurdering.</p></div>
+      </div>
+
+      <div class="quick-insights" id="quickInsights"></div>
+    </aside>
+  </section>
+
+  <section class="scenario-section">
+    <div class="section-title"><span class="eyebrow">HVA HVIS?</span><h2>Se effekten før du bestemmer deg</h2><p>Scenarioene endrer ikke tallene dine. De viser bare hva en mulig forbedring kan bety.</p></div>
+    <div class="scenario-grid">
+      <label class="scenario-card"><span>Lavere boliglånsrente</span><strong id="scenarioRateLabel">0,50 prosentpoeng</strong><input id="scenarioRate" type="range" min="0" max="1.5" step="0.05" value="0.5"><b id="scenarioRateResult">0 kr/år</b><small>grovt førsteårsestimat før skatteeffekt og saldoendring</small></label>
+      <label class="scenario-card"><span>Mer sparing</span><strong id="scenarioSaveLabel">500 kr/mnd</strong><input id="scenarioSave" type="range" min="0" max="5000" step="100" value="500"><b id="scenarioSaveResult">0 kr på 10 år</b><small>inkluderer valgt avkastningsscenario</small></label>
+      <label class="scenario-card"><span>Reduser småutgifter</span><strong id="scenarioCutLabel">500 kr/mnd</strong><input id="scenarioCut" type="range" min="0" max="3000" step="100" value="500"><b id="scenarioCutResult">6 000 kr/år</b><small>penger som kan flyttes til buffer, gjeld eller mål</small></label>
+    </div>
+  </section>
+
+  <section class="action-section">
+    <div class="section-title"><span class="eyebrow">FINN PENGENE</span><h2>Dine viktigste neste steg</h2><p>Forslagene prioriteres ut fra tallene du har lagt inn. De er ment som beslutningsstøtte, ikke personlig investeringsrådgivning.</p></div>
+    <div class="action-grid" id="actionGrid"></div>
+  </section>
+
+  <section class="ai-section" id="ai">
+    <div>
+      <span class="eyebrow">VALGFRI AI-ANALYSE</span>
+      <h2>La AI forklare mønsteret i tallene</h2>
+      <p>Den matematiske beregningen gjøres av Money Planner. AI får kun anonymiserte økonomiske nøkkeltall og mål – ikke navn. Den brukes til å forklare, prioritere og formulere en personlig 90-dagers plan.</p>
+      <div class="privacy-note"><strong>Før du bruker AI:</strong> Sjekk personverninformasjonen og ikke legg inn fritekst med sensitive personopplysninger. API-nøkkelen skal ligge sikkert på serveren, aldri i denne nettsiden.</div>
+    </div>
+    <div class="ai-card">
+      <div class="ai-status"><i id="aiDot"></i><span id="aiStatus">AI klar dersom API er konfigurert</span></div>
+      <button class="btn primary" id="runAi" type="button">✨ Analyser min økonomi med AI</button>
+      <p class="small">Hvis AI ikke er konfigurert, fortsetter resten av Money Planner å fungere normalt.</p>
+      <div id="aiResult" class="ai-result" hidden></div>
+    </div>
+  </section>
+
+  <section class="resources-section">
+    <div class="section-title"><span class="eyebrow">VIDERE HJELP</span><h2>Gå fra oversikt til handling</h2><p>Bruk seriøse kilder når du skal sammenligne lån, forstå skatt, pensjon eller få hjelp med gjeld.</p></div>
+    <div class="resource-grid">
+      <a href="https://www.finansportalen.no/" target="_blank" rel="noopener"><strong>Finansportalen</strong><span>Sammenlign bank, lån, forsikring og sparing. Tjeneste fra Forbrukerrådet.</span></a>
+      <a href="https://www.skatteetaten.no/" target="_blank" rel="noopener"><strong>Skatteetaten</strong><span>Skatt, fradrag, skattekort og opplysninger som påvirker privatøkonomien.</span></a>
+      <a href="https://www.nav.no/okonomi-gjeld" target="_blank" rel="noopener"><strong>NAV – økonomi og gjeld</strong><span>Offentlig informasjon og hjelp hvis økonomien eller gjelden har blitt vanskelig.</span></a>
+      <a href="https://norskpensjon.no/" target="_blank" rel="noopener"><strong>Norsk Pensjon</strong><span>Samlet oversikt over pensjonsavtaler og forventet pensjon.</span></a>
+    </div>
+  </section>
+
+  <section class="report-section" id="report">
+    <div class="report-copy">
+      <span class="eyebrow">DIN RAPPORT</span>
+      <h2>Ta planen med deg videre</h2>
+      <p>Rapporten er laget som en egen A4-presentasjon med nøkkeltall, diagrammer, forklaringer, scenarioer og handlingsplan – ikke bare som en utskrift av skjemaet.</p>
+      <div class="report-actions">
+        <button class="btn primary" id="downloadPdf" type="button">Last ned personlig PDF</button>
+        <button class="btn ghost" id="printReport" type="button">Skriv ut / lagre som PDF</button>
+      </div>
+      <p class="small" id="pdfStatus"></p>
+    </div>
+    <div class="report-preview">
+      <div class="paper">
+        <small>MONEY PLANNER · IANS</small>
+        <h3 id="previewTitle">Din økonomiske plan</h3>
+        <p id="previewDate"></p>
+        <div class="paper-number"><span>Månedlig margin</span><strong id="previewMargin">0 kr</strong></div>
+        <div class="paper-bars"><i></i><i></i><i></i><i></i></div>
+        <p>Små forbedringer i dag kan gi større valgfrihet senere.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="disclaimer">
+    <strong>Viktig:</strong> Money Planner er et pedagogisk verktøy for oversikt og scenarioer. Det er ikke en kredittvurdering, lånetilsagn eller personlig investerings-, skatte- eller juridisk rådgivning. Kontroller renter, gebyrer og vilkår hos aktuell leverandør før du tar økonomiske beslutninger.
+  </section>
+</main>
+
+<div id="reportDocument" class="report-document" aria-hidden="true"></div>
+
+<footer><strong>IANS Money Planner 2.0</strong><span>Bygget for forståelse, kontroll og fremdrift.</span></footer>
+</body>
+</html>
