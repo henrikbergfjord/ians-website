@@ -113,7 +113,7 @@
       ltv:result.ltv,debtIncome:result.debtIncome,monthlySaving:result.saving,returnRate:E.n(state.returnRate)
     };
     try{
-      const res=await fetch('https://ians-moneyplanner-ai-dudrgwdtfwe2btcn.norwayeast-01.azurewebsites.net/api/analyze-budget',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const res=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       const body=await res.json().catch(()=>({}));
       if(!res.ok) throw new Error(body.error||`HTTP ${res.status}`);
       aiText=body.analysis||'Ingen analyse mottatt.';
