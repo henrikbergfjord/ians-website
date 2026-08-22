@@ -11,7 +11,6 @@
   <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <script defer src="assets/js/i18n.js"></script>
-  <script defer src="assets/js/weather-time.js"></script>
   <script defer src="assets/js/finance-engine.js"></script>
   <script defer src="assets/js/charts.js"></script>
   <script defer src="assets/js/report.js"></script>
@@ -19,17 +18,9 @@
   <script defer src="assets/js/kids-savings.js"></script>
   <script defer src="assets/js/app.js"></script>
 </head>
-<body class="money-v4">
-<header class="site-header v4-header">
+<body>
+<header class="site-header">
   <a class="brand" href="../../index.html"><span class="brand-bars"><i></i><i></i><i></i><i></i></span><b>IANS</b><small>MONEY PLANNER</small></a>
-  <div class="top-info">
-    <div class="top-info-item"><span>📅</span><div><strong id="topDate">—</strong><small id="topWeek">—</small></div></div>
-    <div class="top-info-item"><span>🕒</span><div><strong id="topTime">—</strong><small data-v4-label="time">Lokal tid</small></div></div>
-    <button class="top-info-item weather-button" id="weatherWidget" type="button" title="Klikk for lokalt vær">
-      <span id="topWeatherIcon">🌤️</span><div><strong id="topWeatherTemp">—</strong><small id="topWeatherText">Aktiver vær</small></div>
-    </button>
-  </div>
-  <div class="header-actions"><div class="lang-switch"><button data-lang="no">NO</button><button data-lang="en">EN</button></div><a class="btn primary compact" href="#planner">Min plan →</a></div>
   <nav>
     <a href="#oversikt" data-i18n="nav.overview">Oversikt</a>
     <a href="#planner" data-i18n="nav.plan">Min plan</a>
@@ -38,9 +29,10 @@
     <a href="#sell" data-i18n="nav.sell">Selg ting</a>
     <a href="help.html" data-i18n="nav.help">Jeg trenger hjelp</a>
   </nav>
+  <div class="header-actions"><div class="lang-switch"><button data-lang="no">NO</button><button data-lang="en">EN</button></div><a class="btn primary compact" href="#planner">Min plan →</a></div>
 </header>
 
-<main id="oversikt"><div class="money-decor" aria-hidden="true"></div>
+<main id="oversikt">
   <section class="hero hero-v3">
     <div class="hero-copy">
       <div class="privacy-pill">🔒 <strong data-i18n="hero.privacy">100 % privat i standardverktøyene</strong></div>
