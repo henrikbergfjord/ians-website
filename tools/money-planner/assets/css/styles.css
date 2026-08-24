@@ -766,3 +766,112 @@ footer{display:grid;grid-template-columns:1.4fr 1fr 1fr .7fr;gap:25px;background
   color: #0b2f27 !important;
 }
 
+
+/* ===== IANS MONEY PLANNER V4.5 – WIDESCREEN EXPERIENCE ===== */
+:root{--mp-wide:1560px}
+body.money-v4{overflow-x:hidden}
+@media(min-width:1180px){
+  body.money-v4 main,
+  body.money-v4 .site-header.v4-header,
+  body.money-v4 footer{
+    width:min(var(--mp-wide),calc(100vw - 64px))!important;
+    max-width:none!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+
+  body.money-v4 .site-header.v4-header{
+    border-radius:0 0 16px 16px;
+  }
+
+  body.money-v4 .hero.hero-v3{
+    grid-template-columns:minmax(430px,.82fr) minmax(680px,1.55fr)!important;
+    gap:clamp(36px,4vw,72px)!important;
+    align-items:center;
+    min-height:620px;
+  }
+
+  body.money-v4 .hero-copy h1{
+    font-size:clamp(52px,4.5vw,78px)!important;
+    line-height:.98!important;
+    letter-spacing:-.045em;
+  }
+
+  body.money-v4 .hero-dashboard{
+    min-width:0;
+    transform:translateZ(0);
+  }
+
+  body.money-v4 .hero-chart-grid{
+    grid-template-columns:1fr 1fr!important;
+    gap:18px!important;
+  }
+
+  body.money-v4 .resource-grid.visual-resources{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+
+  body.money-v4 .story-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+
+  body.money-v4 .planner-shell{
+    grid-template-columns:minmax(0,1.6fr) minmax(360px,.7fr)!important;
+    gap:28px!important;
+    align-items:start;
+  }
+
+  body.money-v4 .scenario-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+
+  body.money-v4 .resource-grid:not(.visual-resources){
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+
+  body.money-v4 .bank-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+
+  body.money-v4 .personal-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+
+  body.money-v4 .privacy-ai-grid,
+  body.money-v4 .privacy-section{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+
+  body.money-v4 .commit-grid{
+    grid-template-columns:1.15fr .85fr!important;
+  }
+
+  body.money-v4 .sell-section,
+  body.money-v4 .ai-section,
+  body.money-v4 .report-section{
+    grid-template-columns:1fr 1fr!important;
+  }
+
+  body.money-v4 .v4-sidebar{
+    width:260px!important;
+  }
+
+  body.money-v4{
+    --sidebar-space:280px;
+  }
+
+  body.money-v4 main,
+  body.money-v4 .site-header.v4-header,
+  body.money-v4 footer{
+    transform:translateX(calc(var(--sidebar-space) / 2));
+    width:min(calc(var(--mp-wide) - var(--sidebar-space) / 2),calc(100vw - var(--sidebar-space) - 38px))!important;
+  }
+}
+@media(min-width:1600px){
+  body.money-v4 main,
+  body.money-v4 .site-header.v4-header,
+  body.money-v4 footer{
+    width:min(1650px,calc(100vw - 340px))!important;
+  }
+  body.money-v4 .hero.hero-v3{min-height:670px}
+}
