@@ -1,0 +1,132 @@
+/* ================================================================
+   IANS Money Planner 5.0 — Layout Fix
+   Fixes Design Pass 2 positioning conflict and widescreen composition.
+   ================================================================ */
+
+/* Restore the intended positioning model. Design Pass 2 accidentally
+   changed both fixed sidebar and sticky header to position:relative. */
+body.money-v4 .v4-sidebar{
+  position:fixed!important;
+  inset:0 auto 0 0!important;
+  z-index:80!important;
+}
+body.money-v4 .site-header.v4-header{
+  position:sticky!important;
+  top:0!important;
+  z-index:60!important;
+}
+body.money-v4 main,
+body.money-v4 footer{
+  position:relative!important;
+  z-index:2!important;
+}
+
+/* Compact premium header. */
+@media(min-width:1051px){
+  body.money-v4 .site-header.v4-header{
+    min-height:72px!important;
+    height:72px!important;
+    padding:8px 20px!important;
+    grid-template-columns:190px minmax(0,1fr) auto!important;
+    gap:14px!important;
+  }
+  body.money-v4 .v4-header .top-info{
+    justify-self:end!important;
+    gap:4px!important;
+  }
+  body.money-v4 .top-info-item{
+    padding:6px 9px!important;
+  }
+  body.money-v4 .v4-header .brand{
+    align-self:center!important;
+  }
+}
+
+/* Remove the false 'empty first screen' and bring the product up. */
+body.money-v4 main#oversikt{
+  padding-top:0!important;
+  margin-top:0!important;
+}
+body.money-v4 .hero.hero-v3{
+  margin-top:0!important;
+  padding-top:34px!important;
+  padding-bottom:42px!important;
+  min-height:auto!important;
+}
+
+/* Better use of large Mac / widescreen displays. */
+@media(min-width:1180px){
+  body.money-v4 .v4-sidebar{width:238px!important}
+  body.money-v4 .site-header.v4-header{
+    left:238px!important;
+    width:calc(100% - 266px)!important;
+    margin-left:14px!important;
+    margin-right:14px!important;
+    transform:none!important;
+    max-width:none!important;
+  }
+  body.money-v4 main,
+  body.money-v4 footer{
+    margin-left:238px!important;
+    width:calc(100% - 238px)!important;
+    max-width:none!important;
+    transform:none!important;
+  }
+  body.money-v4 .hero.hero-v3{
+    width:min(1540px,calc(100% - 64px))!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    grid-template-columns:minmax(440px,.88fr) minmax(650px,1.22fr)!important;
+    gap:clamp(38px,4vw,74px)!important;
+  }
+  body.money-v4 .hero-copy h1{
+    font-size:clamp(54px,4.45vw,78px)!important;
+  }
+  body.money-v4 .ians-next-launcher,
+  body.money-v4 .planner-shell,
+  body.money-v4 .scenario-section,
+  body.money-v4 .action-section,
+  body.money-v4 .resources-section,
+  body.money-v4 .report-section,
+  body.money-v4 .ai-section,
+  body.money-v4 .privacy-section,
+  body.money-v4 .disclaimer{
+    width:min(1540px,calc(100% - 64px))!important;
+    max-width:none!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+}
+
+@media(min-width:1600px){
+  body.money-v4 .hero.hero-v3{
+    width:min(1600px,calc(100% - 80px))!important;
+    grid-template-columns:minmax(470px,.9fr) minmax(720px,1.28fr)!important;
+  }
+  body.money-v4 .ians-next-launcher,
+  body.money-v4 .planner-shell,
+  body.money-v4 .scenario-section,
+  body.money-v4 .action-section,
+  body.money-v4 .resources-section,
+  body.money-v4 .report-section,
+  body.money-v4 .ai-section,
+  body.money-v4 .privacy-section,
+  body.money-v4 .disclaimer{
+    width:min(1600px,calc(100% - 80px))!important;
+  }
+}
+
+/* Mobile/tablet keeps the existing off-canvas behaviour. */
+@media(max-width:1050px){
+  body.money-v4 .site-header.v4-header{
+    position:sticky!important;
+    left:auto!important;
+    width:100%!important;
+    margin:0!important;
+  }
+  body.money-v4 main,
+  body.money-v4 footer{
+    margin-left:0!important;
+    width:100%!important;
+  }
+}

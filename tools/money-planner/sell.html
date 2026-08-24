@@ -1,0 +1,19 @@
+<!doctype html><html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Selg noe du ikke trenger | IANS Money Planner</title><link rel="stylesheet" href="assets/css/styles.css"><link rel="stylesheet" href="../../assets/css/ians-next.css"><link href="assets/css/design-pass2.css" rel="stylesheet"/>
+</head><body class="money-v4"><main style="max-width:1180px;margin:0 auto;padding:42px 22px"><a class="btn ghost compact" href="index.html">← Money Planner</a><section class="section-title" style="margin-top:34px"><span class="eyebrow">VERKTØY</span><h1>Selg noe du ikke trenger</h1><p>Frigjør penger fra ting du ikke bruker. AI kan hjelpe med annonseteksten.</p></section><section class="sell-section" id="sell">
+<div class="sell-copy"><span class="eyebrow">SELGE NOE DU IKKE TRENGER?</span><h2>La bildene bli til en ferdig annonse</h2><p>Last opp bilder, fortell kort hva produktet er og hvilken stand det er i. AI kan foreslå tittel, ryddig annonsetekst og et prisintervall. Prisforslaget er et estimat – ikke live markedsdata fra FINN.</p><div class="sell-note">Noen ganger er det mest lønnsomme sparetiltaket å frigjøre penger fra noe du ikke bruker.</div></div>
+<div class="sell-tool">
+<label class="upload-box"><input accept="image/*" id="sellImages" multiple="" type="file"/><strong>📷 Legg til produktbilder</strong><span>Velg opptil 6 bilder</span></label>
+<div class="sell-preview" id="sellPreview"></div>
+<div class="grid two"><label>Hva selger du? <input id="sellProduct" placeholder="F.eks. Elfa skyvedør"/></label><label>Tilstand <select id="sellCondition"><option>Som ny</option><option>Meget god</option><option>God</option><option>Brukt</option><option>Trenger reparasjon</option></select></label></div>
+<label>Det du vet om produktet <textarea id="sellDetails" placeholder="Alder, størrelse, merke, tilbehør, feil, hvor det kan hentes ..." rows="4"></textarea></label>
+<label class="ai-consent"><input id="sellConsent" type="checkbox"/><span>Jeg forstår at valgte produktbilder og produktopplysninger kan sendes til AI-tjenesten for analyse når jeg genererer annonsen.</span></label>
+<button class="btn primary" id="generateAd" type="button">✨ Lag annonseforslag med AI</button>
+<div class="small" id="sellStatus"></div>
+<div class="ad-result" hidden="" id="adResult">
+<label>Forslag til tittel <input id="adTitle"/></label>
+<label>Annonsetekst <textarea id="adBody" rows="10"></textarea></label>
+<div class="price-grid"><div><span>Raskt salg</span><strong id="priceFast">–</strong></div><div><span>Realistisk</span><strong id="priceFair">–</strong></div><div><span>Prøv først</span><strong id="priceTry">–</strong></div></div>
+<div class="hero-actions"><button class="btn primary" id="copyAd" type="button">Kopier annonse</button><button class="btn ghost" id="downloadAd" type="button">Last ned annonse</button></div>
+</div>
+</div>
+</section></main><script defer src="assets/js/sell-generator.js"></script></body></html>

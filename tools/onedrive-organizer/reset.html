@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="no"><head><meta charset="utf-8"><title>Nullstill IANS OneDrive Analyzer</title>
 <style>body{font-family:system-ui;background:#07111f;color:#fff;display:grid;place-items:center;min-height:100vh}
-div{max-width:600px;padding:30px;background:#10233a;border-radius:16px}a{color:#8ad5ff}</style></head>
+div{max-width:600px;padding:30px;background:#10233a;border-radius:16px}a{color:#8ad5ff}</style><link rel="stylesheet" href="../../assets/css/ians-next.css">
+</head>
 <body><div><h1>Lokale innloggingsdata er nullstilt</h1>
 <p>Session storage og MSAL-relaterte lokale nøkler er fjernet. Client ID beholdes.</p>
 <p><a href="/">Gå tilbake til IANS OneDrive Analyzer</a></p></div>
@@ -11,4 +12,5 @@ for (const k of Object.keys(localStorage)) {
   if (k.toLowerCase().includes("msal")) localStorage.removeItem(k);
 }
 history.replaceState(null, "", "/reset.html");
-</script></body></html>
+</script><div class="ians-next-badge">IANS Next · Master</div>
+</body></html>

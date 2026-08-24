@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="no"><head><meta charset="utf-8"><title>IANS Diagnostic</title>
-<style>body{font-family:system-ui;background:#07111f;color:#fff;padding:30px}pre{background:#0f2135;padding:18px;border-radius:12px;white-space:pre-wrap}</style></head>
+<style>body{font-family:system-ui;background:#07111f;color:#fff;padding:30px}pre{background:#0f2135;padding:18px;border-radius:12px;white-space:pre-wrap}</style><link rel="stylesheet" href="../../assets/css/ians-next.css">
+</head>
 <body><h1>IANS OneDrive Organizer – Diagnostic</h1><pre id="o">Tester...</pre>
 <script type="module">
 const o=document.getElementById("o");
@@ -17,4 +18,5 @@ try {
   lines.push("Contains loginPopup: "+t.includes("loginPopup"));
 } catch(e){ lines.push("Fetch error: "+e.message); }
 o.textContent=lines.join("\n");
-</script></body></html>
+</script><div class="ians-next-badge">IANS Next · Master</div>
+</body></html>
