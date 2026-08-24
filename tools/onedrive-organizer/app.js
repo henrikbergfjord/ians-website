@@ -13,7 +13,7 @@ const CLIENT_BACKUP_KEY = "ians_onedrive_analyzer_client_id_backup";
 window.IANS_V290_CONFIG = {
   clientId: "986e5cdb-dab1-4b3f-8db0-8fe7214a19b3",
   ownerUsername: "henrik.bergfjord@outlook.com",
-  betaGateEnabled: true,
+  betaGateEnabled: false,
   betaGateHash: "532eaabd9574880dbf76b9b8cc00832c20a6ec113d682299550d7a6e0f345e25",
   entitlementEndpoint: ""
 };
@@ -3450,6 +3450,123 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
     injectAccessGate();injectFreeProBar();injectProBadge();installActionGuard();hideClientIdSetup();addArchitectureNote();updatePlanState();
     setTimeout(()=>{hideClientIdSetup();injectProBadge();injectFreeProBar();},900);
     console.info("[IANS] V2.9.0 Free / Pro Foundation aktiv");
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+// ===== IANS V2.9.1 PRO TRIAL + FEEDBACK =====
+(() => {
+  const $ = id => document.getElementById(id);
+  const CFG = window.IANS_V290_CONFIG || {};
+  const SUPPORT_NUMBER = "93002067";
+  let trialUnlocked = false;
+
+  async function sha256Hex(text){
+    const b=new TextEncoder().encode(text);
+    const d=await crypto.subtle.digest("SHA-256",b);
+    return [...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,"0")).join("");
+  }
+
+  function modal(html){
+    let m=$("v291Modal");
+    if(!m){
+      m=document.createElement("div");
+      m.id="v291Modal"; m.className="v291-modal hidden";
+      m.innerHTML='<div class="v291-modal-card"><button class="v291-close">×</button><div id="v291ModalBody"></div></div>';
+      document.body.appendChild(m);
+      m.querySelector(".v291-close").onclick=()=>m.classList.add("hidden");
+      m.onclick=e=>{if(e.target===m)m.classList.add("hidden");};
+    }
+    $("v291ModalBody").innerHTML=html;
+    m.classList.remove("hidden");
+  }
+
+  function removeStartupGate(){
+    $("v290AccessGate")?.remove();
+    sessionStorage.removeItem("ians_v290_beta_gate");
+  }
+
+  function ownerMatch(){
+    const wanted=String(CFG.ownerUsername||"").trim().toLowerCase();
+    const actual=String(window.activeAccount?.username||"").trim().toLowerCase();
+    return !!wanted && !!actual && wanted===actual;
+  }
+
+  function proOpen(){
+    return ownerMatch() || trialUnlocked || document.body.classList.contains("v290-pro-active");
+  }
+
+  async function openProTrial(){
+    if(!window.activeAccount){
+      modal('<span class="v291-kicker">PRO TRIAL</span><h2>Koble først til OneDrive</h2><p>Logg inn med Microsoft. Free Mode fungerer uten Action Mode.</p>');
+      return;
+    }
+    modal(`<span class="v291-kicker">PRO TRIAL</span><h2>Prøv Action Mode</h2>
+      <p>Har du fått en testkode? Skriv den inn for å prøve Pro-funksjonene i denne nettleserøkten.</p>
+      <label class="v291-code-label">Testkode<input id="v291TrialCode" type="password" placeholder="••••••••"></label>
+      <button id="v291TrialOpen" class="btn primary">Aktiver Pro-prøve</button>
+      <div id="v291TrialMsg" class="v291-msg"></div>
+      <div class="v291-note"><strong>Liker du verktøyet?</strong><p>Tilbakemeldinger og forslag er svært velkomne. Vil du støtte utviklingen kan du sende et valgfritt beløp på Vipps til <b>${SUPPORT_NUMBER}</b>.</p></div>`);
+    $("v291TrialOpen").onclick=async()=>{
+      const v=($("v291TrialCode").value||"").trim();
+      if(!v){$("v291TrialMsg").textContent="Skriv inn testkoden.";return;}
+      if(!CFG.betaGateHash){$("v291TrialMsg").textContent="Ingen Pro-testkode er konfigurert.";return;}
+      if(await sha256Hex(v)!==CFG.betaGateHash){$("v291TrialMsg").textContent="Feil testkode.";return;}
+      trialUnlocked=true;
+      document.body.classList.add("v290-pro-active","v291-pro-trial");
+      $("v291Modal").classList.add("hidden");
+    };
+  }
+
+  function support(){
+    modal(`<span class="v291-kicker">STØTT VIDERE UTVIKLING</span><h2>Vipps er helt valgfritt</h2>
+      <p>Hvis verktøyet er nyttig og du ønsker å støtte videre utvikling, kan du sende et valgfritt beløp.</p>
+      <div class="v291-vipps"><div class="v291-vipps-logo">VIPPS</div><div><small>Vipps til</small><strong>${SUPPORT_NUMBER}</strong><button id="v291CopyVipps" class="btn ghost">Kopier nummer</button></div></div>
+      <div class="v291-qr-placeholder"><strong>Offisiell Vipps-QR</strong><p>Her kan vi legge inn en offisiell QR fra Vipps/Vipps MobilePay når betalingsløsningen er opprettet.</p></div>
+      <p class="v291-muted">Støtte er frivillig og gir ikke automatisk Pro-status.</p>`);
+    $("v291CopyVipps").onclick=async()=>{await navigator.clipboard?.writeText(SUPPORT_NUMBER);$("v291CopyVipps").textContent="Kopiert ✓";};
+  }
+
+  function feedback(){
+    const subject=encodeURIComponent("OneDrive Command Center – tilbakemelding");
+    const body=encodeURIComponent("Hei Henrik,\n\nJeg har testet OneDrive Command Center.\n\nDette likte jeg:\n\nForslag til forbedringer:\n\nEventuelle feil:\n");
+    modal(`<span class="v291-kicker">TILBAKEMELDING</span><h2>Hjelp verktøyet å bli bedre</h2><p>Fortell gjerne hva som fungerte, hva som var uklart og hva du savner.</p>
+      <div class="v291-feedback-actions"><a class="btn primary" href="mailto:henrik.bergfjord@outlook.com?subject=${subject}&body=${body}">Send tilbakemelding</a><button id="v291SupportOpen" class="btn ghost">Støtt via Vipps</button></div>`);
+    $("v291SupportOpen").onclick=support;
+  }
+
+  function installGuard(){
+    document.addEventListener("click",e=>{
+      const b=e.target.closest("#v24EnableAction,#topActionBtn,#v290UnlockPro,#v290ModalUnlock");
+      if(!b || proOpen())return;
+      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+      openProTrial();
+    },true);
+  }
+
+  function rewrite(){
+    const action=$("v290UnlockPro");
+    if(action)action.textContent="Prøv Action Mode · PRO";
+    const bar=$("v290PlanBar");
+    if(bar){
+      const t=bar.querySelector(".v290-plan-current strong"),s=bar.querySelector(".v290-plan-current small");
+      if(t)t.textContent="Free · Read Only";
+      if(s)s.textContent="Kartlegg, analyser, verifiser og last ned gratis. Pro kreves først når du vil gjøre endringer.";
+    }
+  }
+
+  function addButtons(){
+    if($("v291FeedbackBtn"))return;
+    const host=document.querySelector(".header-actions,.top-actions,.toolbar-actions")||document.querySelector("header");
+    if(!host)return;
+    const f=document.createElement("button");f.id="v291FeedbackBtn";f.className="v291-mini-btn";f.textContent="Tilbakemelding";f.onclick=feedback;
+    const s=document.createElement("button");s.id="v291SupportBtn";s.className="v291-mini-btn v291-support";s.textContent="Støtt utviklingen";s.onclick=support;
+    host.append(f,s);
+  }
+
+  function boot(){
+    removeStartupGate(); installGuard(); rewrite(); addButtons();
+    setTimeout(()=>{removeStartupGate();rewrite();addButtons();},800);
+    console.info("[IANS] V2.9.1 Pro Trial + Feedback aktiv");
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
 })();
