@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>IANS Microsoft Login</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    html,body{height:100%;margin:0}
+    body{
+      display:grid;
+      place-items:center;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:#07111f;
+      color:#f5f7fb
+    }
+    .box{
+      width:min(420px,calc(100% - 32px));
+      padding:26px;
+      border-radius:16px;
+      background:#0f1f33;
+      border:1px solid #29445f;
+      text-align:center
+    }
+    p{color:#93a4b8;line-height:1.5}
+    .ok{color:#6fe3a5}
+    .error{color:#ff9ba3}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <strong id="status">Microsoft-innlogging fullføres…</strong>
+    <p id="detail">Auth-svaret sendes tilbake til OneDrive Organizer.</p>
+  </div>
+
+  <script type="module">
+    import { broadcastResponseToMainFrame } from "https://cdn.jsdelivr.net/npm/@azure/msal-browser@5/redirect-bridge/+esm";
+
+    const status = document.getElementById("status");
+    const detail = document.getElementById("detail");
+
+    broadcastResponseToMainFrame()
+      .then(() => {
+        status.textContent = "Innlogging fullført";
+        status.className = "ok";
+        detail.textContent = "Dette vinduet kan nå lukkes automatisk.";
+      })
+      .catch((error) => {
+        console.error("[IANS] Redirect bridge error:", error);
+        status.textContent = "Kunne ikke fullføre innloggingen";
+        status.className = "error";
+        detail.textContent = error?.message || String(error);
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oppsett – IANS OneDrive Analyzer</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;max-width:900px;margin:40px auto;padding:0 20px;line-height:1.65;color:#182231}
+code,pre{background:#eef2f6;border-radius:7px;padding:2px 6px}
+pre{padding:15px;overflow:auto}
+h1,h2{line-height:1.2} .box{border:1px solid #d9e2ea;border-radius:12px;padding:18px;background:#f8fafc}
+</style>
+</head>
+<body>
+<h1>IANS OneDrive Analyzer V1.2 – oppsett</h1>
+<div class="box">
+<strong>Sikkerhet:</strong> V1 ber kun om delegert Microsoft Graph-tillatelse <code>Files.Read</code>.
+Den kan lese den innloggede brukerens OneDrive, men kan ikke flytte, skrive eller slette filer.
+Ingen client secret skal opprettes eller legges i HTML.
+</div>
+
+<h2>1. Kjør siden via lokal webserver</h2>
+<p>Ikke åpne <code>index.html</code> direkte som <code>file://</code>. Åpne Terminal i mappen og kjør:</p>
+<pre>python3 -m http.server 8080</pre>
+<p>Åpne deretter <code>http://localhost:8080/</code>.</p>
+
+<h2>2. Opprett appregistrering i Microsoft Entra</h2>
+<ol>
+<li>Gå til Microsoft Entra admin center → <strong>App registrations</strong> → <strong>New registration</strong>.</li>
+<li>Gi appen navn, for eksempel <strong>IANS OneDrive Analyzer</strong>.</li>
+<li>Velg kontotype som inkluderer kontoene du vil teste. For både jobb/skole og private Microsoft-kontoer, velg alternativet som inkluderer <strong>personal Microsoft accounts</strong>.</li>
+<li>Opprett appen.</li>
+<li>Kopier <strong>Application (client) ID</strong>.</li>
+</ol>
+
+<h2>3. Legg inn Redirect URI som SPA</h2>
+<ol>
+<li>I appregistreringen: <strong>Authentication</strong> → <strong>Add a platform</strong>.</li>
+<li>Velg <strong>Single-page application</strong>.</li>
+<li>Legg inn <code>http://localhost:8080/</code> (eller nøyaktig adressen dashboardet viser).</li>
+<li>Lagre.</li>
+</ol>
+
+<h2>4. Microsoft Graph permissions</h2>
+<p>I <strong>API permissions</strong> → <strong>Add a permission</strong> → Microsoft Graph → Delegated permissions:</p>
+<ul>
+<li><code>Files.Read</code></li>
+</ul>
+<p>Det er alt V1 trenger for OneDrive-kartlegging. Ikke legg inn Files.ReadWrite.</p>
+
+<h2>5. Start</h2>
+<ol>
+<li>Lim Client ID inn på oppsettsiden.</li>
+<li>Klikk <strong>Koble til OneDrive</strong>.</li>
+<li>Godkjenn <strong>Files.Read</strong>.</li>
+<li>Klikk <strong>Start full kartlegging</strong>.</li>
+</ol>
+
+<h2>Hva V1 kartlegger</h2>
+<ul>
+<li>OneDrive-kvote / brukt plass</li>
+<li>alle mapper og filer som Graph returnerer for den innloggede OneDrive</li>
+<li>summerte filstørrelser</li>
+<li>filkategorier</li>
+<li>største mapper og filer</li>
+<li><code>photo.takenDateTime</code> der Microsoft Graph eksponerer det</li>
+<li>opprettet dato som fallback</li>
+<li>mulige duplikater basert på samme filnavn + størrelse</li>
+<li>JSON-eksport av kartleggingen</li>
+</ul>
+
+<h2>Viktig ved svært store OneDrive-kontoer</h2>
+<p>
+Kartleggingen henter metadata side for side. Den laster ikke ned selve filinnholdet.
+En konto med svært mange små filer kan likevel kreve mange Microsoft Graph-kall.
+V1 håndterer paginering og vanlige 429/503/504-throttling-svar med retry.
+</p>
+
+<p><a href="index.html">← Til dashboardet</a></p>
+</body>
+</html>

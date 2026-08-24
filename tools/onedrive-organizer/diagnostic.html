@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="no"><head><meta charset="utf-8"><title>IANS Diagnostic</title>
+<style>body{font-family:system-ui;background:#07111f;color:#fff;padding:30px}pre{background:#0f2135;padding:18px;border-radius:12px;white-space:pre-wrap}</style></head>
+<body><h1>IANS OneDrive Organizer – Diagnostic</h1><pre id="o">Tester...</pre>
+<script type="module">
+const o=document.getElementById("o");
+const lines=[];
+lines.push("URL: "+location.href);
+lines.push("Origin: "+location.origin);
+lines.push("LocalStorage client id exists: "+Boolean(localStorage.getItem("ians_onedrive_analyzer_client_id")));
+try {
+  const r=await fetch("./app.js",{cache:"no-store"});
+  lines.push("app.js HTTP: "+r.status);
+  const t=await r.text();
+  lines.push("app.js size: "+t.length+" bytes");
+  lines.push("Contains loginRedirect: "+t.includes("loginRedirect"));
+  lines.push("Contains loginPopup: "+t.includes("loginPopup"));
+} catch(e){ lines.push("Fetch error: "+e.message); }
+o.textContent=lines.join("\n");
+</script></body></html>

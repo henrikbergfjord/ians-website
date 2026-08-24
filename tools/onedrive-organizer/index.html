@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IANS OneDrive Organizer V2.8.4 Web Edition · Read-only som standard · Lokal backup går direkte til brukerens valgte mappe</title>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Read-only kartlegging og analyse av OneDrive via Microsoft Graph.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">IANS</div>
+      <div>
+        <h1>OneDrive Organizer <span class="core-version">V2.8.4 Web Edition + Download & Verify</span></h1>
+        <p>Read-only kartlegging via Microsoft Graph</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span id="editionBadge" class="badge edition-badge">WEB EDITION</span>
+      <span id="topModeBadge" class="badge safe">READ ONLY</span>
+        <button id="topActionBtn" class="btn action-top">Aktiver Action Mode</button>
+        <button id="settingsBtn" class="btn ghost">Innstillinger</button>
+      <button id="signOutBtn" class="btn ghost hidden">Logg ut</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="setupPanel" class="panel setup">
+      <div>
+        <span class="eyebrow">FØRSTE OPPSTART</span>
+        <h2>Koble siden til din Microsoft-app</h2>
+        <p>
+          Legg inn <strong>Application (client) ID</strong> fra Microsoft Entra.
+          ID-en lagres kun lokalt i denne nettleseren. Ingen client secret brukes.
+        </p>
+      </div>
+
+      <label class="field">
+        <span>Client ID</span>
+        <input id="clientIdInput" type="password" autocomplete="off" autocomplete="off" placeholder="00000000-0000-0000-0000-000000000000">
+      </label>
+
+      <div class="redirect-box">
+        <span>Redirect URI som må registreres som <strong>Single-page application (SPA)</strong>:</span>
+        <code id="redirectUri"></code>
+        <button id="copyRedirectBtn" class="btn small ghost">Kopier</button>
+      </div>
+        <div class="redirect-box">
+          <span>Popup callback URI som også må registreres som SPA:</span>
+          <code id="popupRedirectUri">beregnes automatisk</code>
+        </div>
+
+      <div class="actions">
+        <button id="saveClientIdBtn" class="btn primary">Lagre og initialiser</button>
+        <a href="README.html" class="btn ghost">Oppsettguide</a>
+      </div>
+      <p id="setupMessage" class="message"></p>
+    </section>
+
+    
+    <section id="webPrivacyNote" class="panel web-privacy-note">
+      <div>
+        <span class="eyebrow">WEB EDITION · PERSONVERN & SIKKERHET</span>
+        <h3>Dine OneDrive-filer lastes ikke opp til IANS</h3>
+        <p>
+          Kartlegging skjer direkte mellom denne nettleseren og Microsoft Graph.
+          Read-only er standard. Skrivetilgang hentes først når du selv aktiverer Action Mode.
+          Ved lokal backup går filinnholdet fra Microsoft OneDrive via nettleseren direkte til mappen du velger på din egen maskin.
+        </p>
+        <div id="webDownloadSupport" class="web-support-note">Kontrollerer nettleserstøtte…</div>
+      </div>
+    </section>
+
+    <section id="loginPanel" class="hero panel hidden">
+      <div>
+        <span class="eyebrow">MICROSOFT ONEDRIVE</span>
+        <h2>Kartlegg hele OneDrive uten å laste ned filene</h2>
+        <p>
+          Verktøyet leser fil- og mappemetadata via Microsoft Graph. Det ber kun om
+          <strong>Files.Read</strong> og kan derfor ikke flytte, endre eller slette filer.
+        </p>
+      </div>
+      <button id="signInBtn" class="btn microsoft">Koble til OneDrive</button>
+    </section>
+
+    <section id="dashboard" class="hidden">
+
+      <section id="topControlPanel" class="panel top-control-panel">
+        <div class="top-control-head">
+          <div>
+            <span class="eyebrow">SCAN & ACTION CONTROL</span>
+            <h3>Hva vil du gjøre?</h3>
+            <p class="muted">Velg hele OneDrive eller én mappe. Start, stopp og fortsett lange skanninger herfra.</p>
+          </div>
+          <span id="scanStateBadge" class="badge safe">KLAR</span>
+        </div>
+
+        <div class="top-control-grid">
+          <div class="scope-block">
+            <label class="scope-choice">
+              <input type="radio" name="scanScope" value="all" checked>
+              <span><strong>Hele OneDrive</strong><small>Kartlegg alt fra roten</small></span>
+            </label>
+            <label class="scope-choice">
+              <input type="radio" name="scanScope" value="folder">
+              <span><strong>Valgt mappe</strong><small>Browse deg frem til én mappe</small></span>
+            </label>
+
+            <div class="folder-choice-row">
+              <div>
+                <span class="muted">Valgt mappe</span>
+                <strong id="selectedFolderPath">/</strong>
+              </div>
+              <button id="browseFolderBtn" class="btn ghost" disabled>Browse mapper</button>
+            </div>
+          </div>
+
+          <div class="scan-buttons-block">
+            <button id="topStartScanBtn" class="btn primary">Start kartlegging</button>
+            <button id="topStopScanBtn" class="btn ghost" disabled>Stopp</button>
+            <button id="resumeScanBtn" class="btn resume-btn" disabled>Resume</button>
+            <button id="discardCheckpointBtn" class="btn ghost" disabled>Forkast checkpoint</button>
+            <small id="checkpointSummary" class="muted">Ingen lagret skanning.</small>
+          </div>
+
+          <div class="time-block">
+            <div><span>Startet</span><strong id="scanStartedAt">–</strong></div>
+            <div><span>Pågått</span><strong id="scanElapsed">00:00:00</strong></div>
+            <div><span>Sist checkpoint</span><strong id="scanCheckpointTime">–</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <div id="folderBrowserModal" class="modal hidden">
+        <div class="modal-card browser-card">
+          <button id="closeFolderBrowserBtn" class="modal-close">×</button>
+          <span class="eyebrow">MAPPEBROWSER</span>
+          <h2>Velg mappe å skanne</h2>
+          <div class="browser-toolbar">
+            <button id="folderUpBtn" class="btn ghost">← Opp</button>
+            <code id="folderBrowserPath">/</code>
+            <button id="chooseThisFolderBtn" class="btn primary">Velg denne mappen</button>
+          </div>
+          <div id="folderBrowserList" class="folder-browser-list">Laster mapper…</div>
+        </div>
+      </div>
+
+      <section class="panel account-row">
+        <div>
+          <span class="eyebrow">TILKOBLET KONTO</span>
+          <h2 id="accountName">–</h2>
+          <p id="accountUser">–</p>
+        </div>
+        <div class="scan-actions">
+          <button id="scanBtn" class="btn primary">Start full kartlegging</button>
+          <button id="cancelBtn" class="btn danger hidden">Stopp</button>
+        </div>
+      </section>
+<section id="progressPanel" class="panel hidden">
+        <div class="progress-head">
+          <div>
+            <span class="eyebrow">KARTLEGGING</span>
+            <h3 id="progressTitle">Leser OneDrive…</h3>
+          </div>
+          <div id="progressNumbers" class="mono">0 filer · 0 mapper</div>
+        </div>
+        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+        <p id="progressPath" class="muted">Starter…</p>
+        <div class="scan-visual-grid">
+          <div class="scan-donut-wrap">
+            <canvas id="scanDonut" width="220" height="220"></canvas>
+            <div class="donut-center">
+              <strong id="scanDonutFiles">0</strong>
+              <span>filer</span>
+            </div>
+          </div>
+          <div class="live-stats">
+            <div><span>Mapper behandlet</span><strong id="processedFoldersLive">0</strong></div>
+            <div><span>Mapper i kø</span><strong id="queuedFoldersLive">0</strong></div>
+            <div><span>Data kartlagt</span><strong id="scannedBytesLive">0 B</strong></div>
+            <div><span>Aktiv mappe</span><strong id="activeFolderLive">/</strong></div>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="cards">
+        <article class="metric panel">
+          <span>OneDrive brukt</span>
+          <strong id="quotaUsed">–</strong>
+          <small id="quotaTotal">–</small>
+        </article>
+        <article class="metric panel">
+          <span>Filer funnet</span>
+          <strong id="fileCount">–</strong>
+          <small id="fileSize">–</small>
+        </article>
+        <article class="metric panel">
+          <span>Mapper</span>
+          <strong id="folderCount">–</strong>
+          <small id="folderHint">–</small>
+        </article>
+        <article class="metric panel">
+          <span>Mulige duplikater</span>
+          <strong id="duplicateCount">–</strong>
+          <small id="duplicateSize">samme navn + størrelse</small>
+        </article>
+      </section>
+
+      <section class="grid-2">
+        <article class="panel">
+          <div class="section-title">
+            <div>
+              <span class="eyebrow">LAGRING</span>
+              <h3>Filtyper</h3>
+            </div>
+          </div>
+          <div id="typeChart" class="bars empty-state">Kjør en kartlegging for å se data.</div>
+        </article>
+
+        <article class="panel">
+          <div class="section-title">
+            <div>
+              <span class="eyebrow">BILDER / VIDEO</span>
+              <h3>Opptaksår</h3>
+            </div>
+          </div>
+          <div id="yearChart" class="bars empty-state">Kjør en kartlegging for å se data.</div>
+        </article>
+      </section>
+
+      <section class="grid-2">
+        <article class="panel">
+          <div class="section-title">
+            <div>
+              <span class="eyebrow">STØRSTE OMRÅDER</span>
+              <h3>Mapper</h3>
+            </div>
+          </div>
+          <div id="foldersTable" class="table-wrap empty-state">Ingen data ennå.</div>
+        </article>
+
+        <article class="panel">
+          <div class="section-title">
+            <div>
+              <span class="eyebrow">STØRSTE FILER</span>
+              <h3>Topp 25</h3>
+            </div>
+          </div>
+          <div id="filesTable" class="table-wrap empty-state">Ingen data ennå.</div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">OPPRYDDINGSKANDIDATER</span>
+            <h3>Mulige duplikater</h3>
+          </div>
+          <button id="exportBtn" class="btn ghost" disabled>Eksporter rapport (JSON)</button>
+        </div>
+        <p class="muted">
+          V1 bruker kun metadata og markerer filer med samme filnavn og størrelse. Den sletter ingenting.
+          Ekte hash-basert duplikatkontroll kan legges til senere.
+        </p>
+        
+<div id="duplicatesTable" class="table-wrap empty-state">Ingen data ennå.</div>
+      </section>
+
+      
+<section id="largeDrivePanel" class="panel large-drive-panel hidden">
+  <div class="section-title">
+    <div><span class="eyebrow">LARGE DRIVE SAFETY</span><h3>Stor OneDrive – sikker visning</h3></div>
+    <span class="badge safe">AUTO</span>
+  </div>
+  <div class="large-drive-grid">
+    <div><span>Inventar</span><strong id="largeDriveFiles">0</strong></div>
+    <div><span>UI-modus</span><strong id="largeDriveMode">Normal</strong></div>
+    <div><span>Duplikater vist</span><strong id="largeDriveDupPage">–</strong></div>
+    <div><span>Render</span><strong id="largeDriveRenderState">OK</strong></div>
+  </div>
+  <p id="largeDriveHint" class="muted"></p>
+</section>
+
+<section id="dupBulkPanel" class="panel duplicate-review-panel hidden">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">DUPLICATE REVIEW</span>
+            <h3>Rydd duplikater i grupper</h3>
+          </div>
+          <span id="dupBulkBadge" class="badge safe">0 grupper</span>
+        </div>
+
+        <div class="duplicate-warning">
+          <strong>Trygg arbeidsflyt:</strong>
+          Verktøyet foreslår én kopi som beholdes i hver gruppe og markerer resten som ekstrakopier.
+          Du trenger bare åpne Preview når du er usikker.
+          <br><small>Foreløpig er kandidatene basert på samme filnavn + samme størrelse, ikke hash-verifisering.</small>
+        </div>
+
+        <div class="duplicate-summary-grid">
+          <div><span>Grupper</span><strong id="dupStatGroups">0</strong></div>
+          <div><span>Foreslåtte ekstrakopier</span><strong id="dupStatCopies">0</strong></div>
+          <div><span>Mulig frigjøring</span><strong id="dupStatBytes">0 B</strong></div>
+          <div><span>Valgt nå</span><strong id="dupStatSelected">0</strong></div>
+        </div>
+
+        <div class="duplicate-toolbar">
+          <div>
+            <button id="dupMarkAllSuggested" class="btn primary">Merk alle foreslåtte</button>
+            <button id="dupClearAll" class="btn ghost">Fjern alle valg</button>
+          </div>
+          <div>
+            <button id="dupQuarantineAll" class="btn action-btn" disabled>Karantene valgte</button>
+            <button id="dupTrashAll" class="btn danger" disabled>Papirkurv valgte</button>
+          </div>
+        </div>
+
+        <div id="dupBulkSelectionInfo" class="selection-summary">Ingen ekstrakopier valgt.</div>
+        <div id="dupBulkGroups" class="duplicate-groups"></div>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">DETALJER</span>
+            <h3>Datokilder</h3>
+          </div>
+        </div>
+        <div class="date-stats">
+          <div><strong id="takenDateCount">–</strong><span>med opptaksdato</span></div>
+          <div><strong id="createdDateCount">–</strong><span>fallback til opprettet dato</span></div>
+          <div><strong id="unknownDateCount">–</strong><span>uten brukbar dato</span></div>
+        </div>
+      </section>
+
+
+      <section class="panel v22-visual">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">VISUELT OVERBLIKK</span>
+            <h3>OneDrive Storage Map</h3>
+          </div>
+          <div class="actions">
+            <button id="downloadV22GuideBtn" class="btn ghost">Last ned guide</button>
+            <button id="exportV22ManifestBtn" class="btn ghost" disabled>Full manifest JSON</button>
+          </div>
+        </div>
+
+        <div class="visual-grid">
+          <article class="viz-card">
+            <span class="eyebrow">LAGRING</span>
+            <h4>Fordeling etter kategori</h4>
+            <canvas id="v22CategoryChart" width="520" height="270"></canvas>
+          </article>
+          <article class="viz-card">
+            <span class="eyebrow">ALDER</span>
+            <h4>Når ble filene sist endret?</h4>
+            <canvas id="v22AgeChart" width="520" height="270"></canvas>
+          </article>
+        </div>
+
+        <div class="nav-map-head">
+          <div>
+            <span class="eyebrow">NAVIGASJONSKART</span>
+            <h4>Hvor ligger dataene?</h4>
+          </div>
+          <span class="muted">Klikk på en toppmappe for å filtrere inventaret</span>
+        </div>
+        <div id="v22NavigationMap" class="navigation-map empty-state">
+          Kjør kartlegging for å bygge navigasjonskartet.
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">SMART FINDERS</span>
+            <h3>Finn kandidater for opprydding</h3>
+          </div>
+          <button id="clearV22SmartBtn" class="btn ghost">Nullstill smartfilter</button>
+        </div>
+
+        <div class="smart-grid">
+          <button class="smart-card" data-v22-smart="duplicates">
+            <strong>Mulige duplikater</strong><span>Samme navn + størrelse</span>
+          </button>
+          <button class="smart-card" data-v22-smart="large1">
+            <strong>Store filer</strong><span>Over 1 GB</span>
+          </button>
+          <button class="smart-card" data-v22-smart="large5">
+            <strong>Svært store filer</strong><span>Over 5 GB</span>
+          </button>
+          <button class="smart-card" data-v22-smart="old5">
+            <strong>Gamle filer</strong><span>Ikke endret på 5 år</span>
+          </button>
+          <button class="smart-card" data-v22-smart="old10">
+            <strong>Meget gamle</strong><span>Ikke endret på 10 år</span>
+          </button>
+          <button class="smart-card" data-v22-smart="archives">
+            <strong>Arkiv / installasjon</strong><span>ZIP, DMG, ISO, PKG m.m.</span>
+          </button>
+          <button class="smart-card" data-v22-smart="screenshots">
+            <strong>Screenshots</strong><span>Skjermbilder / skjermopptak</span>
+          </button>
+          <button class="smart-card" data-v22-smart="zero">
+            <strong>0-byte filer</strong><span>Tomme filer</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">OPPRYDDINGSOVERSIKT</span>
+            <h3>Hva bør du se på først?</h3>
+          </div>
+        </div>
+        <div id="v22PriorityCards" class="priority-grid empty-state">
+          Kjør kartlegging for å beregne oppryddingskandidater.
+        </div>
+      </section>
+
+      <section class="panel guide-panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">DOKUMENTASJON</span>
+            <h3>Trygg arbeidsflyt</h3>
+          </div>
+        </div>
+        <details open><summary>1. Kartlegg</summary><p>Kjør full read-only kartlegging før du planlegger endringer.</p></details>
+        <details><summary>2. Filtrer</summary><p>Bruk Smart Finders for å finne store filer, gamle filer, installasjonsfiler, screenshots og mulige duplikater.</p></details>
+        <details><summary>3. Preview og vurder</summary><p>En kandidat er ikke det samme som en fil som bør slettes. Bruk Preview og Review Queue.</p></details>
+        <details><summary>4. Eksporter</summary><p>Ta vare på CSV og JSON før vi senere aktiverer flytting, karantene og papirkurv.</p></details>
+      </section>
+
+
+      <section class="panel v24-action-panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">ACTION MODE</span>
+            <h3>Flytt, organiser, karantene og papirkurv</h3>
+          </div>
+          <span id="v24ActionBadge" class="badge safe">LÅST</span>
+        </div>
+
+        <div class="action-intro">
+          <div>
+            <strong>Read-only er standard</strong>
+            <p class="muted">Kartleggingen bruker fortsatt bare <code>Files.Read</code>. Når du aktiverer Action Mode ber Microsoft separat om <code>Files.ReadWrite</code>.</p>
+          </div>
+          <button id="v24EnableAction" class="btn action-btn">Aktiver Action Mode</button>
+        </div>
+
+        <div id="v24ActionTools" class="hidden">
+          <div class="bulk-toolbar">
+            <div>
+              <strong id="v24SelectedCount">0 filer valgt</strong>
+              <span id="v24SelectedSize">0 B</span>
+            </div>
+            <div class="actions">
+              <button id="v24Quarantine" class="btn ghost" disabled>Karantene</button>
+              <button id="v24Move" class="btn ghost" disabled>Flytt</button>
+              <button id="v24Photo" class="btn ghost" disabled>Organiser bilder</button>
+              <button id="v24Trash" class="btn danger" disabled>Papirkurv</button>
+              <button id="v24Clear" class="btn ghost" disabled>Fjern valg</button>
+            </div>
+          </div>
+          <p class="safety-note"><strong>Trygg standard:</strong> bruk karantene før papirkurv når du er i tvil. Permanent sletting finnes ikke.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">KARANTENE</span>
+            <h3>_IANS Cleanup Review</h3>
+          </div>
+          <div class="actions">
+            <button id="v24QCsv" class="btn ghost" disabled>CSV</button>
+            <button id="v24QJson" class="btn ghost" disabled>Manifest JSON</button>
+          </div>
+        </div>
+        <div id="v24QStatus" class="empty-state">Ingen filer er flyttet til karantene i denne økten.</div>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">ACTION LOG</span>
+            <h3>Utførte handlinger</h3>
+          </div>
+          <button id="v24LogExport" class="btn ghost" disabled>Eksporter logg</button>
+        </div>
+        <div id="v24Log" class="table-wrap empty-state">Ingen handlinger utført.</div>
+      </section>
+
+      <div id="v24Modal" class="modal hidden">
+        <div class="modal-card">
+          <button id="v24ModalClose" class="modal-close">×</button>
+          <div id="v24ModalContent"></div>
+        </div>
+      </div>
+
+      <section class="panel command-center">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">CLEANUP COMMAND CENTER</span>
+            <h3>Finn, filtrer og planlegg</h3>
+          </div>
+          <div class="actions">
+            <button id="exportCsvBtn" class="btn ghost" disabled>Eksporter CSV</button>
+            <button id="printPdfBtn" class="btn ghost" disabled>PDF / Skriv ut</button>
+          </div>
+        </div>
+        <div class="filter-grid">
+          <input id="searchInput" placeholder="Søk filnavn eller full sti…">
+          <select id="categoryFilter"><option value="">Alle filtyper</option></select>
+          <select id="yearFilter"><option value="">Alle år</option></select>
+          <select id="sizeFilter">
+            <option value="">Alle størrelser</option>
+            <option value="100">Over 100 MB</option>
+            <option value="500">Over 500 MB</option>
+            <option value="1024">Over 1 GB</option>
+            <option value="5120">Over 5 GB</option>
+          </select>
+          <select id="ageFilter">
+            <option value="">Alle aldre</option>
+            <option value="2">Ikke endret på 2 år</option>
+            <option value="5">Ikke endret på 5 år</option>
+            <option value="10">Ikke endret på 10 år</option>
+          </select>
+          <select id="duplicateFilter">
+            <option value="">Alle filer</option>
+            <option value="yes">Kun mulige duplikater</option>
+          </select>
+        </div>
+        <div id="filterSummary" class="selection-summary">Kjør kartlegging for å aktivere Cleanup Command Center.</div>
+        <div id="inventoryTable" class="table-wrap empty-state">Ingen inventardata ennå.</div>
+      </section>
+
+      
+      <section id="mediaVaultPanel" class="panel media-vault-panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">MEDIA VAULT</span>
+            <h3>Bilder og videoer – analyse, backup og optimalisering</h3>
+          </div>
+          <span class="badge safe">LOKAL PLAN</span>
+        </div>
+
+        <p class="muted">
+          Velg hvilke bilder/videoer du vil ta lokal backup av. Verktøyet viser datamengde først,
+          sjekker ledig diskplass på Mac-en og lagrer checkpoint slik at en avbrutt jobb kan fortsette.
+        </p>
+
+        <div class="media-summary-grid">
+          <div><span>Bilder</span><strong id="mediaImageCount">0</strong><small id="mediaImageBytes">0 B</small></div>
+          <div><span>Videoer</span><strong id="mediaVideoCount">0</strong><small id="mediaVideoBytes">0 B</small></div>
+          <div><span>Valgt backup</span><strong id="mediaSelectedCount">0</strong><small id="mediaSelectedBytes">0 B</small></div>
+          <div><span>Ledig på Mac</span><strong id="mediaDiskFree">–</strong><small id="mediaDiskPath">lokal disk</small></div>
+        </div>
+
+        <div class="media-controls">
+          <label>
+            <span>Innhold</span>
+            <select id="mediaKindSelect">
+              <option value="all">Bilder + videoer</option>
+              <option value="images">Kun bilder</option>
+              <option value="videos">Kun videoer</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Periode</span>
+            <select id="mediaPeriodSelect">
+              <option value="all">Alle år</option>
+              <option value="latest">Siste år i biblioteket</option>
+            </select>
+          </label>
+
+          <div class="media-actions">
+            <button id="mediaRecalcBtn" class="btn ghost">Beregn utvalg</button>
+            <button id="mediaPickFolderBtn" class="btn primary">Velg lokal mappe</button>
+            <button id="mediaStartBackupBtn" class="btn primary" disabled>Start backup</button>
+            <button id="mediaResumeBtn" class="btn ghost" disabled>Resume</button>
+          </div>
+        </div>
+
+        <div id="mediaSpaceCheck" class="selection-summary">Kjør en kartlegging for å beregne media.</div>
+
+        <div id="mediaBackupProgress" class="media-backup-progress hidden">
+          <div class="action-progress-head">
+            <strong id="mediaProgressLabel">Klar</strong>
+            <span id="mediaProgressCount">0 / 0</span>
+          </div>
+          <div class="action-progress-track"><div id="mediaProgressFill" class="action-progress-fill"></div></div>
+          <div class="media-live-grid">
+            <div><span>Overført</span><strong id="mediaBytesProgress">0 B / 0 B</strong></div>
+            <div><span>Hastighet nå</span><strong id="mediaSpeedNow">–</strong></div>
+            <div><span>Gjennomsnitt</span><strong id="mediaSpeedAvg">–</strong></div>
+            <div><span>Tid igjen</span><strong id="mediaEta">–</strong></div>
+            <div><span>Feil</span><strong id="mediaErrorCount">0</strong></div>
+            <div><span>Modus</span><strong id="mediaJobMode">Original backup</strong></div>
+          </div>
+          <div id="mediaProgressFile" class="action-current-file"></div>
+          <div class="media-job-actions">
+            <button id="mediaPauseBtn" class="btn ghost">Pause</button>
+            <button id="mediaCancelBtn" class="btn danger">Avbryt trygt</button>
+          </div>
+        </div>
+
+        <div class="media-year-grid" id="mediaYearGrid"></div>
+
+        <details class="media-compress-panel">
+          <summary><strong>Komprimer bilder – trygg modus</strong></summary>
+          <p class="muted">
+            Originaler overskrives aldri automatisk. JPEG/PNG kan eksporteres som mindre JPEG/WebP-kopier.
+            HEIC og video vises som kandidater, men komprimeres ikke i denne versjonen.
+          </p>
+          <div class="media-compress-options">
+            <label><span>Kvalitet</span>
+              <select id="mediaQualitySelect">
+                <option value="0.92">Høy – ca. 92 %</option>
+                <option value="0.82" selected>Balansert – ca. 82 %</option>
+                <option value="0.70">Plassbesparende – ca. 70 %</option>
+              </select>
+            </label>
+            <label><span>Maks bredde</span>
+              <select id="mediaWidthSelect">
+                <option value="0">Behold oppløsning</option>
+                <option value="3840">3840 px</option>
+                <option value="2560" selected>2560 px</option>
+                <option value="1920">1920 px</option>
+              </select>
+            </label>
+            <button id="mediaEstimateCompressionBtn" class="btn ghost">Estimer mulig gevinst</button>
+          </div>
+          <div id="mediaCompressionEstimate" class="selection-summary">Ingen komprimeringsanalyse kjørt.</div>
+          <div class="media-compress-actions">
+            <button id="mediaStartCompressedBtn" class="btn primary" disabled>Last ned komprimerte kopier</button>
+            <span class="muted">JPEG/PNG eksporteres som WebP i <code>_IANS Media Compressed</code>. Originalene i OneDrive røres aldri.</span>
+          </div>
+        </details>
+      </section>
+
+
+      <section id="downloadVerifyPanel" class="panel download-verify-panel">
+        <div class="section-title">
+          <div>
+            <span class="eyebrow">DOWNLOAD & VERIFY CENTER</span>
+            <h3>Last ned en hel OneDrive-mappe trygt – direkte til din egen disk</h3>
+          </div>
+          <span class="badge safe">STREAM + RESUME</span>
+        </div>
+
+        <p class="muted">
+          Velg hvilken som helst mappe i OneDrive – også en karantenemappe – og last ned filene direkte til en lokal mappe.
+          Filene streames én og én, original mappestruktur bevares, checkpoint lagres og nedlastingen kan fortsette etter avbrudd.
+        </p>
+
+        <div class="download-source-grid">
+          <div class="download-source-card">
+            <span>KILDE I ONEDRIVE</span>
+            <strong id="downloadSourcePath">Ingen mappe valgt</strong>
+            <div class="actions">
+              <button id="downloadBrowseSourceBtn" class="btn primary">Browse OneDrive-mappe</button>
+              <button id="downloadUseScanFolderBtn" class="btn ghost">Bruk valgt scanmappe</button>
+            </div>
+          </div>
+          <div class="download-source-card">
+            <span>ANALYSE</span>
+            <strong id="downloadFileCount">0 filer</strong>
+            <small id="downloadTotalBytes">0 B</small>
+            <div id="downloadAnalyzeStatus" class="muted">Velg en kilde for å beregne størrelse.</div>
+          </div>
+          <div class="download-source-card">
+            <span>LOKAL DESTINASJON</span>
+            <strong id="downloadLocalFolder">Ikke valgt</strong>
+            <button id="downloadPickLocalBtn" class="btn primary">Velg lokal mappe</button>
+          </div>
+        </div>
+
+        <div class="download-safety-row">
+          <div><span>Metode</span><strong>Direkte streaming – ingen stor ZIP</strong></div>
+          <div><span>Struktur</span><strong>Bevarer undermapper</strong></div>
+          <div><span>Resume</span><strong>Checkpoint etter hver fil</strong></div>
+          <div><span>Verifisering</span><strong>Fil finnes + størrelse OK</strong></div>
+        </div>
+
+        <div id="downloadSpaceCheck" class="selection-summary">
+          Velg OneDrive-kilde og lokal målmappe.
+        </div>
+
+        <div class="download-main-actions">
+          <button id="downloadAnalyzeBtn" class="btn ghost" disabled>Analyser mappe</button>
+          <button id="downloadStartBtn" class="btn primary" disabled>Start nedlasting</button>
+          <button id="downloadResumeBtn" class="btn ghost" disabled>Resume</button>
+          <button id="downloadVerifyBtn" class="btn ghost" disabled>Verifiser lokal kopi</button>
+        </div>
+
+        <div id="downloadProgress" class="download-progress hidden">
+          <div class="action-progress-head">
+            <strong id="downloadProgressLabel">Klar</strong>
+            <span id="downloadProgressCount">0 / 0</span>
+          </div>
+          <div class="action-progress-track"><div id="downloadProgressFill" class="action-progress-fill"></div></div>
+          <div class="media-live-grid">
+            <div><span>Overført</span><strong id="downloadBytesProgress">0 B / 0 B</strong></div>
+            <div><span>Hastighet nå</span><strong id="downloadSpeedNow">–</strong></div>
+            <div><span>Gjennomsnitt</span><strong id="downloadSpeedAvg">–</strong></div>
+            <div><span>Tid igjen</span><strong id="downloadEta">–</strong></div>
+            <div><span>Feil</span><strong id="downloadErrorCount">0</strong></div>
+            <div><span>Verifisert</span><strong id="downloadVerifiedCount">0</strong></div>
+          </div>
+          <div id="downloadProgressFile" class="action-current-file"></div>
+          <div class="media-job-actions">
+            <button id="downloadPauseBtn" class="btn ghost">Pause</button>
+            <button id="downloadCancelBtn" class="btn danger">Avbryt trygt</button>
+          </div>
+        </div>
+
+        <div id="downloadVerifyResult" class="download-verify-result hidden"></div>
+
+        <details class="download-help">
+          <summary><strong>Hvorfor er dette tryggere enn OneDrive ZIP?</strong></summary>
+          <p class="muted">
+            Store ZIP-jobber kan bli avbrutt, ufullstendige eller vanskelige å pakke ut. Denne motoren skriver filene direkte til disk,
+            lagrer fremdrift etter hver fil og kan kontrollere at lokal fil finnes med forventet størrelse.
+            Senere kan vi utvide verifiseringen med SHA-256 for filer som skal slettes permanent.
+          </p>
+        </details>
+      </section>
+
+
+<section class="grid-2">
+        <article class="panel">
+          <div class="section-title"><div><span class="eyebrow">PHOTO ORGANIZER</span><h3>Forslag: År → Måned</h3></div></div>
+          <p class="muted">Planlegger struktur fra opptaksdato der den finnes. Ingen filer flyttes i V2.</p>
+          <div id="photoPlan" class="empty-state">Ingen data ennå.</div>
+        </article>
+        <article class="panel">
+          <div class="section-title"><div><span class="eyebrow">CLEANUP PLAN</span><h3>Potensiell gevinst</h3></div></div>
+          <div id="cleanupPlan" class="empty-state">Ingen data ennå.</div>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <div><span class="eyebrow">REVIEW QUEUE</span><h3>Bevisste handlinger</h3></div>
+          <button id="clearReviewBtn" class="btn ghost">Tøm kø</button>
+        </div>
+        <p class="muted">Marker filer for gjennomgang. V2 utfører ingen sletting eller flytting. Køen kan eksporteres som plan.</p>
+        <div id="reviewQueue" class="table-wrap empty-state">Ingen filer valgt.</div>
+      </section>
+
+      <div id="previewModal" class="modal hidden">
+        <div class="modal-card">
+          <button id="closePreviewBtn" class="modal-close">×</button>
+          <div id="previewContent"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>IANS OneDrive Organizer V2.7.0 Bulk Duplicate Review · Ingen filer lastes ned under kartleggingen · Ingen skrive-/slettetilgang</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
