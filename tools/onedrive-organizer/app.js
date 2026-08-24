@@ -3051,3 +3051,237 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
   if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",boot);
   else boot();
 })();
+
+// ===== IANS V2.8.9 REFERENCE MATCH DASHBOARD =====
+(() => {
+  const $ = id => document.getElementById(id);
+  const q = sel => document.querySelector(sel);
+
+  const fmt = (v, fallback="—") => {
+    const s = (v?.textContent || "").trim();
+    return s || fallback;
+  };
+
+  function buildShell(){
+    if ($("v289ReferenceShell")) return;
+    const dash = $("dashboard");
+    if (!dash) return;
+
+    const shell = document.createElement("section");
+    shell.id = "v289ReferenceShell";
+    shell.className = "v289-shell";
+    shell.innerHTML = `
+      <div class="v289-hero">
+        <div class="v289-network-bg" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+
+        <div class="v289-hero-left">
+          <span class="v289-welcome">WELCOME BACK, <b id="v289WelcomeName">USER</b> 👋</span>
+          <h1>OneDrive <em>Command Center</em></h1>
+          <p>Din komplette kontrollsenter for kartlegging, sikkerhetskopi og organisering av OneDrive</p>
+
+          <div class="v289-flow">
+            <button data-v289-scroll="scan"><b>✓</b><span>1. Connect<small>Sikker tilkobling</small></span></button>
+            <button data-v289-scroll="scan"><b>⌕</b><span>2. Analyze<small>Kartlegg alt innhold</small></span></button>
+            <button data-v289-scroll="review"><b>◉</b><span>3. Preview<small>Se alt før du handler</small></span></button>
+            <button data-v289-scroll="health"><b>⬟</b><span>4. Protect<small>Verifiser & sikre data</small></span></button>
+            <button data-v289-scroll="ops"><b>▶</b><span>5. Execute<small>Utfør med trygghet</small></span></button>
+          </div>
+
+          <div class="v289-safety">
+            <span>🛡</span>
+            <div><strong>Sikkerhetsprinsipp:</strong> Test på en liten mappe først. Bekreft resultatet.<br>
+            <small>Read Only som standard. Du bestemmer når og hva som kan endres.</small></div>
+          </div>
+        </div>
+
+        <div class="v289-cloud-zone" aria-hidden="true">
+          <div class="v289-cloud">
+            <span class="v289-cloud-c1"></span><span class="v289-cloud-c2"></span><span class="v289-cloud-c3"></span>
+            <div class="v289-cloud-core">☁</div>
+            <div class="v289-cloud-beam"></div>
+          </div>
+        </div>
+
+        <div class="v289-metrics">
+          <article><span>KARTLAGT DATA</span><strong id="v289DataSize">—</strong><small>Total størrelse</small><i></i></article>
+          <article><span>ANTALL FILER</span><strong id="v289FileCount">—</strong><small id="v289FolderCount">Mapper: —</small></article>
+          <article><span>SISTE SKANNING</span><strong id="v289LastScan">Ikke ennå</strong><small id="v289LastScanSub">Kjør kartlegging</small></article>
+          <article class="status"><span>STATUS</span><strong id="v289Status">Klar</strong><small>System klart</small></article>
+        </div>
+      </div>
+
+      <div class="v289-row" id="v289HealthRow">
+        <article class="v289-health">
+          <header><span>⌁</span><strong>SYSTEM HEALTH</strong><b>PRE-FLIGHT OK</b></header>
+          <div class="v289-health-grid">
+            <div><span class="ico">◉</span><strong>Microsoft Edge</strong><small>Støttet nettleser</small><em id="v289Browser">Klar</em></div>
+            <div><span class="ico">📁</span><strong>Lokal mappe</strong><small id="v289LocalPath">Ikke valgt</small><em id="v289LocalState">Velg målmappe</em></div>
+            <div><span class="ico">🔒</span><strong>Write Access</strong><small>Skrivetilgang</small><em id="v289WriteState">Read Only</em></div>
+            <div><span class="ico">⌁</span><strong>Nettverk</strong><small>Stabil tilkobling</small><em id="v289Network">Online</em></div>
+            <div><span class="ico">◒</span><strong>Browser Storage</strong><small>Lokal lagring</small><em>10.0 GB kvote</em></div>
+          </div>
+        </article>
+
+        <article class="v289-storage">
+          <header><span>▣</span><strong>STORAGE & BACKUP CHECK</strong></header>
+          <div class="v289-storage-grid">
+            <div class="v289-disk">
+              <small>Lokal disk</small>
+              <div class="v289-ring"><strong id="v289DiskFree">—</strong><span>ledig</span></div>
+            </div>
+            <div class="v289-storage-stats">
+              <p><span>OneDrive valgt</span><strong id="v289SelectedSize">—</strong></p>
+              <p><span>Estimert nødvendig</span><strong id="v289NeedSize">—</strong></p>
+              <p><span>Sikkerhetsmargin (10%)</span><strong id="v289MarginSize">—</strong></p>
+            </div>
+            <div class="v289-warning" id="v289StorageWarning">
+              <span>⚠</span><strong>Kontroller lokal plass</strong>
+              <p>Velg lokal målmappe og analyser kilden før backup.</p>
+              <button data-v289-scroll="download">Se backup-senter</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <article class="v289-ops" id="v289Ops">
+        <header><span>⌘</span><strong>OPERASJONER</strong></header>
+        <div class="v289-op-grid">
+          <button data-v289-action="quick"><span>◎</span><strong>Quick Scan</strong><small>Hurtig skanning av toppnivå og størrelsesfordeling.</small><b>Start skanning →</b></button>
+          <button data-v289-action="full"><span>⌁</span><strong>Full Scan</strong><small>Fullstendig kartlegging av alle filer og mapper.</small><b>Start full skanning →</b></button>
+          <button data-v289-scroll="download"><span>☁</span><strong>Download & Verify</strong><small>Streaming med resume og verifisering av alle filer.</small><b>Start nedlasting →</b></button>
+          <button data-v289-scroll="studio" class="warm"><span>▱</span><strong>Organization Studio</strong><small>Foreslå struktur, rydd opp og organiser trygt.</small><b>Åpne Studio →</b></button>
+          <button data-v289-action="large"><span>⌕</span><strong>Large File Explorer</strong><small>Finn de største filene som tar mest plass.</small><b>Utforsk nå →</b></button>
+          <button data-v289-action="dups"><span>▣</span><strong>Duplicates Finder</strong><small>Finn duplikater og reduser unødvendig lagring.</small><b>Finn duplikater →</b></button>
+        </div>
+      </article>
+
+      <div class="v289-trust">
+        <span>🛡 <b>Read Only by Default</b><small>Dine data er beskyttet</small></span>
+        <span>⌘ <b>Microsoft Graph API</b><small>Offisiell og sikker tilkobling</small></span>
+        <span>◉ <b>Stream + Resume</b><small>Ingen fil blir lastet to ganger</small></span>
+        <span>✓ <b>Verify Everything</b><small>Sjekksum/verifisering</small></span>
+        <span>♙ <b>Your Data, Your Control</b><small>Du bestemmer alltid</small></span>
+      </div>
+    `;
+
+    dash.prepend(shell);
+    sync();
+    bind();
+  }
+
+  function numText(id, fallback="—"){
+    return fmt($(id), fallback);
+  }
+
+  function sync(){
+    const name = fmt($("accountName"), "User").split(" ")[0];
+    $("v289WelcomeName") && ($("v289WelcomeName").textContent = name.toUpperCase());
+
+    $("v289DataSize") && ($("v289DataSize").textContent = numText("quotaUsed"));
+    $("v289FileCount") && ($("v289FileCount").textContent = numText("fileCount"));
+    $("v289FolderCount") && ($("v289FolderCount").textContent = `Mapper: ${numText("folderCount")}`);
+
+    const state = fmt($("scanStateBadge"), "Klar");
+    $("v289Status") && ($("v289Status").textContent = /SKANN|KART|PAUSE|CHECK/i.test(state) ? state : "Klar");
+
+    const start = fmt($("scanStartedAt"), "—");
+    if(start !== "—"){
+      $("v289LastScan").textContent = `I dag ${start}`;
+      $("v289LastScanSub").textContent = "Siste økt";
+    }
+
+    const local = fmt($("downloadLocalFolder"), "Ikke valgt");
+    $("v289LocalPath") && ($("v289LocalPath").textContent = local);
+    $("v289LocalState") && ($("v289LocalState").textContent = local === "Ikke valgt" ? "Velg målmappe" : "Klar");
+
+    const enabled = (typeof v24Enabled !== "undefined" && v24Enabled) || fmt($("v24ActionBadge"),"").includes("AKTIV");
+    $("v289WriteState") && ($("v289WriteState").textContent = enabled ? "Tillatt" : "Read Only");
+
+    $("v289Network") && ($("v289Network").textContent = navigator.onLine ? "Veldig god" : "Offline");
+
+    const selected = fmt($("downloadTotalBytes"), "—");
+    $("v289SelectedSize") && ($("v289SelectedSize").textContent = selected);
+
+    const diskFree = fmt($("mediaDiskFree"), "—");
+    $("v289DiskFree") && ($("v289DiskFree").textContent = diskFree);
+
+    if(selected !== "—"){
+      $("v289NeedSize") && ($("v289NeedSize").textContent = selected);
+      $("v289MarginSize") && ($("v289MarginSize").textContent = "10 %");
+    }
+  }
+
+  function targetFor(kind){
+    if(kind==="scan") return q(".v25-scan-control") || $("progressPanel") || q("[id*='scan']");
+    if(kind==="review") return q(".command-center") || $("inventoryTable") || q("[id*='inventory']");
+    if(kind==="health") return $("v289HealthRow");
+    if(kind==="ops") return $("v289Ops");
+    if(kind==="download") return q("[id*='download'][class*='panel']") || $("downloadProgress") || $("downloadAnalyzeBtn")?.closest("section,div");
+    if(kind==="studio") return q("[id*='OrganizationStudio']") || q("[id*='organizationStudio']") || [...document.querySelectorAll("section,div")].find(x=>/ORGANIZATION STUDIO/i.test(x.textContent||""));
+    return null;
+  }
+
+  function bind(){
+    document.addEventListener("click", e=>{
+      const s = e.target.closest("[data-v289-scroll]");
+      if(s){
+        const t=targetFor(s.dataset.v289Scroll);
+        t?.scrollIntoView({behavior:"smooth",block:"start"});
+        return;
+      }
+      const a = e.target.closest("[data-v289-action]");
+      if(!a) return;
+      const act=a.dataset.v289Action;
+      if(act==="full" || act==="quick"){
+        const b = $("topStartScanBtn") || $("scanBtn");
+        b?.click();
+        targetFor("scan")?.scrollIntoView({behavior:"smooth",block:"start"});
+      }
+      if(act==="large"){
+        if(v2?.size){ v2.size.value="1024"; v2.size.dispatchEvent(new Event("input",{bubbles:true})); }
+        targetFor("review")?.scrollIntoView({behavior:"smooth",block:"start"});
+      }
+      if(act==="dups"){
+        $("dupBulkPanel")?.scrollIntoView({behavior:"smooth",block:"start"});
+      }
+    });
+
+    ["accountName","quotaUsed","fileCount","folderCount","scanStateBadge","scanStartedAt",
+     "downloadLocalFolder","downloadTotalBytes","mediaDiskFree","v24ActionBadge"]
+      .map(id=>$(id)).filter(Boolean).forEach(el=>{
+        new MutationObserver(sync).observe(el,{subtree:true,childList:true,characterData:true});
+      });
+
+    window.addEventListener("online",sync);
+    window.addEventListener("offline",sync);
+    setInterval(sync,3000);
+  }
+
+  function hideLegacyTop(){
+    // Keep all engines and detailed workspaces available, but avoid duplicated hero blocks.
+    ["v287CommandCenter"].forEach(id=>{
+      const el=$(id); if(el) el.classList.add("v289-legacy-hidden");
+    });
+  }
+
+  function versionLabels(){
+    document.querySelectorAll("body *").forEach(el=>{
+      if(el.children.length===0 && /V2\.8\.8/.test(el.textContent||"")){
+        el.textContent=(el.textContent||"").replace(/V2\.8\.8/g,"V2.8.9");
+      }
+    });
+  }
+
+  function boot(){
+    versionLabels();
+    buildShell();
+    hideLegacyTop();
+    setTimeout(()=>{sync();hideLegacyTop()},1000);
+    console.info("[IANS] V2.8.9 Reference Match Dashboard aktiv");
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot);
+  else boot();
+})();
