@@ -1,0 +1,120 @@
+
+/* ===== IANS HOME V4.6 – ONEDRIVE COMMAND + TRUE WIDESCREEN ===== */
+:root{--ians-home-wide:1540px}
+
+@media (min-width:1180px){
+  .topbar .container.nav,
+  .hero-shell,
+  .focus-wrap,
+  .compact-wrap{
+    width:min(var(--ians-home-wide),calc(100% - 56px))!important;
+    max-width:none!important;
+  }
+
+  .hero-shell{
+    grid-template-columns:minmax(430px,.82fr) minmax(650px,1.18fr)!important;
+    gap:clamp(50px,5vw,90px)!important;
+    min-height:690px;
+    padding:64px 0 76px!important;
+  }
+
+  .hero-copy{max-width:720px!important}
+  .hero-copy h1{font-size:clamp(4.4rem,5.8vw,6.7rem)!important}
+
+  .ians-core-stage{
+    min-width:650px!important;
+    height:650px!important;
+    min-height:650px!important;
+    max-width:760px;
+    margin-left:auto;
+  }
+
+  .ians-core-glow{width:560px!important;height:560px!important}
+  .ians-orbit.one{width:290px!important;height:290px!important}
+  .ians-orbit.two{width:430px!important;height:430px!important}
+  .ians-orbit.three{width:580px!important;height:580px!important}
+
+  .focus-section{padding-top:54px!important}
+  .focus-heading{max-width:980px!important}
+
+  .area-grid{
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    gap:18px!important;
+  }
+  .area-card{
+    grid-column:span 2;
+    min-height:370px!important;
+  }
+  .area-card:nth-child(4),
+  .area-card:nth-child(5){
+    grid-column:span 3;
+  }
+
+  .compact-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+}
+
+.area-card.onedrive{
+  --accent:#55cfff;
+  --accent-soft:rgba(75,98,255,.19);
+  background:
+    radial-gradient(circle at 90% 8%,rgba(65,197,255,.16),transparent 30%),
+    radial-gradient(circle at 10% 100%,rgba(122,68,255,.13),transparent 34%),
+    linear-gradient(145deg,rgba(15,30,55,.97),rgba(8,18,38,.99))!important;
+}
+.onedrive-symbol{
+  position:relative;width:46px;height:27px;
+  border-radius:22px;background:linear-gradient(135deg,#4ccfff,#347cff 58%,#805cff);
+  box-shadow:0 0 24px rgba(70,175,255,.26);
+}
+.onedrive-symbol::before,
+.onedrive-symbol::after{
+  content:"";position:absolute;border-radius:50%;background:inherit;
+}
+.onedrive-symbol::before{width:27px;height:27px;left:2px;top:-11px}
+.onedrive-symbol::after{width:31px;height:31px;right:0;top:-14px}
+
+.ians-core-stage .ians-planet.onedrive{
+  border-color:rgba(75,194,255,.42);
+  background:
+    radial-gradient(circle at 35% 25%,rgba(69,199,255,.20),transparent 43%),
+    linear-gradient(145deg,rgba(12,30,52,.98),rgba(14,17,43,.98));
+  box-shadow:0 0 34px rgba(63,156,255,.14),0 12px 30px rgba(0,0,0,.26);
+}
+.ians-core-stage .ians-planet.onedrive strong{color:#75ddff}
+.ians-core-stage .ians-planet.onedrive small{color:rgba(185,215,255,.62)}
+
+@media (min-width:1180px){
+  .ians-core-stage .ians-planet.sameienett{left:50%!important;top:5%!important}
+  .ians-core-stage .ians-planet.academy{left:79%!important;top:15%!important}
+  .ians-core-stage .ians-planet.money{left:94%!important;top:42%!important}
+  .ians-core-stage .ians-planet.onedrive{left:91%!important;top:69%!important}
+  .ians-core-stage .ians-planet.tools{left:70%!important;top:89%!important}
+  .ians-core-stage .ians-planet.projects{left:41%!important;top:95%!important}
+  .ians-core-stage .ians-planet.power{left:13%!important;top:77%!important}
+  .ians-core-stage .ians-planet.dns{left:6%!important;top:45%!important}
+  .ians-core-stage .ians-planet.axion{left:19%!important;top:15%!important}
+}
+
+.ians-core-stage::after{
+  content:"";position:absolute;inset:8%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 68% 56%,rgba(42,155,255,.08),transparent 24%),
+    repeating-radial-gradient(circle at 50% 50%,transparent 0 38px,rgba(90,143,255,.035) 39px 40px,transparent 41px 66px);
+  border-radius:50%;
+}
+
+@media (min-width:1180px) and (max-width:1399px){
+  :root{--ians-home-wide:1360px}
+  .hero-shell{grid-template-columns:minmax(390px,.9fr) minmax(560px,1.1fr)!important}
+  .ians-core-stage{min-width:570px!important;height:610px!important;min-height:610px!important}
+  .area-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .area-card,.area-card:nth-child(4),.area-card:nth-child(5){grid-column:auto}
+}
+
+@media (max-width:1179px){
+  .ians-core-stage .ians-planet.onedrive{left:88%;top:70%}
+}
+
+@media (max-width:760px){
+  .ians-core-stage .ians-planet.onedrive{display:none}
+}
