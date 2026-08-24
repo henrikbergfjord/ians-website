@@ -2473,3 +2473,227 @@ function iansRenderWebEdition(){
   }
 }
 window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
+
+// ===== IANS V2.8.5 RESILIENT DOWNLOAD + SAFETY + ORGANIZATION STUDIO =====
+(() => {
+  const V285_SAFETY_KEY="ians_v285_safety_ack";
+  const V285_ACTION_SESSION_KEY="ians_v285_action_ack";
+  const V285_STALL_MS=60000;
+  const V285_RETRIES=3;
+  const V285_RETRY_DELAYS=[2000,5000,10000];
+  const E=id=>document.getElementById(id);
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+  function modal({title,eyebrow="VIKTIG",body="",confirm="Fortsett",cancel="Avbryt",danger=false,checkbox=false}){
+    return new Promise(resolve=>{
+      const wrap=document.createElement("div");
+      wrap.className="v285-safety-overlay";
+      wrap.innerHTML=`<div class="v285-safety-card" role="dialog" aria-modal="true">
+        <span class="eyebrow">${escapeHtml(eyebrow)}</span><h2>${escapeHtml(title)}</h2>
+        <div class="v285-safety-body">${body}</div>
+        ${checkbox?`<label class="v285-check"><input type="checkbox" id="v285Check"><span>Jeg har lest og forstått informasjonen ovenfor.</span></label>`:""}
+        <div class="v285-safety-actions"><button class="btn ghost" id="v285Cancel">${escapeHtml(cancel)}</button><button class="btn ${danger?"danger":"primary"}" id="v285Confirm" ${checkbox?"disabled":""}>${escapeHtml(confirm)}</button></div>
+      </div>`;
+      document.body.appendChild(wrap);
+      const ok=wrap.querySelector("#v285Confirm"),no=wrap.querySelector("#v285Cancel"),cb=wrap.querySelector("#v285Check");
+      if(cb)cb.onchange=()=>ok.disabled=!cb.checked;
+      no.onclick=()=>{wrap.remove();resolve(false)};
+      ok.onclick=()=>{wrap.remove();resolve(true)};
+    });
+  }
+
+  async function startupSafety(){
+    if(localStorage.getItem(V285_SAFETY_KEY)==="1")return;
+    const ok=await modal({
+      eyebrow:"FØR DU STARTER",title:"Bruk verktøyet trygt",checkbox:true,confirm:"Jeg forstår – fortsett",
+      body:`<div class="v285-warning-box"><strong>Bruk av IANS OneDrive Organizer skjer på eget ansvar.</strong>
+      <p>Verktøyet kan analysere, laste ned, organisere og – når Action Mode aktiveres – gjøre endringer i OneDrive.</p></div>
+      <p><strong>Test først på en liten mappe med kopier av filer.</strong></p>
+      <p>Ha separat sikkerhetskopi av viktige data før større endringer.</p>`
+    });
+    if(ok)localStorage.setItem(V285_SAFETY_KEY,"1");
+  }
+
+  function actionGuard(){
+    ["topActionBtn","v24EnableAction"].forEach(id=>{
+      const b=E(id); if(!b||b.dataset.v285Guarded)return;
+      b.dataset.v285Guarded="1";
+      b.addEventListener("click",async e=>{
+        if(sessionStorage.getItem(V285_ACTION_SESSION_KEY)==="1")return;
+        e.preventDefault();e.stopImmediatePropagation();
+        const ok=await modal({
+          eyebrow:"ACTION MODE",title:"Aktiver Action Mode?",danger:true,confirm:"Aktiver Action Mode",
+          body:`<div class="v285-warning-box"><strong>Read Only avsluttes for skrivehandlinger.</strong>
+          <p>Verktøyet kan nå flytte, organisere eller sende filer til OneDrive-papirkurven.</p></div>
+          <p>Test først på en liten mappe og kontroller preview/backup før større endringer.</p>`
+        });
+        if(ok){sessionStorage.setItem(V285_ACTION_SESSION_KEY,"1");b.click()}
+      },true);
+    });
+  }
+
+  let activeController=null,failedFiles=[];
+
+  function ensureFailedUi(){
+    const box=E("downloadProgress"); if(!box||E("v285FailedBox"))return;
+    const el=document.createElement("div");el.id="v285FailedBox";el.className="v285-failed-box hidden";
+    el.innerHTML=`<div class="section-title"><div><span class="eyebrow">RESILIENT DOWNLOAD</span><h3>Feilede filer</h3></div><button id="v285RetryFailed" class="btn ghost">Prøv feilede filer igjen</button></div><div id="v285FailedSummary" class="muted"></div><div id="v285FailedList" class="v285-failed-list"></div>`;
+    box.appendChild(el);E("v285RetryFailed").onclick=retryFailed;
+  }
+  function renderFailed(){
+    ensureFailedUi();const box=E("v285FailedBox");if(!box)return;
+    box.classList.toggle("hidden",!failedFiles.length);
+    E("v285FailedSummary").textContent=failedFiles.length?`${formatNumber(failedFiles.length)} filer feilet etter automatisk retry.`:"Ingen feilede filer.";
+    E("v285FailedList").innerHTML=failedFiles.slice(0,100).map(x=>`<div><strong>${escapeHtml(x.file.relativePath||x.file.name)}</strong><span>${escapeHtml(x.error||"Ukjent feil")}</span></div>`).join("");
+  }
+
+  async function oneAttempt(f,attempt){
+    if(await dlLocalFileMatches(f)){dlJob.verified++;return{skipped:true,bytes:0}}
+    const token=await getToken(),controller=new AbortController();activeController=controller;
+    let timer=null,pausedAbort=false;
+    const arm=()=>{clearTimeout(timer);timer=setTimeout(()=>{try{controller.abort("STALL_TIMEOUT")}catch{}},V285_STALL_MS)};
+    try{
+      const res=await fetch(`${GRAPH}/me/drive/items/${encodeURIComponent(f.id)}/content`,{headers:{Authorization:`Bearer ${token}`},signal:controller.signal});
+      if(!res.ok)throw new Error(`Graph ${res.status}`);
+      const localHandle=await dlOpenLocalFile(f.relativePath,{create:true}),w=await localHandle.createWritable(),reader=res.body.getReader();
+      let written=0;arm();
+      try{
+        while(true){
+          while(dlJob.paused&&!dlJob.cancelled){
+            if(!controller.signal.aborted){pausedAbort=true;try{controller.abort("PAUSE")}catch{}}
+            await wait(150);
+          }
+          if(dlJob.cancelled){try{controller.abort("CANCEL")}catch{};throw new DOMException("Cancelled","AbortError")}
+          const {done,value}=await reader.read();if(done)break;arm();
+          await w.write(value);written+=value.byteLength;dlJob.bytes+=value.byteLength;
+          if(E("downloadProgressLabel"))E("downloadProgressLabel").textContent=attempt>1?`Laster ned – forsøk ${attempt}/${V285_RETRIES}…`:"Laster ned direkte til disk…";
+          dlUpdateLive(dlJob.done,dlJob.total,f.relativePath);
+        }
+        clearTimeout(timer);await w.close();
+      }catch(err){clearTimeout(timer);try{await w.abort()}catch{};throw err}
+      if(!await dlLocalFileMatches(f))throw new Error(`Verifisering feilet: forventet ${f.size} bytes`);
+      dlJob.verified++;return{skipped:false,bytes:written};
+    }catch(err){
+      clearTimeout(timer);
+      if(dlJob.cancelled)throw err;
+      if(pausedAbort||dlJob.paused){
+        while(dlJob.paused&&!dlJob.cancelled)await wait(150);
+        if(dlJob.cancelled)throw new DOMException("Cancelled","AbortError");
+        const e=new Error("PAUSE_RETRY");e.code="PAUSE_RETRY";throw e;
+      }
+      if(controller.signal.aborted&&String(controller.signal.reason).includes("STALL")){
+        const e=new Error("Ingen data mottatt på 60 sekunder");e.code="STALL_TIMEOUT";throw e;
+      }
+      throw err;
+    }finally{if(activeController===controller)activeController=null}
+  }
+
+  if(typeof dlDownloadOne==="function"){
+    dlDownloadOne=async function(f){
+      let last=null;
+      for(let attempt=1;attempt<=V285_RETRIES;attempt++){
+        try{return await oneAttempt(f,attempt)}
+        catch(err){
+          if(err?.name==="AbortError"&&dlJob.cancelled)throw err;
+          if(err?.code==="PAUSE_RETRY"){attempt--;continue}
+          last=err;
+          if(E("downloadProgressLabel"))E("downloadProgressLabel").textContent=attempt<V285_RETRIES?`Forsøk ${attempt}/${V285_RETRIES} feilet – prøver igjen…`:`Filen feilet etter ${V285_RETRIES} forsøk`;
+          if(attempt<V285_RETRIES)await wait(V285_RETRY_DELAYS[attempt-1]||10000);
+        }
+      }
+      failedFiles.push({file:f,error:last?.message||"Ukjent feil"});renderFailed();throw last||new Error("Nedlasting feilet");
+    };
+  }
+
+  const pause=E("downloadPauseBtn");
+  if(pause&&!pause.dataset.v285AbortPause){
+    pause.dataset.v285AbortPause="1";
+    pause.addEventListener("click",()=>setTimeout(()=>{if(dlJob?.paused&&activeController&&!activeController.signal.aborted)try{activeController.abort("PAUSE")}catch{}},0));
+  }
+
+  async function retryFailed(){
+    if(!failedFiles.length)return;
+    if(!dlDirectoryHandle){alert("Velg den samme lokale målmappe først.");return}
+    const pending=failedFiles.slice();failedFiles=[];renderFailed();let ok=0;
+    for(const x of pending){try{await dlDownloadOne(x.file);ok++}catch(err){if(!failedFiles.some(y=>y.file.id===x.file.id))failedFiles.push({file:x.file,error:err.message})}}
+    renderFailed();iansToast("Retry ferdig",`${formatNumber(ok)} reparert · ${formatNumber(failedFiles.length)} gjenstår.`,failedFiles.length?"error":"success",9000);
+  }
+
+  function injectHealth(){
+    if(E("v285SystemHealth")||!E("dashboard"))return;
+    const p=document.createElement("section");p.id="v285SystemHealth";p.className="panel v285-system-health";
+    p.innerHTML=`<div class="section-title"><div><span class="eyebrow">SYSTEM HEALTH</span><h3>Lokal kapasitet og nettleserstøtte</h3></div><span class="badge safe">PRE-FLIGHT</span></div>
+    <div class="v285-health-grid"><div><span>Nettleser</span><strong id="v285Browser">–</strong><small id="v285Secure">–</small></div><div><span>Lokal mappebackup</span><strong id="v285FsApi">–</strong><small>File System Access API</small></div><div><span>Valgt backup</span><strong id="v285BackupNeed">–</strong><small id="v285BackupHeadroom">–</small></div><div><span>Browser storage-estimat</span><strong id="v285BrowserStorage">–</strong><small>Ikke det samme som ledig Mac-disk</small></div></div>
+    <div class="v285-health-note"><strong>Viktig:</strong> En vanlig webside får ikke lese nøyaktig ledig kapasitet på hele Mac-disken. Verktøyet viser derfor nødvendig backup-plass, anbefalt margin og browserens eget storage-estimat. Kontroller faktisk diskplass i macOS før store jobber.</div>`;
+    E("dashboard").prepend(p);refreshHealth();
+  }
+  async function refreshHealth(){
+    if(!E("v285Browser"))return;
+    E("v285Browser").textContent=navigator.userAgent.includes("Edg/")?"Microsoft Edge":navigator.userAgent.includes("Chrome/")?"Chromium/Chrome":"Annen nettleser";
+    E("v285Secure").textContent=window.isSecureContext?"Sikker HTTPS-kontekst":"Ikke sikker kontekst";
+    E("v285FsApi").textContent=window.showDirectoryPicker?"Støttet":"Ikke støttet";
+    const bytes=(typeof dlInventory!=="undefined"&&dlInventory?.length)?dlInventory.reduce((s,f)=>s+(+f.size||0),0):0;
+    E("v285BackupNeed").textContent=bytes?formatBytes(bytes):"Ikke beregnet";
+    E("v285BackupHeadroom").textContent=bytes?`Anbefalt minst ${formatBytes(Math.ceil(bytes*1.10))} ledig (10 % margin)`:"Analyser en mappe for beregning";
+    try{if(navigator.storage?.estimate){const x=await navigator.storage.estimate(),free=Math.max(0,(x.quota||0)-(x.usage||0));E("v285BrowserStorage").textContent=`${formatBytes(free)} i browser-kvote`}}catch{}
+  }
+
+  let orgPlan=[];
+  function targetFor(f,root){
+    const raw=f.takenDateTime||f.createdDateTime||f.lastModifiedDateTime;let y="Ukjent dato",m="";
+    if(raw){const d=new Date(raw);if(Number.isFinite(d.getTime())){y=String(d.getFullYear());m=String(d.getMonth()+1).padStart(2,"0")}}
+    if(f.category==="Bilder")return`${root}/Bilder/${y}${m?"/"+m:""}`;
+    if(f.category==="Video")return`${root}/Video/${y}${m?"/"+m:""}`;
+    if(f.category==="Dokumenter")return`${root}/Dokumenter/${y}`;
+    if(f.category==="Regneark")return`${root}/Regneark/${y}`;
+    if(f.category==="Presentasjoner")return`${root}/Presentasjoner/${y}`;
+    if(f.category==="Lyd")return`${root}/Lyd/${y}`;
+    if(f.category==="Arkiv / installasjon")return`${root}/Arkiv og installasjon/${y}`;
+    return`${root}/Annet/${y}`;
+  }
+  function buildPlan(){
+    if(!report?.files?.length){iansToast("Organization Studio","Kjør kartlegging først.","error");return}
+    const root=(E("v285OrgRoot")?.value||"/_IANS Organisert").trim()||"/_IANS Organisert";
+    const cats=new Set([...document.querySelectorAll("[data-v285-org-cat]:checked")].map(x=>x.value)),seen=new Set();orgPlan=[];
+    for(const f of report.files){
+      if((f.path||"").startsWith("/_IANS Cleanup Review/")||(f.path||"").startsWith(root+"/")||!cats.has(f.category))continue;
+      const target=targetFor(f,root),key=`${target.toLowerCase()}|${String(f.name||"").toLowerCase()}`,conflict=seen.has(key);seen.add(key);orgPlan.push({file:f,target,conflict});
+    }
+    renderPlan();
+  }
+  function renderPlan(){
+    const c=orgPlan.filter(x=>x.conflict).length,folders=new Set(orgPlan.map(x=>x.target)).size,bytes=orgPlan.reduce((s,x)=>s+(+x.file.size||0),0);
+    E("v285OrgStats").innerHTML=`<div><span>Filer i plan</span><strong>${formatNumber(orgPlan.length)}</strong></div><div><span>Målmapper</span><strong>${formatNumber(folders)}</strong></div><div><span>Datamengde</span><strong>${formatBytes(bytes)}</strong></div><div><span>Navnekonflikter</span><strong>${formatNumber(c)}</strong></div>`;
+    E("v285OrgPreview").innerHTML=orgPlan.slice(0,80).map(x=>`<div class="${x.conflict?"conflict":""}"><strong>${escapeHtml(x.file.name)}</strong><span>${escapeHtml(x.file.path)} → ${escapeHtml(x.target)}/</span>${x.conflict?'<em>Hoppes over: mulig navnekonflikt</em>':""}</div>`).join("")||'<div class="empty-state">Ingen plan ennå.</div>';
+    E("v285OrgExecute").disabled=!orgPlan.length;
+  }
+  async function executePlan(){
+    if(!orgPlan.length)return;if(!v24Enabled){alert("Aktiver Action Mode først.");return}
+    const safe=orgPlan.filter(x=>!x.conflict),conflicts=orgPlan.length-safe.length;
+    const ok=await modal({eyebrow:"ORGANIZATION STUDIO",title:`Utfør plan for ${formatNumber(safe.length)} filer?`,danger:true,checkbox:true,confirm:"Utfør planen",body:`<div class="v285-warning-box"><strong>Dette flytter filer i OneDrive.</strong><p>${formatNumber(conflicts)} mulige navnekonflikter hoppes over. Organization Studio sletter ingen filer.</p></div><p>Test først på en liten mappe og kontroller backup/preview.</p>`});
+    if(!ok)return;let moved=0,failed=0;
+    for(let i=0;i<safe.length;i++){const x=safe[i],f=x.file;try{const id=await v24EnsureFolder(x.target);const old=f.path;await v24Graph(`/me/drive/items/${encodeURIComponent(f.id)}`,{method:"PATCH",body:{parentReference:{id}}});f.parentPath=x.target;f.path=`${x.target}/${f.name}`;v24Log("Organization Studio",old,true,`Flyttet til ${x.target}`);moved++}catch(err){v24Log("Organization Studio",f.path,false,err.message);failed++}if(i%20===0)await wait(0)}
+    renderV2();renderPhotoPlan();renderCleanupPlan();v24RenderLog();iansToast("Organization Studio ferdig",`${formatNumber(moved)} flyttet · ${formatNumber(failed)} feil · ${formatNumber(conflicts)} konflikter hoppet over.`,failed?"error":"success",10000);orgPlan=[];renderPlan();
+  }
+  function injectOrg(){
+    if(E("v285OrganizationStudio")||!E("dashboard"))return;
+    const p=document.createElement("section");p.id="v285OrganizationStudio";p.className="panel v285-org-studio";
+    const cats=["Bilder","Video","Dokumenter","Regneark","Presentasjoner","Lyd","Arkiv / installasjon","Annet"];
+    p.innerHTML=`<div class="section-title"><div><span class="eyebrow">ORGANIZATION STUDIO</span><h3>Plan → Preview → Action Mode → Utfør</h3></div><span class="badge safe">INGEN SLETTING</span></div>
+    <p class="muted">Lag organisasjonsforslag etter filtype og dato. Bilder/video prioriterer opptaksdato.</p><div class="v285-org-controls"><label class="field"><span>Målrot</span><input id="v285OrgRoot" value="/_IANS Organisert"></label>
+    <div class="v285-org-cats">${cats.map(c=>`<label><input type="checkbox" data-v285-org-cat value="${escapeHtml(c)}" ${["Bilder","Video","Dokumenter","Regneark","Presentasjoner"].includes(c)?"checked":""}><span>${escapeHtml(c)}</span></label>`).join("")}</div>
+    <div class="actions"><button id="v285OrgBuild" class="btn primary">Bygg forslag</button><button id="v285OrgExecute" class="btn action-btn" disabled>Utfør plan</button></div></div>
+    <div id="v285OrgStats" class="v285-org-stats"></div><div id="v285OrgPreview" class="v285-org-preview"><div class="empty-state">Kjør kartlegging og trykk «Bygg forslag».</div></div>
+    <div class="v285-health-note"><strong>Sikker arbeidsflyt:</strong> Read Only → Analyse → Plan → Preview → Backup Check → Action Mode → Execute → Verify → Logg.</div>`;
+    E("dashboard").appendChild(p);E("v285OrgBuild").onclick=buildPlan;E("v285OrgExecute").onclick=executePlan;
+  }
+
+  if(typeof dlAnalyzeSource==="function"){const old=dlAnalyzeSource;dlAnalyzeSource=async function(...a){const r=await old(...a);setTimeout(refreshHealth,0);return r}}
+
+  function versionLabels(){
+    document.querySelectorAll("body *").forEach(el=>{if(el.children.length===0&&/V2\.8\.4/.test(el.textContent||""))el.textContent=(el.textContent||"").replace(/V2\.8\.4/g,"V2.8.5")});
+    console.info("[IANS] V2.8.5 Resilient Download + Organization Studio aktiv");
+  }
+  function boot(){versionLabels();actionGuard();injectHealth();injectOrg();ensureFailedUi();setTimeout(refreshHealth,500);setTimeout(startupSafety,250)}
+  if(document.readyState==="loading")window.addEventListener("DOMContentLoaded",boot);else boot();
+})();
