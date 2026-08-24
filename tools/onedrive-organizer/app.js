@@ -2899,3 +2899,155 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
   if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",boot);
   else boot();
 })();
+
+// ===== IANS V2.8.8 WIDESCREEN DATA EXPERIENCE =====
+(() => {
+  const E = id => document.getElementById(id);
+
+  function widenLayout(){
+    const dash = E("dashboard");
+    if(!dash) return;
+
+    dash.classList.add("v288-dashboard-wide");
+
+    let p = dash.parentElement;
+    let hops = 0;
+    while(p && p !== document.body && hops < 5){
+      p.classList.add("v288-wide-parent");
+      p = p.parentElement;
+      hops++;
+    }
+
+    document.body.classList.add("v288-body-wide");
+  }
+
+  function injectAmbientCanvas(){
+    if(E("v288Ambient")) return;
+    const ambient = document.createElement("div");
+    ambient.id = "v288Ambient";
+    ambient.className = "v288-ambient";
+    ambient.setAttribute("aria-hidden","true");
+    ambient.innerHTML = `
+      <div class="v288-glow g1"></div>
+      <div class="v288-glow g2"></div>
+      <div class="v288-glow g3"></div>
+      <div class="v288-data-wave w1"></div>
+      <div class="v288-data-wave w2"></div>
+      <div class="v288-starfield"></div>
+    `;
+    document.body.prepend(ambient);
+  }
+
+  function markPanels(){
+    const dash = E("dashboard");
+    if(!dash) return;
+
+    const candidates = [...dash.querySelectorAll(
+      ":scope > section, :scope > .panel, :scope > .card, section.panel, .v285-system-health, .v285-org-studio, .v287-command-center, .v287-operations"
+    )];
+
+    let i = 0;
+    for(const panel of candidates){
+      if(panel.classList.contains("v287-command-center")) continue;
+      panel.classList.add("v288-feature-panel");
+      panel.dataset.v288Accent = String(i % 5);
+      i++;
+    }
+
+    // Give important functional areas extra visual identity.
+    [
+      ["progressPanel","scan"],
+      ["dupBulkPanel","duplicates"],
+      ["downloadProgress","download"],
+      ["v285SystemHealth","health"],
+      ["v285OrganizationStudio","organization"]
+    ].forEach(([id,kind])=>{
+      const el = E(id);
+      if(!el) return;
+      const panel = el.closest("section,.panel,.card,[class*='panel'],[class*='card']") || el;
+      panel.classList.add("v288-focus-panel",`v288-${kind}`);
+    });
+  }
+
+  function injectSectionBands(){
+    const dash = E("dashboard");
+    if(!dash || E("v288DataBands")) return;
+
+    const bands = document.createElement("div");
+    bands.id = "v288DataBands";
+    bands.className = "v288-data-bands";
+    bands.setAttribute("aria-hidden","true");
+    bands.innerHTML = `
+      <div class="v288-band b1"><span></span><span></span><span></span></div>
+      <div class="v288-band b2"><span></span><span></span><span></span></div>
+      <div class="v288-band b3"><span></span><span></span><span></span></div>
+    `;
+    dash.prepend(bands);
+  }
+
+  function upgradeHero(){
+    const hero = E("v287CommandCenter");
+    if(!hero) return;
+    hero.classList.add("v288-command-center");
+
+    const cloud = hero.querySelector(".v287-cloud-scene");
+    if(cloud && !cloud.querySelector(".v288-orbit")){
+      cloud.insertAdjacentHTML("beforeend",`
+        <div class="v288-orbit o1"></div>
+        <div class="v288-orbit o2"></div>
+        <div class="v288-orbit o3"></div>
+      `);
+    }
+  }
+
+  function injectMidPagePulse(){
+    const dash = E("dashboard");
+    if(!dash || E("v288MidPulse")) return;
+
+    const pulse = document.createElement("section");
+    pulse.id = "v288MidPulse";
+    pulse.className = "v288-mid-pulse";
+    pulse.innerHTML = `
+      <div class="v288-pulse-icon">◎</div>
+      <div>
+        <span class="eyebrow">LIVE DATA WORKSPACE</span>
+        <strong>Analyse, backup og organisering i samme sikre arbeidsflyt</strong>
+        <small>Read Only → Preview → Verify → Action Mode</small>
+      </div>
+      <div class="v288-pulse-line"><i></i><i></i><i></i><i></i><i></i></div>
+    `;
+
+    const org = E("v285OrganizationStudio");
+    if(org) org.parentNode.insertBefore(pulse, org);
+    else {
+      const ops = E("v287Operations");
+      if(ops) ops.parentNode.insertBefore(pulse, ops);
+      else dash.appendChild(pulse);
+    }
+  }
+
+  function versionLabels(){
+    document.querySelectorAll("body *").forEach(el=>{
+      if(el.children.length===0 && /V2\.8\.7/.test(el.textContent||"")){
+        el.textContent=(el.textContent||"").replace(/V2\.8\.7/g,"V2.8.8");
+      }
+    });
+    console.info("[IANS] V2.8.8 Widescreen Data Experience aktiv");
+  }
+
+  function boot(){
+    versionLabels();
+    widenLayout();
+    injectAmbientCanvas();
+    injectSectionBands();
+    upgradeHero();
+    injectMidPagePulse();
+    markPanels();
+
+    setTimeout(()=>{ widenLayout(); markPanels(); },800);
+    setTimeout(()=>{ widenLayout(); markPanels(); },2200);
+  }
+
+  if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",boot);
+  else boot();
+})();
