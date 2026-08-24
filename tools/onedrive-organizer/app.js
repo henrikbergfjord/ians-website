@@ -1654,6 +1654,72 @@ v24.photo?.addEventListener("click",()=>{
   };
 });
 
+async function v24TrashRows(rows){
+  const total=rows.length;
+  let ok=0,failed=0;
+  const failures=[];
+
+  // Keep the modal open during the whole job, just like quarantine.
+  v24Open(v24ProgressMarkup(`Flytter ${formatNumber(total)} filer til OneDrive-papirkurven`,total));
+  v24UpdateProgress(0,total,"Kontrollerer skrivetilgang…","Forbereder papirkurv");
+
+  // Fail visibly before starting if the write token is missing/expired.
+  try{
+    await v24WriteToken(false);
+  }catch(err){
+    console.error("[IANS] trash preflight failed",err);
+    v24ShowActionResult({
+      title:"Papirkurv kunne ikke starte",
+      total,ok:0,failed:total,dest:"OneDrive-papirkurven",quarantine:false
+    });
+    iansToast("Papirkurv feilet",`Skrivetilgang mangler eller må fornyes: ${err.message}`,"error",10000);
+    return {total,ok:0,failed:total,failures:[{path:"",error:err.message}]};
+  }
+
+  for(let index=0;index<rows.length;index++){
+    const f=rows[index];
+    const original=f.path;
+    v24UpdateProgress(index,total,f.name,"Sender til papirkurv");
+
+    try{
+      await v24Graph(`/me/drive/items/${encodeURIComponent(f.id)}`,{method:"DELETE"});
+      v24Selected.delete(f.id);
+      report.files=report.files.filter(x=>x.id!==f.id);
+      v24Log("Papirkurv",original,true,"Sendt til OneDrive-papirkurven");
+      ok++;
+    }catch(err){
+      failed++;
+      failures.push({path:original,error:err.message});
+      v24Log("Papirkurv",original,false,err.message);
+    }
+
+    v24UpdateProgress(index+1,total,f.name,failed?"Papirkurv · noen feil":"Sender til papirkurv");
+
+    // Yield periodically so the browser paints progress on large batches.
+    if(index % 5 === 4) await new Promise(resolve=>setTimeout(resolve,0));
+  }
+
+  renderV2();
+  renderCleanupPlan();
+  renderPhotoPlan();
+  v24UpdateSelection();
+  if(typeof dupRenderBulk==="function") setTimeout(dupRenderBulk,0);
+
+  v24ShowActionResult({
+    title:failed?"Papirkurv ferdig med feil":"Papirkurv ferdig",
+    total,ok,failed,dest:"OneDrive-papirkurven",quarantine:false
+  });
+
+  if(failures.length){
+    const first=failures[0];
+    iansToast("Noen filer kunne ikke slettes",`${failed} av ${total} feilet. Første feil: ${first.error}`,"error",12000);
+  }else{
+    iansToast("Papirkurv ferdig",`${ok} filer er sendt til OneDrive-papirkurven.`,"success",8000);
+  }
+
+  return {total,ok,failed,failures};
+}
+
 v24.trash?.addEventListener("click",()=>{
   const rows=v24Rows();
   const phrase=`SLETT ${rows.length} FILER`;
@@ -1661,7 +1727,7 @@ v24.trash?.addEventListener("click",()=>{
 
   v24Open(`<span class="eyebrow">PAPIRKURV</span>
     <h2>${formatNumber(rows.length)} filer · ${formatBytes(total)}</h2>
-    <p>Vanlig OneDrive delete. Permanent sletting er ikke implementert.</p>
+    <p>Filene sendes til OneDrive-papirkurven. Permanent sletting er ikke implementert.</p>
     <div class="action-preview">${rows.slice(0,30).map(f=>`<div>${escapeHtml(f.path)}</div>`).join("")}</div>
     <p><strong>Skriv nøyaktig: ${escapeHtml(phrase)}</strong></p>
     <input id="v24TrashText" class="action-input" autocomplete="off">
@@ -1669,20 +1735,16 @@ v24.trash?.addEventListener("click",()=>{
 
   document.getElementById("v24TrashConfirm").onclick=async()=>{
     if(document.getElementById("v24TrashText").value!==phrase)return alert("Bekreftelsesteksten er ikke riktig.");
-    v24Close();
-
-    for(const f of rows){
-      try{
-        await v24Graph(`/me/drive/items/${encodeURIComponent(f.id)}`,{method:"DELETE"});
-        v24Selected.delete(f.id);
-        report.files=report.files.filter(x=>x.id!==f.id);
-        v24Log("Papirkurv",f.path,true,"Sendt til OneDrive-papirkurven");
-      }catch(err){
-        v24Log("Papirkurv",f.path,false,err.message);
-      }
+    const btn=document.getElementById("v24TrashConfirm");
+    if(btn){btn.disabled=true;btn.textContent="Starter…";}
+    try{
+      await v24TrashRows(rows);
+    }catch(err){
+      console.error("[IANS] trash batch failed",err);
+      iansToast("Papirkurv feilet",err.message,"error",10000);
+      v24Open(`<span class="eyebrow">PAPIRKURV · FEIL</span><h2>Handlingen stoppet</h2><p>${escapeHtml(err.message)}</p><button class="btn primary" id="v24TrashErrorClose">Lukk</button>`);
+      document.getElementById("v24TrashErrorClose").onclick=v24Close;
     }
-
-    renderV2();renderCleanupPlan();v24UpdateSelection();
   };
 });
 
@@ -4030,6 +4092,9 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot292);
   else boot292();
 })();
+
+// ===== IANS V2.9.4.1 ACTION PROGRESS FIX =====
+console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå fremdrift og feilstatus");
 
 // ===== IANS OneDrive Command V2.9.3 · Portable Scan + Photo Intelligence =====
 (() => {
