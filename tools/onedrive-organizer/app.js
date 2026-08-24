@@ -9,6 +9,16 @@ const SCOPES = ["Files.Read"];
 const V24_WRITE_SCOPES = ["Files.ReadWrite"];
 const CLIENT_KEY = "ians_onedrive_analyzer_client_id";
 const CLIENT_BACKUP_KEY = "ians_onedrive_analyzer_client_id_backup";
+// ===== V2.9.0 PUBLIC CLIENT CONFIG =====
+window.IANS_V290_CONFIG = {
+  clientId: "986e5cdb-dab1-4b3f-8db0-8fe7214a19b3",
+  ownerUsername: "henrik.bergfjord@outlook.com",
+  betaGateEnabled: true,
+  betaGateHash: "532eaabd9574880dbf76b9b8cc00832c20a6ec113d682299550d7a6e0f345e25",
+  entitlementEndpoint: ""
+};
+const IANS_PUBLIC_CLIENT_ID = window.IANS_V290_CONFIG.clientId;
+
 
 const APP_BASE_URL = (() => {
   const u = new URL(window.location.href);
@@ -38,7 +48,7 @@ const IS_MSAL_POPUP_CALLBACK = Boolean(
 function recoverClientIdState() {
   const main = localStorage.getItem(CLIENT_KEY);
   const backup = localStorage.getItem(CLIENT_BACKUP_KEY);
-  const id = main || backup || "";
+  const id = IANS_PUBLIC_CLIENT_ID || main || backup || "";
   if (id) {
     if (!main) localStorage.setItem(CLIENT_KEY, id);
     if (!backup) localStorage.setItem(CLIENT_BACKUP_KEY, id);
@@ -117,6 +127,7 @@ async function initMsal() {
   if (IS_MSAL_POPUP_CALLBACK) return;
 
   const clientId = (
+    IANS_PUBLIC_CLIENT_ID ||
     localStorage.getItem(CLIENT_KEY) ||
     localStorage.getItem(CLIENT_BACKUP_KEY) ||
     ""
@@ -3284,4 +3295,161 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot);
   else boot();
+})();
+
+// ===== IANS V2.9.0 FREE / PRO FOUNDATION =====
+(() => {
+  const $ = id => document.getElementById(id);
+  const CFG = window.IANS_V290_CONFIG || {};
+  const FREE_FEATURES = ["Read-only kartlegging","Analyse og rapporter","Large File Explorer","Duplicate Review","Download & Verify","Media backup","Eksport av CSV / JSON"];
+  const PRO_FEATURES = ["Action Mode","Flytting av filer","Strukturert karantene","Organization Studio Execute","Fotoorganisering","Papirkurv / opprydding"];
+  let proUnlocked = false;
+
+  function esc(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
+  async function sha256Hex(text){const b=new TextEncoder().encode(text),d=await crypto.subtle.digest("SHA-256",b);return [...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,"0")).join("");}
+
+  function injectAccessGate(){
+    if(!CFG.betaGateEnabled || $("v290AccessGate") || sessionStorage.getItem("ians_v290_beta_gate")==="ok") return;
+    const gate=document.createElement("div");
+    gate.id="v290AccessGate"; gate.className="v290-gate";
+    gate.innerHTML=`<div class="v290-gate-card">
+      <div class="v290-lock">🔐</div><span class="eyebrow">IANS PRIVATE BETA</span>
+      <h2>OneDrive Command Center</h2>
+      <p>Dette er en kontrollert beta. Skriv inn tilgangskoden for å fortsette.</p>
+      <label>Tilgangskode<input id="v290GateCode" type="password" autocomplete="one-time-code" placeholder="••••••••"></label>
+      <button id="v290GateOpen" class="btn primary">Åpne beta</button>
+      <div id="v290GateMsg" class="v290-gate-msg"></div>
+      <small>Enkel barriere mot tilfeldig bruk. Kommersiell Pro-tilgang må senere håndheves server-side.</small>
+    </div>`;
+    document.body.appendChild(gate);
+    $("v290GateOpen").onclick=async()=>{
+      const input=($("v290GateCode").value||"").trim(),msg=$("v290GateMsg");
+      if(!input){msg.textContent="Skriv inn tilgangskoden.";return;}
+      if(await sha256Hex(input)!==CFG.betaGateHash){msg.textContent="Feil tilgangskode.";return;}
+      sessionStorage.setItem("ians_v290_beta_gate","ok"); gate.remove();
+    };
+    $("v290GateCode").addEventListener("keydown",e=>{if(e.key==="Enter")$("v290GateOpen").click();});
+  }
+
+  function modal(html){
+    let m=$("v290Modal");
+    if(!m){
+      m=document.createElement("div"); m.id="v290Modal"; m.className="v290-modal hidden";
+      m.innerHTML='<div class="v290-modal-card"><button class="v290-close" aria-label="Lukk">×</button><div id="v290ModalBody"></div></div>';
+      document.body.appendChild(m);
+      m.querySelector(".v290-close").onclick=()=>m.classList.add("hidden");
+      m.onclick=e=>{if(e.target===m)m.classList.add("hidden");};
+    }
+    $("v290ModalBody").innerHTML=html; m.classList.remove("hidden");
+  }
+
+  function openPlans(){
+    modal(`<span class="eyebrow">FREE / PRO</span><h2>Bruk verktøyet gratis. Betal først når du vil endre OneDrive.</h2>
+      <div class="v290-plan-grid">
+        <article><span class="v290-free-badge">FREE</span><h3>Analyze & Protect</h3><ul>${FREE_FEATURES.map(x=>`<li>✓ ${esc(x)}</li>`).join("")}</ul><strong class="v290-price">0 kr</strong></article>
+        <article class="pro"><span class="v290-pro-badge">PRO</span><h3>Action Mode</h3><ul>${PRO_FEATURES.map(x=>`<li>✓ ${esc(x)}</li>`).join("")}</ul><strong class="v290-price">Pris kommer</strong><button id="v290ModalUnlock" class="btn primary">Sjekk Pro-tilgang</button></article>
+      </div>
+      <p class="v290-footnote">Free bruker <code>Files.Read</code>. <code>Files.ReadWrite</code> hentes først når Pro/Action Mode låses opp.</p>`);
+    $("v290ModalUnlock")?.addEventListener("click",requestPro);
+  }
+
+  function ownerMatch(){
+    const wanted=String(CFG.ownerUsername||"").trim().toLowerCase();
+    const actual=String(activeAccount?.username||"").trim().toLowerCase();
+    return !!wanted && !!actual && wanted===actual;
+  }
+
+  async function checkEntitlement(){
+    if(ownerMatch()) return {pro:true,source:"owner-beta"};
+    if(!CFG.entitlementEndpoint) return {pro:false,reason:"Pro-backend er ikke konfigurert ennå."};
+    try{
+      const res=await fetch(CFG.entitlementEndpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({account:activeAccount?.username||"",product:"onedrive-organizer-pro"})});
+      if(!res.ok) return {pro:false,reason:`Entitlement API ${res.status}`};
+      const data=await res.json();
+      return {pro:data?.pro===true,reason:data?.message||""};
+    }catch{
+      return {pro:false,reason:"Kunne ikke kontakte Pro-tjenesten."};
+    }
+  }
+
+  async function requestPro(){
+    if(!activeAccount){
+      modal(`<span class="eyebrow">PRO</span><h2>Koble først til OneDrive</h2><p>Logg inn med Microsoft før Pro-status kan kontrolleres.</p>`);
+      return;
+    }
+    modal(`<span class="eyebrow">PRO CHECK</span><h2>Kontrollerer tilgang…</h2><p class="muted">Action Mode forblir låst til kontrollen er ferdig.</p>`);
+    const result=await checkEntitlement();
+    if(result.pro){
+      proUnlocked=true;
+      document.body.classList.add("v290-pro-active");
+      $("v290Modal").classList.add("hidden");
+      updatePlanState();
+      if(typeof iansToast==="function")iansToast("PRO aktivert","Action Mode kan nå aktiveres for denne økten.","success",7000);
+      return;
+    }
+    modal(`<span class="v290-pro-badge">PRO</span><h2>Action Mode er en Pro-funksjon</h2>
+      <p>Du kan fortsatt bruke analyse-, backup- og verifiseringsdelen gratis.</p>
+      <div class="v290-upgrade-box"><strong>Pro åpner:</strong><ul>${PRO_FEATURES.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+      <p class="muted">${esc(result.reason||"Ingen aktiv Pro-tilgang funnet.")}</p>
+      <p class="v290-footnote">V2.9.0 etablerer Free/Pro-arkitekturen. Betaling og entitlement kobles på senere.</p>`);
+  }
+
+  function injectFreeProBar(){
+    if($("v290PlanBar") || !$("dashboard"))return;
+    const bar=document.createElement("section");
+    bar.id="v290PlanBar"; bar.className="v290-planbar";
+    bar.innerHTML=`<div class="v290-plan-current"><span class="v290-free-badge">FREE</span><div><strong>Read Only Edition</strong><small>Analyser, verifiser og last ned uten å endre OneDrive.</small></div></div>
+      <div class="v290-plan-actions"><button id="v290ComparePlans" class="btn ghost">Free vs Pro</button><button id="v290UnlockPro" class="btn primary">Unlock Action Mode · PRO</button></div>`;
+    $("dashboard").prepend(bar);
+    $("v290ComparePlans").onclick=openPlans;
+    $("v290UnlockPro").onclick=requestPro;
+  }
+
+  function injectProBadge(){
+    for(const id of ["v24EnableAction","topActionBtn"]){
+      const b=$(id);
+      if(b && !b.querySelector(".v290-inline-pro")) b.insertAdjacentHTML("beforeend",' <span class="v290-inline-pro">PRO</span>');
+    }
+  }
+
+  function updatePlanState(){
+    const bar=$("v290PlanBar"); if(!bar)return;
+    bar.classList.toggle("pro-active",proUnlocked);
+    const badge=bar.querySelector(".v290-free-badge,.v290-pro-badge");
+    if(badge){badge.textContent=proUnlocked?"PRO":"FREE";badge.className=proUnlocked?"v290-pro-badge":"v290-free-badge";}
+    const title=bar.querySelector(".v290-plan-current strong"),sub=bar.querySelector(".v290-plan-current small");
+    if(title)title.textContent=proUnlocked?"Pro Edition":"Read Only Edition";
+    if(sub)sub.textContent=proUnlocked?"Action Mode er tilgjengelig for denne økten.":"Analyser, verifiser og last ned uten å endre OneDrive.";
+  }
+
+  function installActionGuard(){
+    document.addEventListener("click",e=>{
+      const b=e.target.closest("#v24EnableAction,#topActionBtn");
+      if(!b || proUnlocked)return;
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();requestPro();
+    },true);
+  }
+
+  function hideClientIdSetup(){
+    const input=$("clientIdInput"),save=$("saveClientIdBtn"),msg=$("setupMessage");
+    if(input){input.value=CFG.clientId||input.value;input.readOnly=true;input.disabled=true;}
+    if(save)save.classList.add("hidden");
+    if(msg&&CFG.clientId)msg.textContent="Microsoft-app er forhåndskonfigurert. Du trenger ikke Client ID.";
+  }
+
+  function addArchitectureNote(){
+    if($("v290ArchitectureNote"))return;
+    const host=$("loginPanel")||$("setupPanel"); if(!host)return;
+    const note=document.createElement("div");
+    note.id="v290ArchitectureNote"; note.className="v290-arch-note";
+    note.innerHTML=`<strong>Microsoft-login</strong><p>Appens Client ID er innebygd. Du logger inn med din egen Microsoft-konto, og verktøyet arbeider mot din OneDrive.</p><small>Free Mode bruker Read Only. Skrivetilgang krever Pro + eksplisitt Action Mode.</small>`;
+    host.appendChild(note);
+  }
+
+  function boot(){
+    injectAccessGate();injectFreeProBar();injectProBadge();installActionGuard();hideClientIdSetup();addArchitectureNote();updatePlanState();
+    setTimeout(()=>{hideClientIdSetup();injectProBadge();injectFreeProBar();},900);
+    console.info("[IANS] V2.9.0 Free / Pro Foundation aktiv");
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
 })();
