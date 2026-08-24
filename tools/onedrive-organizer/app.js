@@ -2697,3 +2697,26 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
   function boot(){versionLabels();actionGuard();injectHealth();injectOrg();ensureFailedUi();setTimeout(refreshHealth,500);setTimeout(startupSafety,250)}
   if(document.readyState==="loading")window.addEventListener("DOMContentLoaded",boot);else boot();
 })();
+// ===== IANS V2.8.6 FUTURE OPERATIONS UI (presentation layer only) =====
+(() => {
+  const E=id=>document.getElementById(id);
+  function fmtBytes(n){try{return typeof formatBytes==="function"?formatBytes(n):`${Math.round(n/1024/1024)} MB`}catch{return "–"}}
+  function injectCommandCenter(){
+    if(E("v286CommandCenter")||!E("dashboard"))return;
+    const el=document.createElement("section"); el.id="v286CommandCenter"; el.className="v286-hero";
+    el.innerHTML=`<div class="v286-hero-top"><div><span class="eyebrow">IANS DATA OPERATIONS</span><h2>OneDrive Command Center</h2><p>Fra kartlegging til trygg organisering – med kontrollpunkter før hver skrivehandling.</p></div><span class="v286-live"><i></i> V2.8.6 READY</span></div>
+    <div class="v286-flow"><div class="v286-step"><span>01</span><strong>Connect</strong></div><div class="v286-step"><span>02</span><strong>Analyze</strong></div><div class="v286-step"><span>03</span><strong>Preview</strong></div><div class="v286-step"><span>04</span><strong>Protect</strong></div><div class="v286-step"><span>05</span><strong>Execute</strong></div></div>
+    <div class="v286-command"><div><span>Arbeidsmodus</span><strong id="v286Mode">Read Only</strong><small>Action Mode krever eksplisitt aktivering</small></div><div><span>Kartlagt datamengde</span><strong id="v286Data">Ikke analysert</strong><small>Oppdateres etter kartlegging</small></div><div><span>Lokal backup</span><strong id="v286Backup">Pre-flight</strong><small>Kontroller plass før stor nedlasting</small></div><div><span>Sikkerhetsmodell</span><strong>Preview first</strong><small>Plan → kontroll → utfør → logg</small></div></div>
+    <div class="v286-safety-ribbon"><strong>Sikkerhetsprinsipp:</strong> Test på en liten mappe først. Behold separat backup av viktige data før større endringer.</div>`;
+    E("dashboard").prepend(el); refresh();
+  }
+  function refresh(){
+    if(!E("v286CommandCenter"))return;
+    try{E("v286Mode").textContent=(typeof v24Enabled!=="undefined"&&v24Enabled)?"Action Mode":"Read Only"}catch{}
+    try{const inv=(typeof dlInventory!=="undefined"&&Array.isArray(dlInventory))?dlInventory:[];const b=inv.reduce((s,f)=>s+(+f.size||0),0);E("v286Data").textContent=b?fmtBytes(b):"Ikke analysert"}catch{}
+    try{const need=E("v285BackupNeed")?.textContent;E("v286Backup").textContent=need&&need!=="–"&&need!=="Ikke beregnet"?`${need} + margin`:"Pre-flight"}catch{}
+  }
+  function labels(){document.querySelectorAll("body *").forEach(el=>{if(el.children.length===0&&/V2\.8\.5/.test(el.textContent||""))el.textContent=(el.textContent||"").replace(/V2\.8\.5/g,"V2.8.6")});console.info("[IANS] V2.8.6 Future Operations UI aktiv");}
+  function boot(){labels();injectCommandCenter();setInterval(refresh,2500)}
+  if(document.readyState==="loading")window.addEventListener("DOMContentLoaded",boot);else boot();
+})();
