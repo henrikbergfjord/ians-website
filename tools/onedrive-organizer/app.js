@@ -4030,3 +4030,89 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot292);
   else boot292();
 })();
+
+// ===== IANS OneDrive Command V2.9.3 · Portable Scan + Photo Intelligence =====
+(() => {
+  const V293_SCHEMA = "ians-onedrive-scan/1";
+  const V293_VERSION = "2.9.3";
+  const esc = s => String(s ?? "").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const fmtN = n => new Intl.NumberFormat("nb-NO").format(Number(n)||0);
+  const fmtB = n => typeof formatBytes === "function" ? formatBytes(Number(n)||0) : `${Math.round((Number(n)||0)/1048576)} MB`;
+  const media = f => /^(Bilder|Video)$/.test(f.category||"") || /^(image|video)\//i.test(f.mimeType||"") || /\.(jpe?g|png|heic|heif|webp|gif|tiff?|mov|mp4|m4v|avi|mkv|3gp)$/i.test(f.name||"");
+  const photo = f => (f.category==="Bilder") || /^image\//i.test(f.mimeType||"") || /\.(jpe?g|png|heic|heif|webp|gif|tiff?)$/i.test(f.name||"");
+  const video = f => (f.category==="Video") || /^video\//i.test(f.mimeType||"") || /\.(mov|mp4|m4v|avi|mkv|3gp)$/i.test(f.name||"");
+  const stopWords = new Set(["onedrive","documents","documenter","bilder","images","photos","photo","camera roll","kamerarull","desktop","skrivebord","backup","archive","arkiv"]);
+  function safeDate(f){ const d=f.takenDateTime||f.createdDateTime||f.lastModifiedDateTime; const x=d?new Date(d):null; return x && !Number.isNaN(x.getTime()) ? x : null; }
+  function contextTags(f){
+    const tags=[]; const d=safeDate(f);
+    if(d){tags.push(String(d.getFullYear())); tags.push(d.toLocaleString("nb-NO",{month:"long"}));}
+    tags.push(photo(f)?"Bilde":video(f)?"Video":"Media");
+    const parts=(f.parentPath||"").split("/").map(x=>x.trim()).filter(Boolean);
+    for(const p of parts.slice(-4)){
+      const clean=p.replace(/[_-]+/g," ").trim();
+      if(clean.length>=3 && clean.length<=45 && !stopWords.has(clean.toLowerCase()) && !/^\d{4}$/.test(clean)) tags.push(clean);
+    }
+    if(/screenshot|skjermbilde/i.test(f.name||"")) tags.push("Skjermbilde");
+    if(/scan|scann|document|receipt|kvittering/i.test(f.name||"")) tags.push("Dokumentfoto");
+    return [...new Set(tags)].slice(0,10);
+  }
+  function buildPhotoIntel(r){
+    const files=(r?.files||[]).filter(media); const collections=new Map(), years=new Map(); let unorganized=0, screenshots=0, images=0, videos=0, bytes=0;
+    const tagged=files.map(f=>{
+      const tags=contextTags(f); const d=safeDate(f); bytes+=Number(f.size)||0; if(photo(f))images++; if(video(f))videos++; if(tags.includes("Skjermbilde"))screenshots++;
+      const context=tags.filter(t=>!["Bilde","Video","Media","Skjermbilde","Dokumentfoto"].includes(t) && !/^\d{4}$/.test(t) && !/^(januar|februar|mars|april|mai|juni|juli|august|september|oktober|november|desember)$/i.test(t));
+      if(!context.length) unorganized++;
+      if(d) years.set(d.getFullYear(),(years.get(d.getFullYear())||0)+1);
+      for(const t of context.slice(0,3)) collections.set(t,(collections.get(t)||0)+1);
+      return {id:f.id,name:f.name,path:f.path,tags};
+    });
+    return {files:files.length,images,videos,bytes,unorganized,screenshots,years:[...years].sort((a,b)=>b[0]-a[0]),collections:[...collections].sort((a,b)=>b[1]-a[1]).slice(0,20),tagged};
+  }
+  function downloadJson(obj,name){ const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000); }
+  async function portableState(){
+    const cp=typeof loadScanCheckpoint==="function" ? await loadScanCheckpoint() : null;
+    const current=(typeof report!=="undefined" && report?.files?.length) ? report : null;
+    return {schema:V293_SCHEMA,version:V293_VERSION,exportedAt:new Date().toISOString(),account:activeAccount?.username||current?.account?.username||cp?.account||"",kind:cp?.queue?.length?"checkpoint":current?"completed-report":"empty",checkpoint:cp||null,report:current||null,photoIntelligence:current?buildPhotoIntel(current):null};
+  }
+  async function exportPortable(){
+    const state=await portableState(); if(state.kind==="empty"){alert("Ingen scan eller checkpoint å eksportere ennå.");return;}
+    const stamp=new Date().toISOString().replace(/[:.]/g,"-").slice(0,19); downloadJson(state,`IANS-OneDrive-Scan-${stamp}.iansscan`);
+    if(typeof iansToast==="function") iansToast("Portable Scan lagret",state.kind==="checkpoint"?"Checkpoint kan importeres og fortsettes på en annen økt.":"Ferdig rapport kan importeres uten ny fullscan.","success",7000);
+  }
+  function pickImport(){ document.getElementById("v293ImportFile")?.click(); }
+  async function importPortable(file){
+    let data; try{data=JSON.parse(await file.text())}catch{alert("Filen kunne ikke leses som en IANS scanfil.");return;}
+    if(data?.schema!==V293_SCHEMA){alert("Ukjent scanformat. Forventet IANS Portable Scan.");return;}
+    const signed=activeAccount?.username||"", source=data.account||data.report?.account?.username||data.checkpoint?.account||"";
+    if(signed && source && signed.toLowerCase()!==source.toLowerCase() && !confirm(`Scanfilen tilhører ${source}, mens du er logget inn som ${signed}. Importere likevel?`)) return;
+    if(data.checkpoint?.queue?.length){
+      await saveScanCheckpoint(data.checkpoint); await refreshCheckpointUi();
+      document.getElementById("scanStateBadge").textContent="IMPORTERT";
+      document.getElementById("checkpointSummary").textContent=`Importert checkpoint · ${fmtN(data.checkpoint.stats?.files)} filer · ${fmtN(data.checkpoint.queue?.length)} mapper gjenstår.`;
+    }
+    if(data.report?.files?.length){ report=data.report; renderReport(report); const b=document.getElementById("exportBtn"); if(b)b.disabled=false; renderPhotoPanel(); }
+    if(typeof iansToast==="function") iansToast("Scan importert",data.checkpoint?.queue?.length?"Trykk Resume for å fortsette fra checkpoint.":"Rapporten er gjenopprettet uten ny fullscan.","success",8000);
+  }
+  function renderPhotoPanel(){
+    const host=document.getElementById("v293PhotoBody"); if(!host)return;
+    if(typeof report==="undefined" || !report?.files?.length){host.innerHTML='<div class="empty-state">Kjør eller importer en scan for Photo Intelligence.</div>';return;}
+    const p=buildPhotoIntel(report); report.photoIntelligence={generatedAt:new Date().toISOString(),...p,tagged:p.tagged};
+    host.innerHTML=`<div class="v293-photo-stats"><div><span>Bilder</span><strong>${fmtN(p.images)}</strong></div><div><span>Video</span><strong>${fmtN(p.videos)}</strong></div><div><span>Media</span><strong>${fmtB(p.bytes)}</strong></div><div><span>Uorganisert</span><strong>${fmtN(p.unorganized)}</strong></div><div><span>Skjermbilder</span><strong>${fmtN(p.screenshots)}</strong></div></div>
+      <div class="v293-photo-grid"><div><h4>Virtuelle samlinger</h4>${p.collections.length?p.collections.map(([x,n])=>`<button class="v293-tag" type="button">${esc(x)} <b>${fmtN(n)}</b></button>`).join(""):'<p class="muted">Ingen tydelig mappekontekst ennå.</p>'}</div><div><h4>Tidslinje</h4>${p.years.slice(0,12).map(([y,n])=>`<span class="v293-year"><b>${y}</b>${fmtN(n)} mediafiler</span>`).join("")||'<p class="muted">Ingen datodata.</p>'}</div></div>
+      <p class="muted v293-note">Taggene er virtuelle og bygges av dato, filtype, filnavn og eksisterende mappekontekst. Originalfilene endres ikke, og ingen bilder sendes til AI.</p>`;
+  }
+  function inject(){
+    const top=document.getElementById("topControlPanel"); if(top && !document.getElementById("v293Portable")) top.insertAdjacentHTML("afterend",`<section id="v293Portable" class="panel v293-portable"><div class="section-title"><div><span class="eyebrow">PORTABLE SCAN · V2.9.3</span><h3>Ta scannen med deg – og fortsett senere</h3></div><span class="badge safe">RESUME READY</span></div><p class="muted">Eksporter ferdig scan eller aktivt checkpoint til en liten <code>.iansscan</code>-fil. Filen inneholder katalog/metadata – ikke selve dokumentene eller bildene.</p><div class="v293-actions"><button id="v293Export" class="btn primary">Last ned scanfil</button><button id="v293Import" class="btn ghost">Importer scan / checkpoint</button><input id="v293ImportFile" type="file" accept=".iansscan,.json,application/json" hidden><span>Automatisk checkpoint fortsetter også lokalt under lange scanner.</span></div></section>`);
+    const mv=document.getElementById("mediaVaultPanel"); if(mv && !document.getElementById("v293PhotoIntel")) mv.insertAdjacentHTML("beforebegin",`<section id="v293PhotoIntel" class="panel v293-photo"><div class="section-title"><div><span class="eyebrow">PHOTO INTELLIGENCE · LOCAL FIRST</span><h3>Organiser bilder uten å miste konteksten</h3></div><span class="badge safe">INGEN AI</span></div><p class="muted">IANS lager virtuelle tagger og samlinger fra metadata og eksisterende mapper. Ett bilde kan høre til flere samlinger uten kopiering eller flytting.</p><div id="v293PhotoBody"><div class="empty-state">Kjør eller importer en scan for Photo Intelligence.</div></div></section>`);
+    document.getElementById("v293Export")?.addEventListener("click",exportPortable);
+    document.getElementById("v293Import")?.addEventListener("click",pickImport);
+    document.getElementById("v293ImportFile")?.addEventListener("change",e=>{const f=e.target.files?.[0];if(f)importPortable(f);e.target.value=""});
+    renderPhotoPanel();
+  }
+  // Re-render Photo Intelligence whenever the base report renderer completes.
+  if(typeof renderReport==="function"){
+    const baseRender=renderReport; renderReport=function(r){ const out=baseRender(r); setTimeout(renderPhotoPanel,0); return out; };
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",inject); else inject();
+  console.info("[IANS] OneDrive Command V2.9.3 Portable Scan + Photo Intelligence aktiv");
+})();

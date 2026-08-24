@@ -812,3 +812,29 @@ body{background:#020814!important}
 .v292-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:14px}.v292-x{position:absolute;right:14px;top:12px;border:0;background:none;color:#91a8bb;font-size:24px;cursor:pointer}
 @media(max-width:1050px){.v292-metrics{grid-template-columns:1fr 1fr}.v292-baseline{grid-template-columns:1fr 1fr}.v292-baseline>span{grid-column:1/-1}.v292-grid{grid-template-columns:1fr}}
 @media(max-width:620px){.v292-metrics,.v292-baseline{grid-template-columns:1fr}.v292-level{grid-template-columns:1fr}.v292-actions{flex-direction:column}.v292-actions .btn{width:100%}}
+
+/* ===== IANS OneDrive Command V2.9.3 ===== */
+.v293-portable,.v293-photo{border-color:rgba(88,169,223,.22)!important;background:linear-gradient(145deg,rgba(8,25,44,.96),rgba(5,17,31,.94))!important}
+.v293-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.v293-actions>span{color:#7f98ad;font-size:.78rem}
+.v293-photo-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0}.v293-photo-stats>div{padding:14px;border:1px solid rgba(105,166,214,.16);border-radius:13px;background:rgba(4,17,31,.62)}.v293-photo-stats span,.v293-photo-stats strong{display:block}.v293-photo-stats span{color:#7893aa;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}.v293-photo-stats strong{font-size:1.35rem;margin-top:5px;color:#edf7ff}
+.v293-photo-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}.v293-photo-grid>div{padding:16px;border:1px solid rgba(105,166,214,.13);border-radius:14px;background:rgba(3,14,27,.5)}.v293-photo-grid h4{margin:0 0 12px}.v293-tag{appearance:none;border:1px solid rgba(79,173,222,.22);background:rgba(65,155,210,.07);color:#dcefff;border-radius:999px;padding:7px 10px;margin:0 6px 7px 0}.v293-tag b{color:#65d8ff;margin-left:5px}.v293-year{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);color:#8fa8bc}.v293-year b{color:#e9f5ff}.v293-note{margin-top:14px!important}
+@media(max-width:900px){.v293-photo-stats{grid-template-columns:repeat(2,1fr)}.v293-photo-grid{grid-template-columns:1fr}}@media(max-width:560px){.v293-photo-stats{grid-template-columns:1fr}}
+
+/* ===== IANS V2.9.3.1 · VISIBLE TOOLS UI ===== */
+.v293-portable{border-color:rgba(86,205,255,.20)!important;background:radial-gradient(circle at 90% 10%,rgba(60,170,255,.09),transparent 32%),linear-gradient(155deg,rgba(5,22,39,.96),rgba(5,15,29,.93))!important}
+.v293-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.v293-actions>span{color:#7f97aa;font-size:.72rem;margin-left:4px}
+.v293-photo{border-color:rgba(111,224,255,.15)!important;background:linear-gradient(155deg,rgba(5,21,37,.95),rgba(7,15,29,.94))!important}
+.v293-tools-jump{border-color:rgba(103,221,255,.24)!important;color:#a8eaff!important}
+.v293-photo-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:15px 0}
+.v293-photo-stats>div{padding:13px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.025)}
+.v293-photo-stats span,.v293-photo-stats strong{display:block}
+.v293-photo-stats span{font-size:.68rem;color:#7891a6}
+.v293-photo-stats strong{margin-top:5px;font-size:1.15rem;color:#eff9ff}
+.v293-photo-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+.v293-tag{margin:0 7px 7px 0;padding:7px 9px;border-radius:999px;border:1px solid rgba(105,210,255,.15);background:rgba(70,170,255,.045);color:#bcecff}
+.v293-tag b{color:#6fe0ff}
+.v293-year{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);color:#8ea6b9}
+.v293-year b{color:#eaf6ff}
+.v293-note{margin-top:12px}
+@media(max-width:900px){.v293-photo-stats{grid-template-columns:1fr 1fr}.v293-photo-grid{grid-template-columns:1fr}}
