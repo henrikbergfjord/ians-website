@@ -619,3 +619,14 @@ body.sameienett-v21::before{
   -webkit-font-smoothing:antialiased;
   contain:layout style paint;
 }
+
+/* ===== IANS SameieNett V2.4.1 SMOOTH ORBIT FIX ===== */
+.sn-v23-nodes{position:absolute;inset:0;z-index:4;pointer-events:none}
+.sn-v23-nodes .sn-v23-node{
+  left:50%!important;
+  top:47%!important;
+  will-change:transform;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  transform-origin:center center;
+}
