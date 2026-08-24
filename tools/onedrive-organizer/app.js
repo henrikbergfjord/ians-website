@@ -2720,3 +2720,182 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
   function boot(){labels();injectCommandCenter();setInterval(refresh,2500)}
   if(document.readyState==="loading")window.addEventListener("DOMContentLoaded",boot);else boot();
 })();
+
+// ===== IANS V2.8.7 COMMAND CENTER EXPERIENCE (presentation layer only) =====
+(() => {
+  const E = id => document.getElementById(id);
+  const Q = s => document.querySelector(s);
+  const fmtN = n => { try { return typeof formatNumber === "function" ? formatNumber(n) : String(n ?? 0); } catch { return String(n ?? 0); } };
+  const fmtB = n => { try { return typeof formatBytes === "function" ? formatBytes(n) : `${Math.round((n||0)/1024/1024)} MB`; } catch { return "–"; } };
+
+  function safeText(el, text){ if(el) el.textContent = text; }
+
+  function findPanelByControl(id){
+    const el = E(id);
+    if(!el) return null;
+    return el.closest("section,.panel,.card,[class*='panel'],[class*='card']") || el.parentElement;
+  }
+
+  function scrollToControl(id){
+    const panel = findPanelByControl(id) || E(id);
+    if(panel) panel.scrollIntoView({behavior:"smooth", block:"start"});
+  }
+
+  function injectHeaderExperience(){
+    if(E("v287HeaderStatus")) return;
+    const header = Q("header") || Q(".topbar") || Q(".site-header") || document.body.firstElementChild;
+    if(!header) return;
+    const box = document.createElement("div");
+    box.id = "v287HeaderStatus";
+    box.className = "v287-header-status";
+    box.innerHTML = `
+      <span class="v287-chip safe"><i>●</i> READ ONLY</span>
+      <span class="v287-chip graph">◎ GRAPH API</span>
+      <span class="v287-chip stream">◌ STREAM + RESUME</span>
+      <span class="v287-chip verify">◆ VERIFIED</span>`;
+    header.appendChild(box);
+  }
+
+  function injectHero(){
+    if(E("v287CommandCenter") || !E("dashboard")) return;
+    const hero = document.createElement("section");
+    hero.id = "v287CommandCenter";
+    hero.className = "v287-command-center";
+    hero.innerHTML = `
+      <div class="v287-cloud-scene" aria-hidden="true">
+        <div class="v287-cloud">
+          <div class="v287-cloud-core">☁</div>
+          <span class="v287-node n1"></span><span class="v287-node n2"></span>
+          <span class="v287-node n3"></span><span class="v287-node n4"></span>
+          <span class="v287-node n5"></span><span class="v287-node n6"></span>
+        </div>
+        <div class="v287-stream s1"></div><div class="v287-stream s2"></div>
+        <div class="v287-stream s3"></div><div class="v287-stream s4"></div>
+      </div>
+
+      <div class="v287-hero-copy">
+        <span class="eyebrow">VELKOMMEN TILBAKE · IANS DATA OPERATIONS</span>
+        <div class="v287-title-row">
+          <div>
+            <h2>OneDrive <span>Command Center</span></h2>
+            <p>Kontrollsenter for kartlegging, sikkerhetskopi, verifisering og trygg organisering av OneDrive.</p>
+          </div>
+          <span class="v287-ready"><i></i> V2.8.7 READY</span>
+        </div>
+
+        <div class="v287-flow">
+          <div><b>✓</b><strong>1. Connect</strong><small>Sikker tilkobling</small></div>
+          <div><b>⌕</b><strong>2. Analyze</strong><small>Kartlegg alt innhold</small></div>
+          <div><b>◉</b><strong>3. Preview</strong><small>Se før du handler</small></div>
+          <div><b>⬟</b><strong>4. Protect</strong><small>Verifiser og sikre</small></div>
+          <div><b>▶</b><strong>5. Execute</strong><small>Utfør med kontroll</small></div>
+        </div>
+
+        <div class="v287-safety">
+          <span>🛡</span>
+          <div><strong>Sikkerhetsprinsipp:</strong> Test på en liten mappe først. Read Only er standard. Du bestemmer når og hva som kan endres.</div>
+        </div>
+      </div>
+
+      <div class="v287-metrics">
+        <article><span>KARTLAGT DATA</span><strong id="v287Mapped">Ikke analysert</strong><small id="v287MappedHint">Kjør kartlegging</small></article>
+        <article><span>ANTALL FILER</span><strong id="v287Files">–</strong><small id="v287Folders">Mapper: –</small></article>
+        <article><span>SISTE SKANNING</span><strong id="v287LastScan">–</strong><small id="v287ScanState">Klar</small></article>
+        <article class="status"><span>STATUS</span><strong id="v287Status">Klar</strong><small id="v287StatusHint">System klart</small></article>
+      </div>
+    `;
+    E("dashboard").prepend(hero);
+  }
+
+  function injectOperations(){
+    if(E("v287Operations") || !E("dashboard")) return;
+    const ops = document.createElement("section");
+    ops.id = "v287Operations";
+    ops.className = "v287-operations";
+    ops.innerHTML = `
+      <div class="v287-section-head"><div><span class="eyebrow">OPERASJONER</span><h3>Velg neste oppgave</h3></div><span class="v287-pill">CONTROLLED WORKFLOW</span></div>
+      <div class="v287-op-grid">
+        <article class="teal"><i>◌</i><h4>Quick Scan</h4><p>Gå direkte til kartlegging og analyser valgt område.</p><button data-v287-scroll="topStartScanBtn">Åpne skanning →</button></article>
+        <article class="blue"><i>≋</i><h4>Full Scan</h4><p>Kartlegg hele OneDrive i Read Only med checkpoint og Resume.</p><button data-v287-scroll="topStartScanBtn">Startpunkt →</button></article>
+        <article class="purple"><i>⇩</i><h4>Download & Verify</h4><p>Direkte streaming til disk med Resume, retry og verifisering.</p><button data-v287-scroll="downloadBrowseSourceBtn">Åpne nedlasting →</button></article>
+        <article class="amber"><span class="new">NYHET</span><i>▱</i><h4>Organization Studio</h4><p>Plan → Preview → Action Mode → Execute. Ingen automatisk sletting.</p><button data-v287-scroll="v285OrganizationStudio">Åpne Studio →</button></article>
+        <article class="cyan"><i>⌕</i><h4>Large File Explorer</h4><p>Finn store filer og mapper som bruker mest lagringsplass.</p><button data-v287-scroll="filesTable">Utforsk →</button></article>
+        <article class="green"><i>▦</i><h4>Duplicates Finder</h4><p>Gjennomgå duplikatkandidater før karantene eller papirkurv.</p><button data-v287-scroll="dupBulkPanel">Finn duplikater →</button></article>
+      </div>
+    `;
+    E("dashboard").appendChild(ops);
+    ops.addEventListener("click", e=>{
+      const b = e.target.closest("[data-v287-scroll]");
+      if(!b) return;
+      scrollToControl(b.dataset.v287Scroll);
+    });
+  }
+
+  function injectFooter(){
+    if(E("v287TrustBar")) return;
+    const host = E("dashboard") || document.body;
+    const bar = document.createElement("section");
+    bar.id = "v287TrustBar";
+    bar.className = "v287-trust-bar";
+    bar.innerHTML = `
+      <div><b>🛡</b><span><strong>Read Only by Default</strong><small>Dine data er beskyttet</small></span></div>
+      <div><b>◎</b><span><strong>Microsoft Graph API</strong><small>Offisiell tilkobling</small></span></div>
+      <div><b>◌</b><span><strong>Stream + Resume</strong><small>Fortsett etter avbrudd</small></span></div>
+      <div><b>✓</b><span><strong>Verify Everything</strong><small>Kontroll før opprydding</small></span></div>
+      <div><b>♙</b><span><strong>Your Data, Your Control</strong><small>Du bestemmer alltid</small></span></div>
+      <div class="brand"><b>IANS</b><span><strong>Made for Power Users</strong><small>OneDrive Organizer V2.8.7</small></span></div>`;
+    host.appendChild(bar);
+  }
+
+  function refresh(){
+    const files = report?.files || [];
+    const summary = report?.summary || {};
+    const mapped = summary.fileBytes || files.reduce((s,f)=>s+(+f.size||0),0);
+    safeText(E("v287Mapped"), mapped ? fmtB(mapped) : "Ikke analysert");
+    safeText(E("v287MappedHint"), mapped ? "Kartlagt filstørrelse" : "Kjør kartlegging");
+    safeText(E("v287Files"), files.length ? fmtN(files.length) : "–");
+    safeText(E("v287Folders"), `Mapper: ${summary.folders!=null ? fmtN(summary.folders) : "–"}`);
+
+    const generated = report?.generatedAt ? new Date(report.generatedAt) : null;
+    safeText(E("v287LastScan"), generated && Number.isFinite(generated.getTime())
+      ? generated.toLocaleTimeString("nb-NO",{hour:"2-digit",minute:"2-digit"})
+      : "–");
+    safeText(E("v287ScanState"), generated ? generated.toLocaleDateString("nb-NO") : "Klar for kartlegging");
+
+    let status="Klar", hint="System klart";
+    try{
+      if(typeof dlJob!=="undefined" && dlJob?.running){ status=dlJob.paused?"Pauset":"Laster ned"; hint=`${fmtN(dlJob.done||0)} / ${fmtN(dlJob.total||0)} filer`; }
+      else if(typeof cancelRequested!=="undefined" && E("scanStateBadge")?.textContent?.includes("SKANNER")){ status="Analyserer"; hint="Read Only scan pågår"; }
+      else if(typeof v24Enabled!=="undefined" && v24Enabled){ status="Action Mode"; hint="Skrivetilgang aktiv"; }
+    }catch{}
+    safeText(E("v287Status"),status); safeText(E("v287StatusHint"),hint);
+
+    const chip = E("v287HeaderStatus")?.querySelector(".safe");
+    if(chip){
+      const action = typeof v24Enabled!=="undefined" && v24Enabled;
+      chip.innerHTML = action ? "<i>●</i> ACTION MODE" : "<i>●</i> READ ONLY";
+      chip.classList.toggle("action",action);
+    }
+  }
+
+  function labels(){
+    document.querySelectorAll("body *").forEach(el=>{
+      if(el.children.length===0 && /V2\.8\.6/.test(el.textContent||"")){
+        el.textContent=(el.textContent||"").replace(/V2\.8\.6/g,"V2.8.7");
+      }
+    });
+    console.info("[IANS] V2.8.7 Command Center Experience aktiv");
+  }
+
+  function boot(){
+    labels();
+    injectHeaderExperience();
+    injectHero();
+    injectOperations();
+    injectFooter();
+    refresh();
+    setInterval(refresh,1800);
+  }
+  if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",boot);
+  else boot();
+})();
