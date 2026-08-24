@@ -2705,7 +2705,7 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
     document.querySelectorAll("body *").forEach(el=>{if(el.children.length===0&&/V2\.8\.4/.test(el.textContent||""))el.textContent=(el.textContent||"").replace(/V2\.8\.4/g,"V2.8.5")});
     console.info("[IANS] V2.8.5 Resilient Download + Organization Studio aktiv");
   }
-  function boot(){versionLabels();actionGuard();injectHealth();injectOrg();ensureFailedUi();setTimeout(refreshHealth,500);setTimeout(startupSafety,250)}
+  function boot(){versionLabels();injectHealth();injectOrg();ensureFailedUi();setTimeout(refreshHealth,500);setTimeout(startupSafety,250)}
   if(document.readyState==="loading")window.addEventListener("DOMContentLoaded",boot);else boot();
 })();
 // ===== IANS V2.8.6 FUTURE OPERATIONS UI (presentation layer only) =====
@@ -3447,13 +3447,13 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
   }
 
   function boot(){
-    injectAccessGate();injectFreeProBar();injectProBadge();installActionGuard();hideClientIdSetup();addArchitectureNote();updatePlanState();
+    injectAccessGate();injectFreeProBar();injectProBadge();hideClientIdSetup();addArchitectureNote();updatePlanState();
     setTimeout(()=>{hideClientIdSetup();injectProBadge();injectFreeProBar();},900);
     console.info("[IANS] V2.9.0 Free / Pro Foundation aktiv");
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
 })();
-// ===== IANS V2.9.1 PRO TRIAL + FEEDBACK =====
+// ===== IANS V2.9.2 PRO TRIAL + FEEDBACK =====
 (() => {
   const $ = id => document.getElementById(id);
   const CFG = window.IANS_V290_CONFIG || {};
@@ -3564,9 +3564,469 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
   }
 
   function boot(){
-    removeStartupGate(); installGuard(); rewrite(); addButtons();
+    removeStartupGate(); rewrite(); addButtons();
     setTimeout(()=>{removeStartupGate();rewrite();addButtons();},800);
-    console.info("[IANS] V2.9.1 Pro Trial + Feedback aktiv");
+    console.info("[IANS] V2.9.2 Pro Trial + Feedback aktiv");
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+// ===== IANS OneDrive Command V2.9.2 SMART CLEANUP + SINGLE ACTION FLOW =====
+(() => {
+  const V292 = "2.9.2";
+  const REVIEW_PREFIX = "/_IANS Cleanup Review/";
+  const BASELINE_PREFIX = "ians_v292_baseline_";
+  const ACTION_SESSION = "ians_v292_action_confirmed";
+  const PRO_SESSION = "ians_v292_pro_ok";
+
+  const $ = id => document.getElementById(id);
+  const esc292 = s => String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+
+  const fmtBytes292 = n => typeof formatBytes === "function" ? formatBytes(n || 0) : `${Math.round((n||0)/1073741824)} GB`;
+  const fmtNum292 = n => typeof formatNumber === "function" ? formatNumber(n || 0) : String(n || 0);
+
+  function isReviewPath(path=""){
+    return path === "/_IANS Cleanup Review" || path.startsWith(REVIEW_PREFIX);
+  }
+
+  function dupKey(f){
+    return `${String(f.name||"").trim().toLowerCase()}|${Number(f.size)||0}`;
+  }
+
+  function relevantDate(f){
+    return f.takenDateTime || f.lastModifiedDateTime || f.createdDateTime || "";
+  }
+
+  function ext(name=""){
+    const m = String(name).toLowerCase().match(/\.([^.]+)$/);
+    return m ? m[1] : "";
+  }
+
+  const INSTALLER_EXT = new Set(["iso","wim","esd","img","exe","msi","msix","pkg","cab","dmg","rar","7z"]);
+  const GENERIC_CLEANUP_HINTS = [
+    "backup","bakup","backup må gjennomgå","rydd","cleanup","download","downloads",
+    "nedlasting","temp","temporary","old","gammel","fra usb","usb","copy","kopi",
+    "last opp for backup","windows10upgrade","install","installer","software"
+  ];
+
+  function hasGenericCleanupContext(path=""){
+    const p = path.toLowerCase();
+    return GENERIC_CLEANUP_HINTS.some(x => p.includes(x));
+  }
+
+  function pathDepth(path=""){
+    return String(path).split("/").filter(Boolean).length;
+  }
+
+  function contextProtected(f){
+    // Bevar dokumenter i meningsfulle mapper. Vi sorterer aldri "alle Excel" eller "alle PDF".
+    const cat = String(f.category||"");
+    const isBusinessDoc = ["Dokumenter","Regneark","Presentasjoner"].includes(cat);
+    if(isBusinessDoc && pathDepth(f.parentPath||f.path) >= 2 && !hasGenericCleanupContext(f.path)) return true;
+
+    // Filer utenfor generiske backup/ryddeområder behandles konservativt.
+    if(!hasGenericCleanupContext(f.path) && pathDepth(f.parentPath||f.path) >= 3) return true;
+    return false;
+  }
+
+  function oldInstallerCandidate(f){
+    if(isReviewPath(f.path) || contextProtected(f)) return false;
+    if(!INSTALLER_EXT.has(ext(f.name))) return false;
+    if(!hasGenericCleanupContext(f.path)) return false;
+    const d = new Date(f.lastModifiedDateTime || f.createdDateTime || 0);
+    if(!Number.isFinite(d.getTime())) return false;
+    const ageYears = (Date.now() - d.getTime()) / 31557600000;
+    return ageYears >= 3;
+  }
+
+  function buildSmart(r){
+    const all = Array.isArray(r.files) ? r.files : [];
+    const map = new Map();
+    for(const f of all){
+      if(!f || !f.name || !Number(f.size)) continue;
+      const k = dupKey(f);
+      if(!map.has(k)) map.set(k, []);
+      map.get(k).push(f);
+    }
+
+    let totalSavings = 0;
+    let reviewSavings = 0;
+    let newSavings = 0;
+    let totalGroups = 0;
+    let reviewGroups = 0;
+    let newGroups = 0;
+    let strongGroups = 0;
+
+    const newDupGroups = [];
+    const reviewDupGroups = [];
+
+    for(const files of map.values()){
+      if(files.length < 2) continue;
+      totalGroups++;
+      const size = Number(files[0].size)||0;
+      const review = files.filter(f => isReviewPath(f.path));
+      const normal = files.filter(f => !isReviewPath(f.path));
+
+      const total = Math.max(0, files.length - 1) * size;
+      const alreadyReview = normal.length > 0
+        ? review.length * size
+        : Math.max(0, review.length - 1) * size;
+      const fresh = Math.max(0, normal.length - 1) * size;
+
+      totalSavings += total;
+      reviewSavings += alreadyReview;
+      newSavings += fresh;
+
+      if(review.length){
+        reviewGroups++;
+        reviewDupGroups.push({
+          name:files[0].name,
+          sizeEach:size,
+          copies:files.length,
+          reviewCopies:review.length,
+          nonReviewCopies:normal.length,
+          potentialSavings:alreadyReview,
+          paths:review.slice(0,12).map(f=>f.path)
+        });
+      }
+
+      if(normal.length > 1){
+        newGroups++;
+        const dates = normal.map(relevantDate).filter(Boolean);
+        const sameDate = dates.length >= 2 && new Set(dates).size === 1;
+        const confidence = sameDate ? "strong" : "possible";
+        if(confidence === "strong") strongGroups++;
+        newDupGroups.push({
+          name:files[0].name,
+          sizeEach:size,
+          copies:normal.length,
+          potentialSavings:fresh,
+          confidence,
+          paths:normal.slice(0,12).map(f=>f.path)
+        });
+      }
+    }
+
+    newDupGroups.sort((a,b)=>b.potentialSavings-a.potentialSavings);
+    reviewDupGroups.sort((a,b)=>b.potentialSavings-a.potentialSavings);
+
+    const oldInstallers = all
+      .filter(oldInstallerCandidate)
+      .sort((a,b)=>(b.size||0)-(a.size||0));
+
+    const rootOrphans = all
+      .filter(f => !isReviewPath(f.path) && (f.parentPath === "/" || String(f.path||"").split("/").filter(Boolean).length === 1))
+      .filter(f => ["Dokumenter","Regneark","Presentasjoner","Video","Bilder"].includes(String(f.category||"")))
+      .sort((a,b)=>(b.size||0)-(a.size||0));
+
+    const started = new Date(r.scanStartedAt || 0).getTime();
+    const finished = new Date(r.generatedAt || Date.now()).getTime();
+    const durationMs = Math.max(0, finished-started);
+    const durationSec = durationMs/1000;
+    const fps = durationSec > 0 ? (r.summary?.files||0)/durationSec : 0;
+
+    return {
+      engine:"IANS Smart Cleanup 2.9.2",
+      philosophy:"Bevar kontekst. Ingen samling etter filtype. Preview før handling.",
+      totalIdentified:{
+        groups:totalGroups,
+        savings:totalSavings
+      },
+      alreadyInReview:{
+        groups:reviewGroups,
+        savings:reviewSavings
+      },
+      newCandidates:{
+        groups:newGroups,
+        savings:newSavings,
+        strongGroups,
+        verifiedGroups:0
+      },
+      oldInstallers:{
+        count:oldInstallers.length,
+        bytes:oldInstallers.reduce((s,f)=>s+(Number(f.size)||0),0),
+        files:oldInstallers.slice(0,50)
+      },
+      rootItems:{
+        count:rootOrphans.length,
+        bytes:rootOrphans.reduce((s,f)=>s+(Number(f.size)||0),0),
+        files:rootOrphans.slice(0,50)
+      },
+      duplicateCandidates:newDupGroups.slice(0,300),
+      reviewDuplicateGroups:reviewDupGroups.slice(0,300),
+      performance:{
+        durationMs,
+        filesPerSecond:fps,
+        files:r.summary?.files||0,
+        folders:r.summary?.folders||0,
+        bytes:r.summary?.fileBytes||0
+      }
+    };
+  }
+
+  function baselineKey(r){
+    const account = String(r.account?.username||"anonymous").toLowerCase();
+    const root = String(r.scanRoot?.path||"/");
+    return BASELINE_PREFIX + btoa(unescape(encodeURIComponent(`${account}|${root}`))).replace(/=+$/,"");
+  }
+
+  function compareBaseline(r, smart){
+    const key = baselineKey(r);
+    let prev = null;
+    try{prev=JSON.parse(localStorage.getItem(key)||"null")}catch{}
+    const now = {
+      generatedAt:r.generatedAt,
+      files:r.summary?.files||0,
+      folders:r.summary?.folders||0,
+      bytes:r.summary?.fileBytes||0,
+      newDupGroups:smart.newCandidates.groups,
+      newDupSavings:smart.newCandidates.savings,
+      reviewSavings:smart.alreadyInReview.savings
+    };
+    const delta = prev ? {
+      files:now.files-prev.files,
+      folders:now.folders-prev.folders,
+      bytes:now.bytes-prev.bytes,
+      newDupGroups:now.newDupGroups-prev.newDupGroups,
+      newDupSavings:now.newDupSavings-prev.newDupSavings,
+      reviewSavings:now.reviewSavings-prev.reviewSavings
+    } : null;
+    try{localStorage.setItem(key,JSON.stringify(now))}catch{}
+    return {previous:prev, current:now, delta};
+  }
+
+  function enhanceReport(r){
+    if(!r || !Array.isArray(r.files)) return r;
+    const smart = buildSmart(r);
+    const baseline = compareBaseline(r, smart);
+    r.smartCleanup = {...smart, baseline};
+
+    // Hovedkortet skal vise NYE kandidater, ikke filer som allerede er i review/karantene.
+    r.summary.rawPossibleDuplicateGroups = r.summary.possibleDuplicateGroups;
+    r.summary.rawPossibleDuplicateSavings = r.summary.possibleDuplicateSavings;
+    r.summary.possibleDuplicateGroups = smart.newCandidates.groups;
+    r.summary.possibleDuplicateSavings = smart.newCandidates.savings;
+
+    // Duplicate Review skal ikke repetere _IANS Cleanup Review som "nye" kandidater.
+    r.possibleDuplicates = smart.duplicateCandidates.map(g=>({
+      name:g.name,
+      sizeEach:g.sizeEach,
+      copies:g.copies,
+      potentialSavings:g.potentialSavings,
+      confidence:g.confidence,
+      paths:g.paths
+    }));
+    return r;
+  }
+
+  function fmtSignedBytes(v){
+    if(!v) return "0 B";
+    return `${v>0?"+":"−"}${fmtBytes292(Math.abs(v))}`;
+  }
+  function fmtSignedNum(v){
+    if(!v) return "0";
+    return `${v>0?"+":"−"}${fmtNum292(Math.abs(v))}`;
+  }
+  function fmtDuration(ms){
+    const s=Math.round((ms||0)/1000), h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+    return h?`${h} t ${m} min`:m?`${m} min ${sec} sek`:`${sec} sek`;
+  }
+
+  function ensurePanel(){
+    if($("v292SmartCleanup")) return $("v292SmartCleanup");
+    const dup = $("duplicatesTable")?.closest("section.panel");
+    if(!dup) return null;
+    const p=document.createElement("section");
+    p.id="v292SmartCleanup";
+    p.className="panel v292-smart";
+    dup.parentNode.insertBefore(p,dup);
+    return p;
+  }
+
+  function renderSmart(r){
+    if(!r?.smartCleanup) return;
+    const s=r.smartCleanup, p=ensurePanel();
+    if(!p) return;
+    const b=s.baseline;
+    const base = b.previous ? `
+      <div class="v292-baseline">
+        <span class="eyebrow">ENDRING SIDEN FORRIGE SCAN</span>
+        <div><b>${fmtSignedNum(b.delta.files)}</b><small>filer</small></div>
+        <div><b>${fmtSignedBytes(b.delta.bytes)}</b><small>kartlagt data</small></div>
+        <div><b>${fmtSignedNum(b.delta.newDupGroups)}</b><small>nye dup.grupper</small></div>
+        <div><b>${fmtSignedBytes(b.delta.newDupSavings)}</b><small>ny duplikatplass</small></div>
+      </div>` :
+      `<div class="v292-baseline first"><strong>Baseline opprettet</strong><span>Neste scan kan vise hva som faktisk har endret seg.</span></div>`;
+
+    const installers = s.oldInstallers.files.slice(0,6).map(f=>`
+      <tr><td class="path">${esc292(f.path)}</td><td>${esc292(f.category||"")}</td><td class="num">${fmtBytes292(f.size)}</td></tr>`).join("");
+
+    const strong = s.duplicateCandidates.filter(x=>x.confidence==="strong").slice(0,5).map(g=>`
+      <li><div><strong>${esc292(g.name)}</strong><small>${g.copies} kopier · ${fmtBytes292(g.sizeEach)}/stk</small></div><b>${fmtBytes292(g.potentialSavings)}</b></li>`).join("");
+
+    p.innerHTML=`
+      <div class="section-title">
+        <div><span class="eyebrow">SMART CLEANUP · V${V292}</span><h3>Rydd med kontekst – ikke bare filtype</h3></div>
+        <span class="badge safe">PREVIEW FIRST</span>
+      </div>
+      <p class="muted">Dokumenter beholdes i kunde-, prosjekt- og fagmapper. Vi samler aldri alle Excel-, PDF- eller Word-filer bare fordi de har samme filtype.</p>
+
+      <div class="v292-metrics">
+        <article><span>Nye kandidater</span><strong>${fmtBytes292(s.newCandidates.savings)}</strong><small>${fmtNum292(s.newCandidates.groups)} grupper utenfor Cleanup Review</small></article>
+        <article><span>Allerede i review</span><strong>${fmtBytes292(s.alreadyInReview.savings)}</strong><small>${fmtNum292(s.alreadyInReview.groups)} grupper er allerede håndtert/isolert</small></article>
+        <article><span>Total identifisert</span><strong>${fmtBytes292(s.totalIdentified.savings)}</strong><small>Informasjon – ikke automatisk sletteforslag</small></article>
+        <article><span>Scan-ytelse</span><strong>${fmtDuration(s.performance.durationMs)}</strong><small>${s.performance.filesPerSecond.toFixed(1)} filer/sek · ${fmtBytes292(s.performance.bytes)}</small></article>
+      </div>
+
+      ${base}
+
+      <div class="v292-grid">
+        <article class="v292-card">
+          <span class="eyebrow">DUPLIKATSIKKERHET</span>
+          <h4>Tre sikkerhetsnivåer</h4>
+          <div class="v292-level"><b>1 · Mulig</b><span>Samme navn + størrelse</span></div>
+          <div class="v292-level strong"><b>2 · Sterk kandidat</b><span>Samme navn, størrelse og relevante metadata</span></div>
+          <div class="v292-level verified"><b>3 · Verifisert identisk</b><span>Krever innholds-/hashkontroll før permanent sletting</span></div>
+          <p><strong>${fmtNum292(s.newCandidates.strongGroups)}</strong> sterke kandidater · <strong>0</strong> hash-verifiserte grupper i denne versjonen.</p>
+        </article>
+
+        <article class="v292-card">
+          <span class="eyebrow">SUNN FORNUFT</span>
+          <h4>Hva motoren beskytter</h4>
+          <ul>
+            <li>Kunde- og prosjektstruktur beholdes</li>
+            <li>Dokumenter flyttes ikke bare pga. filtype</li>
+            <li>Cleanup Review telles separat</li>
+            <li>Gamle installasjonsfiler foreslås kun i tydelige backup/ryddeområder</li>
+            <li>Bilder/video krever ekstra kontroll før permanent sletting</li>
+          </ul>
+        </article>
+      </div>
+
+      ${strong ? `<div class="v292-priority"><span class="eyebrow">HØY VERDI · STERKE KANDIDATER</span><ul>${strong}</ul></div>` : ""}
+
+      <details class="v292-details">
+        <summary>Gamle installasjonsfiler i tydelige backup/ryddeområder · ${fmtNum292(s.oldInstallers.count)} filer · ${fmtBytes292(s.oldInstallers.bytes)}</summary>
+        <p class="muted">Dette er kun review-kandidater. Filer i meningsfulle prosjekt-/kundemapper beskyttes.</p>
+        <div class="table-wrap"><table><thead><tr><th>Fil</th><th>Type</th><th>Størrelse</th></tr></thead><tbody>${installers||'<tr><td colspan="3">Ingen kandidater.</td></tr>'}</tbody></table></div>
+      </details>
+    `;
+
+    const dupPanel=$("duplicatesTable")?.closest("section.panel");
+    const note=dupPanel?.querySelector("p.muted");
+    if(note) note.innerHTML=`V2.9.2 viser <strong>nye kandidater utenfor _IANS Cleanup Review</strong>. Metadata gir kandidatnivå – ikke bevis. Permanent sletting bør først skje etter innholdsverifisering.`;
+    const metric=$("duplicateCount")?.closest(".metric");
+    const label=metric?.querySelector("span");
+    if(label) label.textContent="Nye duplikatkandidater";
+  }
+
+  // Enhance every completed scan before the existing UI renders.
+  const baseRenderReport292 = renderReport;
+  renderReport = function(r){
+    enhanceReport(r);
+    baseRenderReport292(r);
+    renderSmart(r);
+  };
+
+  // ---------- ONE AUTHORITATIVE ACTION MODE FLOW ----------
+  function cfg292(){ return window.IANS_V290_CONFIG || {}; }
+  function ownerMatch292(){
+    const wanted=String(cfg292().ownerUsername||"").trim().toLowerCase();
+    const actual=String(activeAccount?.username||"").trim().toLowerCase();
+    return !!wanted && !!actual && wanted===actual;
+  }
+  async function sha292(text){
+    const b=new TextEncoder().encode(text),d=await crypto.subtle.digest("SHA-256",b);
+    return [...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,"0")).join("");
+  }
+
+  function actionModal292({needsCode=false}={}){
+    return new Promise(resolve=>{
+      const wrap=document.createElement("div");
+      wrap.className="v292-action-modal";
+      wrap.innerHTML=`<div class="v292-action-card">
+        <button class="v292-x" aria-label="Lukk">×</button>
+        <span class="eyebrow">ACTION MODE · PRO</span>
+        <h2>Aktiver Action Mode</h2>
+        <div class="v292-danger"><strong>Read Only avsluttes for skrivehandlinger.</strong><p>OneDrive Command kan deretter flytte filer, bruke strukturert karantene eller sende filer til papirkurven.</p></div>
+        ${needsCode?`<label>Pro-testkode<input id="v292ActionCode" type="password" autocomplete="one-time-code" placeholder="••••••••"></label>`:""}
+        <label class="v292-check"><input id="v292ActionCheck" type="checkbox"> Jeg har kontrollert preview/backup og ønsker å aktivere skrivehandlinger for denne økten.</label>
+        <div id="v292ActionMsg" class="v292-msg"></div>
+        <div class="v292-actions"><button class="btn ghost" id="v292Cancel">Avbryt</button><button class="btn primary" id="v292Go" disabled>Aktiver Action Mode</button></div>
+      </div>`;
+      document.body.appendChild(wrap);
+      const check=wrap.querySelector("#v292ActionCheck"),go=wrap.querySelector("#v292Go"),msg=wrap.querySelector("#v292ActionMsg");
+      check.onchange=()=>go.disabled=!check.checked;
+      const close=()=>{wrap.remove();resolve(false)};
+      wrap.querySelector(".v292-x").onclick=close;
+      wrap.querySelector("#v292Cancel").onclick=close;
+      go.onclick=async()=>{
+        if(needsCode){
+          const code=(wrap.querySelector("#v292ActionCode")?.value||"").trim();
+          if(!code){msg.textContent="Skriv inn Pro-testkoden.";return;}
+          const hash=cfg292().betaGateHash||"";
+          if(!hash || await sha292(code)!==hash){msg.textContent="Feil Pro-testkode.";return;}
+        }
+        wrap.remove(); resolve(true);
+      };
+    });
+  }
+
+  let activating292=false;
+  async function activateAction292(){
+    if(activating292 || (typeof v24Enabled!=="undefined" && v24Enabled)) return;
+    if(!activeAccount){ alert("Koble først til OneDrive."); return; }
+    activating292=true;
+    try{
+      const owner=ownerMatch292();
+      const sessionPro=sessionStorage.getItem(PRO_SESSION)==="1";
+      const bodyPro=document.body.classList.contains("v290-pro-active");
+      const needsCode=!(owner || sessionPro || bodyPro);
+
+      const confirmed=sessionStorage.getItem(ACTION_SESSION)==="1";
+      if(!confirmed || needsCode){
+        const ok=await actionModal292({needsCode});
+        if(!ok) return;
+        sessionStorage.setItem(ACTION_SESSION,"1");
+        sessionStorage.setItem(PRO_SESSION,"1");
+        document.body.classList.add("v290-pro-active","v292-pro-active");
+      }
+
+      // Ett Microsoft consent-popup kan vises første gang Files.ReadWrite kreves.
+      await v24WriteToken(true);
+      v24SetEnabled(true);
+      if(typeof syncMode252==="function") syncMode252(true);
+      if(typeof iansToast==="function") iansToast("Action Mode aktiv","Skrivetilgang er aktiv for denne nettleserøkten.","success",6500);
+    }catch(err){
+      console.error("[IANS V2.9.2] Action Mode",err);
+      alert(`Kunne ikke aktivere Action Mode: ${err.message}`);
+    }finally{
+      activating292=false;
+    }
+  }
+
+  // Gamle guard-funksjoner deaktiveres av installeren. Denne handleren er nå eneste flyt.
+  document.addEventListener("click",e=>{
+    const b=e.target.closest("#topActionBtn,#v24EnableAction");
+    if(!b) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    activateAction292();
+  },true);
+
+  function boot292(){
+    // Hvis rapport finnes i minnet (f.eks. etter hot reload), oppgrader visningen.
+    try{
+      if(report){
+        enhanceReport(report);
+        baseRenderReport292(report);
+        renderSmart(report);
+      }
+    }catch(e){console.warn("[IANS V2.9.2] initial render",e);}
+    console.info("[IANS] OneDrive Command V2.9.2 Smart Cleanup aktiv");
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot292);
+  else boot292();
 })();
