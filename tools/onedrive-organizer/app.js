@@ -4181,3 +4181,327 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",inject); else inject();
   console.info("[IANS] OneDrive Command V2.9.3 Portable Scan + Photo Intelligence aktiv");
 })();
+// ===== IANS OneDrive Command V2.9.4 · Recovery + Review Fix =====
+(() => {
+  const V294 = "2.9.4";
+  const DB_KEY = "latest-completed";
+  const REVIEW_PREFIX = "/_IANS Cleanup Review/";
+  const E = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const fmtN = n => typeof formatNumber === "function" ? formatNumber(n||0) : new Intl.NumberFormat("nb-NO").format(n||0);
+  const fmtB = n => typeof formatBytes === "function" ? formatBytes(n||0) : `${Math.round((n||0)/1048576)} MB`;
+  const delay = ms => new Promise(r=>setTimeout(r,ms));
+
+  // ---------- Completed Scan Vault ----------
+  async function dbGet(key){
+    try{
+      const db = await scanDbOpen();
+      const value = await new Promise((resolve,reject)=>{
+        const tx=db.transaction(SCAN_DB_STORE,"readonly");
+        const req=tx.objectStore(SCAN_DB_STORE).get(key);
+        req.onsuccess=()=>resolve(req.result||null);
+        req.onerror=()=>reject(req.error);
+      });
+      db.close(); return value;
+    }catch(e){ console.warn("[IANS V2.9.4] Scan Vault read",e); return null; }
+  }
+  async function dbPut(key,value){
+    try{
+      const db = await scanDbOpen();
+      await new Promise((resolve,reject)=>{
+        const tx=db.transaction(SCAN_DB_STORE,"readwrite");
+        tx.objectStore(SCAN_DB_STORE).put(value,key);
+        tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error);
+      });
+      db.close(); return true;
+    }catch(e){ console.warn("[IANS V2.9.4] Scan Vault write",e); return false; }
+  }
+
+  async function saveCompleted(r){
+    if(!r?.files?.length) return false;
+    const payload={
+      schema:"ians-scan-vault/1",
+      version:V294,
+      savedAt:new Date().toISOString(),
+      account:r.account?.username||activeAccount?.username||"",
+      report:r
+    };
+    const ok=await dbPut(DB_KEY,payload);
+    if(ok) updateVaultUi(payload);
+    return ok;
+  }
+
+  async function restoreCompleted({silent=false}={}){
+    if(report?.files?.length) return report;
+    const vault=await dbGet(DB_KEY);
+    if(!vault?.report?.files?.length){ updateVaultUi(null); return null; }
+    const signed=activeAccount?.username||"";
+    const source=vault.account||vault.report?.account?.username||"";
+    if(signed && source && signed.toLowerCase()!==source.toLowerCase()){
+      updateVaultUi(vault); return null;
+    }
+    report=vault.report;
+    try{ renderReport(report); }catch(e){ console.warn("[IANS V2.9.4] restore render",e); }
+    const b=E("exportBtn"); if(b)b.disabled=false;
+    updateVaultUi(vault);
+    if(!silent && typeof iansToast==="function") iansToast("Scan gjenopprettet",`${fmtN(report.files.length)} filer lastet fra Scan Vault.`,"success",7000);
+    return report;
+  }
+
+  function injectVault(){
+    if(E("v294ScanVault")) return;
+    const anchor=E("v293Portable") || E("topControlPanel");
+    if(!anchor) return;
+    const box=document.createElement("section");
+    box.id="v294ScanVault";
+    box.className="panel";
+    box.style.cssText="margin-top:12px;border-color:rgba(74,222,128,.28)";
+    box.innerHTML=`<div class="section-title"><div><span class="eyebrow">SCAN VAULT · V2.9.4</span><h3>Ferdig scan lagres automatisk</h3></div><span class="badge safe" id="v294VaultBadge">KONTROLLERER</span></div>
+      <p class="muted">Siste fullførte eller importerte rapport beholdes i IndexedDB selv om fanen lukkes. Checkpoint og ferdig scan er to separate lagringer.</p>
+      <div class="actions"><button class="btn ghost" id="v294Restore">Gjenopprett siste scan</button><button class="btn ghost" id="v294SaveNow">Lagre aktiv scan nå</button></div>
+      <div id="v294VaultStatus" class="empty-state" style="margin-top:10px">Kontrollerer lokal Scan Vault…</div>`;
+    anchor.insertAdjacentElement("afterend",box);
+    E("v294Restore").onclick=()=>restoreCompleted();
+    E("v294SaveNow").onclick=async()=>{
+      if(!report?.files?.length){ alert("Ingen aktiv ferdig scan å lagre."); return; }
+      const ok=await saveCompleted(report);
+      if(typeof iansToast==="function") iansToast(ok?"Scan lagret":"Lagring feilet",ok?"Scan Vault er oppdatert.":"Kunne ikke skrive til IndexedDB.",ok?"success":"error",6500);
+    };
+    dbGet(DB_KEY).then(updateVaultUi);
+  }
+
+  function updateVaultUi(vault){
+    const st=E("v294VaultStatus"),badge=E("v294VaultBadge");
+    if(!st||!badge)return;
+    if(!vault?.report?.files?.length){
+      badge.textContent="TOM";
+      st.textContent="Ingen ferdig scan lagret lokalt ennå.";
+      return;
+    }
+    badge.textContent="LAGRET";
+    const r=vault.report;
+    st.innerHTML=`<strong>${fmtN(r.summary?.files||r.files.length)} filer · ${fmtB(r.summary?.fileBytes||r.files.reduce((s,f)=>s+(+f.size||0),0))}</strong><br><span class="muted">${esc(r.scanRoot?.path||"/")} · lagret ${new Date(vault.savedAt).toLocaleString("nb-NO")}</span>`;
+  }
+
+  // Save every report that is rendered (new full scan and imported .iansscan included).
+  if(typeof renderReport === "function"){
+    const baseRender294=renderReport;
+    renderReport=function(r){
+      const out=baseRender294(r);
+      if(r?.files?.length) setTimeout(()=>saveCompleted(r),0);
+      return out;
+    };
+  }
+
+  // Restore after login/dashboard becomes visible.
+  if(typeof showDashboard === "function"){
+    const baseShowDashboard294=showDashboard;
+    showDashboard=function(...args){
+      const out=baseShowDashboard294(...args);
+      setTimeout(()=>restoreCompleted({silent:true}),250);
+      return out;
+    };
+  }
+
+  // ---------- Organization Studio Fix ----------
+  // V2.8.5 hard-excluded every file under /_IANS Cleanup Review/. That made a scan
+  // of the review folder produce a 0-file plan. V2.9.4 deliberately allows review files.
+  let org294=[];
+
+  function cleanRoot(v){
+    let root=(v||"/_IANS Organisert").trim();
+    if(!root.startsWith("/")) root="/"+root;
+    root=root.replace(/\/+$/g,"");
+    return root||"/_IANS Organisert";
+  }
+  function yearOf(f){
+    const raw=(f.category==="Bilder"||f.category==="Video") ? (f.takenDateTime||f.createdDateTime||f.lastModifiedDateTime) : (f.createdDateTime||f.lastModifiedDateTime);
+    const d=raw?new Date(raw):null;
+    return d&&Number.isFinite(d.getTime()) ? String(d.getFullYear()) : "Uten dato";
+  }
+  function monthOf(f){
+    const raw=f.takenDateTime||f.createdDateTime||f.lastModifiedDateTime;
+    const d=raw?new Date(raw):null;
+    if(!d||!Number.isFinite(d.getTime())) return "Uten dato";
+    return String(d.getMonth()+1).padStart(2,"0");
+  }
+  function target294(f,root){
+    const cat=String(f.category||"Annet");
+    if(cat==="Bilder"||cat==="Video") return `${root}/${cat}/${yearOf(f)}/${monthOf(f)}`;
+    return `${root}/${cat}/${yearOf(f)}`;
+  }
+  function renderOrg294(){
+    const stats=E("v285OrgStats"),preview=E("v285OrgPreview"),exec=E("v285OrgExecute");
+    if(!stats||!preview||!exec)return;
+    const conflicts=org294.filter(x=>x.conflict).length;
+    const folders=new Set(org294.map(x=>x.target)).size;
+    const bytes=org294.reduce((s,x)=>s+(+x.file.size||0),0);
+    stats.innerHTML=`<div><span>Filer i plan</span><strong>${fmtN(org294.length)}</strong></div><div><span>Målmapper</span><strong>${fmtN(folders)}</strong></div><div><span>Datamengde</span><strong>${fmtB(bytes)}</strong></div><div><span>Navnekonflikter</span><strong>${fmtN(conflicts)}</strong></div>`;
+    preview.innerHTML=org294.slice(0,100).map(x=>`<div class="${x.conflict?"conflict":""}"><strong>${esc(x.file.name)}</strong><span>${esc(x.file.path)} → ${esc(x.target)}/</span>${x.conflict?'<em>Hoppes over: mulig navnekonflikt</em>':""}</div>`).join("")||'<div class="empty-state">Ingen filer matcher valgte kategorier.</div>';
+    exec.disabled=!org294.some(x=>!x.conflict);
+  }
+  function buildOrg294(){
+    if(!report?.files?.length){
+      restoreCompleted({silent:true}).then(r=>{ if(r) buildOrg294(); else alert("Ingen scan tilgjengelig. Importer .iansscan eller kjør kartlegging."); });
+      return;
+    }
+    const root=cleanRoot(E("v285OrgRoot")?.value);
+    const cats=new Set([...document.querySelectorAll("[data-v285-org-cat]:checked")].map(x=>x.value));
+    const seen=new Set(); org294=[];
+    for(const f of report.files){
+      const p=String(f.path||"");
+      // Only skip files already under the destination tree. Do NOT skip Cleanup Review.
+      if(p===root || p.startsWith(root+"/") || !cats.has(f.category)) continue;
+      const target=target294(f,root);
+      const key=`${target.toLowerCase()}|${String(f.name||"").toLowerCase()}`;
+      const conflict=seen.has(key); seen.add(key);
+      org294.push({file:f,target,conflict});
+    }
+    renderOrg294();
+    if(typeof iansToast==="function") iansToast("Organisasjonsforslag bygget",`${fmtN(org294.length)} filer i preview. Ingen filer er flyttet ennå.`,"success",6500);
+  }
+  async function executeOrg294(){
+    const safe=org294.filter(x=>!x.conflict);
+    if(!safe.length) return;
+    if(typeof v24Enabled==="undefined" || !v24Enabled){ alert("Aktiver Action Mode først."); return; }
+    const phrase=`FLYTT ${safe.length} FILER`;
+    const ok=prompt(`Organization Studio vil flytte ${safe.length} filer.\n\nSkriv nøyaktig: ${phrase}`)===phrase;
+    if(!ok)return;
+    let moved=0,failed=0;
+    for(let i=0;i<safe.length;i++){
+      const x=safe[i],f=x.file;
+      try{
+        const id=await v24EnsureFolder(x.target);
+        const old=f.path;
+        await v24Graph(`/me/drive/items/${encodeURIComponent(f.id)}`,{method:"PATCH",body:{parentReference:{id}}});
+        f.parentPath=x.target; f.path=`${x.target}/${f.name}`;
+        if(typeof v24Log==="function")v24Log("Organization Studio",old,true,`Flyttet til ${x.target}`);
+        moved++;
+      }catch(err){
+        if(typeof v24Log==="function")v24Log("Organization Studio",f.path,false,err.message);
+        failed++;
+      }
+      if(i%10===0) await delay(0);
+    }
+    org294=[]; renderOrg294();
+    try{renderReport(report);}catch{}
+    await saveCompleted(report);
+    if(typeof v24RenderLog==="function")v24RenderLog();
+    if(typeof iansToast==="function")iansToast("Organization Studio ferdig",`${fmtN(moved)} flyttet · ${fmtN(failed)} feil.`,failed?"error":"success",9000);
+  }
+
+  document.addEventListener("click",e=>{
+    const b=e.target.closest("#v285OrgBuild,#v285OrgExecute");
+    if(!b)return;
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    if(b.id==="v285OrgBuild") buildOrg294(); else executeOrg294();
+  },true);
+
+  // ---------- Review Duplicate Cleaner ----------
+  function dupGroups294(){
+    if(!report?.files?.length)return [];
+    const map=new Map();
+    for(const f of report.files){
+      const key=`${String(f.name||"").toLowerCase()}|${Number(f.size)||0}`;
+      if(!map.has(key))map.set(key,[]);
+      map.get(key).push(f);
+    }
+    return [...map.values()].filter(g=>g.length>1 && Number(g[0].size)>0).sort((a,b)=>((b.length-1)*b[0].size)-((a.length-1)*a[0].size));
+  }
+
+  function injectReviewCleaner(){
+    if(E("v294ReviewCleaner"))return;
+    const anchor=E("v285OrganizationStudio") || E("v293PhotoIntel") || E("dashboard")?.lastElementChild;
+    if(!anchor)return;
+    const p=document.createElement("section");
+    p.id="v294ReviewCleaner"; p.className="panel";
+    p.innerHTML=`<div class="section-title"><div><span class="eyebrow">DUPLICATE REVIEW · V2.9.4</span><h3>Rydd duplikater også inne i Cleanup Review</h3></div><span class="badge safe">MANUELL PREVIEW</span></div>
+      <p class="muted">V2.9.2 klassifiserte filer under <code>/_IANS Cleanup Review/</code> som «allerede i review» og ga derfor 0 nye kandidater. Her kan du gjennomgå disse gruppene. Match er fortsatt filnavn + størrelse, ikke kryptografisk hash.</p>
+      <div class="actions"><button class="btn primary" id="v294DupBuild">Vis duplikatgrupper</button><button class="btn danger" id="v294DupTrash" disabled>Send valgte til papirkurv</button></div>
+      <div id="v294DupStats" class="empty-state" style="margin-top:10px">Ingen review bygget ennå.</div>
+      <div id="v294DupList" style="max-height:520px;overflow:auto;margin-top:10px"></div>`;
+    anchor.insertAdjacentElement("afterend",p);
+    E("v294DupBuild").onclick=renderDupCleaner;
+    E("v294DupTrash").onclick=trashDupSelection;
+  }
+
+  function renderDupCleaner(){
+    const groups=dupGroups294();
+    const list=E("v294DupList"),stats=E("v294DupStats"),trash=E("v294DupTrash");
+    if(!list||!stats||!trash)return;
+    const savings=groups.reduce((s,g)=>s+(g.length-1)*(+g[0].size||0),0);
+    stats.innerHTML=`<strong>${fmtN(groups.length)} grupper · opptil ${fmtB(savings)} mulig plass</strong><br><span class="muted">Minst én kopi per gruppe er låst som «behold».</span>`;
+    list.innerHTML=groups.slice(0,100).map((g,gi)=>{
+      const rows=g.map((f,i)=>`<label style="display:flex;gap:10px;align-items:flex-start;padding:7px 4px;border-top:1px solid rgba(255,255,255,.06)"><input type="checkbox" data-v294-dup-id="${esc(f.id)}" data-v294-group="${gi}" ${i===0?"disabled":""}><span><b>${i===0?"BEHOLD":"Kandidat"}</b> · ${esc(f.path)}</span></label>`).join("");
+      return `<div style="padding:10px;margin:8px 0;border:1px solid rgba(100,180,255,.16);border-radius:12px"><strong>${esc(g[0].name)}</strong> · ${fmtN(g.length)} kopier · ${fmtB(g[0].size)} per fil${rows}</div>`;
+    }).join("")||'<div class="empty-state">Ingen grupper med samme filnavn og størrelse.</div>';
+    list.onchange=()=>{ trash.disabled=!list.querySelector("[data-v294-dup-id]:checked"); };
+    trash.disabled=true;
+  }
+
+  async function trashDupSelection(){
+    const ids=[...document.querySelectorAll("[data-v294-dup-id]:checked")].map(x=>x.dataset.v294DupId);
+    if(!ids.length)return;
+    if(typeof v24Enabled==="undefined" || !v24Enabled){alert("Aktiver Action Mode først.");return;}
+    const rows=report.files.filter(f=>ids.includes(f.id));
+    const phrase=`SLETT ${rows.length} FILER`;
+    if(prompt(`Valgte filer sendes til OneDrive-papirkurven.\nPermanent sletting brukes ikke.\n\nSkriv nøyaktig: ${phrase}`)!==phrase)return;
+    let ok=0,fail=0;
+    for(const f of rows){
+      try{
+        await v24Graph(`/me/drive/items/${encodeURIComponent(f.id)}`,{method:"DELETE"});
+        report.files=report.files.filter(x=>x.id!==f.id);
+        if(typeof v24Log==="function")v24Log("Duplicate Review",f.path,true,"Sendt til OneDrive-papirkurven");
+        ok++;
+      }catch(err){
+        if(typeof v24Log==="function")v24Log("Duplicate Review",f.path,false,err.message);
+        fail++;
+      }
+    }
+    try{renderReport(report);}catch{}
+    await saveCompleted(report);
+    renderDupCleaner();
+    if(typeof v24RenderLog==="function")v24RenderLog();
+    if(typeof iansToast==="function")iansToast("Duplicate Review ferdig",`${fmtN(ok)} sendt til papirkurv · ${fmtN(fail)} feil.`,fail?"error":"success",9000);
+  }
+
+  // ---------- Sleep / long scan protection ----------
+  let wakeLock294=null;
+  async function requestWake294(){
+    try{
+      if("wakeLock" in navigator && !wakeLock294){
+        wakeLock294=await navigator.wakeLock.request("screen");
+        wakeLock294.addEventListener("release",()=>{wakeLock294=null;});
+        if(typeof iansToast==="function")iansToast("Mac/PC holdes våken","Skjerm-wake-lock er aktiv mens kartleggingen kjører. Lukker du Mac-lokket kan macOS fortsatt gå i dvale.","success",8000);
+      }
+    }catch(e){ console.warn("[IANS V2.9.4] wake lock",e); }
+  }
+  async function releaseWake294(){ try{await wakeLock294?.release();}catch{} wakeLock294=null; }
+  document.addEventListener("click",e=>{
+    if(e.target.closest("#scanBtn,#resumeScanBtn")) requestWake294();
+  },true);
+  document.addEventListener("visibilitychange",()=>{
+    if(document.visibilityState==="visible" && /SKANN|KART/i.test(E("scanStateBadge")?.textContent||"")) requestWake294();
+  });
+  const scanBadge=E("scanStateBadge");
+  if(scanBadge){
+    new MutationObserver(()=>{
+      const t=scanBadge.textContent||"";
+      if(/FERDIG|PAUSET|CHECKPOINT|IMPORTERT/i.test(t)) releaseWake294();
+    }).observe(scanBadge,{childList:true,subtree:true,characterData:true});
+  }
+
+  // ---------- Version/UI boot ----------
+  function version294(){
+    document.querySelectorAll("body *").forEach(el=>{
+      if(el.children.length===0 && /V2\.9\.3/.test(el.textContent||"")) el.textContent=(el.textContent||"").replace(/V2\.9\.3/g,"V2.9.4");
+    });
+    console.info("[IANS] OneDrive Command V2.9.4 Recovery + Review Fix aktiv");
+  }
+  function boot294(){
+    version294(); injectVault(); injectReviewCleaner();
+    setTimeout(()=>{injectVault();injectReviewCleaner();restoreCompleted({silent:true});},500);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot294);else boot294();
+})();
+// ===== END IANS OneDrive Command V2.9.4 =====
