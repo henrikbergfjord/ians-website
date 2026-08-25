@@ -300,6 +300,12 @@ async function signIn() {
     els.loginPanel.appendChild(p);
   }
 }
+
+// ===== IANS V3.5.3 LOGIN BRIDGE =====
+// Expose the proven MSAL login routine so the workspace can bind it defensively.
+window.IANS_ONE_DRIVE_SIGN_IN = signIn;
+window.IANS_ONE_DRIVE_INIT_MSAL = initMsal;
+
 async function getToken() {
   const request = { scopes: SCOPES, account: activeAccount };
   try {
