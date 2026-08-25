@@ -30,7 +30,7 @@
   </header>
 
   <main class="container">
-    <section id="setupPanel" class="panel setup hidden">
+    <section id="setupPanel" class="panel setup">
       <div>
         <span class="eyebrow">FØRSTE OPPSTART</span>
         <h2>Koble siden til din Microsoft-app</h2>
@@ -76,7 +76,7 @@
       </div>
     </section>
 
-    <section id="loginPanel" class="hero panel">
+    <section id="loginPanel" class="hero panel hidden">
       <div>
         <span class="eyebrow">MICROSOFT ONEDRIVE</span>
         <h2>Kartlegg hele OneDrive uten å laste ned filene</h2>
@@ -535,10 +535,7 @@
           </div>
         </div>
         <div class="filter-grid">
-          <div class="inventory-search-wrap">
-            <input id="searchInput" placeholder="Søk filnavn eller full sti…" autocomplete="off">
-            <button id="searchInventoryBtn" class="btn primary inventory-search-btn" type="button">Søk</button>
-          </div>
+          <input id="searchInput" placeholder="Søk filnavn eller full sti…">
           <select id="categoryFilter"><option value="">Alle filtyper</option></select>
           <select id="yearFilter"><option value="">Alle år</option></select>
           <select id="sizeFilter">
@@ -558,7 +555,6 @@
             <option value="">Alle filer</option>
             <option value="yes">Kun mulige duplikater</option>
           </select>
-          <button id="resetInventoryFiltersBtn" class="btn ghost inventory-reset-btn" type="button">Nullstill</button>
         </div>
         <div id="filterSummary" class="selection-summary">Kjør kartlegging for å aktivere Cleanup Command Center.</div>
         <div id="inventoryTable" class="table-wrap empty-state">Ingen inventardata ennå.</div>
@@ -803,13 +799,11 @@
     <p>IANS OneDrive Organizer V2.9.3.1 Portable Scan + Photo Intelligence · Ingen filer lastes ned under kartleggingen · Ingen skrive-/slettetilgang</p>
   </footer>
 
-  <script type="module" src="app.js?v=354"></script>
+  <script type="module" src="app.js"></script>
 <div class="ians-next-badge">IANS Next · Master</div>
 <script>window.addEventListener('load',()=>{if(location.hash){setTimeout(()=>{const e=document.querySelector(location.hash);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});},500)}});</script>
 
 
-  <script src="workspace-router.js?v=354"></script>
-
-
+  <script src="workspace-router.js"></script>
 </body>
 </html>

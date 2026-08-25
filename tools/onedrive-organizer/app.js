@@ -19,56 +19,6 @@ window.IANS_V290_CONFIG = {
 };
 const IANS_PUBLIC_CLIENT_ID = window.IANS_V290_CONFIG.clientId;
 
-// ===== V3.5.4 AUTHORITATIVE CLIENT STATE RECOVERY =====
-// A manually saved Client ID from an older build may leave MSAL cache/state behind.
-// Repair only auth/config storage. IndexedDB / Scan Vault is never touched here.
-function repairAuthoritativeMicrosoftClientState() {
-  const expected = String(IANS_PUBLIC_CLIENT_ID || "").trim();
-  if (!expected) return;
-
-  let staleClientState = false;
-  try {
-    const savedMain = String(localStorage.getItem(CLIENT_KEY) || "").trim();
-    const savedBackup = String(localStorage.getItem(CLIENT_BACKUP_KEY) || "").trim();
-    staleClientState = Boolean(
-      (savedMain && savedMain !== expected) ||
-      (savedBackup && savedBackup !== expected)
-    );
-
-    if (staleClientState) {
-      // Remove MSAL browser cache only. Do NOT clear localStorage wholesale.
-      for (const store of [localStorage, sessionStorage]) {
-        const keys = [];
-        for (let i = 0; i < store.length; i++) {
-          const key = store.key(i);
-          if (key) keys.push(key);
-        }
-        for (const key of keys) {
-          const low = key.toLowerCase();
-          if (
-            low.includes("msal") ||
-            low.includes("interaction.status") ||
-            low.includes("interaction_in_progress") ||
-            (savedMain && key.includes(savedMain)) ||
-            (savedBackup && key.includes(savedBackup))
-          ) {
-            store.removeItem(key);
-          }
-        }
-      }
-      console.warn("[IANS V3.5.4] Repaired stale Microsoft Client ID/MSAL state. Scan Vault preserved.");
-    }
-
-    // The built-in public app is always authoritative from this version onward.
-    localStorage.setItem(CLIENT_KEY, expected);
-    localStorage.setItem(CLIENT_BACKUP_KEY, expected);
-  } catch (err) {
-    console.warn("[IANS V3.5.4] Client-state repair warning", err);
-  }
-}
-
-repairAuthoritativeMicrosoftClientState();
-
 
 const APP_BASE_URL = (() => {
   const u = new URL(window.location.href);
@@ -227,76 +177,12 @@ async function initMsal() {
     else showLogin();
   } catch (err) {
     console.error("MSAL popup init error", err);
-    if (IANS_PUBLIC_CLIENT_ID) {
-      // Built-in public app: never dump the user back into first-time Client ID setup.
-      els.setupPanel.classList.add("hidden");
-      els.dashboard.classList.add("hidden");
-      els.loginPanel.classList.remove("hidden");
-      const old = document.getElementById("iansBootError");
-      if (old) old.remove();
-      const p = document.createElement("p");
-      p.id = "iansBootError";
-      p.className = "message";
-      p.textContent = `Microsoft-oppstart feilet: ${err.message}. Trykk Koble til OneDrive for å prøve igjen.`;
-      els.loginPanel.appendChild(p);
-    } else {
-      els.setupMessage.textContent = `MSAL-feil: ${err.message}`;
-      els.setupPanel.classList.remove("hidden");
-      els.loginPanel.classList.add("hidden");
-      els.dashboard.classList.add("hidden");
-    }
+    els.setupMessage.textContent = `MSAL-feil: ${err.message}`;
+    els.setupPanel.classList.remove("hidden");
+    els.loginPanel.classList.add("hidden");
+    els.dashboard.classList.add("hidden");
   }
 }
-
-// ===== V3.5.1 fixed-app bootstrap recovery =====
-function clearTransientMsalInteractionState(){
-  for(const store of [sessionStorage, localStorage]){
-    try{
-      const keys=[];
-      for(let i=0;i<store.length;i++){ const k=store.key(i); if(k) keys.push(k); }
-      for(const k of keys){
-        const low=k.toLowerCase();
-        if(low.includes("interaction.status") || low.includes("interaction_in_progress")) store.removeItem(k);
-      }
-    }catch(_){}
-  }
-}
-
-async function retryFixedMicrosoftBootstrap(){
-  const btn=document.getElementById("iansBootstrapRetry");
-  if(btn) btn.disabled=true;
-  if(els.setupMessage) els.setupMessage.textContent="Initialiserer den innebygde Microsoft-appen på nytt…";
-  clearTransientMsalInteractionState();
-  try{
-    await initMsal();
-  }catch(err){
-    console.error("[IANS V3.5.1] bootstrap retry failed",err);
-    if(els.setupMessage) els.setupMessage.textContent=`Oppstart feilet: ${err.message}`;
-  }finally{ if(btn) btn.disabled=false; }
-}
-
-function installFixedAppRecoveryUi(){
-  if(!IANS_PUBLIC_CLIENT_ID || !els.setupPanel) return;
-  // The public Client ID is authoritative; the user should never have to paste it again.
-  if(els.clientIdInput){
-    els.clientIdInput.value=IANS_PUBLIC_CLIENT_ID;
-    els.clientIdInput.readOnly=true;
-    els.clientIdInput.disabled=false;
-  }
-  if(els.saveClientIdBtn){
-    els.saveClientIdBtn.textContent="Fortsett med innebygd Microsoft-app";
-    els.saveClientIdBtn.classList.remove("hidden");
-  }
-  if(!document.getElementById("iansBootstrapRetry")){
-    const b=document.createElement("button");
-    b.id="iansBootstrapRetry"; b.type="button"; b.className="btn ghost";
-    b.textContent="Prøv oppstart på nytt";
-    b.style.marginLeft="8px";
-    b.addEventListener("click",retryFixedMicrosoftBootstrap);
-    els.saveClientIdBtn?.insertAdjacentElement("afterend",b);
-  }
-}
-
 function showLogin() {
   els.loginPanel.classList.remove("hidden");
   els.dashboard.classList.add("hidden");
@@ -314,24 +200,12 @@ function showDashboard() {
 
 async function signIn() {
   if (!msalApp) {
-    clearTransientMsalInteractionState();
-    await initMsal();
-    if (!msalApp) {
-      const old = document.getElementById("iansBootError");
-      if (old) old.remove();
-      const p = document.createElement("p");
-      p.id = "iansBootError"; p.className = "message";
-      p.textContent = "Microsoft-appen kunne ikke initialiseres. Last siden på nytt og prøv igjen.";
-      els.loginPanel.appendChild(p);
-      return;
-    }
+    els.setupMessage.textContent = "Lagre Client ID først.";
+    els.setupPanel.classList.remove("hidden");
+    return;
   }
 
   try {
-    if (els.signInBtn) {
-      els.signInBtn.disabled = true;
-      els.signInBtn.textContent = "Åpner Microsoft…";
-    }
     const result = await msalApp.loginPopup({
       scopes: ["User.Read", ...SCOPES],
       prompt: "select_account",
@@ -342,16 +216,8 @@ async function signIn() {
 
     activeAccount = result.account;
     msalApp.setActiveAccount(activeAccount);
-    if (els.signInBtn) {
-      els.signInBtn.disabled = false;
-      els.signInBtn.textContent = "Koble til OneDrive";
-    }
     showDashboard();
   } catch (err) {
-    if (els.signInBtn) {
-      els.signInBtn.disabled = false;
-      els.signInBtn.textContent = "Koble til OneDrive";
-    }
     console.error("Login popup error", err);
     const old = document.getElementById("loginError");
     if (old) old.remove();
@@ -362,12 +228,6 @@ async function signIn() {
     els.loginPanel.appendChild(p);
   }
 }
-
-// ===== IANS V3.5.3 LOGIN BRIDGE =====
-// Expose the proven MSAL login routine so the workspace can bind it defensively.
-window.IANS_ONE_DRIVE_SIGN_IN = signIn;
-window.IANS_ONE_DRIVE_INIT_MSAL = initMsal;
-
 async function getToken() {
   const request = { scopes: SCOPES, account: activeAccount };
   try {
@@ -904,7 +764,7 @@ function exportReport() {
 }
 
 els.saveClientIdBtn.addEventListener("click", async () => {
-  const v = (IANS_PUBLIC_CLIENT_ID || els.clientIdInput.value || "").trim();
+  const v = (els.clientIdInput.value || "").trim();
   const guid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
   if (!guid.test(v)) {
@@ -968,8 +828,6 @@ els.exportBtn.addEventListener("click", exportReport);
 // ===== IANS OneDrive Organizer V2: analysis workspace =====
 const v2 = {
   search: document.getElementById("searchInput"),
-  searchBtn: document.getElementById("searchInventoryBtn"),
-  resetBtn: document.getElementById("resetInventoryFiltersBtn"),
   category: document.getElementById("categoryFilter"),
   year: document.getElementById("yearFilter"),
   size: document.getElementById("sizeFilter"),
@@ -1037,55 +895,32 @@ function prepareV2(r){
   renderPhotoPlan();
   renderCleanupPlan();
 }
-function inventoryFilterState(){
-  return {
-    q:(v2.search?.value||"").trim(),
-    cat:v2.category?.value||"",
-    yr:v2.year?.value||"",
-    minMb:Number(v2.size?.value)||0,
-    age:Number(v2.age?.value)||0,
-    dup:v2.dup?.value||""
-  };
-}
-function inventoryFilterLabel(st=inventoryFilterState()){
-  const p=[];
-  if(st.q)p.push(`søk: “${st.q}”`);
-  if(st.cat)p.push(st.cat);
-  if(st.yr)p.push(`år ${st.yr}`);
-  if(st.minMb)p.push(st.minMb>=1024?`over ${st.minMb/1024:g} GB`:`over ${st.minMb} MB`);
-  if(st.age)p.push(`eldre enn ${st.age} år`);
-  if(st.dup==="yes")p.push("kun mulige duplikater");
-  return p.length?p.join(" · "):"ingen filtre";
-}
 function filteredFiles(){
   if(!report) return [];
-  const {q:rawQ,cat,yr,minMb,age,dup}=inventoryFilterState();
-  const q=rawQ.toLowerCase();
-  const minBytes=minMb*1024*1024;
+  const q=v2.search.value.trim().toLowerCase(), cat=v2.category.value, yr=v2.year.value;
+  const minMb=Number(v2.size.value)||0, age=Number(v2.age.value)||0, dup=v2.dup.value;
   const cutoff=age ? new Date(new Date().setFullYear(new Date().getFullYear()-age)) : null;
   return report.files.filter(f=>{
-    const hay=`${f.name||""} ${f.path||""}`.toLowerCase();
-    if(q && !hay.includes(q)) return false;
+    if(q && !(f.name+" "+f.path).toLowerCase().includes(q)) return false;
     if(cat && f.category!==cat) return false;
     const d=fileDate(f), y=d?String(new Date(d).getFullYear()):"";
     if(yr && y!==yr) return false;
-    if(minBytes && (Number(f.size)||0) < minBytes) return false;
+    if(minMb && f.size < minMb*1024*1024) return false;
     if(cutoff && (!f.lastModifiedDateTime || new Date(f.lastModifiedDateTime)>cutoff)) return false;
     if(dup==="yes" && !isPossibleDuplicate(f)) return false;
     return true;
   });
 }
-function inventoryVisibleRows(){
-  if(!report)return [];
-  const maxRows=report.files.length>=50000?250:500;
-  return sortInventoryRows(filteredFiles()).slice(0,maxRows);
-}
 function renderV2(){
   if(!report)return;
-  const all=filteredFiles();
-  const bytes=all.reduce((s,f)=>s+(Number(f.size)||0),0);
+  const q=v2.search.value.trim(),cat=v2.category.value,yr=v2.year.value;
+  const minMb=Number(v2.size.value)||0,age=Number(v2.age.value)||0,dup=v2.dup.value;
+  const noFilters=!q&&!cat&&!yr&&!minMb&&!age&&!dup;
+  let all,bytes;
+  if(noFilters){all=report.files;bytes=report.summary.fileBytes||0}
+  else{all=filteredFiles();bytes=all.reduce((s,f)=>s+f.size,0)}
   const maxRows=report.files.length>=50000?250:500;
-  v2.summary.textContent=`${formatNumber(all.length)} filer · ${formatBytes(bytes)} i gjeldende utvalg · Filter: ${inventoryFilterLabel()}. Viser maks ${maxRows} rader.`;
+  v2.summary.textContent=`${formatNumber(all.length)} filer · ${formatBytes(bytes)} i gjeldende utvalg. Viser maks ${maxRows} rader på skjermen.`;
   const sorted=sortInventoryRows(all);
   renderTable(v2.table,[
     {label:inventoryHeaderLabel("Fil","name"),sortKey:"name",className:"path",render:f=>`<strong>${escapeHtml(f.name)}</strong><br><small>${escapeHtml(f.path)}</small>`},
@@ -1168,35 +1003,11 @@ function exportReview(){
   const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="ians-review-queue.json";a.click();URL.revokeObjectURL(u);
 }
 let v282FilterTimer=null;
-let v34LastFilterSignature="";
-function v34FilterSignature(){
-  const s=inventoryFilterState();
-  return JSON.stringify([s.q,s.cat,s.yr,s.minMb,s.age,s.dup]);
-}
-function v34ApplyFilters({immediate=false}={}){
-  clearTimeout(v282FilterTimer);
-  const run=()=>{v34LastFilterSignature=v34FilterSignature();renderV2();};
-  immediate?run():(v282FilterTimer=setTimeout(run,160));
-}
 [v2.search,v2.category,v2.year,v2.size,v2.age,v2.dup].forEach(x=>{
-  x?.addEventListener("input",()=>v34ApplyFilters());
-  x?.addEventListener("change",()=>v34ApplyFilters({immediate:true}));
+  const rerender=()=>{clearTimeout(v282FilterTimer);v282FilterTimer=setTimeout(renderV2,120)};
+  x?.addEventListener("input",rerender);
+  x?.addEventListener("change",rerender);
 });
-v2.search?.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();v34ApplyFilters({immediate:true});}});
-v2.searchBtn?.addEventListener("click",()=>v34ApplyFilters({immediate:true}));
-v2.resetBtn?.addEventListener("click",()=>{
-  if(v2.search)v2.search.value="";
-  [v2.category,v2.year,v2.size,v2.age,v2.dup].forEach(x=>{if(x)x.value="";});
-  inventorySort={key:"size",dir:"desc"};
-  v34ApplyFilters({immediate:true});
-});
-// Safari/Edge can restore form values after initial JS render without firing change.
-// Detect that state so the table always matches what the controls visibly show.
-setInterval(()=>{
-  if(!report || document.hidden)return;
-  const sig=v34FilterSignature();
-  if(sig!==v34LastFilterSignature)v34ApplyFilters({immediate:true});
-},700);
 v2.table?.addEventListener("click",e=>{
   const th=e.target.closest("th[data-sort-key]");
   if(!th) return;
@@ -1440,7 +1251,7 @@ renderV2 = function(){
   if(!report || !v24Enabled) return;
   const table=v2.table.querySelector("table");
   if(!table) return;
-  const visible=inventoryVisibleRows();
+  const visible=filteredFiles().slice(0,500);
 
   const head=table.querySelector("thead tr");
   const th=document.createElement("th");
@@ -1506,13 +1317,6 @@ function v24SetEnabled(on){
   v24.badge.textContent=on?"AKTIV":"LÅST";
   v24.badge.classList.toggle("safe",!on);
   renderV2();
-  if(on && v2.summary){
-    v2.summary.dataset.actionMode="active";
-    v2.summary.title="Action Mode er aktiv. Bruk avkrysningsboksen Velg i tabellen for å velge filer.";
-  } else if(v2.summary){
-    delete v2.summary.dataset.actionMode;
-    v2.summary.removeAttribute("title");
-  }
 }
 
 v24.enable?.addEventListener("click", async () => {
@@ -2242,11 +2046,7 @@ setTimeout(async () => {
 if (!IS_MSAL_POPUP_CALLBACK) {
   initMsal().catch(err => {
     console.error("[IANS] startup init failed", err);
-    if (IANS_PUBLIC_CLIENT_ID) {
-      els?.setupPanel?.classList.add("hidden");
-      els?.dashboard?.classList.add("hidden");
-      els?.loginPanel?.classList.remove("hidden");
-    } else if (els?.setupMessage) {
+    if (els?.setupMessage) {
       els.setupMessage.textContent = `Oppstart feilet: ${err.message}`;
     }
   });
@@ -4518,24 +4318,17 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     box.style.cssText="margin-top:12px;border-color:rgba(74,222,128,.28)";
     box.innerHTML=`<div class="section-title"><div><span class="eyebrow">SCAN VAULT · V2.9.4</span><h3>Ferdig scan lagres automatisk</h3></div><span class="badge safe" id="v294VaultBadge">KONTROLLERER</span></div>
       <p class="muted">Siste fullførte eller importerte rapport beholdes i IndexedDB selv om fanen lukkes. Checkpoint og ferdig scan er to separate lagringer.</p>
-      <div class="actions"><button class="btn ghost" id="v294Restore">Gjenopprett siste scan</button><button class="btn ghost" id="v294SaveNow">Lagre aktiv scan nå</button></div>
+      <div class="actions"><button class="btn ghost" id="v294Restore">Gjenopprett siste scan</button><button class="btn ghost" id="v294SaveNow">Lagre + last ned .iansscan</button></div>
       <div id="v294VaultStatus" class="empty-state" style="margin-top:10px">Kontrollerer lokal Scan Vault…</div>`;
     anchor.insertAdjacentElement("afterend",box);
     E("v294Restore").onclick=()=>restoreCompleted();
-    E("v294SaveNow").textContent="Lagre + last ned .iansscan";
     E("v294SaveNow").onclick=async()=>{
       if(!report?.files?.length){ alert("Ingen aktiv ferdig scan å lagre."); return; }
       const ok=await saveCompleted(report);
-      let exported=false;
-      try{
-        if(typeof exportPortable==="function"){ await exportPortable(); exported=true; }
-        else {
-          const state={schema:"ians-portable-scan/1",version:"3.5.1",exportedAt:new Date().toISOString(),account:activeAccount?.username||report?.account?.username||"",kind:"completed-report",checkpoint:null,report};
-          const stamp=new Date().toISOString().replace(/[:.]/g,"-").slice(0,19);
-          downloadJson(state,`IANS-OneDrive-Scan-${stamp}.iansscan`); exported=true;
-        }
-      }catch(e){ console.error("[IANS V3.5.1] .iansscan export failed",e); }
-      if(typeof iansToast==="function") iansToast(ok&&exported?"Scan sikret":ok?"Lokal lagring OK":"Lagring feilet",ok&&exported?"Lagret i Scan Vault og .iansscan er sendt til Nedlastinger.":ok?"Scan Vault er oppdatert, men filnedlasting feilet.":"Kunne ikke skrive til IndexedDB.",ok&&exported?"success":ok?"warning":"error",8000);
+      if(ok){
+        try { exportPortable(); } catch(err) { console.error("Portable export error", err); alert(`Scan er lagret i Scan Vault, men nedlasting feilet: ${err.message}`); }
+      }
+      if(typeof iansToast==="function") iansToast(ok?"Scan lagret + eksport startet":"Lagring feilet",ok?"Scan Vault er oppdatert og .iansscan sendes til Nedlastinger.":"Kunne ikke skrive til IndexedDB.",ok?"success":"error",6500);
     };
     dbGet(DB_KEY).then(updateVaultUi);
   }
@@ -5091,29 +4884,4 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
 })();
  // ===== END IANS OneDrive Command V3.0 =====
 
-
-// ===== IANS OneDrive Command V3.4 · SEARCH + FILTER + ACTION UI FIX =====
-console.info("[IANS] V3.4 Search/Filter/Action UI Fix aktiv");
-
-
-// ===== IANS OneDrive Command V3.5.1 · Bootstrap + Scan Export Fix =====
-window.addEventListener("load",()=>{
-  installFixedAppRecoveryUi();
-  // If a stale deployment/cache left the setup card visible, keep the fixed ID usable
-  // and offer a safe retry instead of forcing reconfiguration.
-  setTimeout(installFixedAppRecoveryUi,1200);
-});
-console.info("[IANS] V3.5.1 Bootstrap + physical .iansscan export active");
-
-
-// ===== IANS OneDrive Command V3.5.2 · BOOT ROUTING FIX =====
-window.addEventListener("DOMContentLoaded",()=>{
-  // The Microsoft app is built in. Hide legacy first-time setup immediately.
-  if (IANS_PUBLIC_CLIENT_ID && els?.setupPanel) {
-    els.setupPanel.classList.add("hidden");
-    if (!activeAccount) els?.loginPanel?.classList.remove("hidden");
-  }
-});
-console.info("[IANS] V3.5.2 Boot Routing Fix active");
-
-console.info("[IANS] V3.5.4 Authoritative Client State Recovery active");
+/* IANS V3.6 Stable Recovery: V3.3 auth baseline + Scan Vault physical export */
