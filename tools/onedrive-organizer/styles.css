@@ -969,3 +969,6 @@ body.ians-v301 #iansCommandDashboard,body.ians-v301 #iansCleanupWorkbench,body.i
 @media(max-width:1250px){.v301-focus-grid{grid-template-columns:repeat(2,1fr)}.v301-scan-card{flex-direction:column;align-items:flex-start}.v301-actions{justify-content:flex-start}.v301-statusbar{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.ians-v301-shell{width:calc(100vw - 20px)}.v301-hero{flex-direction:column}.v301-focus-grid{grid-template-columns:1fr}.v301-statusbar{grid-template-columns:1fr}.v301-work-head{flex-direction:column}.v301-context-actions{justify-content:flex-start}.v301-fallback{flex-direction:column;align-items:flex-start}.v301-fallback button{margin-left:0}}
 /* ===== END IANS OneDrive Command V3.0.1 ===== */
+
+/* IANS V3.1 workspace navigation */
+.v31-workspace-bar{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:18px;padding:12px 4vw;background:rgba(3,12,27,.96);border-bottom:1px solid #183451;backdrop-filter:blur(16px);color:#dcecff}.v31-workspace-bar a{color:#63ddff;text-decoration:none;font-weight:800}.v31-workspace-bar strong{font-size:14px}.v31-workspace-bar span{font-size:12px;color:#8fa8bf}@media(max-width:760px){.v31-workspace-bar span{display:none}}
