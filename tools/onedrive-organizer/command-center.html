@@ -801,5 +801,93 @@
 
   <script type="module" src="app.js"></script>
 <div class="ians-next-badge">IANS Next · Master</div>
-<script>window.addEventListener('load',()=>{if(location.hash){setTimeout(()=>{const e=document.querySelector(location.hash);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});},500)}});</script></body>
+<script>window.addEventListener('load',()=>{if(location.hash){setTimeout(()=>{const e=document.querySelector(location.hash);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});},500)}});</script>
+<!-- ===== IANS OneDrive Command V3.0.1 · Static Focus Shell ===== -->
+<section id="iansV301Shell" class="ians-v301-shell" hidden>
+  <div class="v301-hero">
+    <div>
+      <span class="v301-kicker">IANS · ONEDRIVE COMMAND V3.0.1</span>
+      <h1>Forstå OneDrive. Finn rotet. Rydd trygt.</h1>
+      <p>Velg oppgaven. Alle verktøyene for jobben åpnes i samme arbeidsflate.</p>
+    </div>
+    <div class="v301-status-pill" id="v301Mode">READ ONLY</div>
+  </div>
+
+  <div class="v301-statusbar">
+    <div><small>Tilkobling</small><strong>Microsoft Graph</strong></div>
+    <div><small>Kartlegging</small><strong id="v301ScanStatus">Klar</strong></div>
+    <div><small>Filer</small><strong id="v301FileCount">—</strong></div>
+    <div><small>Data</small><strong id="v301DataSize">—</strong></div>
+    <button type="button" id="v301Settings">Innstillinger</button>
+  </div>
+
+  <div class="v301-scan-card">
+    <div class="v301-title-row">
+      <span class="v301-step">1</span>
+      <div>
+        <strong>Kartlegg OneDrive</strong>
+        <small>Start ny scan, fortsett eller bruk en lagret .iansscan.</small>
+      </div>
+    </div>
+    <div class="v301-actions">
+      <button data-v301-action="quick">Hurtigscan</button>
+      <button data-v301-action="full">Full scan</button>
+      <button data-v301-action="resume">Fortsett</button>
+      <button data-v301-action="import">Importer .iansscan</button>
+      <button data-v301-action="export">Last ned .iansscan</button>
+    </div>
+  </div>
+
+  <div class="v301-title-row v301-question">
+    <span class="v301-step">2</span>
+    <div>
+      <strong>Hva vil du gjøre?</strong>
+      <small>Velg ett fokusområde. Ingen mellomside og ingen lang lefse.</small>
+    </div>
+  </div>
+
+  <div class="v301-focus-grid">
+    <button data-v301-focus="analyze">
+      <span>◇</span><strong>Finn & analyser</strong>
+      <small>Store filer, lagring og media.</small>
+    </button>
+    <button data-v301-focus="cleanup">
+      <span>♻</span><strong>Rydd & organiser</strong>
+      <small>Duplikater, Cleanup Review og organisering.</small>
+    </button>
+    <button data-v301-focus="backup">
+      <span>⇩</span><strong>Backup & Verify</strong>
+      <small>Last ned kontrollert med Resume og Verify.</small>
+    </button>
+    <button data-v301-focus="scan">
+      <span>◎</span><strong>Scan & Vault</strong>
+      <small>Scan, checkpoint, import og recovery.</small>
+    </button>
+  </div>
+
+  <div class="v301-workspace">
+    <div class="v301-work-head">
+      <div>
+        <span class="v301-kicker">FOKUSOMRÅDE</span>
+        <h2 id="v301WorkTitle">Scan & Vault</h2>
+        <p id="v301WorkText">Kartlegg, importer og gjenopprett uten å forlate arbeidsflaten.</p>
+      </div>
+      <div id="v301ContextActions" class="v301-context-actions"></div>
+    </div>
+
+    <div id="v301Subnav" class="v301-subnav"></div>
+    <div id="v301Content" class="v301-content">
+      <div class="v301-loading">Laster arbeidsområde…</div>
+    </div>
+  </div>
+
+  <div id="v301Fallback" class="v301-fallback" hidden>
+    <strong>V3-arbeidsflaten kunne ikke kobles til alle verktøyene.</strong>
+    <span>Ingen filer er endret. Du kan åpne klassisk arbeidsflate midlertidig.</span>
+    <button type="button" id="v301Classic">Vis klassisk arbeidsflate</button>
+  </div>
+</section>
+<!-- ===== END IANS OneDrive Command V3.0.1 · Static Focus Shell ===== -->
+
+</body>
 </html>

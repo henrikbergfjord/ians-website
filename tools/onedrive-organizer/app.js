@@ -4820,3 +4820,212 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   else setTimeout(init,350);
 })();
  // ===== END IANS OneDrive Command V3.0 =====
+// ===== IANS OneDrive Command V3.0.1 · Static Shell Runtime =====
+(() => {
+  "use strict";
+
+  const q=(s,r=document)=>r.querySelector(s);
+  const qa=(s,r=document)=>[...r.querySelectorAll(s)];
+  const norm=s=>String(s||"").replace(/\s+/g," ").trim().toLowerCase();
+
+  const focusMeta={
+    scan:{
+      title:"Scan & Vault",
+      text:"Kartlegg, importer, eksporter og gjenopprett scan på ett sted.",
+      subs:[["scan","Kartlegging"],["vault","Scan Vault"]]
+    },
+    analyze:{
+      title:"Finn & analyser",
+      text:"Finn det som bruker plass og det som er verdt å undersøke.",
+      subs:[["storage","Lagring"],["large","Store filer"],["media","Media"]]
+    },
+    cleanup:{
+      title:"Rydd & organiser",
+      text:"Fra kandidat til kontrollert handling i samme arbeidsområde.",
+      subs:[["duplicates","Duplikater"],["review","Cleanup Review"],["organize","Organiser"]]
+    },
+    backup:{
+      title:"Backup & Verify",
+      text:"Last ned trygt med Resume, retry og verifisering.",
+      subs:[["download","Download & Verify"]]
+    }
+  };
+
+  const state={
+    focus:localStorage.getItem("ians.v301.focus")||"scan",
+    sub:localStorage.getItem("ians.v301.sub")||"scan"
+  };
+
+  function panelByText(rx){
+    const heads=qa("h1,h2,h3,h4,.eyebrow,.section-title,strong");
+    const h=heads.find(x=>rx.test(norm(x.textContent)));
+    if(!h)return null;
+    let p=h;
+    for(let i=0;i<9&&p;i++,p=p.parentElement){
+      if(p.matches?.("section,article,.panel,.card,.module,.tool-section,.command-section")) return p;
+    }
+    return h.closest("div");
+  }
+
+  function findPanel(id){
+    const map={
+      scan:()=>q("#v293Portable")||panelByText(/portable scan|ta scannen med deg|kartlegging/),
+      vault:()=>q("#v294ScanVault")||panelByText(/scan vault|checkpoint|recovery/),
+      storage:()=>q("#storageMapPanel")||panelByText(/storage map|største områder|filtyper/),
+      large:()=>q("#largeFilePanel")||panelByText(/large file|største filer|topp 25/),
+      media:()=>q("#v293PhotoPanel")||panelByText(/photo intelligence|media vault|organiser bilder/),
+      duplicates:()=>q("#v294ReviewCleaner")||q("#v295DupList")||panelByText(/duplicate review|rydd duplikater|duplikatgrupper/),
+      review:()=>panelByText(/cleanup command center|finn, filtrer og planlegg|cleanup review/),
+      organize:()=>q("#v285OrgPanel")||panelByText(/organization studio|plan.*preview.*action mode/),
+      download:()=>q("#downloadVerifyPanel")||panelByText(/download\s*&\s*verify|resume.*verify|direkte strømming/)
+    };
+    return map[id]?map[id]():null;
+  }
+
+  function unhide(el){
+    if(!el)return;
+    el.hidden=false;
+    el.style.display="";
+    el.classList.remove("hidden","ians-dash-hidden","v298-no-value","v30-passive-empty");
+    el.removeAttribute("data-ians-dash-group");
+  }
+
+  function movePanel(el){
+    const content=q("#v301Content");
+    content.innerHTML="";
+    if(!el){
+      content.innerHTML='<div class="v301-empty"><strong>Ingen aktiv modul funnet.</strong><span>Dette verktøyet skjules til motoren har en fungerende modul.</span></div>';
+      q("#v301Fallback").hidden=false;
+      return false;
+    }
+    unhide(el);
+    el.classList.add("v301-mounted");
+    content.appendChild(el);
+    return true;
+  }
+
+  function clickExisting(rx){
+    const all=qa("button,a");
+    const visible=all.find(el=>rx.test(norm(el.textContent))&&!el.disabled&&el.offsetParent!==null);
+    if(visible){visible.click();return true}
+    const any=all.find(el=>rx.test(norm(el.textContent))&&!el.disabled);
+    if(any){any.click();return true}
+    return false;
+  }
+
+  function runAction(type){
+    const map={
+      quick:/quick scan|hurtigscan|åpne skanning/,
+      full:/full scan|start kartlegging|start scan/,
+      resume:/resume|fortsett/,
+      import:/importer scan|importer.*iansscan|importer scan \/ checkpoint/,
+      export:/last ned scanfil|eksporter scan|last ned.*iansscan/
+    };
+    if(!clickExisting(map[type])){
+      showFocus("scan");
+      setTimeout(()=>clickExisting(map[type]),150);
+    }
+  }
+
+  function showFocus(name){
+    if(!focusMeta[name])name="scan";
+    state.focus=name;
+    localStorage.setItem("ians.v301.focus",name);
+    qa("[data-v301-focus]").forEach(b=>b.classList.toggle("active",b.dataset.v301Focus===name));
+    const meta=focusMeta[name];
+    q("#v301WorkTitle").textContent=meta.title;
+    q("#v301WorkText").textContent=meta.text;
+    q("#v301Subnav").innerHTML=meta.subs.map(([id,label])=>`<button type="button" data-v301-sub="${id}">${label}</button>`).join("");
+    qa("[data-v301-sub]").forEach(b=>b.onclick=()=>showSub(name,b.dataset.v301Sub));
+    let sub=state.sub;
+    if(!meta.subs.some(x=>x[0]===sub))sub=meta.subs[0][0];
+    showSub(name,sub);
+  }
+
+  function showSub(focus,id){
+    state.sub=id;
+    localStorage.setItem("ians.v301.sub",id);
+    qa("[data-v301-sub]").forEach(b=>b.classList.toggle("active",b.dataset.v301Sub===id));
+    q("#v301ContextActions").innerHTML="";
+    const ok=movePanel(findPanel(id));
+    buildContextActions(id);
+    if(ok) q("#v301Fallback").hidden=true;
+  }
+
+  function addContext(label,rx,cls=""){
+    const host=q("#v301ContextActions");
+    const b=document.createElement("button");
+    b.type="button"; b.textContent=label; if(cls)b.className=cls;
+    b.onclick=()=>clickExisting(rx);
+    host.appendChild(b);
+  }
+
+  function buildContextActions(id){
+    if(id==="duplicates"){
+      addContext("Bygg grupper",/vis duplikatgrupper|bygg duplikatgrupper/);
+      addContext("Merk ekstrakopier",/merk alle ekstrakopier|merk alle foreslåtte/);
+      addContext("Papirkurv valgte",/send valgte til papirkurv|papirkurv valgte/,"danger");
+    }else if(id==="organize"){
+      addContext("Bygg forslag",/bygg forslag/);
+      addContext("Aktiver Action Mode",/aktiver action mode/);
+      addContext("Utfør plan",/utfør plan/,"warn");
+    }else if(id==="download"){
+      addContext("Start nedlasting",/start nedlasting|last ned valgt/);
+      addContext("Fortsett",/resume|fortsett/);
+    }else if(id==="scan"){
+      const host=q("#v301ContextActions");
+      const a=document.createElement("button");a.textContent="Hurtigscan";a.onclick=()=>runAction("quick");host.appendChild(a);
+      const b=document.createElement("button");b.textContent="Full scan";b.onclick=()=>runAction("full");host.appendChild(b);
+    }
+  }
+
+  function updateStats(){
+    const t=document.body.innerText||"";
+    const file=(t.match(/(?:antall filer|filer funnet|filer)\s*[:\-]?\s*([\d\s.]+)/i)||[])[1];
+    const size=t.match(/([\d.,]+)\s*(TB|GB)\b/i);
+    if(file)q("#v301FileCount").textContent=file.replace(/\s/g,"");
+    if(size)q("#v301DataSize").textContent=`${size[1]} ${size[2].toUpperCase()}`;
+    q("#v301ScanStatus").textContent=file?"Data tilgjengelig":"Klar";
+  }
+
+  function showClassic(){
+    q("#iansV301Shell").style.display="none";
+    qa("body > *, main > *").forEach(el=>{
+      if(el.id!=="iansV301Shell"){
+        el.classList.remove("v301-legacy-hidden");
+        if(el.dataset.v301WasHidden==="1")el.style.display="";
+      }
+    });
+  }
+
+  function hideLegacyNavigation(){
+    qa("#iansCommandDashboard,#iansCleanupWorkbench,#iansV298Toolbox,#iansV30").forEach(el=>{
+      el.dataset.v301WasHidden="1";
+      el.style.display="none";
+    });
+  }
+
+  function init(){
+    const shell=q("#iansV301Shell");
+    if(!shell)return;
+    document.body.classList.add("ians-v301");
+    shell.hidden=false;
+    hideLegacyNavigation();
+
+    qa("[data-v301-focus]").forEach(b=>b.onclick=()=>showFocus(b.dataset.v301Focus));
+    qa("[data-v301-action]").forEach(b=>b.onclick=()=>runAction(b.dataset.v301Action));
+    q("#v301Settings").onclick=()=>clickExisting(/innstillinger|settings/);
+    q("#v301Classic").onclick=showClassic;
+
+    updateStats();
+    showFocus(state.focus);
+  }
+
+  window.addEventListener("error",()=>{
+    const f=q("#v301Fallback"); if(f)f.hidden=false;
+  });
+
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(init,250));
+  else setTimeout(init,250);
+})();
+ // ===== END IANS OneDrive Command V3.0.1 =====
