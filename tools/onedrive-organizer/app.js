@@ -4505,3 +4505,99 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot294);else boot294();
 })();
 // ===== END IANS OneDrive Command V2.9.4 =====
+// ===== IANS OneDrive Command V2.9.6 · Command Dashboard =====
+(() => {
+  "use strict";
+  const KEY_TAB="ians.v296.tab", KEY_WIDE="ians.v296.wide";
+  const groups = [
+    ["overview","Oversikt","⌂"],
+    ["scan","Scan & Vault","◎"],
+    ["analyze","Analyse","◇"],
+    ["cleanup","Rydding","♻"],
+    ["organize","Organisering","▦"],
+    ["actions","Handlinger & logg","✓"]
+  ];
+
+  function norm(s){ return (s||"").toLowerCase().replace(/\s+/g," ").trim(); }
+  function classify(txt){
+    txt=norm(txt);
+    if (/action log|utførte handlinger|karantene|action mode|beviste handlinger/.test(txt)) return "actions";
+    if (/organization studio|organiser bilder|organiser|organized review|godkjenn|endelig mål/.test(txt)) return "organize";
+    if (/duplicate|duplikat|cleanup|opprydd|rydd duplikater|filer kandidater/.test(txt)) return "cleanup";
+    if (/scan vault|kartlegging|portable scan|checkpoint|scan med|start kartlegging|last ned scan/.test(txt)) return "scan";
+    if (/største områder|største filer|filtyper|opptaksår|photo intelligence|detaljer|storage map|analyse/.test(txt)) return "analyze";
+    return "overview";
+  }
+  function candidateCards(){
+    const main=document.querySelector("main") || document.body;
+    let els=[...main.querySelectorAll("section, article, .panel, .card, .module, .tool-section, .command-section")];
+    els=els.filter(el=>{
+      const r=el.getBoundingClientRect();
+      if(r.width < 450 || r.height < 55) return false;
+      if(el.id==="iansCommandDashboard") return false;
+      const head=el.querySelector(":scope > h1,:scope > h2,:scope > h3,:scope > header h1,:scope > header h2,:scope > header h3,.eyebrow");
+      return !!head;
+    });
+    // Keep only the outermost useful card to avoid hiding nested content independently.
+    return els.filter(el=>!els.some(p=>p!==el && p.contains(el) && classify(p.innerText)===classify(el.innerText)));
+  }
+  function build(){
+    if(document.getElementById("iansCommandDashboard")) return;
+    document.body.classList.add("ians-v296");
+    if(localStorage.getItem(KEY_WIDE)!=="0") document.body.classList.add("ians-wide");
+
+    const dash=document.createElement("div");
+    dash.id="iansCommandDashboard";
+    dash.innerHTML=`
+      <div class="ians-dash-brand">
+        <div><span class="ians-kicker">IANS · ONEDRIVE COMMAND</span><strong>Command Dashboard</strong></div>
+        <div class="ians-dash-status"><span class="ians-dot"></span> V2.9.6</div>
+      </div>
+      <div class="ians-dash-tabs">
+        ${groups.map(([id,label,ico])=>`<button type="button" data-tab="${id}"><span>${ico}</span>${label}<b data-count="${id}">0</b></button>`).join("")}
+      </div>
+      <div class="ians-dash-tools">
+        <button type="button" id="iansWideToggle">↔ Widescreen</button>
+        <button type="button" id="iansShowAll">☰ Vis alle</button>
+        <div class="ians-dash-help">Én arbeidsflate: Scan → Analyse → Rydding → Organisering → Godkjenning</div>
+      </div>`;
+    const anchor=document.querySelector("main") || document.body;
+    anchor.insertBefore(dash, anchor.firstChild);
+
+    const cards=candidateCards();
+    cards.forEach((el,i)=>{
+      const g=classify(el.innerText);
+      el.dataset.iansDashGroup=g;
+      el.dataset.iansDashIndex=String(i);
+    });
+    groups.forEach(([id])=>{
+      const n=cards.filter(x=>x.dataset.iansDashGroup===id).length;
+      const b=dash.querySelector(`[data-count="${id}"]`); if(b)b.textContent=n;
+    });
+
+    function activate(tab, all=false){
+      localStorage.setItem(KEY_TAB,tab);
+      dash.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab && !all));
+      cards.forEach(el=>{
+        el.classList.toggle("ians-dash-hidden", !all && el.dataset.iansDashGroup!==tab);
+      });
+      document.body.classList.toggle("ians-show-all",all);
+      if(!all) setTimeout(()=>dash.scrollIntoView({block:"start",behavior:"smooth"}),20);
+    }
+    dash.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>activate(b.dataset.tab)));
+    dash.querySelector("#iansShowAll").addEventListener("click",()=>activate(localStorage.getItem(KEY_TAB)||"overview",true));
+    dash.querySelector("#iansWideToggle").addEventListener("click",()=>{
+      document.body.classList.toggle("ians-wide");
+      localStorage.setItem(KEY_WIDE,document.body.classList.contains("ians-wide")?"1":"0");
+    });
+    activate(localStorage.getItem(KEY_TAB)||"overview");
+
+    // Keyboard shortcuts 1-6.
+    document.addEventListener("keydown",e=>{
+      if(e.altKey && /^[1-6]$/.test(e.key)) activate(groups[Number(e.key)-1][0]);
+    });
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>setTimeout(build,80));
+  else setTimeout(build,80);
+})();
+ // ===== END IANS OneDrive Command V2.9.6 =====
