@@ -845,8 +845,65 @@ const v2 = {
   modalContent: document.getElementById("previewContent"),
   close: document.getElementById("closePreviewBtn")
 };
+const REVIEW_STORAGE_KEY = "ians_onedrive_review_queue_v362";
 let reviewIds = new Set();
 let inventorySort = { key: "size", dir: "desc" };
+
+function loadReviewQueue(){
+  try{
+    const raw=localStorage.getItem(REVIEW_STORAGE_KEY);
+    const ids=raw?JSON.parse(raw):[];
+    reviewIds=new Set(Array.isArray(ids)?ids:[]);
+  }catch(e){
+    console.warn("[IANS] review queue load failed",e);
+    reviewIds=new Set();
+  }
+}
+function saveReviewQueue(){
+  try{localStorage.setItem(REVIEW_STORAGE_KEY,JSON.stringify([...reviewIds]))}
+  catch(e){console.warn("[IANS] review queue save failed",e)}
+}
+function reviewToast(message){
+  let t=document.getElementById("iansReviewToast");
+  if(!t){
+    t=document.createElement("div");
+    t.id="iansReviewToast";
+    t.className="ians-review-toast";
+    document.body.appendChild(t);
+  }
+  t.textContent=message;
+  t.classList.add("show");
+  clearTimeout(reviewToast._timer);
+  reviewToast._timer=setTimeout(()=>t.classList.remove("show"),1800);
+}
+function setReviewButtonState(id){
+  document.querySelectorAll(`[data-review="${CSS.escape(String(id))}"]`).forEach(btn=>{
+    const on=reviewIds.has(String(id));
+    btn.textContent=on?"Lagt til ✓":"Legg til vurdering";
+    btn.classList.toggle("review-added",on);
+    btn.setAttribute("aria-pressed",on?"true":"false");
+  });
+}
+function addToReview(id,{scroll=false}={}){
+  id=String(id||"");
+  if(!id)return;
+  const existed=reviewIds.has(id);
+  reviewIds.add(id);
+  saveReviewQueue();
+  renderReview();
+  setReviewButtonState(id);
+  reviewToast(existed?"Filen ligger allerede i vurderingskøen":"Lagt til i vurderingskøen");
+  if(scroll) document.getElementById("reviewQueuePanel")?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function removeFromReview(id){
+  id=String(id||"");
+  reviewIds.delete(id);
+  saveReviewQueue();
+  renderReview();
+  setReviewButtonState(id);
+  reviewToast("Fjernet fra vurderingskøen");
+}
+loadReviewQueue();
 
 function inventorySortValue(f,key){
   if(key==="name") return (f.name||"").toLocaleLowerCase("nb-NO");
@@ -894,6 +951,7 @@ function prepareV2(r){
   renderV2();
   renderPhotoPlan();
   renderCleanupPlan();
+ renderReview();
 }
 function filteredFiles(){
   if(!report) return [];
@@ -928,7 +986,7 @@ function renderV2(){
     {label:inventoryHeaderLabel("Størrelse","size"),sortKey:"size",className:"num",render:f=>escapeHtml(formatBytes(f.size))},
     {label:inventoryHeaderLabel("Dato","date"),sortKey:"date",render:f=>escapeHtml((fileDate(f)||"").slice(0,10)||"–")},
     {label:inventoryHeaderLabel("Duplikat","duplicate"),sortKey:"duplicate",render:f=>isPossibleDuplicate(f)?"Mulig":"–"},
-    {label:"Handling",render:f=>`<div class="row-actions"><button class="btn mini ghost" data-preview="${escapeHtml(f.id)}">Preview</button><button class="btn mini ghost" data-review="${escapeHtml(f.id)}">Vurder</button></div>`}
+    {label:"Handling",render:f=>`<div class="row-actions"><button class="btn mini ghost" data-preview="${escapeHtml(f.id)}">Preview</button><button class="btn mini ghost ${reviewIds.has(String(f.id))?"review-added":""}" aria-pressed="${reviewIds.has(String(f.id))?"true":"false"}" data-review="${escapeHtml(f.id)}">${reviewIds.has(String(f.id))?"Lagt til ✓":"Vurder"}</button></div>`}
   ],sorted.slice(0,maxRows));
 }
 function renderPhotoPlan(){
@@ -961,8 +1019,10 @@ function renderCleanupPlan(){
   v2.cleanupPlan.innerHTML=items.map(([n,b,c])=>`<div class="plan-item"><span>${escapeHtml(n)}<br><small>${escapeHtml(c)}</small></span><strong>${formatBytes(b)}</strong></div>`).join("");
 }
 function renderReview(){
+  const badge=document.getElementById("reviewQueueCount");
+  if(badge) badge.textContent=`${formatNumber(reviewIds.size)} valgt`;
   if(!report||!reviewIds.size){v2.review.className="table-wrap empty-state";v2.review.textContent="Ingen filer valgt.";return}
-  const rows=report.files.filter(f=>reviewIds.has(f.id));
+  const rows=report.files.filter(f=>reviewIds.has(String(f.id)));
   renderTable(v2.review,[
     {label:"Fil",className:"path",render:f=>`${escapeHtml(f.name)}<br><small>${escapeHtml(f.path)}</small>`},
     {label:"Størrelse",className:"num",render:f=>formatBytes(f.size)},
@@ -986,7 +1046,7 @@ async function previewFile(id){
   <dt>Type</dt><dd>${escapeHtml(f.category)}</dd><dt>Opptaksdato</dt><dd>${escapeHtml(f.takenDateTime||"–")}</dd>
   <dt>Opprettet</dt><dd>${escapeHtml(f.createdDateTime||"–")}</dd><dt>Endret</dt><dd>${escapeHtml(f.lastModifiedDateTime||"–")}</dd>
   <dt>Mulig duplikat</dt><dd>${isPossibleDuplicate(f)?"Ja – må verifiseres":"Nei"}</dd></dl>
-  <div class="actions" style="margin-top:18px">${f.webUrl?`<a class="btn ghost" href="${escapeHtml(f.webUrl)}" target="_blank" rel="noopener">Åpne i OneDrive</a>`:""}<button class="btn primary" data-review="${escapeHtml(f.id)}">Legg til vurdering</button></div>`;
+  <div class="actions" style="margin-top:18px">${f.webUrl?`<a class="btn ghost" href="${escapeHtml(f.webUrl)}" target="_blank" rel="noopener">Åpne i OneDrive</a>`:""}<button class="btn primary ${reviewIds.has(String(f.id))?"review-added":""}" aria-pressed="${reviewIds.has(String(f.id))?"true":"false"}" data-review="${escapeHtml(f.id)}">${reviewIds.has(String(f.id))?"Lagt til ✓":"Legg til vurdering"}</button></div>`;
   v2.modal.classList.remove("hidden");
 }
 function csvEscape(x){x=String(x??"");return /[",\n]/.test(x)?`"${x.replaceAll('"','""')}"`:x}
@@ -1018,13 +1078,13 @@ v2.table?.addEventListener("click",e=>{
 });
 v2.csv?.addEventListener("click",exportCSV);
 v2.pdf?.addEventListener("click",()=>window.print());
-v2.clear?.addEventListener("click",()=>{reviewIds.clear();renderReview()});
+v2.clear?.addEventListener("click",()=>{reviewIds.clear();saveReviewQueue();renderReview();renderV2();reviewToast("Vurderingskøen er tømt")});
 v2.close?.addEventListener("click",()=>v2.modal.classList.add("hidden"));
 v2.modal?.addEventListener("click",e=>{if(e.target===v2.modal)v2.modal.classList.add("hidden")});
 document.addEventListener("click",e=>{
   const p=e.target.closest("[data-preview]");if(p)previewFile(p.dataset.preview);
-  const r=e.target.closest("[data-review]");if(r){reviewIds.add(r.dataset.review);renderReview()}
-  const u=e.target.closest("[data-unreview]");if(u){reviewIds.delete(u.dataset.unreview);renderReview()}
+  const r=e.target.closest("[data-review]");if(r){e.preventDefault();e.stopPropagation();addToReview(r.dataset.review)}
+  const u=e.target.closest("[data-unreview]");if(u){e.preventDefault();removeFromReview(u.dataset.unreview);renderV2()}
 });
 
 // Extend original renderReport without changing scanner.
