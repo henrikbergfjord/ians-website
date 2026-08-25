@@ -864,3 +864,54 @@ body.ians-v296.ians-wide [class*="grid"]{column-gap:14px}
 @media(max-width:1100px){#iansCommandDashboard{position:relative;top:auto}.ians-dash-tabs{grid-template-columns:repeat(3,1fr)}.ians-dash-help{display:none}}
 @media(max-width:680px){body.ians-v296 main,body.ians-v296 .page-shell,body.ians-v296 .command-shell,body.ians-v296 .container{width:min(calc(100% - 16px),var(--ians-max))!important}.ians-dash-tabs{grid-template-columns:repeat(2,1fr)}.ians-dash-brand{align-items:flex-start}.ians-dash-tools{flex-wrap:wrap}}
 /* ===== END IANS OneDrive Command V2.9.6 ===== */
+/* ===== IANS OneDrive Command V2.9.7 · Cleanup Workbench ===== */
+body.ians-v297{--v297-cyan:#48c9ff;--v297-purple:#a86cff;--v297-green:#58e2a4}
+body.ians-v297 #iansCommandDashboard{
+  border-color:rgba(73,187,255,.25);
+  background:radial-gradient(circle at 10% 0%,rgba(121,65,255,.13),transparent 30%),radial-gradient(circle at 88% 100%,rgba(0,194,255,.12),transparent 31%),linear-gradient(180deg,rgba(6,22,43,.97),rgba(5,17,34,.97));
+}
+body.ians-v297 .ians-dash-tabs{gap:10px}
+body.ians-v297 .ians-dash-tabs button{min-height:66px;padding:10px 13px;background:linear-gradient(145deg,rgba(16,38,67,.95),rgba(7,24,43,.95));overflow:hidden;position:relative}
+body.ians-v297 .ians-dash-tabs button:nth-child(1){--tab:#70c8ff}
+body.ians-v297 .ians-dash-tabs button:nth-child(2){--tab:#54d6ff}
+body.ians-v297 .ians-dash-tabs button:nth-child(3){--tab:#af75ff}
+body.ians-v297 .ians-dash-tabs button:nth-child(4){--tab:#ffb74e}
+body.ians-v297 .ians-dash-tabs button:nth-child(5){--tab:#55e6b0}
+body.ians-v297 .ians-dash-tabs button:nth-child(6){--tab:#79b8ff}
+body.ians-v297 .ians-dash-tabs button:before{content:"";position:absolute;inset:auto 0 0;height:2px;background:linear-gradient(90deg,transparent,var(--tab),transparent);opacity:.35}
+body.ians-v297 .ians-dash-tabs button.active{border-color:var(--tab);box-shadow:inset 0 0 28px rgba(60,170,255,.10),0 8px 30px rgba(0,0,0,.15)}
+.ians-v297-tabmeta{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.ians-v297-tabmeta strong{font-size:13px;color:#f4f8ff;line-height:1.2}
+.ians-v297-tabmeta small{font-size:9px;color:#829bb3;font-weight:550;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.ians-v297-flow{display:flex;gap:8px;align-items:center;margin-left:auto;font-size:10px;color:#718aa2}
+.ians-v297-flow span{padding:5px 7px;border:1px solid rgba(255,255,255,.08);border-radius:999px}
+.ians-v297-flow span.active{color:#fff;border-color:rgba(255,183,78,.45);background:rgba(255,183,78,.08)}
+.ians-v297-flow span.done{color:#9be9c3}.ians-v297-flow i{font-style:normal;opacity:.45}
+
+.ians-v297-workbench{
+  max-width:var(--ians-max,1880px);width:min(calc(100% - 32px),var(--ians-max,1880px));
+  margin:0 auto 20px;padding:18px;border:1px solid rgba(79,191,255,.22);border-radius:20px;
+  background:radial-gradient(circle at 0 0,rgba(128,74,255,.10),transparent 28%),radial-gradient(circle at 100% 100%,rgba(0,204,255,.08),transparent 30%),rgba(4,17,34,.94);
+  box-shadow:0 20px 60px rgba(0,0,0,.22)
+}
+.ians-v297-workbench-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:14px}
+.ians-v297-workbench-head h2{margin:3px 0 5px;font-size:22px}.ians-v297-workbench-head p{margin:0;color:#8fa6bc;font-size:12px}
+.ians-v297-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.ians-v297-badges span{font-size:10px;font-weight:800;color:#b7c8d9;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08)}
+.ians-v297-clean-grid{display:grid;grid-template-columns:minmax(260px,.78fr) minmax(520px,2.15fr) minmax(290px,.86fr);gap:12px;align-items:start}
+.ians-v297-left,.ians-v297-center,.ians-v297-right{min-width:0;border:1px solid rgba(86,170,230,.15);border-radius:15px;background:rgba(5,20,38,.78);padding:10px}
+.ians-v297-right{position:sticky;top:150px}
+.ians-v297-slot-title{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:2px 4px 9px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:8px}
+.ians-v297-slot-title b{font-size:12px}.ians-v297-slot-title small{font-size:9px;color:#7890a7}
+.ians-v297-scroll{max-height:68vh;overflow:auto;padding-right:4px;scrollbar-gutter:stable}
+.ians-v297-scroll::-webkit-scrollbar{width:8px}.ians-v297-scroll::-webkit-scrollbar-thumb{background:#29435b;border-radius:10px}
+.ians-v297-embedded{margin:0!important;max-width:none!important;width:100%!important;border:0!important;box-shadow:none!important;background:transparent!important;padding:4px!important}
+.ians-v297-filter-panel{max-height:64vh;overflow:auto}.ians-v297-action-panel{max-height:62vh;overflow:auto}
+.ians-v297-operator-guide{padding:10px;margin:0 0 10px;border:1px solid rgba(88,226,164,.18);border-radius:12px;background:rgba(40,155,111,.055);font-size:10px;color:#a9bdd0}
+.ians-v297-operator-guide strong{color:#dff8ec;font-size:11px}.ians-v297-operator-guide ol{padding-left:18px;margin:7px 0 0}.ians-v297-operator-guide li{margin:4px 0}
+.ians-v297-note{font-size:10px;color:#8198ad;padding:10px}
+.ians-v297-details{margin-top:12px;border-top:1px solid rgba(255,255,255,.06);padding-top:10px}.ians-v297-details summary{cursor:pointer;font-size:11px;font-weight:750;color:#9eb4c8}
+body.ians-v297.ians-show-all #iansCleanupWorkbench{display:none!important}
+@media(max-width:1350px){.ians-v297-clean-grid{grid-template-columns:300px minmax(0,1fr)}.ians-v297-right{grid-column:1/-1;position:relative;top:auto}.ians-v297-flow{display:none}}
+@media(max-width:850px){.ians-v297-clean-grid{grid-template-columns:1fr}.ians-v297-workbench-head{flex-direction:column}.ians-v297-badges{justify-content:flex-start}.ians-v297-scroll,.ians-v297-filter-panel,.ians-v297-action-panel{max-height:none}}
+/* ===== END IANS OneDrive Command V2.9.7 ===== */

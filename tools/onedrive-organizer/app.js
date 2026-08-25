@@ -4601,3 +4601,96 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   else setTimeout(build,80);
 })();
  // ===== END IANS OneDrive Command V2.9.6 =====
+// ===== IANS OneDrive Command V2.9.7 · Cleanup Workbench =====
+(() => {
+  "use strict";
+  const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
+  const txt=el=>(el?.innerText||"").replace(/\s+/g," ").trim().toLowerCase();
+  function findPanel(patterns){
+    return qa("section, article, .panel, .card, .module, .tool-section, .command-section").find(el=>{
+      const t=txt(el); return patterns.every(p=>t.includes(p));
+    })||null;
+  }
+  function findAny(groups){ for(const g of groups){ const x=findPanel(g); if(x) return x; } return null; }
+
+  function enhanceDashboard(){
+    const dash=q("#iansCommandDashboard"); if(!dash || q("#iansV297Flow",dash)) return;
+    dash.classList.add("ians-v297-dashboard");
+    const tools=q(".ians-dash-tools",dash);
+    if(tools){
+      const flow=document.createElement("div");
+      flow.id="iansV297Flow"; flow.className="ians-v297-flow";
+      flow.innerHTML='<span class="done">1 <b>Scan</b></span><i>→</i><span>2 <b>Analyse</b></span><i>→</i><span class="active">3 <b>Rydding</b></span><i>→</i><span>4 <b>Organisering</b></span><i>→</i><span>5 <b>Godkjenn</b></span>';
+      tools.appendChild(flow);
+    }
+    const showAll=q("#iansShowAll",dash);
+    if(showAll){ showAll.textContent="☰ Avansert visning"; showAll.title="Vis alle moduler på én lang side"; }
+
+    const meta={
+      overview:["Status, konto og kapasitet"],
+      scan:["Kartlegg, gjenopprett og lagre"],
+      analyze:["Finn mønstre, store filer og media"],
+      cleanup:["Filtrer, vurder og fjern ekstrakopier"],
+      organize:["Bygg trygg plan og review"],
+      actions:["Action Mode, historikk og logg"]
+    };
+    qa("[data-tab]",dash).forEach(btn=>{
+      const id=btn.dataset.tab; if(!meta[id]||q(".ians-v297-tabmeta",btn)) return;
+      const count=q("b",btn);
+      const label=(btn.textContent||"").replace((count?.textContent||""),"").trim();
+      [...btn.childNodes].filter(n=>n.nodeType===3).forEach(n=>n.textContent="");
+      const wrap=document.createElement("span");
+      wrap.className="ians-v297-tabmeta";
+      wrap.innerHTML=`<strong>${label}</strong><small>${meta[id][0]}</small>`;
+      btn.insertBefore(wrap,count||null);
+    });
+  }
+
+  function buildCleanupWorkbench(){
+    if(q("#iansCleanupWorkbench")) return;
+    const filterPanel=findAny([["finn, filtrer og planlegg"],["filtrer","planlegg"],["cleanup command center"]]);
+    const duplicatePanel=findAny([["rydd duplikater i grupper"],["duplicate review"],["duplikat","grupper"]]);
+    const candidatePanel=findAny([["filer kandidater for opprydding"],["kandidater","opprydding"],["smart cleanup"]]);
+    const actionPanel=findAny([["flytt, organiser, karantene og papirkurv"],["action mode","papirkurv"]]);
+    const logPanel=findAny([["utførte handlinger"],["action log"]]);
+    if(!filterPanel && !duplicatePanel && !candidatePanel) return;
+
+    const host=document.createElement("section");
+    host.id="iansCleanupWorkbench"; host.dataset.iansDashGroup="cleanup"; host.className="ians-v297-workbench";
+    host.innerHTML=`
+      <div class="ians-v297-workbench-head">
+        <div><span class="ians-kicker">CLEANUP WORKBENCH · V2.9.7</span><h2>Rydd OneDrive i én kontrollert arbeidsflate</h2>
+        <p>Velg filer → vurder → merk trygge kandidater → utfør i Action Mode. Ingen permanent sletting.</p></div>
+        <div class="ians-v297-badges"><span>① Finn</span><span>② Vurder</span><span>③ Merk</span><span>④ Utfør</span></div>
+      </div>
+      <div class="ians-v297-clean-grid">
+        <div class="ians-v297-left"><div class="ians-v297-slot-title"><b>1. Finn og avgrens</b><small>Filtrene styrer arbeidslisten</small></div><div id="iansV297FilterSlot"></div></div>
+        <div class="ians-v297-center"><div class="ians-v297-slot-title"><b>2. Arbeidsliste</b><small>Egen scrolling – siden står i ro</small></div><div id="iansV297ListSlot" class="ians-v297-scroll"></div></div>
+        <aside class="ians-v297-right"><div class="ians-v297-slot-title"><b>3. Handlinger</b><small>Samlet kontroll før endringer</small></div><div id="iansV297ActionSlot"></div></aside>
+      </div>
+      <details class="ians-v297-details"><summary>Flere ryddeverktøy og historikk</summary><div id="iansV297MoreSlot"></div></details>`;
+
+    const dash=q("#iansCommandDashboard");
+    if(dash) dash.insertAdjacentElement("afterend",host); else (q("main")||document.body).prepend(host);
+
+    const filterSlot=q("#iansV297FilterSlot",host), listSlot=q("#iansV297ListSlot",host), actionSlot=q("#iansV297ActionSlot",host), moreSlot=q("#iansV297MoreSlot",host);
+    if(filterPanel){ filterPanel.classList.add("ians-v297-embedded","ians-v297-filter-panel"); filterSlot.appendChild(filterPanel); }
+    if(duplicatePanel){ duplicatePanel.classList.add("ians-v297-embedded","ians-v297-list-panel"); listSlot.appendChild(duplicatePanel); }
+    if(candidatePanel && candidatePanel!==duplicatePanel){ candidatePanel.classList.add("ians-v297-embedded","ians-v297-list-panel"); listSlot.appendChild(candidatePanel); }
+    if(actionPanel){ actionPanel.classList.add("ians-v297-embedded","ians-v297-action-panel"); actionSlot.appendChild(actionPanel); }
+    else actionSlot.innerHTML+='<div class="ians-v297-note">Action Mode-modulen vises her når den er tilgjengelig.</div>';
+    if(logPanel){ logPanel.classList.add("ians-v297-embedded"); moreSlot.appendChild(logPanel); }
+
+    const guide=document.createElement("div");
+    guide.className="ians-v297-operator-guide";
+    guide.innerHTML="<strong>Trygg ryddeflyt</strong><ol><li>Avgrens listen med filter.</li><li>Bruk Preview/Vurder på usikre filer.</li><li>For duplikater: behold alltid minst én kopi.</li><li>Aktiver Action Mode først når utvalget er riktig.</li></ol>";
+    actionSlot.prepend(guide);
+
+    const cleanupBtn=q('#iansCommandDashboard [data-tab="cleanup"]');
+    if(cleanupBtn) cleanupBtn.addEventListener("click",()=>{ host.classList.remove("ians-dash-hidden"); setTimeout(()=>host.scrollIntoView({behavior:"smooth",block:"start"}),50); });
+  }
+
+  function init(){ document.body.classList.add("ians-v297"); enhanceDashboard(); buildCleanupWorkbench(); }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>setTimeout(init,250)); else setTimeout(init,250);
+})();
+ // ===== END IANS OneDrive Command V2.9.7 =====
