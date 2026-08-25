@@ -4204,6 +4204,8 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     const stamp=new Date().toISOString().replace(/[:.]/g,"-").slice(0,19); downloadJson(state,`IANS-OneDrive-Scan-${stamp}.iansscan`);
     if(typeof iansToast==="function") iansToast("Portable Scan lagret",state.kind==="checkpoint"?"Checkpoint kan importeres og fortsettes på en annen økt.":"Ferdig rapport kan importeres uten ny fullscan.","success",7000);
   }
+  // V3.6.1: expose the proven portable exporter to Scan Vault without duplicating logic.
+  window.IANS_exportPortableScan = exportPortable;
   function pickImport(){ document.getElementById("v293ImportFile")?.click(); }
   async function importPortable(file){
     let data; try{data=JSON.parse(await file.text())}catch{alert("Filen kunne ikke leses som en IANS scanfil.");return;}
@@ -4291,17 +4293,27 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     return ok;
   }
 
-  async function restoreCompleted({silent=false}={}){
-    if(report?.files?.length) return report;
+  async function restoreCompleted({silent=false,force=false}={}){
+    // Silent boot may reuse an already rendered report, but an explicit button click
+    // must always reload the persisted vault and render it again.
+    if(!force && silent && report?.files?.length) return report;
     const vault=await dbGet(DB_KEY);
     if(!vault?.report?.files?.length){ updateVaultUi(null); return null; }
     const signed=activeAccount?.username||"";
     const source=vault.account||vault.report?.account?.username||"";
     if(signed && source && signed.toLowerCase()!==source.toLowerCase()){
-      updateVaultUi(vault); return null;
+      updateVaultUi(vault);
+      if(!silent) alert(`Scan Vault tilhører ${source}, mens du er logget inn som ${signed}.`);
+      return null;
     }
     report=vault.report;
-    try{ renderReport(report); }catch(e){ console.warn("[IANS V2.9.4] restore render",e); }
+    try{
+      renderReport(report);
+      if(typeof renderPhotoPanel === "function") renderPhotoPanel();
+    }catch(e){
+      console.warn("[IANS V3.6.1] restore render",e);
+      if(!silent) alert(`Scannen ble lest fra Scan Vault, men visningen feilet: ${e.message||e}`);
+    }
     const b=E("exportBtn"); if(b)b.disabled=false;
     updateVaultUi(vault);
     if(!silent && typeof iansToast==="function") iansToast("Scan gjenopprettet",`${fmtN(report.files.length)} filer lastet fra Scan Vault.`,"success",7000);
@@ -4321,14 +4333,39 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
       <div class="actions"><button class="btn ghost" id="v294Restore">Gjenopprett siste scan</button><button class="btn ghost" id="v294SaveNow">Lagre + last ned .iansscan</button></div>
       <div id="v294VaultStatus" class="empty-state" style="margin-top:10px">Kontrollerer lokal Scan Vault…</div>`;
     anchor.insertAdjacentElement("afterend",box);
-    E("v294Restore").onclick=()=>restoreCompleted();
-    E("v294SaveNow").onclick=async()=>{
-      if(!report?.files?.length){ alert("Ingen aktiv ferdig scan å lagre."); return; }
-      const ok=await saveCompleted(report);
-      if(ok){
-        try { exportPortable(); } catch(err) { console.error("Portable export error", err); alert(`Scan er lagret i Scan Vault, men nedlasting feilet: ${err.message}`); }
+    const restoreBtn=E("v294Restore"), saveBtn=E("v294SaveNow");
+    restoreBtn.onclick=async()=>{
+      const original=restoreBtn.textContent;
+      restoreBtn.disabled=true; restoreBtn.textContent="Gjenoppretter…";
+      const st=E("v294VaultStatus"); if(st) st.insertAdjacentHTML("beforeend",'<br><span class="muted" id="v361VaultWork">Laster rapport fra IndexedDB…</span>');
+      try{
+        const r=await restoreCompleted({silent:false,force:true});
+        if(!r) throw new Error("Ingen tilgjengelig rapport kunne gjenopprettes.");
+      }catch(err){
+        console.error("[IANS V3.6.1] Restore button",err);
+        alert(`Gjenoppretting feilet: ${err.message||err}`);
+      }finally{
+        E("v361VaultWork")?.remove(); restoreBtn.disabled=false; restoreBtn.textContent=original;
       }
-      if(typeof iansToast==="function") iansToast(ok?"Scan lagret + eksport startet":"Lagring feilet",ok?"Scan Vault er oppdatert og .iansscan sendes til Nedlastinger.":"Kunne ikke skrive til IndexedDB.",ok?"success":"error",6500);
+    };
+    saveBtn.onclick=async()=>{
+      const original=saveBtn.textContent;
+      saveBtn.disabled=true; saveBtn.textContent="Eksporterer…";
+      try{
+        // If the live report is not present, recover it from the vault first.
+        if(!report?.files?.length) await restoreCompleted({silent:true,force:true});
+        if(!report?.files?.length) throw new Error("Ingen ferdig scan er tilgjengelig.");
+        const ok=await saveCompleted(report);
+        if(!ok) throw new Error("Kunne ikke skrive rapporten til IndexedDB.");
+        if(typeof window.IANS_exportPortableScan !== "function") throw new Error("Eksportmotoren er ikke lastet.");
+        await window.IANS_exportPortableScan();
+        if(typeof iansToast==="function") iansToast("Scan lagret + eksport startet","Scan Vault er oppdatert og .iansscan sendes til Nedlastinger.","success",6500);
+      }catch(err){
+        console.error("[IANS V3.6.1] Export button",err);
+        alert(`Eksport feilet: ${err.message||err}`);
+      }finally{
+        saveBtn.disabled=false; saveBtn.textContent=original;
+      }
     };
     dbGet(DB_KEY).then(updateVaultUi);
   }
