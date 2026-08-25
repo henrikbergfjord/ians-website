@@ -977,3 +977,16 @@ body.ians-v301 #iansCommandDashboard,body.ians-v301 #iansCleanupWorkbench,body.i
 #inventoryTable th.sortable-th{cursor:pointer;user-select:none;white-space:nowrap;transition:color .15s ease,background .15s ease}
 #inventoryTable th.sortable-th:hover{background:rgba(90,174,235,.08);color:#e9f6ff}
 #inventoryTable th.sortable-th:focus-visible{outline:2px solid currentColor;outline-offset:-2px}
+
+
+/* ===== V3.4 SEARCH / FILTER / ACTION UI FIX ===== */
+.filter-grid{grid-template-columns:minmax(320px,2fr) repeat(5,minmax(120px,1fr)) auto;align-items:stretch}
+.inventory-search-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;min-width:0}
+.inventory-search-wrap input{min-width:0;width:100%}
+.inventory-search-btn,.inventory-reset-btn{white-space:nowrap}
+#filterSummary[data-action-mode="active"]{border-color:rgba(84,190,255,.65);box-shadow:inset 3px 0 0 rgba(84,190,255,.9)}
+#inventoryTable th:first-child,#inventoryTable td:first-child{vertical-align:top}
+#inventoryTable .file-select{cursor:pointer}
+@media(max-width:1350px){.filter-grid{grid-template-columns:2fr repeat(3,1fr)}.inventory-reset-btn{grid-column:auto}}
+@media(max-width:900px){.filter-grid{grid-template-columns:1fr 1fr}.inventory-search-wrap{grid-column:1/-1}}
+@media(max-width:650px){.filter-grid{grid-template-columns:1fr}.inventory-search-wrap{grid-template-columns:1fr auto}}

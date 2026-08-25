@@ -828,6 +828,8 @@ els.exportBtn.addEventListener("click", exportReport);
 // ===== IANS OneDrive Organizer V2: analysis workspace =====
 const v2 = {
   search: document.getElementById("searchInput"),
+  searchBtn: document.getElementById("searchInventoryBtn"),
+  resetBtn: document.getElementById("resetInventoryFiltersBtn"),
   category: document.getElementById("categoryFilter"),
   year: document.getElementById("yearFilter"),
   size: document.getElementById("sizeFilter"),
@@ -895,32 +897,55 @@ function prepareV2(r){
   renderPhotoPlan();
   renderCleanupPlan();
 }
+function inventoryFilterState(){
+  return {
+    q:(v2.search?.value||"").trim(),
+    cat:v2.category?.value||"",
+    yr:v2.year?.value||"",
+    minMb:Number(v2.size?.value)||0,
+    age:Number(v2.age?.value)||0,
+    dup:v2.dup?.value||""
+  };
+}
+function inventoryFilterLabel(st=inventoryFilterState()){
+  const p=[];
+  if(st.q)p.push(`søk: “${st.q}”`);
+  if(st.cat)p.push(st.cat);
+  if(st.yr)p.push(`år ${st.yr}`);
+  if(st.minMb)p.push(st.minMb>=1024?`over ${st.minMb/1024:g} GB`:`over ${st.minMb} MB`);
+  if(st.age)p.push(`eldre enn ${st.age} år`);
+  if(st.dup==="yes")p.push("kun mulige duplikater");
+  return p.length?p.join(" · "):"ingen filtre";
+}
 function filteredFiles(){
   if(!report) return [];
-  const q=v2.search.value.trim().toLowerCase(), cat=v2.category.value, yr=v2.year.value;
-  const minMb=Number(v2.size.value)||0, age=Number(v2.age.value)||0, dup=v2.dup.value;
+  const {q:rawQ,cat,yr,minMb,age,dup}=inventoryFilterState();
+  const q=rawQ.toLowerCase();
+  const minBytes=minMb*1024*1024;
   const cutoff=age ? new Date(new Date().setFullYear(new Date().getFullYear()-age)) : null;
   return report.files.filter(f=>{
-    if(q && !(f.name+" "+f.path).toLowerCase().includes(q)) return false;
+    const hay=`${f.name||""} ${f.path||""}`.toLowerCase();
+    if(q && !hay.includes(q)) return false;
     if(cat && f.category!==cat) return false;
     const d=fileDate(f), y=d?String(new Date(d).getFullYear()):"";
     if(yr && y!==yr) return false;
-    if(minMb && f.size < minMb*1024*1024) return false;
+    if(minBytes && (Number(f.size)||0) < minBytes) return false;
     if(cutoff && (!f.lastModifiedDateTime || new Date(f.lastModifiedDateTime)>cutoff)) return false;
     if(dup==="yes" && !isPossibleDuplicate(f)) return false;
     return true;
   });
 }
+function inventoryVisibleRows(){
+  if(!report)return [];
+  const maxRows=report.files.length>=50000?250:500;
+  return sortInventoryRows(filteredFiles()).slice(0,maxRows);
+}
 function renderV2(){
   if(!report)return;
-  const q=v2.search.value.trim(),cat=v2.category.value,yr=v2.year.value;
-  const minMb=Number(v2.size.value)||0,age=Number(v2.age.value)||0,dup=v2.dup.value;
-  const noFilters=!q&&!cat&&!yr&&!minMb&&!age&&!dup;
-  let all,bytes;
-  if(noFilters){all=report.files;bytes=report.summary.fileBytes||0}
-  else{all=filteredFiles();bytes=all.reduce((s,f)=>s+f.size,0)}
+  const all=filteredFiles();
+  const bytes=all.reduce((s,f)=>s+(Number(f.size)||0),0);
   const maxRows=report.files.length>=50000?250:500;
-  v2.summary.textContent=`${formatNumber(all.length)} filer · ${formatBytes(bytes)} i gjeldende utvalg. Viser maks ${maxRows} rader på skjermen.`;
+  v2.summary.textContent=`${formatNumber(all.length)} filer · ${formatBytes(bytes)} i gjeldende utvalg · Filter: ${inventoryFilterLabel()}. Viser maks ${maxRows} rader.`;
   const sorted=sortInventoryRows(all);
   renderTable(v2.table,[
     {label:inventoryHeaderLabel("Fil","name"),sortKey:"name",className:"path",render:f=>`<strong>${escapeHtml(f.name)}</strong><br><small>${escapeHtml(f.path)}</small>`},
@@ -1003,11 +1028,35 @@ function exportReview(){
   const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="ians-review-queue.json";a.click();URL.revokeObjectURL(u);
 }
 let v282FilterTimer=null;
+let v34LastFilterSignature="";
+function v34FilterSignature(){
+  const s=inventoryFilterState();
+  return JSON.stringify([s.q,s.cat,s.yr,s.minMb,s.age,s.dup]);
+}
+function v34ApplyFilters({immediate=false}={}){
+  clearTimeout(v282FilterTimer);
+  const run=()=>{v34LastFilterSignature=v34FilterSignature();renderV2();};
+  immediate?run():(v282FilterTimer=setTimeout(run,160));
+}
 [v2.search,v2.category,v2.year,v2.size,v2.age,v2.dup].forEach(x=>{
-  const rerender=()=>{clearTimeout(v282FilterTimer);v282FilterTimer=setTimeout(renderV2,120)};
-  x?.addEventListener("input",rerender);
-  x?.addEventListener("change",rerender);
+  x?.addEventListener("input",()=>v34ApplyFilters());
+  x?.addEventListener("change",()=>v34ApplyFilters({immediate:true}));
 });
+v2.search?.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();v34ApplyFilters({immediate:true});}});
+v2.searchBtn?.addEventListener("click",()=>v34ApplyFilters({immediate:true}));
+v2.resetBtn?.addEventListener("click",()=>{
+  if(v2.search)v2.search.value="";
+  [v2.category,v2.year,v2.size,v2.age,v2.dup].forEach(x=>{if(x)x.value="";});
+  inventorySort={key:"size",dir:"desc"};
+  v34ApplyFilters({immediate:true});
+});
+// Safari/Edge can restore form values after initial JS render without firing change.
+// Detect that state so the table always matches what the controls visibly show.
+setInterval(()=>{
+  if(!report || document.hidden)return;
+  const sig=v34FilterSignature();
+  if(sig!==v34LastFilterSignature)v34ApplyFilters({immediate:true});
+},700);
 v2.table?.addEventListener("click",e=>{
   const th=e.target.closest("th[data-sort-key]");
   if(!th) return;
@@ -1251,7 +1300,7 @@ renderV2 = function(){
   if(!report || !v24Enabled) return;
   const table=v2.table.querySelector("table");
   if(!table) return;
-  const visible=filteredFiles().slice(0,500);
+  const visible=inventoryVisibleRows();
 
   const head=table.querySelector("thead tr");
   const th=document.createElement("th");
@@ -1317,6 +1366,13 @@ function v24SetEnabled(on){
   v24.badge.textContent=on?"AKTIV":"LÅST";
   v24.badge.classList.toggle("safe",!on);
   renderV2();
+  if(on && v2.summary){
+    v2.summary.dataset.actionMode="active";
+    v2.summary.title="Action Mode er aktiv. Bruk avkrysningsboksen Velg i tabellen for å velge filer.";
+  } else if(v2.summary){
+    delete v2.summary.dataset.actionMode;
+    v2.summary.removeAttribute("title");
+  }
 }
 
 v24.enable?.addEventListener("click", async () => {
@@ -4322,10 +4378,22 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
       <div id="v294VaultStatus" class="empty-state" style="margin-top:10px">Kontrollerer lokal Scan Vault…</div>`;
     anchor.insertAdjacentElement("afterend",box);
     E("v294Restore").onclick=()=>restoreCompleted();
+    E("v294SaveNow").textContent="Lagre + last ned .iansscan";
     E("v294SaveNow").onclick=async()=>{
       if(!report?.files?.length){ alert("Ingen aktiv ferdig scan å lagre."); return; }
       const ok=await saveCompleted(report);
-      if(typeof iansToast==="function") iansToast(ok?"Scan lagret":"Lagring feilet",ok?"Scan Vault er oppdatert.":"Kunne ikke skrive til IndexedDB.",ok?"success":"error",6500);
+      // V3.5: always create the physical portable scan file as well as IndexedDB storage.
+      // Reuse the established V2.9.3 exporter so the file remains import/resume compatible.
+      let exported=false;
+      try{
+        if(typeof exportPortable==="function"){ await exportPortable(); exported=true; }
+        else {
+          const state={schema:"ians-portable-scan/1",version:"3.5",exportedAt:new Date().toISOString(),account:activeAccount?.username||report?.account?.username||"",kind:"completed-report",checkpoint:null,report};
+          const stamp=new Date().toISOString().replace(/[:.]/g,"-").slice(0,19);
+          downloadJson(state,`IANS-OneDrive-Scan-${stamp}.iansscan`); exported=true;
+        }
+      }catch(e){ console.error("[IANS V3.5] .iansscan export failed",e); }
+      if(typeof iansToast==="function") iansToast(ok&&exported?"Scan sikret":ok?"Lokal lagring OK":"Lagring feilet",ok&&exported?"Lagret i Scan Vault og .iansscan er sendt til nettleserens Nedlastinger.":ok?"Scan Vault er oppdatert, men filnedlasting feilet.":"Kunne ikke skrive til IndexedDB.",ok&&exported?"success":ok?"warning":"error",8000);
     };
     dbGet(DB_KEY).then(updateVaultUi);
   }
@@ -4880,3 +4948,10 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   else setTimeout(init,350);
 })();
  // ===== END IANS OneDrive Command V3.0 =====
+
+
+// ===== IANS OneDrive Command V3.4 · SEARCH + FILTER + ACTION UI FIX =====
+console.info("[IANS] V3.4 Search/Filter/Action UI Fix aktiv");
+
+// ===== IANS OneDrive Command V3.5 · Scan Export Fix =====
+console.info("[IANS] V3.5 Scan Vault + physical .iansscan export active");

@@ -535,7 +535,10 @@
           </div>
         </div>
         <div class="filter-grid">
-          <input id="searchInput" placeholder="Søk filnavn eller full sti…">
+          <div class="inventory-search-wrap">
+            <input id="searchInput" placeholder="Søk filnavn eller full sti…" autocomplete="off">
+            <button id="searchInventoryBtn" class="btn primary inventory-search-btn" type="button">Søk</button>
+          </div>
           <select id="categoryFilter"><option value="">Alle filtyper</option></select>
           <select id="yearFilter"><option value="">Alle år</option></select>
           <select id="sizeFilter">
@@ -555,6 +558,7 @@
             <option value="">Alle filer</option>
             <option value="yes">Kun mulige duplikater</option>
           </select>
+          <button id="resetInventoryFiltersBtn" class="btn ghost inventory-reset-btn" type="button">Nullstill</button>
         </div>
         <div id="filterSummary" class="selection-summary">Kjør kartlegging for å aktivere Cleanup Command Center.</div>
         <div id="inventoryTable" class="table-wrap empty-state">Ingen inventardata ennå.</div>
