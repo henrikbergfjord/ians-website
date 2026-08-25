@@ -183,6 +183,56 @@ async function initMsal() {
     els.dashboard.classList.add("hidden");
   }
 }
+
+// ===== V3.5.1 fixed-app bootstrap recovery =====
+function clearTransientMsalInteractionState(){
+  for(const store of [sessionStorage, localStorage]){
+    try{
+      const keys=[];
+      for(let i=0;i<store.length;i++){ const k=store.key(i); if(k) keys.push(k); }
+      for(const k of keys){
+        const low=k.toLowerCase();
+        if(low.includes("interaction.status") || low.includes("interaction_in_progress")) store.removeItem(k);
+      }
+    }catch(_){}
+  }
+}
+
+async function retryFixedMicrosoftBootstrap(){
+  const btn=document.getElementById("iansBootstrapRetry");
+  if(btn) btn.disabled=true;
+  if(els.setupMessage) els.setupMessage.textContent="Initialiserer den innebygde Microsoft-appen på nytt…";
+  clearTransientMsalInteractionState();
+  try{
+    await initMsal();
+  }catch(err){
+    console.error("[IANS V3.5.1] bootstrap retry failed",err);
+    if(els.setupMessage) els.setupMessage.textContent=`Oppstart feilet: ${err.message}`;
+  }finally{ if(btn) btn.disabled=false; }
+}
+
+function installFixedAppRecoveryUi(){
+  if(!IANS_PUBLIC_CLIENT_ID || !els.setupPanel) return;
+  // The public Client ID is authoritative; the user should never have to paste it again.
+  if(els.clientIdInput){
+    els.clientIdInput.value=IANS_PUBLIC_CLIENT_ID;
+    els.clientIdInput.readOnly=true;
+    els.clientIdInput.disabled=false;
+  }
+  if(els.saveClientIdBtn){
+    els.saveClientIdBtn.textContent="Fortsett med innebygd Microsoft-app";
+    els.saveClientIdBtn.classList.remove("hidden");
+  }
+  if(!document.getElementById("iansBootstrapRetry")){
+    const b=document.createElement("button");
+    b.id="iansBootstrapRetry"; b.type="button"; b.className="btn ghost";
+    b.textContent="Prøv oppstart på nytt";
+    b.style.marginLeft="8px";
+    b.addEventListener("click",retryFixedMicrosoftBootstrap);
+    els.saveClientIdBtn?.insertAdjacentElement("afterend",b);
+  }
+}
+
 function showLogin() {
   els.loginPanel.classList.remove("hidden");
   els.dashboard.classList.add("hidden");
@@ -764,7 +814,7 @@ function exportReport() {
 }
 
 els.saveClientIdBtn.addEventListener("click", async () => {
-  const v = (els.clientIdInput.value || "").trim();
+  const v = (IANS_PUBLIC_CLIENT_ID || els.clientIdInput.value || "").trim();
   const guid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
   if (!guid.test(v)) {
@@ -4382,18 +4432,16 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     E("v294SaveNow").onclick=async()=>{
       if(!report?.files?.length){ alert("Ingen aktiv ferdig scan å lagre."); return; }
       const ok=await saveCompleted(report);
-      // V3.5: always create the physical portable scan file as well as IndexedDB storage.
-      // Reuse the established V2.9.3 exporter so the file remains import/resume compatible.
       let exported=false;
       try{
         if(typeof exportPortable==="function"){ await exportPortable(); exported=true; }
         else {
-          const state={schema:"ians-portable-scan/1",version:"3.5",exportedAt:new Date().toISOString(),account:activeAccount?.username||report?.account?.username||"",kind:"completed-report",checkpoint:null,report};
+          const state={schema:"ians-portable-scan/1",version:"3.5.1",exportedAt:new Date().toISOString(),account:activeAccount?.username||report?.account?.username||"",kind:"completed-report",checkpoint:null,report};
           const stamp=new Date().toISOString().replace(/[:.]/g,"-").slice(0,19);
           downloadJson(state,`IANS-OneDrive-Scan-${stamp}.iansscan`); exported=true;
         }
-      }catch(e){ console.error("[IANS V3.5] .iansscan export failed",e); }
-      if(typeof iansToast==="function") iansToast(ok&&exported?"Scan sikret":ok?"Lokal lagring OK":"Lagring feilet",ok&&exported?"Lagret i Scan Vault og .iansscan er sendt til nettleserens Nedlastinger.":ok?"Scan Vault er oppdatert, men filnedlasting feilet.":"Kunne ikke skrive til IndexedDB.",ok&&exported?"success":ok?"warning":"error",8000);
+      }catch(e){ console.error("[IANS V3.5.1] .iansscan export failed",e); }
+      if(typeof iansToast==="function") iansToast(ok&&exported?"Scan sikret":ok?"Lokal lagring OK":"Lagring feilet",ok&&exported?"Lagret i Scan Vault og .iansscan er sendt til Nedlastinger.":ok?"Scan Vault er oppdatert, men filnedlasting feilet.":"Kunne ikke skrive til IndexedDB.",ok&&exported?"success":ok?"warning":"error",8000);
     };
     dbGet(DB_KEY).then(updateVaultUi);
   }
@@ -4953,5 +5001,12 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
 // ===== IANS OneDrive Command V3.4 · SEARCH + FILTER + ACTION UI FIX =====
 console.info("[IANS] V3.4 Search/Filter/Action UI Fix aktiv");
 
-// ===== IANS OneDrive Command V3.5 · Scan Export Fix =====
-console.info("[IANS] V3.5 Scan Vault + physical .iansscan export active");
+
+// ===== IANS OneDrive Command V3.5.1 · Bootstrap + Scan Export Fix =====
+window.addEventListener("load",()=>{
+  installFixedAppRecoveryUi();
+  // If a stale deployment/cache left the setup card visible, keep the fixed ID usable
+  // and offer a safe retry instead of forcing reconfiguration.
+  setTimeout(installFixedAppRecoveryUi,1200);
+});
+console.info("[IANS] V3.5.1 Bootstrap + physical .iansscan export active");
