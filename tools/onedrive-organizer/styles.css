@@ -972,3 +972,8 @@ body.ians-v301 #iansCommandDashboard,body.ians-v301 #iansCleanupWorkbench,body.i
 
 /* IANS V3.1 workspace navigation */
 .v31-workspace-bar{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:18px;padding:12px 4vw;background:rgba(3,12,27,.96);border-bottom:1px solid #183451;backdrop-filter:blur(16px);color:#dcecff}.v31-workspace-bar a{color:#63ddff;text-decoration:none;font-weight:800}.v31-workspace-bar strong{font-size:14px}.v31-workspace-bar span{font-size:12px;color:#8fa8bf}@media(max-width:760px){.v31-workspace-bar span{display:none}}
+
+/* IANS V3.3 inventory sorting */
+#inventoryTable th.sortable-th{cursor:pointer;user-select:none;white-space:nowrap;transition:color .15s ease,background .15s ease}
+#inventoryTable th.sortable-th:hover{background:rgba(90,174,235,.08);color:#e9f6ff}
+#inventoryTable th.sortable-th:focus-visible{outline:2px solid currentColor;outline-offset:-2px}

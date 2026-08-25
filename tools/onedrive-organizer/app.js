@@ -448,6 +448,7 @@ async function scanOneDrive(resumeState=null) {
   let duplicateMap=new Map();
   let dateStats={taken:0,created:0,unknown:0};
   let processedFolders=0;
+  let recoveryStats={missingFolders:0,prunedQueuedFolders:0,retries:0,lastMissingPath:null};
   let scanRoot={id:null,path:"/"};
   let scanStartedAt=new Date().toISOString();
   let lastCheckpoint=Date.now();
@@ -461,6 +462,7 @@ async function scanOneDrive(resumeState=null) {
     yearAgg=new Map(resumeState.yearAgg||[]);
     dateStats=resumeState.dateStats||dateStats;
     processedFolders=resumeState.processedFolders||0;
+    recoveryStats={...recoveryStats,...(resumeState.recoveryStats||{})};
     scanRoot=resumeState.scanRoot||scanRoot;
     scanStartedAt=resumeState.scanStartedAt||scanStartedAt;
     duplicateMap=new Map();
@@ -503,7 +505,8 @@ async function scanOneDrive(resumeState=null) {
       typeAgg:[...typeAgg.entries()],
       yearAgg:[...yearAgg.entries()],
       dateStats,
-      processedFolders
+      processedFolders,
+      recoveryStats
     });
   }
 
@@ -518,7 +521,29 @@ async function scanOneDrive(resumeState=null) {
       updateProgress(stats,queue.length,folder.path);
       updateLiveScanStats(stats,processedFolders,queue.length,folder.path);
 
-      const children=await listAllChildren(folder.id);
+      let children;
+      try{
+        children=await listAllChildren(folder.id);
+      }catch(err){
+        const msg=String(err?.message||err||"");
+        // OneDrive can change during a multi-hour scan. A queued folder may have
+        // been moved/deleted after it was discovered. This is recoverable.
+        if(/Graph\s+(404|410)\b/i.test(msg) || /itemNotFound/i.test(msg)){
+          recoveryStats.missingFolders++;
+          recoveryStats.lastMissingPath=folder.path;
+          const prefix=folder.path==="/"?"/":folder.path.replace(/\/$/,"")+"/";
+          const before=queue.length;
+          queue=queue.filter(q=>!(q.path===folder.path || String(q.path||"").startsWith(prefix)));
+          recoveryStats.prunedQueuedFolders += before-queue.length;
+          processedFolders++;
+          console.warn("IANS scan recovery: hopper over manglende mappe",folder.path,err);
+          els.progressPath.textContent=`Hoppet over flyttet/slettet mappe: ${folder.path}`;
+          updateLiveScanStats(stats,processedFolders,queue.length,folder.path);
+          await checkpoint(true);
+          continue;
+        }
+        throw err;
+      }
       processedFolders++;
 
       for(const item of children){
@@ -610,7 +635,7 @@ async function scanOneDrive(resumeState=null) {
     renderReport(report);
     updateLiveScanStats(stats,processedFolders,0,scanRoot.path);
     els.progressTitle.textContent="Kartlegging ferdig";
-    els.progressPath.textContent=`${formatNumber(stats.files)} filer analysert fra ${scanRoot.path}.`;
+    els.progressPath.textContent=`${formatNumber(stats.files)} filer analysert fra ${scanRoot.path}.` + (recoveryStats.missingFolders ? ` ${formatNumber(recoveryStats.missingFolders)} manglende mapper hoppet over (${formatNumber(recoveryStats.prunedQueuedFolders)} utdaterte køelementer fjernet).` : "");
     els.progressBar.style.width="100%";
     els.exportBtn.disabled=false;
     document.getElementById("scanStateBadge").textContent="FERDIG";
@@ -659,7 +684,7 @@ function renderTable(container, headers, rows) {
   }
   container.className = "table-wrap";
   container.innerHTML = `<table>
-    <thead><tr>${headers.map(h => `<th>${escapeHtml(h.label)}</th>`).join("")}</tr></thead>
+    <thead><tr>${headers.map(h => `<th${h.sortKey?` data-sort-key="${escapeHtml(h.sortKey)}" class="sortable-th" title="Klikk for å sortere"`:""}>${escapeHtml(h.label)}</th>`).join("")}</tr></thead>
     <tbody>
       ${rows.map(row => `<tr>${headers.map(h => {
         const value = h.render ? h.render(row) : escapeHtml(row[h.key] ?? "");
@@ -821,6 +846,30 @@ const v2 = {
   close: document.getElementById("closePreviewBtn")
 };
 let reviewIds = new Set();
+let inventorySort = { key: "size", dir: "desc" };
+
+function inventorySortValue(f,key){
+  if(key==="name") return (f.name||"").toLocaleLowerCase("nb-NO");
+  if(key==="category") return (f.category||"").toLocaleLowerCase("nb-NO");
+  if(key==="size") return Number(f.size)||0;
+  if(key==="date") { const d=fileDate(f); return d ? new Date(d).getTime() : 0; }
+  if(key==="duplicate") return isPossibleDuplicate(f)?1:0;
+  return 0;
+}
+function sortInventoryRows(rows){
+  const {key,dir}=inventorySort;
+  const sign=dir==="asc"?1:-1;
+  return [...rows].sort((a,b)=>{
+    const av=inventorySortValue(a,key), bv=inventorySortValue(b,key);
+    if(typeof av==="string" || typeof bv==="string") return String(av).localeCompare(String(bv),"nb-NO",{numeric:true,sensitivity:"base"})*sign;
+    if(av===bv) return (a.name||"").localeCompare(b.name||"","nb-NO",{numeric:true,sensitivity:"base"});
+    return (av-bv)*sign;
+  });
+}
+function inventoryHeaderLabel(label,key){
+  if(inventorySort.key!==key) return `${label} ↕`;
+  return `${label} ${inventorySort.dir==="asc"?"↑":"↓"}`;
+}
 
 function fileDate(f){ return f.takenDateTime || f.createdDateTime || null; }
 function isPossibleDuplicate(f){
@@ -872,14 +921,15 @@ function renderV2(){
   else{all=filteredFiles();bytes=all.reduce((s,f)=>s+f.size,0)}
   const maxRows=report.files.length>=50000?250:500;
   v2.summary.textContent=`${formatNumber(all.length)} filer · ${formatBytes(bytes)} i gjeldende utvalg. Viser maks ${maxRows} rader på skjermen.`;
+  const sorted=sortInventoryRows(all);
   renderTable(v2.table,[
-    {label:"Fil",className:"path",render:f=>`<strong>${escapeHtml(f.name)}</strong><br><small>${escapeHtml(f.path)}</small>`},
-    {label:"Type",key:"category"},
-    {label:"Størrelse",className:"num",render:f=>escapeHtml(formatBytes(f.size))},
-    {label:"Dato",render:f=>escapeHtml((fileDate(f)||"").slice(0,10)||"–")},
-    {label:"Duplikat",render:f=>isPossibleDuplicate(f)?"Mulig":"–"},
+    {label:inventoryHeaderLabel("Fil","name"),sortKey:"name",className:"path",render:f=>`<strong>${escapeHtml(f.name)}</strong><br><small>${escapeHtml(f.path)}</small>`},
+    {label:inventoryHeaderLabel("Type","category"),sortKey:"category",key:"category"},
+    {label:inventoryHeaderLabel("Størrelse","size"),sortKey:"size",className:"num",render:f=>escapeHtml(formatBytes(f.size))},
+    {label:inventoryHeaderLabel("Dato","date"),sortKey:"date",render:f=>escapeHtml((fileDate(f)||"").slice(0,10)||"–")},
+    {label:inventoryHeaderLabel("Duplikat","duplicate"),sortKey:"duplicate",render:f=>isPossibleDuplicate(f)?"Mulig":"–"},
     {label:"Handling",render:f=>`<div class="row-actions"><button class="btn mini ghost" data-preview="${escapeHtml(f.id)}">Preview</button><button class="btn mini ghost" data-review="${escapeHtml(f.id)}">Vurder</button></div>`}
-  ],all.slice(0,maxRows));
+  ],sorted.slice(0,maxRows));
 }
 function renderPhotoPlan(){
   if(!report)return;
@@ -953,9 +1003,19 @@ function exportReview(){
   const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="ians-review-queue.json";a.click();URL.revokeObjectURL(u);
 }
 let v282FilterTimer=null;
-[v2.search,v2.category,v2.year,v2.size,v2.age,v2.dup].forEach(x=>x?.addEventListener("input",()=>{
- clearTimeout(v282FilterTimer);v282FilterTimer=setTimeout(renderV2,180);
-}));
+[v2.search,v2.category,v2.year,v2.size,v2.age,v2.dup].forEach(x=>{
+  const rerender=()=>{clearTimeout(v282FilterTimer);v282FilterTimer=setTimeout(renderV2,120)};
+  x?.addEventListener("input",rerender);
+  x?.addEventListener("change",rerender);
+});
+v2.table?.addEventListener("click",e=>{
+  const th=e.target.closest("th[data-sort-key]");
+  if(!th) return;
+  const key=th.dataset.sortKey;
+  if(inventorySort.key===key) inventorySort.dir=inventorySort.dir==="asc"?"desc":"asc";
+  else { inventorySort.key=key; inventorySort.dir=(key==="size"||key==="date"||key==="duplicate")?"desc":"asc"; }
+  renderV2();
+});
 v2.csv?.addEventListener("click",exportCSV);
 v2.pdf?.addEventListener("click",()=>window.print());
 v2.clear?.addEventListener("click",()=>{reviewIds.clear();renderReview()});
@@ -4153,7 +4213,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     if(data.checkpoint?.queue?.length){
       await saveScanCheckpoint(data.checkpoint); await refreshCheckpointUi();
       document.getElementById("scanStateBadge").textContent="IMPORTERT";
-      document.getElementById("checkpointSummary").textContent=`Importert checkpoint · ${fmtN(data.checkpoint.stats?.files)} filer · ${fmtN(data.checkpoint.queue?.length)} mapper gjenstår.`;
+      document.getElementById("checkpointSummary").textContent=`Importert checkpoint · ${fmtN(data.checkpoint.stats?.files)} filer · ${fmtN(data.checkpoint.processedFolders||0)} mapper ferdig · ${fmtN(data.checkpoint.queue?.length)} mapper gjenstår.`;
     }
     if(data.report?.files?.length){ report=data.report; renderReport(report); const b=document.getElementById("exportBtn"); if(b)b.disabled=false; renderPhotoPanel(); }
     if(typeof iansToast==="function") iansToast("Scan importert",data.checkpoint?.queue?.length?"Trykk Resume for å fortsette fra checkpoint.":"Rapporten er gjenopprettet uten ny fullscan.","success",8000);
