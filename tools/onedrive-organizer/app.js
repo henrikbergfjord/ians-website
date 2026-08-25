@@ -177,10 +177,24 @@ async function initMsal() {
     else showLogin();
   } catch (err) {
     console.error("MSAL popup init error", err);
-    els.setupMessage.textContent = `MSAL-feil: ${err.message}`;
-    els.setupPanel.classList.remove("hidden");
-    els.loginPanel.classList.add("hidden");
-    els.dashboard.classList.add("hidden");
+    if (IANS_PUBLIC_CLIENT_ID) {
+      // Built-in public app: never dump the user back into first-time Client ID setup.
+      els.setupPanel.classList.add("hidden");
+      els.dashboard.classList.add("hidden");
+      els.loginPanel.classList.remove("hidden");
+      const old = document.getElementById("iansBootError");
+      if (old) old.remove();
+      const p = document.createElement("p");
+      p.id = "iansBootError";
+      p.className = "message";
+      p.textContent = `Microsoft-oppstart feilet: ${err.message}. Trykk Koble til OneDrive for å prøve igjen.`;
+      els.loginPanel.appendChild(p);
+    } else {
+      els.setupMessage.textContent = `MSAL-feil: ${err.message}`;
+      els.setupPanel.classList.remove("hidden");
+      els.loginPanel.classList.add("hidden");
+      els.dashboard.classList.add("hidden");
+    }
   }
 }
 
@@ -250,9 +264,17 @@ function showDashboard() {
 
 async function signIn() {
   if (!msalApp) {
-    els.setupMessage.textContent = "Lagre Client ID først.";
-    els.setupPanel.classList.remove("hidden");
-    return;
+    clearTransientMsalInteractionState();
+    await initMsal();
+    if (!msalApp) {
+      const old = document.getElementById("iansBootError");
+      if (old) old.remove();
+      const p = document.createElement("p");
+      p.id = "iansBootError"; p.className = "message";
+      p.textContent = "Microsoft-appen kunne ikke initialiseres. Last siden på nytt og prøv igjen.";
+      els.loginPanel.appendChild(p);
+      return;
+    }
   }
 
   try {
@@ -2152,7 +2174,11 @@ setTimeout(async () => {
 if (!IS_MSAL_POPUP_CALLBACK) {
   initMsal().catch(err => {
     console.error("[IANS] startup init failed", err);
-    if (els?.setupMessage) {
+    if (IANS_PUBLIC_CLIENT_ID) {
+      els?.setupPanel?.classList.add("hidden");
+      els?.dashboard?.classList.add("hidden");
+      els?.loginPanel?.classList.remove("hidden");
+    } else if (els?.setupMessage) {
       els.setupMessage.textContent = `Oppstart feilet: ${err.message}`;
     }
   });
@@ -5010,3 +5036,14 @@ window.addEventListener("load",()=>{
   setTimeout(installFixedAppRecoveryUi,1200);
 });
 console.info("[IANS] V3.5.1 Bootstrap + physical .iansscan export active");
+
+
+// ===== IANS OneDrive Command V3.5.2 · BOOT ROUTING FIX =====
+window.addEventListener("DOMContentLoaded",()=>{
+  // The Microsoft app is built in. Hide legacy first-time setup immediately.
+  if (IANS_PUBLIC_CLIENT_ID && els?.setupPanel) {
+    els.setupPanel.classList.add("hidden");
+    if (!activeAccount) els?.loginPanel?.classList.remove("hidden");
+  }
+});
+console.info("[IANS] V3.5.2 Boot Routing Fix active");
