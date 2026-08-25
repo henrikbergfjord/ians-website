@@ -4694,3 +4694,170 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>setTimeout(init,250)); else setTimeout(init,250);
 })();
  // ===== END IANS OneDrive Command V2.9.7 =====
+// ===== IANS OneDrive Command V2.9.8 · Unified Workspace =====
+(() => {
+  "use strict";
+  const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
+  const norm=s=>String(s||"").replace(/\s+/g," ").trim().toLowerCase();
+
+  function clickByText(rx){
+    const hit=qa("button,a").find(el=>rx.test(norm(el.textContent)) && !el.disabled);
+    if(hit){ hit.click(); return true; }
+    return false;
+  }
+  function activateTab(id){
+    const b=q(`#iansCommandDashboard [data-tab="${id}"]`);
+    if(b){ b.click(); return true; }
+    return false;
+  }
+  function reveal(el){
+    if(!el)return;
+    let p=el;
+    while(p&&p!==document.body){
+      p.classList?.remove("ians-dash-hidden","hidden");
+      if(p.tagName==="DETAILS")p.open=true;
+      p=p.parentElement;
+    }
+    setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),80);
+  }
+  function findTextPanel(rx){
+    const h=qa("h1,h2,h3,h4,.section-title,.eyebrow").find(x=>rx.test(norm(x.textContent)));
+    if(!h)return null;
+    let p=h;
+    for(let i=0;i<7&&p;i++,p=p.parentElement){
+      if(p.matches?.("section,article,.panel,.card,.module,.tool-section,.command-section"))return p;
+    }
+    return h.closest("div");
+  }
+
+  function route(name){
+    if(name==="cleanup"){ activateTab("cleanup"); reveal(q("#iansCleanupWorkbench")); return; }
+    if(name==="duplicates"){
+      activateTab("cleanup");
+      reveal(q("#v294ReviewCleaner")||q("#v295DupList")||findTextPanel(/duplicate review|rydd duplikater/));
+      return;
+    }
+    if(name==="organize"){
+      activateTab("organize");
+      reveal(q("#v285OrgPanel")||q("#v295OrgBuild")?.closest("section,.panel")||findTextPanel(/organization studio|organisering/));
+      return;
+    }
+    if(name==="actions"){ activateTab("actions"); reveal(findTextPanel(/action mode|utførte handlinger|action log/)); return; }
+    if(name==="download"){
+      activateTab("scan");
+      const dl=q("#downloadVerifyPanel")||findTextPanel(/download\s*&\s*verify|download and verify|resume.*verify/);
+      reveal(dl);
+      if(!dl) location.hash="downloadVerifyPanel";
+      return;
+    }
+    activateTab("scan");
+    reveal(q("#v295Workspace")||q("#v294ScanVault")||q("#v293Portable")||findTextPanel(/kartlegging|scan vault|portable scan/));
+  }
+
+  function toolbox(){
+    let box=q("#iansV298Toolbox");
+    if(box){ box.classList.add("open"); return; }
+    box=document.createElement("div");
+    box.id="iansV298Toolbox";
+    box.innerHTML=`
+      <div class="v298-toolbox-backdrop" data-v298-close></div>
+      <aside class="v298-toolbox-panel">
+        <div class="v298-toolbox-head">
+          <div><span class="ians-kicker">IANS · VERKTØYKASSE</span><h3>Velg oppgaven du faktisk vil utføre</h3></div>
+          <button type="button" data-v298-close>✕</button>
+        </div>
+        <div class="v298-tool-grid">
+          <button data-tool="scan"><span>◎</span><strong>Scan & Vault</strong><small>Kartlegg, importer eller gjenopprett scan.</small></button>
+          <button data-tool="download"><span>⇩</span><strong>Download & Verify</strong><small>Last ned mappe kontrollert med Resume/Verify.</small></button>
+          <button data-tool="duplicates"><span>♻</span><strong>Duplikater</strong><small>Bygg grupper, behold én og merk ekstrakopier.</small></button>
+          <button data-tool="cleanup"><span>◇</span><strong>Cleanup Workbench</strong><small>Filtrer, vurder, merk og utfør på ett sted.</small></button>
+          <button data-tool="organize"><span>▦</span><strong>Organisering</strong><small>Preview → Review → godkjent mål.</small></button>
+          <button data-tool="actions"><span>✓</span><strong>Handlinger & logg</strong><small>Action Mode, resultat og historikk.</small></button>
+        </div>
+        <div class="v298-toolbox-note">Verktøy uten data eller handling skjules fra normal arbeidsflyt. Diagnostikk skal ikke være hovedsiden.</div>
+      </aside>`;
+    document.body.appendChild(box);
+    qa("[data-v298-close]",box).forEach(x=>x.onclick=()=>box.classList.remove("open"));
+    qa("[data-tool]",box).forEach(btn=>btn.onclick=()=>{ box.classList.remove("open"); route(btn.dataset.tool); });
+    requestAnimationFrame(()=>box.classList.add("open"));
+  }
+
+  function fixAdvanced(){
+    const old=q("#iansShowAll");
+    if(!old||old.dataset.v298)return;
+    old.dataset.v298="1";
+    old.textContent="▦ Verktøykasse";
+    old.title="Åpne nyttige verktøy uten å vise hele langsiden";
+    const fresh=old.cloneNode(true);
+    old.replaceWith(fresh);
+    fresh.onclick=toolbox;
+  }
+
+  function addOperatorActions(){
+    const slot=q("#iansV297ActionSlot");
+    if(!slot||q("#iansV298Operator",slot))return;
+    const p=document.createElement("div");
+    p.id="iansV298Operator";
+    p.className="v298-operator";
+    p.innerHTML=`
+      <div class="v298-op-head"><strong>Operatørkontroll</strong><span>Bruker eksisterende motor</span></div>
+      <button data-op="build">1 · Bygg duplikatgrupper</button>
+      <button data-op="mark">2 · Merk alle ekstrakopier</button>
+      <button data-op="action">3 · Aktiver Action Mode</button>
+      <button data-op="trash" class="danger">4 · Send valgte til papirkurv</button>
+      <div class="v298-op-status" id="iansV298OpStatus">Ingen handling startet.</div>`;
+    slot.prepend(p);
+    const status=s=>{const x=q("#iansV298OpStatus");if(x)x.textContent=s;};
+    q('[data-op="build"]',p).onclick=()=>{ const b=q("#v295DupBuild"); if(b){b.click();status("Duplikatgrupper bygges.");}else status("Duplikatverktøyet er ikke tilgjengelig."); };
+    q('[data-op="mark"]',p).onclick=()=>{ const b=q("#v295DupSelectAll"); if(b&&!b.disabled){b.click();status("Ekstrakopier markert. Én beholdes per gruppe.");}else status("Bygg duplikatgrupper først."); };
+    q('[data-op="action"]',p).onclick=()=>status(clickByText(/aktiver action mode|action mode/)?"Action Mode-dialog åpnet.":"Action Mode-knappen ble ikke funnet.");
+    q('[data-op="trash"]',p).onclick=()=>{ const b=q("#v295DupTrash"); if(b&&!b.disabled){b.click();status("Papirkurv-flyt åpnet. Kontroller bekreftelsen.");}else status("Ingen ekstrakopier er valgt."); };
+  }
+
+  function hasValue(el){
+    if(!el)return false;
+    const t=norm(el.innerText);
+    const enabled=qa("button:not([disabled]),a[href],input:not([disabled]),select:not([disabled])",el).length;
+    const rows=qa("tbody tr,.file-row,.result-row,.v295-dup-group",el).length;
+    const positive=/\b[1-9]\d*\s*(filer|grupper|kandidater|handlinger|gb|mb)\b/.test(t);
+    const empty=/ingen data|ingen handlinger|ingen .*funnet|0 grupper|0 filer|ingen plan|ingen ekstrakopier/.test(t);
+    return enabled>0 || rows>0 || positive || !empty;
+  }
+  function compactSecondary(){
+    const more=q("#iansV297MoreSlot");
+    if(!more)return;
+    qa(":scope > section,:scope > article,:scope > .panel,:scope > .card,:scope > div",more).forEach(el=>{
+      if(!hasValue(el))el.classList.add("v298-no-value");
+    });
+    const details=more.closest("details");
+    if(details){
+      const useful=qa(":scope > *",more).filter(hasValue).length;
+      const s=q("summary",details);
+      if(s)s.textContent=useful?`Historikk og ekstra verktøy (${useful})`:"Historikk og ekstra verktøy · ingen aktive data";
+      if(!useful)details.classList.add("v298-empty-details");
+    }
+  }
+
+  function fixWidth(){
+    document.body.classList.add("ians-v298");
+    qa("#iansCommandDashboard,#iansCleanupWorkbench").forEach(x=>x.classList.add("v298-full"));
+  }
+  function hashRoute(){
+    const h=location.hash.replace(/^#/,"").toLowerCase();
+    if(!h)return;
+    if(h.includes("downloadverify"))route("download");
+    else if(h.includes("cleanup"))route("cleanup");
+    else if(h.includes("duplicate"))route("duplicates");
+    else if(h.includes("organ"))route("organize");
+    else if(h.includes("action")||h.includes("log"))route("actions");
+    else if(h.includes("scan")||h.includes("vault"))route("scan");
+  }
+
+  function init(){
+    fixWidth(); fixAdvanced(); addOperatorActions(); compactSecondary(); hashRoute();
+    setTimeout(()=>{fixAdvanced();addOperatorActions();compactSecondary();hashRoute();},900);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(init,320));
+  else setTimeout(init,320);
+})();
+ // ===== END IANS OneDrive Command V2.9.8 =====
