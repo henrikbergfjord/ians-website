@@ -803,39 +803,13 @@
     <p>IANS OneDrive Organizer V2.9.3.1 Portable Scan + Photo Intelligence · Ingen filer lastes ned under kartleggingen · Ingen skrive-/slettetilgang</p>
   </footer>
 
-  <script type="module" src="app.js?v=353"></script>
+  <script type="module" src="app.js?v=354"></script>
 <div class="ians-next-badge">IANS Next · Master</div>
 <script>window.addEventListener('load',()=>{if(location.hash){setTimeout(()=>{const e=document.querySelector(location.hash);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});},500)}});</script>
 
 
-  <script src="workspace-router.js?v=351"></script>
+  <script src="workspace-router.js?v=354"></script>
 
-<script>
-// V3.5.3 defensive login bridge. Does not touch IndexedDB/Scan Vault.
-(function(){
-  function bind(){
-    const b=document.getElementById('signInBtn');
-    if(!b || b.dataset.ians353==='1') return;
-    b.dataset.ians353='1';
-    b.addEventListener('click', async function(ev){
-      ev.preventDefault();
-      const old=document.getElementById('ians353LoginStatus'); if(old) old.remove();
-      const p=document.createElement('p'); p.id='ians353LoginStatus'; p.className='message';
-      p.textContent='Åpner Microsoft-innlogging…'; b.parentElement?.appendChild(p);
-      try {
-        if(typeof window.IANS_ONE_DRIVE_SIGN_IN!=='function') throw new Error('Innloggingsmotoren er ikke ferdig lastet. Oppdater siden og prøv igjen.');
-        await window.IANS_ONE_DRIVE_SIGN_IN();
-        p.remove();
-      } catch(err) {
-        p.textContent='Innlogging feilet: '+(err?.message||err);
-        console.error('[IANS V3.5.3] login bridge',err);
-      }
-    }, {capture:true});
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(bind,500));
-  else setTimeout(bind,500);
-  setTimeout(bind,1800);
-})();
-</script>
+
 </body>
 </html>

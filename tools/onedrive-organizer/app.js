@@ -19,6 +19,56 @@ window.IANS_V290_CONFIG = {
 };
 const IANS_PUBLIC_CLIENT_ID = window.IANS_V290_CONFIG.clientId;
 
+// ===== V3.5.4 AUTHORITATIVE CLIENT STATE RECOVERY =====
+// A manually saved Client ID from an older build may leave MSAL cache/state behind.
+// Repair only auth/config storage. IndexedDB / Scan Vault is never touched here.
+function repairAuthoritativeMicrosoftClientState() {
+  const expected = String(IANS_PUBLIC_CLIENT_ID || "").trim();
+  if (!expected) return;
+
+  let staleClientState = false;
+  try {
+    const savedMain = String(localStorage.getItem(CLIENT_KEY) || "").trim();
+    const savedBackup = String(localStorage.getItem(CLIENT_BACKUP_KEY) || "").trim();
+    staleClientState = Boolean(
+      (savedMain && savedMain !== expected) ||
+      (savedBackup && savedBackup !== expected)
+    );
+
+    if (staleClientState) {
+      // Remove MSAL browser cache only. Do NOT clear localStorage wholesale.
+      for (const store of [localStorage, sessionStorage]) {
+        const keys = [];
+        for (let i = 0; i < store.length; i++) {
+          const key = store.key(i);
+          if (key) keys.push(key);
+        }
+        for (const key of keys) {
+          const low = key.toLowerCase();
+          if (
+            low.includes("msal") ||
+            low.includes("interaction.status") ||
+            low.includes("interaction_in_progress") ||
+            (savedMain && key.includes(savedMain)) ||
+            (savedBackup && key.includes(savedBackup))
+          ) {
+            store.removeItem(key);
+          }
+        }
+      }
+      console.warn("[IANS V3.5.4] Repaired stale Microsoft Client ID/MSAL state. Scan Vault preserved.");
+    }
+
+    // The built-in public app is always authoritative from this version onward.
+    localStorage.setItem(CLIENT_KEY, expected);
+    localStorage.setItem(CLIENT_BACKUP_KEY, expected);
+  } catch (err) {
+    console.warn("[IANS V3.5.4] Client-state repair warning", err);
+  }
+}
+
+repairAuthoritativeMicrosoftClientState();
+
 
 const APP_BASE_URL = (() => {
   const u = new URL(window.location.href);
@@ -278,6 +328,10 @@ async function signIn() {
   }
 
   try {
+    if (els.signInBtn) {
+      els.signInBtn.disabled = true;
+      els.signInBtn.textContent = "Åpner Microsoft…";
+    }
     const result = await msalApp.loginPopup({
       scopes: ["User.Read", ...SCOPES],
       prompt: "select_account",
@@ -288,8 +342,16 @@ async function signIn() {
 
     activeAccount = result.account;
     msalApp.setActiveAccount(activeAccount);
+    if (els.signInBtn) {
+      els.signInBtn.disabled = false;
+      els.signInBtn.textContent = "Koble til OneDrive";
+    }
     showDashboard();
   } catch (err) {
+    if (els.signInBtn) {
+      els.signInBtn.disabled = false;
+      els.signInBtn.textContent = "Koble til OneDrive";
+    }
     console.error("Login popup error", err);
     const old = document.getElementById("loginError");
     if (old) old.remove();
@@ -5053,3 +5115,5 @@ window.addEventListener("DOMContentLoaded",()=>{
   }
 });
 console.info("[IANS] V3.5.2 Boot Routing Fix active");
+
+console.info("[IANS] V3.5.4 Authoritative Client State Recovery active");
