@@ -4505,359 +4505,318 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot294);else boot294();
 })();
 // ===== END IANS OneDrive Command V2.9.4 =====
-// ===== IANS OneDrive Command V2.9.6 · Command Dashboard =====
+// ===== IANS OneDrive Command V3.0 · Focus Workspace =====
 (() => {
   "use strict";
-  const KEY_TAB="ians.v296.tab", KEY_WIDE="ians.v296.wide";
-  const groups = [
-    ["overview","Oversikt","⌂"],
-    ["scan","Scan & Vault","◎"],
-    ["analyze","Analyse","◇"],
-    ["cleanup","Rydding","♻"],
-    ["organize","Organisering","▦"],
-    ["actions","Handlinger & logg","✓"]
-  ];
 
-  function norm(s){ return (s||"").toLowerCase().replace(/\s+/g," ").trim(); }
-  function classify(txt){
-    txt=norm(txt);
-    if (/action log|utførte handlinger|karantene|action mode|beviste handlinger/.test(txt)) return "actions";
-    if (/organization studio|organiser bilder|organiser|organized review|godkjenn|endelig mål/.test(txt)) return "organize";
-    if (/duplicate|duplikat|cleanup|opprydd|rydd duplikater|filer kandidater/.test(txt)) return "cleanup";
-    if (/scan vault|kartlegging|portable scan|checkpoint|scan med|start kartlegging|last ned scan/.test(txt)) return "scan";
-    if (/største områder|største filer|filtyper|opptaksår|photo intelligence|detaljer|storage map|analyse/.test(txt)) return "analyze";
-    return "overview";
-  }
-  function candidateCards(){
-    const main=document.querySelector("main") || document.body;
-    let els=[...main.querySelectorAll("section, article, .panel, .card, .module, .tool-section, .command-section")];
-    els=els.filter(el=>{
-      const r=el.getBoundingClientRect();
-      if(r.width < 450 || r.height < 55) return false;
-      if(el.id==="iansCommandDashboard") return false;
-      const head=el.querySelector(":scope > h1,:scope > h2,:scope > h3,:scope > header h1,:scope > header h2,:scope > header h3,.eyebrow");
-      return !!head;
-    });
-    // Keep only the outermost useful card to avoid hiding nested content independently.
-    return els.filter(el=>!els.some(p=>p!==el && p.contains(el) && classify(p.innerText)===classify(el.innerText)));
-  }
-  function build(){
-    if(document.getElementById("iansCommandDashboard")) return;
-    document.body.classList.add("ians-v296");
-    if(localStorage.getItem(KEY_WIDE)!=="0") document.body.classList.add("ians-wide");
-
-    const dash=document.createElement("div");
-    dash.id="iansCommandDashboard";
-    dash.innerHTML=`
-      <div class="ians-dash-brand">
-        <div><span class="ians-kicker">IANS · ONEDRIVE COMMAND</span><strong>Command Dashboard</strong></div>
-        <div class="ians-dash-status"><span class="ians-dot"></span> V2.9.6</div>
-      </div>
-      <div class="ians-dash-tabs">
-        ${groups.map(([id,label,ico])=>`<button type="button" data-tab="${id}"><span>${ico}</span>${label}<b data-count="${id}">0</b></button>`).join("")}
-      </div>
-      <div class="ians-dash-tools">
-        <button type="button" id="iansWideToggle">↔ Widescreen</button>
-        <button type="button" id="iansShowAll">☰ Vis alle</button>
-        <div class="ians-dash-help">Én arbeidsflate: Scan → Analyse → Rydding → Organisering → Godkjenning</div>
-      </div>`;
-    const anchor=document.querySelector("main") || document.body;
-    anchor.insertBefore(dash, anchor.firstChild);
-
-    const cards=candidateCards();
-    cards.forEach((el,i)=>{
-      const g=classify(el.innerText);
-      el.dataset.iansDashGroup=g;
-      el.dataset.iansDashIndex=String(i);
-    });
-    groups.forEach(([id])=>{
-      const n=cards.filter(x=>x.dataset.iansDashGroup===id).length;
-      const b=dash.querySelector(`[data-count="${id}"]`); if(b)b.textContent=n;
-    });
-
-    function activate(tab, all=false){
-      localStorage.setItem(KEY_TAB,tab);
-      dash.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab && !all));
-      cards.forEach(el=>{
-        el.classList.toggle("ians-dash-hidden", !all && el.dataset.iansDashGroup!==tab);
-      });
-      document.body.classList.toggle("ians-show-all",all);
-      if(!all) setTimeout(()=>dash.scrollIntoView({block:"start",behavior:"smooth"}),20);
-    }
-    dash.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>activate(b.dataset.tab)));
-    dash.querySelector("#iansShowAll").addEventListener("click",()=>activate(localStorage.getItem(KEY_TAB)||"overview",true));
-    dash.querySelector("#iansWideToggle").addEventListener("click",()=>{
-      document.body.classList.toggle("ians-wide");
-      localStorage.setItem(KEY_WIDE,document.body.classList.contains("ians-wide")?"1":"0");
-    });
-    activate(localStorage.getItem(KEY_TAB)||"overview");
-
-    // Keyboard shortcuts 1-6.
-    document.addEventListener("keydown",e=>{
-      if(e.altKey && /^[1-6]$/.test(e.key)) activate(groups[Number(e.key)-1][0]);
-    });
-  }
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>setTimeout(build,80));
-  else setTimeout(build,80);
-})();
- // ===== END IANS OneDrive Command V2.9.6 =====
-// ===== IANS OneDrive Command V2.9.7 · Cleanup Workbench =====
-(() => {
-  "use strict";
-  const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
-  const txt=el=>(el?.innerText||"").replace(/\s+/g," ").trim().toLowerCase();
-  function findPanel(patterns){
-    return qa("section, article, .panel, .card, .module, .tool-section, .command-section").find(el=>{
-      const t=txt(el); return patterns.every(p=>t.includes(p));
-    })||null;
-  }
-  function findAny(groups){ for(const g of groups){ const x=findPanel(g); if(x) return x; } return null; }
-
-  function enhanceDashboard(){
-    const dash=q("#iansCommandDashboard"); if(!dash || q("#iansV297Flow",dash)) return;
-    dash.classList.add("ians-v297-dashboard");
-    const tools=q(".ians-dash-tools",dash);
-    if(tools){
-      const flow=document.createElement("div");
-      flow.id="iansV297Flow"; flow.className="ians-v297-flow";
-      flow.innerHTML='<span class="done">1 <b>Scan</b></span><i>→</i><span>2 <b>Analyse</b></span><i>→</i><span class="active">3 <b>Rydding</b></span><i>→</i><span>4 <b>Organisering</b></span><i>→</i><span>5 <b>Godkjenn</b></span>';
-      tools.appendChild(flow);
-    }
-    const showAll=q("#iansShowAll",dash);
-    if(showAll){ showAll.textContent="☰ Avansert visning"; showAll.title="Vis alle moduler på én lang side"; }
-
-    const meta={
-      overview:["Status, konto og kapasitet"],
-      scan:["Kartlegg, gjenopprett og lagre"],
-      analyze:["Finn mønstre, store filer og media"],
-      cleanup:["Filtrer, vurder og fjern ekstrakopier"],
-      organize:["Bygg trygg plan og review"],
-      actions:["Action Mode, historikk og logg"]
-    };
-    qa("[data-tab]",dash).forEach(btn=>{
-      const id=btn.dataset.tab; if(!meta[id]||q(".ians-v297-tabmeta",btn)) return;
-      const count=q("b",btn);
-      const label=(btn.textContent||"").replace((count?.textContent||""),"").trim();
-      [...btn.childNodes].filter(n=>n.nodeType===3).forEach(n=>n.textContent="");
-      const wrap=document.createElement("span");
-      wrap.className="ians-v297-tabmeta";
-      wrap.innerHTML=`<strong>${label}</strong><small>${meta[id][0]}</small>`;
-      btn.insertBefore(wrap,count||null);
-    });
-  }
-
-  function buildCleanupWorkbench(){
-    if(q("#iansCleanupWorkbench")) return;
-    const filterPanel=findAny([["finn, filtrer og planlegg"],["filtrer","planlegg"],["cleanup command center"]]);
-    const duplicatePanel=findAny([["rydd duplikater i grupper"],["duplicate review"],["duplikat","grupper"]]);
-    const candidatePanel=findAny([["filer kandidater for opprydding"],["kandidater","opprydding"],["smart cleanup"]]);
-    const actionPanel=findAny([["flytt, organiser, karantene og papirkurv"],["action mode","papirkurv"]]);
-    const logPanel=findAny([["utførte handlinger"],["action log"]]);
-    if(!filterPanel && !duplicatePanel && !candidatePanel) return;
-
-    const host=document.createElement("section");
-    host.id="iansCleanupWorkbench"; host.dataset.iansDashGroup="cleanup"; host.className="ians-v297-workbench";
-    host.innerHTML=`
-      <div class="ians-v297-workbench-head">
-        <div><span class="ians-kicker">CLEANUP WORKBENCH · V2.9.7</span><h2>Rydd OneDrive i én kontrollert arbeidsflate</h2>
-        <p>Velg filer → vurder → merk trygge kandidater → utfør i Action Mode. Ingen permanent sletting.</p></div>
-        <div class="ians-v297-badges"><span>① Finn</span><span>② Vurder</span><span>③ Merk</span><span>④ Utfør</span></div>
-      </div>
-      <div class="ians-v297-clean-grid">
-        <div class="ians-v297-left"><div class="ians-v297-slot-title"><b>1. Finn og avgrens</b><small>Filtrene styrer arbeidslisten</small></div><div id="iansV297FilterSlot"></div></div>
-        <div class="ians-v297-center"><div class="ians-v297-slot-title"><b>2. Arbeidsliste</b><small>Egen scrolling – siden står i ro</small></div><div id="iansV297ListSlot" class="ians-v297-scroll"></div></div>
-        <aside class="ians-v297-right"><div class="ians-v297-slot-title"><b>3. Handlinger</b><small>Samlet kontroll før endringer</small></div><div id="iansV297ActionSlot"></div></aside>
-      </div>
-      <details class="ians-v297-details"><summary>Flere ryddeverktøy og historikk</summary><div id="iansV297MoreSlot"></div></details>`;
-
-    const dash=q("#iansCommandDashboard");
-    if(dash) dash.insertAdjacentElement("afterend",host); else (q("main")||document.body).prepend(host);
-
-    const filterSlot=q("#iansV297FilterSlot",host), listSlot=q("#iansV297ListSlot",host), actionSlot=q("#iansV297ActionSlot",host), moreSlot=q("#iansV297MoreSlot",host);
-    if(filterPanel){ filterPanel.classList.add("ians-v297-embedded","ians-v297-filter-panel"); filterSlot.appendChild(filterPanel); }
-    if(duplicatePanel){ duplicatePanel.classList.add("ians-v297-embedded","ians-v297-list-panel"); listSlot.appendChild(duplicatePanel); }
-    if(candidatePanel && candidatePanel!==duplicatePanel){ candidatePanel.classList.add("ians-v297-embedded","ians-v297-list-panel"); listSlot.appendChild(candidatePanel); }
-    if(actionPanel){ actionPanel.classList.add("ians-v297-embedded","ians-v297-action-panel"); actionSlot.appendChild(actionPanel); }
-    else actionSlot.innerHTML+='<div class="ians-v297-note">Action Mode-modulen vises her når den er tilgjengelig.</div>';
-    if(logPanel){ logPanel.classList.add("ians-v297-embedded"); moreSlot.appendChild(logPanel); }
-
-    const guide=document.createElement("div");
-    guide.className="ians-v297-operator-guide";
-    guide.innerHTML="<strong>Trygg ryddeflyt</strong><ol><li>Avgrens listen med filter.</li><li>Bruk Preview/Vurder på usikre filer.</li><li>For duplikater: behold alltid minst én kopi.</li><li>Aktiver Action Mode først når utvalget er riktig.</li></ol>";
-    actionSlot.prepend(guide);
-
-    const cleanupBtn=q('#iansCommandDashboard [data-tab="cleanup"]');
-    if(cleanupBtn) cleanupBtn.addEventListener("click",()=>{ host.classList.remove("ians-dash-hidden"); setTimeout(()=>host.scrollIntoView({behavior:"smooth",block:"start"}),50); });
-  }
-
-  function init(){ document.body.classList.add("ians-v297"); enhanceDashboard(); buildCleanupWorkbench(); }
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>setTimeout(init,250)); else setTimeout(init,250);
-})();
- // ===== END IANS OneDrive Command V2.9.7 =====
-// ===== IANS OneDrive Command V2.9.8 · Unified Workspace =====
-(() => {
-  "use strict";
-  const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
+  const q=(s,r=document)=>r.querySelector(s);
+  const qa=(s,r=document)=>[...r.querySelectorAll(s)];
   const norm=s=>String(s||"").replace(/\s+/g," ").trim().toLowerCase();
 
-  function clickByText(rx){
-    const hit=qa("button,a").find(el=>rx.test(norm(el.textContent)) && !el.disabled);
-    if(hit){ hit.click(); return true; }
-    return false;
-  }
-  function activateTab(id){
-    const b=q(`#iansCommandDashboard [data-tab="${id}"]`);
-    if(b){ b.click(); return true; }
-    return false;
-  }
-  function reveal(el){
-    if(!el)return;
-    let p=el;
-    while(p&&p!==document.body){
-      p.classList?.remove("ians-dash-hidden","hidden");
-      if(p.tagName==="DETAILS")p.open=true;
-      p=p.parentElement;
-    }
-    setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),80);
-  }
-  function findTextPanel(rx){
-    const h=qa("h1,h2,h3,h4,.section-title,.eyebrow").find(x=>rx.test(norm(x.textContent)));
+  const state = {
+    focus: localStorage.getItem("ians.v30.focus") || "scan",
+    sub: localStorage.getItem("ians.v30.sub") || "duplicates"
+  };
+
+  function panelByText(rx){
+    const heads=qa("h1,h2,h3,h4,.eyebrow,.section-title,strong");
+    const h=heads.find(x=>rx.test(norm(x.textContent)));
     if(!h)return null;
     let p=h;
-    for(let i=0;i<7&&p;i++,p=p.parentElement){
-      if(p.matches?.("section,article,.panel,.card,.module,.tool-section,.command-section"))return p;
+    for(let i=0;i<9&&p;i++,p=p.parentElement){
+      if(p.matches?.("section,article,.panel,.card,.module,.tool-section,.command-section")) return p;
     }
     return h.closest("div");
   }
 
-  function route(name){
-    if(name==="cleanup"){ activateTab("cleanup"); reveal(q("#iansCleanupWorkbench")); return; }
-    if(name==="duplicates"){
-      activateTab("cleanup");
-      reveal(q("#v294ReviewCleaner")||q("#v295DupList")||findTextPanel(/duplicate review|rydd duplikater/));
-      return;
-    }
-    if(name==="organize"){
-      activateTab("organize");
-      reveal(q("#v285OrgPanel")||q("#v295OrgBuild")?.closest("section,.panel")||findTextPanel(/organization studio|organisering/));
-      return;
-    }
-    if(name==="actions"){ activateTab("actions"); reveal(findTextPanel(/action mode|utførte handlinger|action log/)); return; }
-    if(name==="download"){
-      activateTab("scan");
-      const dl=q("#downloadVerifyPanel")||findTextPanel(/download\s*&\s*verify|download and verify|resume.*verify/);
-      reveal(dl);
-      if(!dl) location.hash="downloadVerifyPanel";
-      return;
-    }
-    activateTab("scan");
-    reveal(q("#v295Workspace")||q("#v294ScanVault")||q("#v293Portable")||findTextPanel(/kartlegging|scan vault|portable scan/));
+  function cleanNode(el){
+    if(!el)return;
+    el.classList.remove(
+      "ians-dash-hidden","hidden","v298-no-value","ians-v297-embedded",
+      "ians-v297-filter-panel","ians-v297-list-panel","ians-v297-action-panel"
+    );
+    el.removeAttribute("data-ians-dash-group");
+    el.style.display="";
+    el.style.maxWidth="";
+    el.style.width="";
   }
 
-  function toolbox(){
-    let box=q("#iansV298Toolbox");
-    if(box){ box.classList.add("open"); return; }
-    box=document.createElement("div");
-    box.id="iansV298Toolbox";
-    box.innerHTML=`
-      <div class="v298-toolbox-backdrop" data-v298-close></div>
-      <aside class="v298-toolbox-panel">
-        <div class="v298-toolbox-head">
-          <div><span class="ians-kicker">IANS · VERKTØYKASSE</span><h3>Velg oppgaven du faktisk vil utføre</h3></div>
-          <button type="button" data-v298-close>✕</button>
+  function moveInto(el,slot){
+    if(!el||!slot)return false;
+    cleanNode(el);
+    slot.appendChild(el);
+    return true;
+  }
+
+  function clickExisting(rx){
+    const hit=qa("button,a").find(el=>rx.test(norm(el.textContent)) && !el.disabled && el.offsetParent!==null);
+    if(hit){hit.click();return true}
+    const any=qa("button,a").find(el=>rx.test(norm(el.textContent)) && !el.disabled);
+    if(any){any.click();return true}
+    return false;
+  }
+
+  function statText(){
+    const body=norm(document.body.innerText);
+    const files=(body.match(/(?:antall filer|filer funnet|filer)\s*[:\-]?\s*([\d\s.]+)/i)||[])[1];
+    const size=(body.match(/([\d.,]+)\s*(tb|gb)\b/i)||[]);
+    return {
+      files: files ? files.replace(/\s/g,"") : "—",
+      size: size.length ? `${size[1]} ${size[2].toUpperCase()}` : "—"
+    };
+  }
+
+  function buildShell(){
+    if(q("#iansV30"))return;
+
+    // Hide legacy navigation layers, but not their underlying functional panels.
+    qa("#iansCommandDashboard,#iansCleanupWorkbench,#iansV298Toolbox").forEach(x=>x.style.display="none");
+
+    const shell=document.createElement("section");
+    shell.id="iansV30";
+    shell.innerHTML=`
+      <div class="v30-hero">
+        <div>
+          <span class="v30-kicker">IANS · ONEDRIVE COMMAND V3.0</span>
+          <h1>Forstå OneDrive. Finn rotet. Rydd trygt.</h1>
+          <p>Én arbeidsflate. Velg oppgaven – alle verktøyene for jobben åpnes her.</p>
         </div>
-        <div class="v298-tool-grid">
-          <button data-tool="scan"><span>◎</span><strong>Scan & Vault</strong><small>Kartlegg, importer eller gjenopprett scan.</small></button>
-          <button data-tool="download"><span>⇩</span><strong>Download & Verify</strong><small>Last ned mappe kontrollert med Resume/Verify.</small></button>
-          <button data-tool="duplicates"><span>♻</span><strong>Duplikater</strong><small>Bygg grupper, behold én og merk ekstrakopier.</small></button>
-          <button data-tool="cleanup"><span>◇</span><strong>Cleanup Workbench</strong><small>Filtrer, vurder, merk og utfør på ett sted.</small></button>
-          <button data-tool="organize"><span>▦</span><strong>Organisering</strong><small>Preview → Review → godkjent mål.</small></button>
-          <button data-tool="actions"><span>✓</span><strong>Handlinger & logg</strong><small>Action Mode, resultat og historikk.</small></button>
+        <div class="v30-mode" id="v30Mode">READ ONLY</div>
+      </div>
+
+      <div class="v30-status">
+        <div><small>Tilkobling</small><strong id="v30Connect">Microsoft Graph</strong></div>
+        <div><small>Kartlagt</small><strong id="v30Size">—</strong></div>
+        <div><small>Filer</small><strong id="v30Files">—</strong></div>
+        <div><small>Scan Vault</small><strong id="v30Vault">Klar</strong></div>
+        <button type="button" id="v30Settings">Innstillinger</button>
+      </div>
+
+      <div class="v30-scanbar">
+        <div class="v30-scan-copy">
+          <span class="v30-step">1</span>
+          <div><strong>Kartlegg OneDrive</strong><small>Start her eller bruk en eksisterende scan.</small></div>
         </div>
-        <div class="v298-toolbox-note">Verktøy uten data eller handling skjules fra normal arbeidsflyt. Diagnostikk skal ikke være hovedsiden.</div>
-      </aside>`;
-    document.body.appendChild(box);
-    qa("[data-v298-close]",box).forEach(x=>x.onclick=()=>box.classList.remove("open"));
-    qa("[data-tool]",box).forEach(btn=>btn.onclick=()=>{ box.classList.remove("open"); route(btn.dataset.tool); });
-    requestAnimationFrame(()=>box.classList.add("open"));
+        <div class="v30-scan-actions">
+          <button data-scan="quick">Hurtigscan</button>
+          <button data-scan="full">Full scan</button>
+          <button data-scan="resume">Fortsett</button>
+          <button data-scan="import">Importer .iansscan</button>
+          <button data-scan="export">Last ned .iansscan</button>
+          <button data-focus="scan">Scan Vault</button>
+        </div>
+      </div>
+
+      <div class="v30-question">
+        <div><span class="v30-step">2</span><div><strong>Hva vil du gjøre?</strong><small>Velg ett fokusområde. Ingen mellomside.</small></div></div>
+      </div>
+
+      <div class="v30-focus-grid">
+        <button data-focus="analyze">
+          <span class="v30-icon">◇</span>
+          <strong>Finn & analyser</strong>
+          <small>Store filer, media, lagring og mønstre.</small>
+        </button>
+        <button data-focus="cleanup">
+          <span class="v30-icon">♻</span>
+          <strong>Rydd & organiser</strong>
+          <small>Duplikater, Cleanup Review og organisering.</small>
+        </button>
+        <button data-focus="backup">
+          <span class="v30-icon">⇩</span>
+          <strong>Backup & Verify</strong>
+          <small>Last ned trygt med Resume og Verify.</small>
+        </button>
+        <button data-focus="scan">
+          <span class="v30-icon">◎</span>
+          <strong>Scan & Vault</strong>
+          <small>Scan, checkpoint, import og gjenoppretting.</small>
+        </button>
+      </div>
+
+      <div class="v30-workspace">
+        <div class="v30-work-head">
+          <div>
+            <span class="v30-kicker" id="v30WorkKicker">FOKUSOMRÅDE</span>
+            <h2 id="v30WorkTitle">Scan & Vault</h2>
+            <p id="v30WorkText">Kartlegg og gjenopprett uten å forlate arbeidsflaten.</p>
+          </div>
+          <div id="v30ContextActions" class="v30-context-actions"></div>
+        </div>
+
+        <div class="v30-subnav" id="v30Subnav"></div>
+        <div class="v30-content" id="v30Content"></div>
+      </div>
+    `;
+
+    const anchor=q("main")||document.body;
+    anchor.prepend(shell);
+
+    qa("[data-focus]",shell).forEach(b=>b.addEventListener("click",()=>showFocus(b.dataset.focus)));
+    qa("[data-scan]",shell).forEach(b=>b.addEventListener("click",()=>runScanAction(b.dataset.scan)));
+    q("#v30Settings",shell).onclick=()=>clickExisting(/innstillinger|settings/);
+
+    const st=statText();
+    q("#v30Files").textContent=st.files;
+    q("#v30Size").textContent=st.size;
+
+    showFocus(state.focus);
   }
 
-  function fixAdvanced(){
-    const old=q("#iansShowAll");
-    if(!old||old.dataset.v298)return;
-    old.dataset.v298="1";
-    old.textContent="▦ Verktøykasse";
-    old.title="Åpne nyttige verktøy uten å vise hele langsiden";
-    const fresh=old.cloneNode(true);
-    old.replaceWith(fresh);
-    fresh.onclick=toolbox;
+  function runScanAction(action){
+    const map={
+      quick:/quick scan|hurtigscan|åpne skanning/,
+      full:/full scan|start kartlegging|start scan/,
+      resume:/resume|fortsett/,
+      import:/importer scan|importer.*iansscan|importer scan \/ checkpoint/,
+      export:/last ned scanfil|eksporter scan|last ned.*iansscan/
+    };
+    if(clickExisting(map[action])) return;
+    showFocus("scan");
+    setTimeout(()=>clickExisting(map[action]),120);
   }
 
-  function addOperatorActions(){
-    const slot=q("#iansV297ActionSlot");
-    if(!slot||q("#iansV298Operator",slot))return;
-    const p=document.createElement("div");
-    p.id="iansV298Operator";
-    p.className="v298-operator";
-    p.innerHTML=`
-      <div class="v298-op-head"><strong>Operatørkontroll</strong><span>Bruker eksisterende motor</span></div>
-      <button data-op="build">1 · Bygg duplikatgrupper</button>
-      <button data-op="mark">2 · Merk alle ekstrakopier</button>
-      <button data-op="action">3 · Aktiver Action Mode</button>
-      <button data-op="trash" class="danger">4 · Send valgte til papirkurv</button>
-      <div class="v298-op-status" id="iansV298OpStatus">Ingen handling startet.</div>`;
-    slot.prepend(p);
-    const status=s=>{const x=q("#iansV298OpStatus");if(x)x.textContent=s;};
-    q('[data-op="build"]',p).onclick=()=>{ const b=q("#v295DupBuild"); if(b){b.click();status("Duplikatgrupper bygges.");}else status("Duplikatverktøyet er ikke tilgjengelig."); };
-    q('[data-op="mark"]',p).onclick=()=>{ const b=q("#v295DupSelectAll"); if(b&&!b.disabled){b.click();status("Ekstrakopier markert. Én beholdes per gruppe.");}else status("Bygg duplikatgrupper først."); };
-    q('[data-op="action"]',p).onclick=()=>status(clickByText(/aktiver action mode|action mode/)?"Action Mode-dialog åpnet.":"Action Mode-knappen ble ikke funnet.");
-    q('[data-op="trash"]',p).onclick=()=>{ const b=q("#v295DupTrash"); if(b&&!b.disabled){b.click();status("Papirkurv-flyt åpnet. Kontroller bekreftelsen.");}else status("Ingen ekstrakopier er valgt."); };
+  const focusMeta={
+    scan:{
+      title:"Scan & Vault",
+      text:"Kartlegg, importer, eksporter og gjenopprett scan på ett sted.",
+      subs:[
+        ["scan","Kartlegging"],
+        ["vault","Scan Vault"]
+      ]
+    },
+    analyze:{
+      title:"Finn & analyser",
+      text:"Se hva som bruker plass og finn det som er verdt å undersøke.",
+      subs:[
+        ["storage","Lagring"],
+        ["large","Store filer"],
+        ["media","Media"]
+      ]
+    },
+    cleanup:{
+      title:"Rydd & organiser",
+      text:"Hele ryddejobben fra kandidat til kontrollert handling.",
+      subs:[
+        ["duplicates","Duplikater"],
+        ["review","Cleanup Review"],
+        ["organize","Organiser"]
+      ]
+    },
+    backup:{
+      title:"Backup & Verify",
+      text:"Last ned valgte mapper sikkert med Resume, retry og verifisering.",
+      subs:[
+        ["download","Download & Verify"]
+      ]
+    }
+  };
+
+  function showFocus(name){
+    if(!focusMeta[name])name="scan";
+    state.focus=name;
+    localStorage.setItem("ians.v30.focus",name);
+
+    qa("#iansV30 [data-focus]").forEach(b=>b.classList.toggle("active",b.dataset.focus===name));
+    const m=focusMeta[name];
+    q("#v30WorkTitle").textContent=m.title;
+    q("#v30WorkText").textContent=m.text;
+    q("#v30WorkKicker").textContent="FOKUSOMRÅDE";
+    const sub=q("#v30Subnav");
+    sub.innerHTML=m.subs.map(([id,label])=>`<button data-sub="${id}">${label}</button>`).join("");
+    qa("[data-sub]",sub).forEach(b=>b.onclick=()=>showSub(name,b.dataset.sub));
+
+    let preferred=state.sub;
+    if(!m.subs.some(x=>x[0]===preferred))preferred=m.subs[0][0];
+    showSub(name,preferred);
   }
 
-  function hasValue(el){
-    if(!el)return false;
-    const t=norm(el.innerText);
-    const enabled=qa("button:not([disabled]),a[href],input:not([disabled]),select:not([disabled])",el).length;
-    const rows=qa("tbody tr,.file-row,.result-row,.v295-dup-group",el).length;
-    const positive=/\b[1-9]\d*\s*(filer|grupper|kandidater|handlinger|gb|mb)\b/.test(t);
-    const empty=/ingen data|ingen handlinger|ingen .*funnet|0 grupper|0 filer|ingen plan|ingen ekstrakopier/.test(t);
-    return enabled>0 || rows>0 || positive || !empty;
+  function showSub(focus,subid){
+    state.sub=subid;
+    localStorage.setItem("ians.v30.sub",subid);
+    qa("#v30Subnav [data-sub]").forEach(b=>b.classList.toggle("active",b.dataset.sub===subid));
+
+    const content=q("#v30Content");
+    content.innerHTML="";
+    q("#v30ContextActions").innerHTML="";
+
+    const panel=findFunctionalPanel(subid);
+    if(panel){
+      moveInto(panel,content);
+      panel.classList.add("v30-mounted");
+    }else{
+      content.innerHTML=`<div class="v30-empty"><strong>Ingen aktiv modul funnet.</strong><span>Denne funksjonen skjules til motoren har et faktisk verktøy eller data å vise.</span></div>`;
+    }
+
+    buildContextActions(focus,subid);
   }
-  function compactSecondary(){
-    const more=q("#iansV297MoreSlot");
-    if(!more)return;
-    qa(":scope > section,:scope > article,:scope > .panel,:scope > .card,:scope > div",more).forEach(el=>{
-      if(!hasValue(el))el.classList.add("v298-no-value");
+
+  function findFunctionalPanel(id){
+    const candidates={
+      scan:()=> q("#v293Portable") || panelByText(/ta scannen med deg|portable scan|kartlegging/),
+      vault:()=> q("#v294ScanVault") || panelByText(/scan vault|recovery|checkpoint/),
+      storage:()=> q("#storageMapPanel") || panelByText(/storage map|største områder|filtyper/),
+      large:()=> q("#largeFilePanel") || panelByText(/large file|største filer|topp 25/),
+      media:()=> q("#v293PhotoPanel") || panelByText(/photo intelligence|media vault|organiser bilder/),
+      duplicates:()=> q("#v294ReviewCleaner") || q("#v295DupList") || panelByText(/duplicate review|rydd duplikater|duplikatgrupper/),
+      review:()=> panelByText(/finn, filtrer og planlegg|cleanup command center|cleanup review/),
+      organize:()=> q("#v285OrgPanel") || panelByText(/organization studio|plan.*preview.*action mode/),
+      download:()=> q("#downloadVerifyPanel") || panelByText(/download\s*&\s*verify|resume.*verify|direkte strømming/)
+    };
+    const fn=candidates[id];
+    return fn?fn():null;
+  }
+
+  function buildContextActions(focus,subid){
+    const host=q("#v30ContextActions");
+    const add=(label,cls,fn)=>{
+      const b=document.createElement("button");
+      b.textContent=label;
+      if(cls)b.className=cls;
+      b.onclick=fn;
+      host.appendChild(b);
+    };
+
+    if(subid==="duplicates"){
+      add("Bygg grupper","",()=>clickExisting(/vis duplikatgrupper|bygg duplikatgrupper/));
+      add("Merk ekstrakopier","",()=>clickExisting(/merk alle ekstrakopier|merk alle foreslåtte/));
+      add("Papirkurv valgte","danger",()=>clickExisting(/send valgte til papirkurv|papirkurv valgte/));
+    }
+    if(subid==="organize"){
+      add("Bygg forslag","",()=>clickExisting(/bygg forslag/));
+      add("Utfør plan","warn",()=>clickExisting(/utfør plan/));
+      add("Aktiver Action Mode","",()=>clickExisting(/aktiver action mode/));
+    }
+    if(subid==="download"){
+      add("Start nedlasting","",()=>clickExisting(/start nedlasting|last ned valgt/));
+      add("Resume","",()=>clickExisting(/resume|fortsett/));
+    }
+    if(subid==="scan"){
+      add("Hurtigscan","",()=>runScanAction("quick"));
+      add("Full scan","",()=>runScanAction("full"));
+    }
+  }
+
+  function removeNoise(){
+    // Remove only navigation/decorative layers created by V2.9.6–V2.9.8.
+    qa("#iansCommandDashboard,#iansCleanupWorkbench,#iansV298Toolbox").forEach(x=>x.remove());
+
+    // Hide empty passive blocks. Functional blocks will be moved into V3 when selected.
+    qa("section,article,.panel,.card").forEach(el=>{
+      const t=norm(el.innerText);
+      const controls=qa("button:not([disabled]),a[href],input:not([disabled]),select:not([disabled])",el).length;
+      const clearlyEmpty=/ingen data|ingen handlinger utført|ingen plan ennå|ingen .* funnet/.test(t);
+      if(clearlyEmpty && controls===0)el.classList.add("v30-passive-empty");
     });
-    const details=more.closest("details");
-    if(details){
-      const useful=qa(":scope > *",more).filter(hasValue).length;
-      const s=q("summary",details);
-      if(s)s.textContent=useful?`Historikk og ekstra verktøy (${useful})`:"Historikk og ekstra verktøy · ingen aktive data";
-      if(!useful)details.classList.add("v298-empty-details");
-    }
-  }
-
-  function fixWidth(){
-    document.body.classList.add("ians-v298");
-    qa("#iansCommandDashboard,#iansCleanupWorkbench").forEach(x=>x.classList.add("v298-full"));
-  }
-  function hashRoute(){
-    const h=location.hash.replace(/^#/,"").toLowerCase();
-    if(!h)return;
-    if(h.includes("downloadverify"))route("download");
-    else if(h.includes("cleanup"))route("cleanup");
-    else if(h.includes("duplicate"))route("duplicates");
-    else if(h.includes("organ"))route("organize");
-    else if(h.includes("action")||h.includes("log"))route("actions");
-    else if(h.includes("scan")||h.includes("vault"))route("scan");
   }
 
   function init(){
-    fixWidth(); fixAdvanced(); addOperatorActions(); compactSecondary(); hashRoute();
-    setTimeout(()=>{fixAdvanced();addOperatorActions();compactSecondary();hashRoute();},900);
+    document.body.classList.add("ians-v30");
+    removeNoise();
+    buildShell();
   }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(init,320));
-  else setTimeout(init,320);
+
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(init,350));
+  else setTimeout(init,350);
 })();
- // ===== END IANS OneDrive Command V2.9.8 =====
+ // ===== END IANS OneDrive Command V3.0 =====
