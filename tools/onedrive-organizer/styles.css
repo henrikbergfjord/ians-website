@@ -1078,3 +1078,27 @@ body.ians-v30 .v310-sticky-dock .v310-dock-state .eyebrow{font-size:8px}
   .v30-workspace{min-height:520px}.v30-content{min-height:350px}
 }
 /* ===== END V3.10.1 ===== */
+
+
+/* ===== IANS OneDrive Command V3.11 · FLOW + EMPTY FOLDERS ===== */
+.v311-system-chip{border:1px solid rgba(92,227,166,.22);border-radius:999px;background:rgba(4,22,35,.62);color:#9fc7d9;padding:8px 11px;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap}
+.v311-system-chip:hover{border-color:#55caff;color:#e8f7ff}
+body.ians-v30 #v286CommandCenter,body.ians-v30 #v287CommandCenter,body.ians-v30 #v289ReferenceShell,body.ians-v30 #v285SystemHealth{display:none!important}
+body.ians-v30 #v288MidPulse{width:100%;margin:14px 0 16px;display:grid;grid-template-columns:auto minmax(360px,1fr) auto;align-items:center;gap:18px;padding:17px 20px;min-height:92px}
+body.ians-v30 #v288MidPulse .v39-live-copy{min-width:0}
+body.ians-v30 #v288MidPulse .v288-pulse-line{grid-column:2;position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;width:100%!important;height:8px;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:-7px}
+body.ians-v30 #v288MidPulse .v288-pulse-line:before{content:"";position:absolute;left:0;right:0;height:3px;border-radius:999px;background:linear-gradient(90deg,rgba(88,204,255,.1),rgba(88,204,255,.85),rgba(174,120,255,.7),rgba(88,204,255,.12))}
+body.ians-v30 #v288MidPulse .v288-pulse-line i{position:relative!important;left:auto!important;top:auto!important;width:7px!important;height:7px!important;box-shadow:0 0 12px currentColor}
+.v311-org-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:10px;margin-bottom:10px}.v311-org-grid select{width:100%}.v311-org-options{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 12px}.v311-org-options label{display:flex;align-items:center;gap:7px;padding:9px 11px;border:1px solid rgba(111,190,240,.13);border-radius:10px;background:rgba(255,255,255,.02);font-size:12px;color:#a9bfd0}
+.v311-empty-folders .table-wrap{max-height:440px;overflow:auto}.v311-empty-summary{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 0}.v311-empty-summary strong{font-size:28px;color:#77d8ff}.v311-empty-summary span{color:#91a8bb;margin-right:auto}.v311-empty-folders td.path{max-width:850px;word-break:break-word}.v311-note{font-size:11px;color:#7f97aa;margin-top:10px}
+@media(max-width:900px){.v311-org-grid{grid-template-columns:1fr}body.ians-v30 #v288MidPulse{grid-template-columns:auto 1fr}.v39-live-metrics{grid-column:1/-1}.v311-system-chip{display:none}}
+/* ===== END V3.11 ===== */
+
+/* ===== V3.11.1 Interaction Fix ===== */
+#inventoryTable th:first-child,
+#inventoryTable td:first-child{width:52px;min-width:52px;text-align:center}
+#inventoryTable .file-select{display:inline-block!important;visibility:visible!important;opacity:1!important;width:18px;height:18px;cursor:pointer}
+#inventoryTable .row-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+#inventoryTable button[data-preview],
+#inventoryTable button[data-review],
+#inventoryTable button[data-v39-trash]{pointer-events:auto!important;position:relative;z-index:2}

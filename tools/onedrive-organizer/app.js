@@ -464,6 +464,7 @@ async function scanOneDrive(resumeState=null) {
   let dateStats={taken:0,created:0,unknown:0};
   let processedFolders=0;
   let recoveryStats={missingFolders:0,prunedQueuedFolders:0,retries:0,lastMissingPath:null};
+  let emptyFolders=[];
   let scanRoot={id:null,path:"/"};
   let scanStartedAt=new Date().toISOString();
   let lastCheckpoint=Date.now();
@@ -478,6 +479,7 @@ async function scanOneDrive(resumeState=null) {
     dateStats=resumeState.dateStats||dateStats;
     processedFolders=resumeState.processedFolders||0;
     recoveryStats={...recoveryStats,...(resumeState.recoveryStats||{})};
+    emptyFolders=resumeState.emptyFolders||[];
     scanRoot=resumeState.scanRoot||scanRoot;
     scanStartedAt=resumeState.scanStartedAt||scanStartedAt;
     duplicateMap=new Map();
@@ -498,7 +500,7 @@ async function scanOneDrive(resumeState=null) {
   }else{
     const mode=document.querySelector('input[name="scanScope"]:checked')?.value||"all";
     scanRoot=mode==="folder"?selectedScanFolder:{id:null,path:"/"};
-    queue=[{id:scanRoot.id,path:scanRoot.path}];
+    queue=[{id:scanRoot.id,path:scanRoot.path,driveId:null,lastModifiedDateTime:null}];
     await clearScanCheckpoint();
   }
 
@@ -522,6 +524,7 @@ async function scanOneDrive(resumeState=null) {
       dateStats,
       processedFolders,
       recoveryStats,
+      emptyFolders,
       visualPct:scanVisualPct
     });
   }
@@ -560,6 +563,9 @@ async function scanOneDrive(resumeState=null) {
         }
         throw err;
       }
+      if(folder.id && children.length===0 && !emptyFolders.some(x=>x.id===folder.id)){
+        emptyFolders.push({id:folder.id,path:folder.path,driveId:folder.driveId||null,lastModifiedDateTime:folder.lastModifiedDateTime||null});
+      }
       processedFolders++;
 
       for(const item of children){
@@ -567,7 +573,7 @@ async function scanOneDrive(resumeState=null) {
 
         if(item.folder){
           stats.folders++;
-          queue.push({id:item.id,path:itemPath});
+          queue.push({id:item.id,path:itemPath,driveId:item.parentReference?.driveId||null,lastModifiedDateTime:item.lastModifiedDateTime||null});
           if(!folderAgg.has(itemPath))folderAgg.set(itemPath,0);
           continue;
         }
@@ -599,6 +605,7 @@ async function scanOneDrive(resumeState=null) {
           driveId:item.parentReference?.driveId||null,
           createdDateTime:created,lastModifiedDateTime:item.lastModifiedDateTime||null,
           takenDateTime:taken,webUrl:item.webUrl||null,
+          cameraMake:item.photo?.cameraMake||null,cameraModel:item.photo?.cameraModel||null,
           quickXorHash:hashes.quickXorHash||null,sha1Hash:hashes.sha1Hash||null,crc32Hash:hashes.crc32Hash||null
         };
         files.push(f);
@@ -648,6 +655,7 @@ async function scanOneDrive(resumeState=null) {
       largestFolders:folders.slice(0,25),
       largestFiles,
       possibleDuplicates:duplicates.slice(0,200),
+      emptyFolders:emptyFolders.sort((a,b)=>(b.path.split("/").length-a.path.split("/").length)||String(a.path).localeCompare(String(b.path))),
       files
     };
 
@@ -902,7 +910,7 @@ function reviewToast(message){
 function setReviewButtonState(id){
   document.querySelectorAll(`[data-review="${CSS.escape(String(id))}"]`).forEach(btn=>{
     const on=reviewIds.has(String(id));
-    btn.textContent=on?"Lagt til ✓":"Legg til vurdering";
+    btn.textContent=on?"I Review ✓":"Legg i Review";
     btn.classList.toggle("review-added",on);
     btn.setAttribute("aria-pressed",on?"true":"false");
   });
@@ -1022,7 +1030,7 @@ function renderV2(){
     {label:inventoryHeaderLabel("Størrelse","size"),sortKey:"size",className:"num",render:f=>escapeHtml(formatBytes(f.size))},
     {label:inventoryHeaderLabel("Dato","date"),sortKey:"date",render:f=>escapeHtml((fileDate(f)||"").slice(0,10)||"–")},
     {label:inventoryHeaderLabel("Duplikat","duplicate"),sortKey:"duplicate",render:f=>{if(!isPossibleDuplicate(f))return "–";const k=`${f.name.toLowerCase()}|${f.size}`;const g=report.files.filter(x=>`${x.name.toLowerCase()}|${x.size}`===k);const st=iansHashState(g);return st==="verified"?'<span class="dup-status verified">Hash-match</span>':st==="mismatch"?'<span class="dup-status blocked">IKKE lik</span>':'<span class="dup-status review">Review</span>'}},
-    {label:"Handling",render:f=>`<div class="row-actions"><button class="btn mini ghost" data-preview="${escapeHtml(f.id)}">Preview</button><button class="btn mini ghost ${reviewIds.has(String(f.id))?"review-added":""}" aria-pressed="${reviewIds.has(String(f.id))?"true":"false"}" data-review="${escapeHtml(f.id)}">${reviewIds.has(String(f.id))?"Lagt til ✓":"Vurder"}</button><button class="btn mini danger quick-trash" data-v39-trash="${escapeHtml(f.id)}" title="Send filen til OneDrive-papirkurven">Papirkurv</button></div>`}
+    {label:"Handling",render:f=>`<div class="row-actions"><button class="btn mini ghost" data-preview="${escapeHtml(f.id)}">Preview</button><button class="btn mini ghost ${reviewIds.has(String(f.id))?"review-added":""}" aria-pressed="${reviewIds.has(String(f.id))?"true":"false"}" data-review="${escapeHtml(f.id)}">${reviewIds.has(String(f.id))?"I Review ✓":"Legg i Review"}</button><button class="btn mini danger quick-trash" data-v39-trash="${escapeHtml(f.id)}" title="Send filen til OneDrive-papirkurven">Papirkurv</button></div>`}
   ],sorted.slice(0,maxRows));
 }
 function renderPhotoPlan(){
@@ -1067,14 +1075,21 @@ function renderReview(){
   ],rows);
 }
 async function previewFile(id){
-  const f=report.files.find(x=>x.id===id); if(!f)return;
+  const f=report?.files?.find(x=>String(x.id)===String(id));
+  if(!f){
+    iansToast("Preview kunne ikke åpnes","Filen finnes ikke i gjeldende scan. Kjør ny kartlegging hvis dette fortsetter.","error",7000);
+    return;
+  }
   let img="";
   if(f.category==="Bilder"||f.category==="Video"){
     try{
-      const data=await graphFetch(`/me/drive/items/${encodeURIComponent(id)}/thumbnails`);
+      const endpoint=f.driveId
+        ? `/drives/${encodeURIComponent(f.driveId)}/items/${encodeURIComponent(f.id)}/thumbnails`
+        : `/me/drive/items/${encodeURIComponent(f.id)}/thumbnails`;
+      const data=await graphFetch(endpoint);
       const u=data.value?.[0]?.large?.url||data.value?.[0]?.medium?.url||data.value?.[0]?.small?.url;
       if(u) img=`<img class="preview-img" src="${escapeHtml(u)}" alt="">`;
-    }catch(e){console.warn("thumbnail",e)}
+    }catch(e){console.warn("[IANS] thumbnail preview",e)}
   }
   v2.modalContent.innerHTML=`<span class="eyebrow">PREVIEW / FILE REVIEW</span><h2>${escapeHtml(f.name)}</h2>${img}
   <dl class="preview-meta">
@@ -1082,9 +1097,10 @@ async function previewFile(id){
   <dt>Type</dt><dd>${escapeHtml(f.category)}</dd><dt>Opptaksdato</dt><dd>${escapeHtml(f.takenDateTime||"–")}</dd>
   <dt>Opprettet</dt><dd>${escapeHtml(f.createdDateTime||"–")}</dd><dt>Endret</dt><dd>${escapeHtml(f.lastModifiedDateTime||"–")}</dd>
   <dt>Mulig duplikat</dt><dd>${isPossibleDuplicate(f)?"Ja – må verifiseres":"Nei"}</dd></dl>
-  <div class="actions" style="margin-top:18px">${f.webUrl?`<a class="btn ghost" href="${escapeHtml(f.webUrl)}" target="_blank" rel="noopener">Åpne i OneDrive</a>`:""}<button class="btn primary ${reviewIds.has(String(f.id))?"review-added":""}" aria-pressed="${reviewIds.has(String(f.id))?"true":"false"}" data-review="${escapeHtml(f.id)}">${reviewIds.has(String(f.id))?"Lagt til ✓":"Legg til vurdering"}</button></div>`;
+  <div class="actions" style="margin-top:18px">${f.webUrl?`<a class="btn ghost" href="${escapeHtml(f.webUrl)}" target="_blank" rel="noopener">Åpne i OneDrive</a>`:""}<button class="btn primary ${reviewIds.has(String(f.id))?"review-added":""}" aria-pressed="${reviewIds.has(String(f.id))?"true":"false"}" data-review="${escapeHtml(f.id)}">${reviewIds.has(String(f.id))?"I Review ✓":"Legg i Review"}</button></div>`;
   v2.modal.classList.remove("hidden");
 }
+
 function csvEscape(x){x=String(x??"");return /[",\n]/.test(x)?`"${x.replaceAll('"','""')}"`:x}
 function exportCSV(){
   const rows=filteredFiles(), head=["Name","Path","ParentFolder","Category","SizeBytes","SizeMB","TakenDate","CreatedDate","ModifiedDate","PossibleDuplicate","WebUrl"];
@@ -1344,7 +1360,9 @@ function v24UpdateSelection(){
 const v24BaseRenderV2 = renderV2;
 renderV2 = function(){
   v24BaseRenderV2();
-  if(!report || !v24Enabled) return;
+  // V3.11.1: selection is a planning action, so checkboxes stay visible in Read Only.
+  // Write operations remain protected by Action Mode at execution time.
+  if(!report) return;
   const table=v2.table.querySelector("table");
   if(!table) return;
   const rawVisible=filteredFiles();
@@ -3047,15 +3065,28 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
   }
 
   let orgPlan=[];
+  function safeSegment(v,fallback="Ukjent"){
+    const x=String(v||fallback).replace(/[\\/:*?"<>|]/g,"-").replace(/\s+/g," ").trim();
+    return x||fallback;
+  }
+  function datePartsFor(f){
+    const raw=f.takenDateTime||f.createdDateTime||f.lastModifiedDateTime;
+    if(!raw)return {y:"Ukjent dato",m:""};
+    const d=new Date(raw); if(!Number.isFinite(d.getTime()))return {y:"Ukjent dato",m:""};
+    return {y:String(d.getFullYear()),m:String(d.getMonth()+1).padStart(2,"0")};
+  }
   function targetFor(f,root){
-    const raw=f.takenDateTime||f.createdDateTime||f.lastModifiedDateTime;let y="Ukjent dato",m="";
-    if(raw){const d=new Date(raw);if(Number.isFinite(d.getTime())){y=String(d.getFullYear());m=String(d.getMonth()+1).padStart(2,"0")}}
-    if(f.category==="Bilder")return`${root}/Bilder/${y}${m?"/"+m:""}`;
-    if(f.category==="Video")return`${root}/Video/${y}${m?"/"+m:""}`;
-    if(f.category==="Dokumenter")return`${root}/Dokumenter/${y}`;
-    if(f.category==="Regneark")return`${root}/Regneark/${y}`;
-    if(f.category==="Presentasjoner")return`${root}/Presentasjoner/${y}`;
-    if(f.category==="Lyd")return`${root}/Lyd/${y}`;
+    const {y,m}=datePartsFor(f);
+    const strategy=E("v285OrgStrategy")?.value||"smart";
+    const mediaDevice=!!E("v285OrgDevice")?.checked;
+    const cat=safeSegment(f.category||"Annet");
+    const device=safeSegment([f.cameraMake,f.cameraModel].filter(Boolean).join(" "),"Ukjent kamera");
+    if(strategy==="year") return `${root}/${cat}/${y}`;
+    if(strategy==="type") return `${root}/${cat}`;
+    if(strategy==="type-year") return `${root}/${cat}/${y}${m?"/"+m:""}`;
+    if((f.category==="Bilder"||f.category==="Video") && mediaDevice) return `${root}/${cat}/${device}/${y}${m?"/"+m:""}`;
+    if(f.category==="Bilder"||f.category==="Video")return`${root}/${cat}/${y}${m?"/"+m:""}`;
+    if(["Dokumenter","Regneark","Presentasjoner","Lyd"].includes(f.category))return`${root}/${cat}/${y}`;
     if(f.category==="Arkiv / installasjon")return`${root}/Arkiv og installasjon/${y}`;
     return`${root}/Annet/${y}`;
   }
@@ -3063,8 +3094,12 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
     if(!report?.files?.length){iansToast("Organization Studio","Kjør kartlegging først.","error");return}
     const root=(E("v285OrgRoot")?.value||"/_IANS Organisert").trim()||"/_IANS Organisert";
     const cats=new Set([...document.querySelectorAll("[data-v285-org-cat]:checked")].map(x=>x.value)),seen=new Set();orgPlan=[];
+    const profile=E("v285OrgProfile")?.value||"cautious";
+    const preserve=E("v285OrgPreserve")?.checked!==false;
+    const messy=/\/(downloads?|nedlastinger|desktop|skrivebord|camera|kamerabilder|dcim|backup|ryd(d|de)|sorter|unsorted|import)/i;
     for(const f of report.files){
       if((f.path||"").startsWith("/_IANS Cleanup Review/")||(f.path||"").startsWith(root+"/")||!cats.has(f.category))continue;
+      if(preserve && profile==="cautious" && !messy.test(f.parentPath||f.path||"")) continue;
       const target=targetFor(f,root),key=`${target.toLowerCase()}|${String(f.name||"").toLowerCase()}`,conflict=seen.has(key);seen.add(key);orgPlan.push({file:f,target,conflict});
     }
     renderPlan();
@@ -3088,7 +3123,11 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
     const p=document.createElement("section");p.id="v285OrganizationStudio";p.className="panel v285-org-studio";
     const cats=["Bilder","Video","Dokumenter","Regneark","Presentasjoner","Lyd","Arkiv / installasjon","Annet"];
     p.innerHTML=`<div class="section-title"><div><span class="eyebrow">ORGANIZATION STUDIO</span><h3>Plan → Preview → Action Mode → Utfør</h3></div><span class="badge safe">INGEN SLETTING</span></div>
-    <p class="muted">Lag organisasjonsforslag etter filtype og dato. Bilder/video prioriterer opptaksdato.</p><div class="v285-org-controls"><label class="field"><span>Målrot</span><input id="v285OrgRoot" value="/_IANS Organisert"></label>
+    <p class="muted">Velg hvordan IANS skal organisere. Preview bygges først; ingen filer flyttes før Action Mode og eksplisitt godkjenning.</p><div class="v285-org-controls">
+    <div class="v311-org-grid"><label class="field"><span>Målrot</span><input id="v285OrgRoot" value="/_IANS Organisert"></label>
+    <label class="field"><span>Profil</span><select id="v285OrgProfile"><option value="cautious">Forsiktig – bare tydelige ryddeområder</option><option value="balanced">Balansert – valgte filtyper</option><option value="comprehensive">Omfattende – hele valget</option></select></label>
+    <label class="field"><span>Struktur</span><select id="v285OrgStrategy"><option value="smart">Smart – media År/Måned, dokumenter År</option><option value="type-year">Filtype → År → Måned</option><option value="year">Filtype → År</option><option value="type">Kun filtype</option></select></label></div>
+    <div class="v311-org-options"><label><input type="checkbox" id="v285OrgPreserve" checked> Bevar meningsfulle prosjekt-/kundemapper</label><label><input type="checkbox" id="v285OrgDevice"> Media: grupper også etter kamera/enhet når metadata finnes</label></div>
     <div class="v285-org-cats">${cats.map(c=>`<label><input type="checkbox" data-v285-org-cat value="${escapeHtml(c)}" ${["Bilder","Video","Dokumenter","Regneark","Presentasjoner"].includes(c)?"checked":""}><span>${escapeHtml(c)}</span></label>`).join("")}</div>
     <div class="actions"><button id="v285OrgBuild" class="btn primary">Bygg forslag</button><button id="v285OrgExecute" class="btn action-btn" disabled>Utfør plan</button></div></div>
     <div id="v285OrgStats" class="v285-org-stats"></div><div id="v285OrgPreview" class="v285-org-preview"><div class="empty-state">Kjør kartlegging og trykk «Bygg forslag».</div></div>
@@ -4957,12 +4996,13 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     shell.innerHTML=`
       <div class="v30-hero">
         <div>
-          <span class="v30-kicker">IANS · ONEDRIVE COMMAND V3.10.1</span>
+          <span class="v30-kicker">IANS · ONEDRIVE COMMAND V3.11.1</span>
           <h1>Forstå OneDrive. Finn rotet. Rydd trygt.</h1>
           <p>Én arbeidsflate. Velg oppgaven – alle verktøyene for jobben åpnes her.</p>
         </div>
         <div class="v3101-hero-controls">
           <div class="v30-mode" id="v30Mode">READ ONLY</div>
+          <button type="button" id="v311SystemStatus" class="v311-system-chip">● Graph · Read Only · Lokal mappe: –</button>
           <button type="button" id="v30ActionMode" class="v3101-action-btn">Aktiver Action Mode</button>
         </div>
       </div>
@@ -5038,6 +5078,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     qa("[data-focus]",shell).forEach(b=>b.addEventListener("click",()=>showFocus(b.dataset.focus)));
     qa("[data-scan]",shell).forEach(b=>b.addEventListener("click",()=>runScanAction(b.dataset.scan)));
     q("#v30Settings",shell).onclick=()=>clickExisting(/innstillinger|settings/);
+    q("#v311SystemStatus",shell).onclick=()=>showFocus("backup");
     q("#v30ActionMode",shell).onclick=()=>{
       const target=q("#topActionBtn") || q("#v24EnableAction") || q("#v310DockAction");
       target?.click();
@@ -5057,6 +5098,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     }
     syncV3101Mode();
     setInterval(syncV3101Mode,800);
+    const syncSystem=()=>{const c=q("#v311SystemStatus",shell);if(!c)return;const online=navigator.onLine?"Online":"Offline";const local=(typeof dlDirectoryHandle!=="undefined"&&dlDirectoryHandle)?"Lokal valgt":"Lokal: –";const mode=(typeof v24Enabled!=="undefined"&&v24Enabled)?"Action":"Read Only";c.textContent=`● Graph · ${mode} · ${local} · ${online}`;};syncSystem();setInterval(syncSystem,1200);
 
     const st=statText();
     q("#v30Files").textContent=st.files;
@@ -5066,16 +5108,18 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   }
 
   function runScanAction(action){
-    const map={
-      quick:/quick scan|hurtigscan|åpne skanning/,
-      full:/full scan|start kartlegging|start scan/,
-      resume:/resume|fortsett/,
-      import:/importer scan|importer.*iansscan|importer scan \/ checkpoint/,
-      export:/last ned scanfil|eksporter scan|last ned.*iansscan/
-    };
+    const direct={full:"scanBtn",resume:"resumeScanBtn",import:"importScanBtn",export:"exportScanBtn"};
+    if(action==="quick"){
+      // The current engine has one authoritative recursive scanner. Quick Scan therefore opens Scan & Vault
+      // and keeps the user in the correct module instead of silently doing nothing.
+      showFocus("scan");
+      const b=document.getElementById("scanBtn"); if(b){b.scrollIntoView({behavior:"smooth",block:"center"});return;}
+    }
+    const id=direct[action],el=id&&document.getElementById(id);
+    if(el && !el.disabled){el.click();return;}
+    const map={full:/full scan|start kartlegging|start scan/,resume:/resume|fortsett/,import:/importer scan|importer.*iansscan/,export:/last ned scanfil|eksporter scan|last ned.*iansscan/};
     if(clickExisting(map[action])) return;
     showFocus("scan");
-    setTimeout(()=>clickExisting(map[action]),120);
   }
 
   const focusMeta={
@@ -5102,7 +5146,8 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
       subs:[
         ["duplicates","Duplikater"],
         ["review","Cleanup Review"],
-        ["organize","Organiser"]
+        ["organize","Organiser"],
+        ["emptyfolders","Tomme mapper"]
       ]
     },
     backup:{
@@ -5142,6 +5187,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     content.innerHTML="";
     q("#v30ContextActions").innerHTML="";
 
+    if(subid==="emptyfolders") ensureV311EmptyFolders();
     const panel=findFunctionalPanel(subid);
     if(panel){
       moveInto(panel,content);
@@ -5163,7 +5209,8 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
       duplicates:()=> q("#v294ReviewCleaner") || q("#v295DupList") || panelByText(/duplicate review|rydd duplikater|duplikatgrupper/),
       review:()=> panelByText(/finn, filtrer og planlegg|cleanup command center|cleanup review/),
       organize:()=> q("#v285OrgPanel") || panelByText(/organization studio|plan.*preview.*action mode/),
-      download:()=> q("#downloadVerifyPanel") || panelByText(/download\s*&\s*verify|resume.*verify|direkte strømming/)
+      download:()=> q("#downloadVerifyPanel") || panelByText(/download\s*&\s*verify|resume.*verify|direkte strømming/),
+      emptyfolders:()=> q("#v311EmptyFolders")
     };
     const fn=candidates[id];
     return fn?fn():null;
@@ -5199,9 +5246,36 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     }
   }
 
+  function ensureV311EmptyFolders(){
+    let p=q("#v311EmptyFolders"); if(p){renderV311EmptyFolders();return p;}
+    p=document.createElement("section");p.id="v311EmptyFolders";p.className="panel v311-empty-folders";
+    (q("#dashboard")||document.body).appendChild(p); renderV311EmptyFolders(); return p;
+  }
+  function renderV311EmptyFolders(){
+    const p=q("#v311EmptyFolders");if(!p)return;
+    const rows=(report?.emptyFolders||[]).slice().sort((a,b)=>b.path.split("/").length-a.path.split("/").length);
+    const body=rows.slice(0,300).map((f,i)=>`<tr><td><input type="checkbox" data-v311-empty="${i}" checked></td><td class="path">${escapeHtml(f.path)}</td><td>${f.lastModifiedDateTime?new Date(f.lastModifiedDateTime).toISOString().slice(0,10):"–"}</td><td><button class="btn mini danger" data-v311-empty-one="${i}">Papirkurv</button></td></tr>`).join("");
+    p.innerHTML=`<div class="section-title"><div><span class="eyebrow">EMPTY FOLDER CLEANUP · V3.11.1</span><h3>Fjern tomme mapper</h3></div><span class="badge safe">PREVIEW FIRST</span></div>
+      <p class="muted">Viser mapper som var direkte tomme da skanningen leste dem. IANS sender dem til OneDrive-papirkurven – aldri permanent sletting.</p>
+      <div class="v311-empty-summary"><strong>${formatNumber(rows.length)}</strong><span>tomme mapper funnet</span><button id="v311EmptySelectAll" class="btn ghost">Merk alle</button><button id="v311EmptyTrashSelected" class="btn danger" ${rows.length?"":"disabled"}>Papirkurv valgte</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Velg</th><th>Mappe</th><th>Sist endret</th><th>Handling</th></tr></thead><tbody>${body||'<tr><td colspan="4">Ingen tomme mapper i denne skanningen.</td></tr>'}</tbody></table></div>
+      <p class="v311-note">Tips: mapper som bare inneholder andre tomme mapper blir kandidater i neste scan etter at de innerste mappene er fjernet.</p>`;
+    q("#v311EmptySelectAll",p)?.addEventListener("click",()=>qa("[data-v311-empty]",p).forEach(x=>x.checked=true));
+    qa("[data-v311-empty-one]",p).forEach(b=>b.onclick=()=>trashEmptyFolders([rows[+b.dataset.v311EmptyOne]]));
+    q("#v311EmptyTrashSelected",p)?.addEventListener("click",()=>{const sel=qa("[data-v311-empty]:checked",p).map(x=>rows[+x.dataset.v311Empty]);trashEmptyFolders(sel)});
+  }
+  async function trashEmptyFolders(items){
+    items=(items||[]).filter(Boolean);if(!items.length)return;
+    if(typeof v24Enabled!=="undefined"&&!v24Enabled){iansToast("Action Mode kreves","Aktiver Action Mode før tomme mapper sendes til papirkurven.","error",7000);return;}
+    const ok=confirm(`Send ${items.length} tomme mapper til OneDrive-papirkurven?\n\nDette er ikke permanent sletting.`);if(!ok)return;
+    let done=0,failed=0;
+    for(const f of items){try{const base=f.driveId?`/drives/${encodeURIComponent(f.driveId)}/items/${encodeURIComponent(f.id)}`:`/me/drive/items/${encodeURIComponent(f.id)}`;await v24Graph(base,{method:"DELETE"});done++;if(report?.emptyFolders)report.emptyFolders=report.emptyFolders.filter(x=>x.id!==f.id)}catch(e){failed++;console.error("Empty folder trash failed",f.path,e)}}
+    renderV311EmptyFolders();iansToast("Tomme mapper",`${done} sendt til papirkurven · ${failed} feil`,failed?"error":"success",9000);
+  }
+
   function removeNoise(){
     // Remove only navigation/decorative layers created by V2.9.6–V2.9.8.
-    qa("#iansCommandDashboard,#iansCleanupWorkbench,#iansV298Toolbox").forEach(x=>x.remove());
+    qa("#iansCommandDashboard,#iansCleanupWorkbench,#iansV298Toolbox,#v286CommandCenter,#v287CommandCenter,#v289ReferenceShell,#v285SystemHealth").forEach(x=>x.remove());
 
     // Hide empty passive blocks. Functional blocks will be moved into V3 when selected.
     qa("section,article,.panel,.card").forEach(el=>{
@@ -5274,7 +5348,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     const verified=rows.filter(x=>x.verified===true).length, badVerify=rows.filter(x=>x.verified===false&&x.verifiedAt).length;
     const errRows=rows.filter(x=>x.status==="failed"||x.error||x.verifyError);
     const sample=rows.slice(0,200).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.status||"done")}</td><td>${x.verified===true?"✓":x.verifiedAt?"⚠":"–"}</td><td class="path">${esc(x.originalPath||"")}</td><td class="path">${esc(x.quarantinePath||"")}</td><td class="path error-text">${esc(x.error||x.verifyError||"")}</td></tr>`).join("");
-    v24Open(`<span class="eyebrow">KARANTENERAPPORT · V3.10</span><h2>${failed===rows.length&&rows.length?"Karantene mislyktes":"Karantenejobb – detaljert rapport"}</h2>
+    v24Open(`<span class="eyebrow">KARANTENERAPPORT · V3.11.1.1</span><h2>${failed===rows.length&&rows.length?"Karantene mislyktes":"Karantenejobb – detaljert rapport"}</h2>
       <div class="v39-report-stats"><div><span>VELLYKKET</span><strong>${fmtN(done)}</strong></div><div><span>FEIL</span><strong>${fmtN(failed)}</strong></div><div><span>GJENSTÅR</span><strong>${fmtN(pending)}</strong></div><div><span>VERIFY OK</span><strong>${fmtN(verified)}</strong></div></div>
       ${failed?`<div class="v39-report-warning"><strong>${fmtN(failed)} filer feilet.</strong><p>Feilårsaken vises per fil under. Resume prøver bare feilede eller gjenstående filer.</p></div>`:""}
       ${badVerify?`<div class="v39-report-warning"><strong>${fmtN(badVerify)} verify-avvik.</strong><p>Disse skal ikke slettes permanent før de er kontrollert.</p></div>`:""}
@@ -5292,7 +5366,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
       iansToast("Action Mode kreves","Aktiver Action Mode før du sender filer til OneDrive-papirkurven.","error",7000);
       E("v24EnableAction")?.scrollIntoView({behavior:"smooth",block:"center"}); return;
     }
-    v24Open(`<span class="eyebrow">RASK PAPIRKURV · V3.10</span><h2>Send denne filen til OneDrive-papirkurven?</h2>
+    v24Open(`<span class="eyebrow">RASK PAPIRKURV · V3.11.1.1</span><h2>Send denne filen til OneDrive-papirkurven?</h2>
       <div class="v39-file-confirm"><strong>${esc(file.name)}</strong><span>${esc(fmtB(file.size))}</span><code>${esc(file.path||"")}</code></div>
       <p class="muted">Dette bruker OneDrive-papirkurven – ikke permanent sletting.</p>
       <div class="actions"><button id="v39TrashCancel" class="btn ghost">Avbryt</button><button id="v39TrashConfirm" class="btn danger">Send til papirkurv</button></div>`);
@@ -5312,6 +5386,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
       }catch(err){btn.disabled=false;btn.textContent="Prøv igjen";iansToast("Papirkurv feilet",String(err?.message||err),"error",10000)}
     };
   }
+  window.v311QuickTrash=quickTrash;
   document.addEventListener("click",e=>{
     const b=e.target.closest("[data-v39-trash]"); if(!b)return;
     const f=report?.files?.find(x=>String(x.id)===String(b.dataset.v39Trash)); quickTrash(f);
@@ -5326,11 +5401,11 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     }
   },700);
 
-  console.info("[IANS] OneDrive Command V3.10 Safety Ops aktiv – live operations, detaljert karantenerapport og rask papirkurv");
+  console.info("[IANS] OneDrive Command V3.11.1 Interaction Fix aktiv – live operations, detaljert karantenerapport og rask papirkurv");
 })();
 
 
-// ===== IANS OneDrive Command V3.10 STICKY SAFE DELETE =====
+// ===== IANS OneDrive Command V3.11 STICKY SAFE DELETE =====
 (() => {
   const E=id=>document.getElementById(id);
   const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
@@ -5340,7 +5415,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     const dock=document.createElement("div");
     dock.id="v310StickyDock";
     dock.className="v310-sticky-dock";
-    dock.innerHTML=`<div class="v310-dock-state"><span class="eyebrow">IANS CONTROL · V3.10.1</span><strong id="v310DockMode">READ ONLY</strong></div>
+    dock.innerHTML=`<div class="v310-dock-state"><span class="eyebrow">IANS CONTROL · V3.11.1</span><strong id="v310DockMode">READ ONLY</strong></div>
       <button id="v310DockAction" class="btn action-top">Aktiver Action Mode</button>
       <button id="v310DockTop" class="btn ghost">↑ Topp</button>`;
     document.body.appendChild(dock);
@@ -5419,5 +5494,61 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     installStickyDock(); addInventoryBulkDelete(); syncStickyDock();
   });
   setTimeout(()=>{installStickyDock();addInventoryBulkDelete();syncStickyDock();},500);
-  console.info("[IANS] OneDrive Command V3.10.1 aktiv – sticky control, path/drive-ID delete recovery, Smart Cleanup dato + papirkurv");
+  console.info("[IANS] OneDrive Command V3.11 aktiv – sticky control, path/drive-ID delete recovery, Smart Cleanup dato + papirkurv");
+})();
+
+
+// ===== IANS OneDrive Command V3.11 · FLOW + EMPTY FOLDERS =====
+(() => {
+  const q=s=>document.querySelector(s), qa=s=>[...document.querySelectorAll(s)];
+  function cleanLegacy(){qa("#v286CommandCenter,#v287CommandCenter,#v289ReferenceShell,#v285SystemHealth").forEach(x=>x.remove())}
+  function placeLive(){
+    const live=q("#v288MidPulse"), shell=q("#iansV30"), ws=q("#iansV30 .v30-workspace");
+    if(live&&shell&&ws&&live.parentElement!==shell){shell.insertBefore(live,ws)}
+  }
+  function boot(){cleanLegacy();placeLive();setTimeout(cleanLegacy,800);setTimeout(placeLive,900);setTimeout(cleanLegacy,1800)}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+// ===== END V3.11 =====
+
+
+// ===== V3.11.1 INTERACTION FIX =====
+(()=>{
+  const E=id=>document.getElementById(id);
+  // Keep bulk selection visible and useful in Read Only; execution still requires Action Mode.
+  function refreshInventorySelection(){
+    if(typeof renderV2==="function" && report) renderV2();
+  }
+  // Detect stale markup after async module rebuilds and restore selection column.
+  const observer=new MutationObserver(()=>{
+    const table=E("inventoryTable")?.querySelector("table");
+    if(!table||!report) return;
+    if(!table.querySelector("[data-v24-select]")) {
+      clearTimeout(window.__ians3111SelectionTimer);
+      window.__ians3111SelectionTimer=setTimeout(refreshInventorySelection,60);
+    }
+  });
+  window.addEventListener("load",()=>{
+    const host=E("inventoryTable"); if(host) observer.observe(host,{childList:true,subtree:true});
+    setTimeout(refreshInventorySelection,250);
+  });
+
+  // UI status helper: tells the user what Review means.
+  document.addEventListener("click",e=>{
+    const r=e.target.closest("[data-review]");
+    if(r) r.title="Legg filen i Review-køen for manuell vurdering. Filen flyttes eller slettes ikke.";
+  },true);
+
+  window.v3111InteractionSelfTest=function(){
+    const table=E("inventoryTable");
+    return {
+      inventory:!!table,
+      checkbox:!!table?.querySelector("[data-v24-select]"),
+      preview:!!table?.querySelector("[data-preview]"),
+      review:!!table?.querySelector("[data-review]"),
+      trash:!!table?.querySelector("[data-v39-trash]"),
+      quickTrash:typeof window.v311QuickTrash==="function"
+    };
+  };
+  console.info("[IANS] V3.11.1 interaction guard aktiv",window.v3111InteractionSelfTest());
 })();
