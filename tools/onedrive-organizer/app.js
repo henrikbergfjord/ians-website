@@ -338,9 +338,34 @@ async function graphFetch(url,attempt=0,authRetried=false){
   return response.json();
 }
 
+// ===== V3.12.6 SCAN START DIAGNOSTICS =====
+const IANS_SCAN_STAGES=["READY","AUTH","DRIVE","ROOT","CHECKPOINT","ENUMERATION","COMPLETE"];
+function iansScanStage(stage,detail=""){
+  window.__iansScanStage={stage,detail,time:new Date().toISOString()};
+  const el=document.getElementById("iansScanStageLine");
+  if(el)el.textContent=`${stage}${detail?" · "+detail:""}`;
+  console.info(`[IANS SCAN ${stage}]`,detail||"");
+}
+function iansEnsureScanDiagnostics(){
+  if(document.getElementById("iansScanStageLine"))return;
+  const host=document.querySelector("#v30Content")||document.querySelector("#progressPanel")||document.body;
+  const bar=document.createElement("div");
+  bar.id="iansScanDiagnostics";
+  bar.className="ians-scan-diagnostics";
+  bar.innerHTML=`<span>SCAN START</span><strong id="iansScanStageLine">READY · v3.12.6</strong><small>AUTH → DRIVE → ROOT → CHECKPOINT → ENUMERATION</small>`;
+  host.prepend(bar);
+}
+setTimeout(iansEnsureScanDiagnostics,900);
+// ===== END V3.12.6 SCAN START DIAGNOSTICS =====
+
 async function iansScanPreflight(){
+  iansEnsureScanDiagnostics();
+  iansScanStage("AUTH","henter/gjenbruker token");
   updateScanMeter?.(Math.round(scanVisualPct||5),"Kontrollerer Microsoft-tilkobling");
+  await getToken();
+  iansScanStage("DRIVE","token OK");
   const drive=await graphFetch("/me/drive/root?$select=id,name,parentReference");
+  iansScanStage("ROOT",drive?.id?"OneDrive root OK":"root mangler");
   if(!drive?.id) throw new Error("PREFLIGHT_STAGE: OneDrive root kunne ikke bekreftes.");
   return drive;
 }
@@ -525,6 +550,8 @@ function iansTop25Insert(top,file){
 }
 
 async function scanOneDrive(resumeState=null) {
+  iansEnsureScanDiagnostics();
+  iansScanStage("READY",resumeState?"Resume starter":"Full scan starter");
   cancelRequested=false;
   const scanRunToken=(window.__iansScanRunToken=(Number(window.__iansScanRunToken)||0)+1);
   window.__iansScanHeartbeat=Date.now();
@@ -595,6 +622,7 @@ async function scanOneDrive(resumeState=null) {
     // proven that this new scan can actually reach OneDrive.
     try{
       await iansScanPreflight();
+      iansScanStage("CHECKPOINT","preflight OK · klargjør ny scan");
       await clearScanCheckpoint();
     }catch(err){
       err.message=`PREFLIGHT_STAGE: ${String(err?.message||err).replace(/^PREFLIGHT_STAGE:\s*/,"")}`;
@@ -659,6 +687,7 @@ async function scanOneDrive(resumeState=null) {
   document.addEventListener("freeze",scanLifecycleHidden);
 
   try{
+    iansScanStage("ENUMERATION",`starter med ${queue.length} mappe(r) i kø`);
     while(queue.length){
       window.__iansScanHeartbeat=Date.now();
       if(scanRunToken!==window.__iansScanRunToken){
@@ -805,6 +834,7 @@ async function scanOneDrive(resumeState=null) {
     els.progressPath.textContent=`${formatNumber(stats.files)} filer analysert fra ${scanRoot.path}.` + (recoveryStats.missingFolders ? ` ${formatNumber(recoveryStats.missingFolders)} manglende mapper hoppet over (${formatNumber(recoveryStats.prunedQueuedFolders)} utdaterte køelementer fjernet).` : "");
     els.progressBar.style.width="100%";
     updateScanMeter(100,"Kartlegging ferdig");
+    iansScanStage("COMPLETE",`${stats.files} filer · ${stats.folders} mapper`);
     els.exportBtn.disabled=false;
     document.getElementById("scanStateBadge").textContent="FERDIG";
     if(window.__iansScanLiveState){window.__iansScanLiveState.status="done";window.__iansScanLiveState.pct=100;}
@@ -5275,18 +5305,35 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     showFocus(state.focus);
   }
 
-  function runScanAction(action){
-    const direct={full:"scanBtn",resume:"resumeScanBtn",import:"importScanBtn",export:"exportScanBtn"};
-    if(action==="quick"){
-      // The current engine has one authoritative recursive scanner. Quick Scan therefore opens Scan & Vault
-      // and keeps the user in the correct module instead of silently doing nothing.
+  async function runScanAction(action){
+    // V3.12.6: Never search-and-click a button labelled "Full scan".
+    // That could rediscover the V3 button itself when the legacy button was moved/hidden,
+    // causing a recursive click loop before Graph was ever called.
+    if(action==="full"){
       showFocus("scan");
-      const b=document.getElementById("scanBtn"); if(b){b.scrollIntoView({behavior:"smooth",block:"center"});return;}
+      iansEnsureScanDiagnostics();
+      iansScanStage("READY","Full scan-knapp mottatt");
+      try{ await scanOneDrive(); }catch(err){ console.error("[IANS V3.12.6] direct full scan",err); }
+      return;
     }
+    if(action==="resume"){
+      showFocus("scan");
+      const cp=await loadScanCheckpoint();
+      if(!cp){ iansScanStage("READY","ingen checkpoint å fortsette"); iansToast?.("Ingen checkpoint","Det finnes ingen lagret scan å fortsette.","error",5000); return; }
+      iansScanStage("CHECKPOINT","Resume checkpoint lastet");
+      try{ await scanOneDrive(cp); }catch(err){ console.error("[IANS V3.12.6] direct resume",err); }
+      return;
+    }
+    if(action==="quick"){
+      showFocus("scan");
+      iansScanStage("READY","Scan & Vault åpnet");
+      return;
+    }
+    const direct={import:"importScanBtn",export:"exportScanBtn"};
     const id=direct[action],el=id&&document.getElementById(id);
     if(el && !el.disabled){el.click();return;}
-    const map={full:/full scan|start kartlegging|start scan/,resume:/resume|fortsett/,import:/importer scan|importer.*iansscan/,export:/last ned scanfil|eksporter scan|last ned.*iansscan/};
-    if(clickExisting(map[action])) return;
+    const map={import:/importer scan|importer.*iansscan/,export:/last ned scanfil|eksporter scan|last ned.*iansscan/};
+    if(map[action] && clickExisting(map[action])) return;
     showFocus("scan");
   }
 
@@ -6014,3 +6061,14 @@ window.v3125ScanTokenBrokerSelfTest=()=>({
 });
 console.info('[IANS] V3.12.5 Token Broker + Scan Preflight aktiv');
 // ===== END V3.12.5 =====
+
+
+// ===== IANS OneDrive Command V3.12.6 · SCAN START BRIDGE =====
+window.v3126ScanStartBridgeSelfTest=()=>({
+  directStart:typeof scanOneDrive==="function",
+  diagnostics:typeof iansScanStage==="function",
+  stage:window.__iansScanStage||null,
+  legacyScanButton:!!document.getElementById("scanBtn")
+});
+console.info('[IANS] V3.12.6 Scan Start Bridge + Diagnostics aktiv');
+// ===== END V3.12.6 =====
