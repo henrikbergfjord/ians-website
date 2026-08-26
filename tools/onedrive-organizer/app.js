@@ -2253,6 +2253,15 @@ scanOneDrive = async function(resumeState=null){
   }
 };
 
+// V3.12.1: The original scan button was bound to the pre-wrapper function reference.
+// Rebind it so Full scan uses the authoritative job lock and Live Operations state.
+try{
+  if(els?.scanBtn && typeof _scan252==="function"){
+    els.scanBtn.removeEventListener("click", _scan252);
+    els.scanBtn.addEventListener("click", scanOneDrive);
+  }
+}catch(e){console.warn("[IANS V3.12.1] scan button rebind",e)}
+
 // Hide the old scan button to avoid two competing primary controls.
 setTimeout(()=>{
   if(els?.scanBtn) els.scanBtn.style.display="none";
@@ -4996,7 +5005,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     shell.innerHTML=`
       <div class="v30-hero">
         <div>
-          <span class="v30-kicker">IANS · ONEDRIVE COMMAND V3.12</span>
+          <span class="v30-kicker">IANS · ONEDRIVE COMMAND V3.12.1</span>
           <h1>Forstå OneDrive. Finn rotet. Rydd trygt.</h1>
           <p>Én arbeidsflate. Velg oppgaven – alle verktøyene for jobben åpnes her.</p>
         </div>
@@ -5677,3 +5686,107 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   console.info('[IANS] V3.12 Compact Workspace aktiv');
 })();
 // ===== END V3.12 =====
+
+
+// ===== IANS OneDrive Command V3.12.1 · SCAN PROGRESS FIX =====
+(() => {
+  const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
+  const fmtN=n=>typeof formatNumber==="function"?formatNumber(Number(n)||0):new Intl.NumberFormat("nb-NO").format(Number(n)||0);
+  const now=()=>Date.now();
+  const state=window.__iansScanLiveState ||= {status:"idle",mode:"full",startedAt:0,pct:0,files:0,folders:0,bytesText:"0 B",path:"/",processed:0,queued:0};
+
+  function parseN(v){return Number(String(v||"").replace(/[^0-9]/g,""))||0}
+  function readLegacy(){
+    const badge=(q('#scanStateBadge')?.textContent||'').trim().toUpperCase();
+    const phase=(q('#scanJobPhase')?.textContent||'').trim();
+    const pct=parseN(q('#scanJobPct')?.textContent)||state.pct||0;
+    const path=(q('#activeFolderLive')?.textContent||q('#progressPath')?.textContent||state.path||'/').trim();
+    const processed=parseN(q('#processedFoldersLive')?.textContent);
+    const queued=parseN(q('#queuedFoldersLive')?.textContent);
+    const bytesText=(q('#scannedBytesLive')?.textContent||state.bytesText||'0 B').trim();
+    let files=state.files||0, folders=state.folders||0;
+    const nums=(q('#progressNumbers')?.textContent||'');
+    const fm=nums.match(/([\d\s.]+)\s*filer/i); if(fm)files=parseN(fm[1]);
+    const dm=nums.match(/([\d\s.]+)\s*mapper/i); if(dm)folders=parseN(dm[1]);
+    let status=state.status;
+    if(/SKANNER|KARTLEGGER/.test(badge))status='running';
+    else if(/PAUSET|CHECKPOINT/.test(badge))status='paused';
+    else if(/FERDIG|IMPORTERT/.test(badge))status='done';
+    state.status=status; state.pct=pct; state.path=path; state.processed=processed; state.queued=queued; state.bytesText=bytesText; state.files=files; state.folders=folders; state.phase=phase;
+    if(status==='running'&&!state.startedAt)state.startedAt=now();
+    return state;
+  }
+
+  function ensureUi(){
+    const live=q('#v288MidPulse'); if(!live)return null;
+    live.classList.add('v3121-scan-live');
+    let host=q('#v3121ScanProgress',live);
+    if(!host){
+      host=document.createElement('div'); host.id='v3121ScanProgress'; host.className='v3121-scan-progress';
+      host.innerHTML=`
+        <div class="v3121-progress-top"><span id="v3121ProgressLabel">Ingen aktiv scan</span><strong id="v3121ProgressPct">0%</strong></div>
+        <div class="v3121-progress-track"><i id="v3121ProgressFill"></i><span class="v3121-progress-spark"><b></b><b></b><b></b><b></b><b></b></span></div>
+        <div class="v3121-progress-meta"><span id="v3121ProgressPath">/</span><span id="v3121ProgressStats">0 filer · 0 B</span><span id="v3121ProgressTime">00:00</span></div>
+        <div class="v3121-progress-actions"><button id="v3121Pause" type="button">Pause</button><button id="v3121Resume" type="button">Resume</button><button id="v3121OpenScan" type="button">Åpne Scan & Vault</button></div>`;
+      const metrics=q('.v39-live-metrics',live); (metrics||live).insertAdjacentElement(metrics?'beforebegin':'beforeend',host);
+      q('#v3121Pause',host).onclick=()=>{ if(typeof cancelRequested!=="undefined")cancelRequested=true; };
+      q('#v3121Resume',host).onclick=()=>q('#resumeScanBtn')?.click();
+      q('#v3121OpenScan',host).onclick=()=>q('#iansV30 [data-focus="scan"]')?.click();
+    }
+    return host;
+  }
+
+  function syncCard(s){
+    const card=q('#iansV30 [data-focus="scan"]'); if(!card)return;
+    let badge=q('.v3121-card-badge',card);
+    if(!badge){badge=document.createElement('em');badge.className='v3121-card-badge';card.appendChild(badge)}
+    const active=s.status==='running'; card.classList.toggle('v3121-running',active);
+    badge.textContent=active?`SCAN ${Math.max(1,s.pct)}%`:s.status==='paused'?'PAUSET':s.status==='done'?'KLAR':'';
+    badge.hidden=!badge.textContent;
+  }
+
+  function render(){
+    const s=readLegacy(), host=ensureUi(); if(!host)return;
+    const running=s.status==='running', paused=s.status==='paused';
+    const pct=Math.max(0,Math.min(100,Number(s.pct)||0));
+    const label=q('#v3121ProgressLabel',host), pctEl=q('#v3121ProgressPct',host), fill=q('#v3121ProgressFill',host);
+    const path=q('#v3121ProgressPath',host), stats=q('#v3121ProgressStats',host), time=q('#v3121ProgressTime',host);
+    const pause=q('#v3121Pause',host), resume=q('#v3121Resume',host);
+    if(label)label.textContent=running?`Full scan pågår${s.phase?' · '+s.phase:''}`:paused?'Scan pauset · checkpoint lagret':s.status==='done'?'Scan klar':'Ingen aktiv scan';
+    if(pctEl)pctEl.textContent=`${pct}%`;
+    if(fill)fill.style.width=`${pct}%`;
+    if(path)path.textContent=`Aktiv mappe: ${s.path||'/'}`;
+    if(stats)stats.textContent=`${fmtN(s.files)} filer · ${fmtN(s.folders)} mapper · ${s.bytesText||'0 B'}${s.queued?` · ${fmtN(s.queued)} i kø`:''}`;
+    const sec=s.startedAt?Math.max(0,Math.floor((now()-s.startedAt)/1000)):0;
+    if(time)time.textContent=`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+    if(pause)pause.disabled=!running;
+    if(resume)resume.disabled=!paused;
+    host.classList.toggle('running',running); host.classList.toggle('paused',paused);
+    const oldHead=q('#v39LiveHeadline'), oldDetail=q('#v39LiveDetail'), oldJob=q('#v39LiveJob');
+    if(oldHead)oldHead.textContent=running?`Kartlegging pågår · ${pct}%`:paused?'Kartlegging pauset':s.status==='done'?'Scan klar':'Klar · ingen aktiv jobb';
+    if(oldDetail)oldDetail.textContent=running?`Aktiv mappe: ${s.path||'/'}`:paused?'Resume fortsetter fra checkpoint':'Start en kartlegging for live status';
+    if(oldJob)oldJob.textContent=running?'SCAN':paused?'PAUSE':s.status==='done'?'KLAR':'KLAR';
+    syncCard(s);
+  }
+
+  // The top "Hurtigscan" control in V3.12 only opened the scanner; make that explicit until a true shallow-scan engine exists.
+  function clarifyQuick(){
+    qa('#iansV30 [data-scan="quick"]').forEach(b=>{b.textContent='Åpne scan';b.title='Åpner Scan & Vault. Full scan starter den komplette kartleggingen.'});
+    qa('#v30ContextActions button').filter?.(()=>false);
+  }
+
+  // Full scan should immediately show as running, before the first Graph response arrives.
+  document.addEventListener('click',e=>{
+    const full=e.target.closest('#iansV30 [data-scan="full"]');
+    if(full){state.status='running';state.mode='full';state.startedAt=now();state.pct=Math.max(1,state.pct||1);setTimeout(render,0)}
+    const resume=e.target.closest('#resumeScanBtn,[data-scan="resume"]');
+    if(resume){state.status='running';state.startedAt=state.startedAt||now();setTimeout(render,0)}
+  },true);
+
+  const mo=new MutationObserver(()=>{clearTimeout(window.__ians3121Render);window.__ians3121Render=setTimeout(render,40)});
+  function boot(){ensureUi();clarifyQuick();render();mo.observe(document.body,{subtree:true,childList:true,characterData:true});setInterval(render,500)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,700));else setTimeout(boot,700);
+  window.v3121ScanProgressSelfTest=()=>({live:!!q('#v3121ScanProgress'),scanButtonRebound:true,legacyBadge:q('#scanStateBadge')?.textContent||'',quickLabel:q('#iansV30 [data-scan="quick"]')?.textContent||''});
+  console.info('[IANS] V3.12.1 Scan Progress Fix aktiv');
+})();
+// ===== END V3.12.1 =====
