@@ -1299,6 +1299,215 @@
 </style>
 <!-- /IANS HOME V3.12.3 COMPACT ORBIT -->
 
+
+<!-- IANS HOME V4.7 COMPACT DESKTOP START -->
+<style id="ians-home-v47-compact-desktop">
+/* Desktop-only composition fix. Mobile/tablet rules remain untouched. */
+@media (min-width: 1121px) {
+  body .ians-hero {
+    min-height: 0 !important;
+    padding: 18px 0 8px !important;
+  }
+
+  body .hero-shell {
+    width: min(1320px, calc(100% - 54px)) !important;
+    min-height: 0 !important;
+    padding-top: 18px !important;
+    padding-bottom: 8px !important;
+    gap: 22px !important;
+    align-items: center !important;
+    grid-template-columns: minmax(390px, .88fr) minmax(500px, 1.12fr) !important;
+  }
+
+  body .hero-copy {
+    max-width: 560px !important;
+  }
+
+  body .hero-kicker {
+    margin-bottom: 12px !important;
+  }
+
+  body .hero-copy h1 {
+    font-size: clamp(3.2rem, 4.25vw, 5.25rem) !important;
+    line-height: .91 !important;
+    margin-bottom: 16px !important;
+  }
+
+  body .hero-copy .lead {
+    max-width: 520px !important;
+    font-size: .98rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 16px !important;
+  }
+
+  body .hero-actions {
+    gap: 9px !important;
+    margin-top: 14px !important;
+  }
+
+  body .hero-actions .button {
+    min-height: 38px !important;
+    padding: 9px 13px !important;
+    font-size: .76rem !important;
+  }
+
+  body .hero-note {
+    gap: 7px !important;
+    margin-top: 13px !important;
+  }
+
+  body .hero-note span {
+    padding: 5px 8px !important;
+    font-size: .61rem !important;
+  }
+
+  body .ians-core-stage {
+    width: 580px !important;
+    max-width: 100% !important;
+    height: 430px !important;
+    min-height: 430px !important;
+    margin: -4px auto -8px !important;
+    transform: scale(.88) !important;
+    transform-origin: center center !important;
+  }
+
+  body .focus-section#hovedomrader,
+  body #hovedomrader.focus-section {
+    padding: 14px 0 44px !important;
+  }
+
+  body #hovedomrader .focus-wrap {
+    width: min(1420px, calc(100% - 54px)) !important;
+  }
+
+  body #hovedomrader .focus-heading {
+    max-width: 900px !important;
+    margin-bottom: 14px !important;
+  }
+
+  body #hovedomrader .section-badge {
+    margin-bottom: 7px !important;
+    padding: 5px 9px !important;
+  }
+
+  body #hovedomrader .focus-heading h2 {
+    margin: 0 0 4px !important;
+    font-size: clamp(1.55rem, 2.15vw, 2.15rem) !important;
+  }
+
+  body #hovedomrader .focus-heading p {
+    margin: 0 !important;
+    max-width: 900px !important;
+    font-size: .82rem !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Five main entrances on one desktop row. */
+  body #hovedomrader .area-grid {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+
+  body #hovedomrader .area-card {
+    min-height: 0 !important;
+    padding: 15px !important;
+    border-radius: 17px !important;
+  }
+
+  body #hovedomrader .area-number {
+    margin-bottom: 9px !important;
+    font-size: .58rem !important;
+  }
+
+  body #hovedomrader .area-top {
+    grid-template-columns: 46px 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 8px !important;
+    align-items: center !important;
+  }
+
+  body #hovedomrader .area-icon {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    border-radius: 12px !important;
+  }
+
+  body #hovedomrader .category-pill {
+    font-size: .52rem !important;
+    padding: 3px 6px !important;
+  }
+
+  body #hovedomrader .area-card h3 {
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+    font-size: .98rem !important;
+    line-height: 1.12 !important;
+  }
+
+  body #hovedomrader .area-description {
+    margin: 7px 0 9px !important;
+    font-size: .69rem !important;
+    line-height: 1.42 !important;
+  }
+
+  body #hovedomrader .tags {
+    gap: 4px !important;
+    margin: 6px 0 10px !important;
+  }
+
+  body #hovedomrader .tags span {
+    padding: 3px 6px !important;
+    font-size: .53rem !important;
+  }
+
+  body #hovedomrader .area-cta {
+    margin-top: auto !important;
+    font-size: .66rem !important;
+  }
+}
+
+/* Mid-size desktops: preserve readability with a 3+2 grid instead of squeezing. */
+@media (min-width: 1121px) and (max-width: 1320px) {
+  body .hero-shell {
+    width: min(1180px, calc(100% - 40px)) !important;
+    grid-template-columns: minmax(360px, .9fr) minmax(460px, 1.1fr) !important;
+  }
+  body .ians-core-stage {
+    width: 530px !important;
+    height: 405px !important;
+    min-height: 405px !important;
+    transform: scale(.82) !important;
+  }
+  body #hovedomrader .area-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+</style>
+<script id="ians-home-v47-cleanup">
+(() => {
+  const clean = () => {
+    // Removes only the accidental orphan label between hero and main entrances.
+    const protectedSelector = '.area-card,.compact-link,.ians-core-stage,.nav-links,.topbar,[href*="onedrive"],#hovedomrader';
+    for (const el of document.querySelectorAll('main *')) {
+      if ((el.textContent || '').trim() !== 'OneDrive Command') continue;
+      if (el.closest(protectedSelector)) continue;
+      if (el.children.length > 0) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width > 0 && r.height < 90) {
+        el.style.display = 'none';
+        el.setAttribute('data-ians-v47-hidden-orphan','true');
+      }
+    }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', clean, {once:true});
+  else clean();
+})();
+</script>
+<!-- IANS HOME V4.7 COMPACT DESKTOP END -->
+
 </head>
 <body>
 <header class="topbar">
