@@ -1102,3 +1102,59 @@ body.ians-v30 #v288MidPulse .v288-pulse-line i{position:relative!important;left:
 #inventoryTable button[data-preview],
 #inventoryTable button[data-review],
 #inventoryTable button[data-v39-trash]{pointer-events:auto!important;position:relative;z-index:2}
+
+/* ===== IANS OneDrive Command V3.12 · Compact Workspace ===== */
+.ians-v312 #dashboard > .v312-dashboard-stashed{display:none!important}
+.ians-v312 #dashboard > .modal{display:none}
+.ians-v312 #dashboard > .modal:not(.hidden){display:flex!important}
+.ians-v312 #iansV30{max-width:1480px;margin:18px auto 40px}
+.ians-v312 #iansV30 .v30-hero{padding:20px 24px;min-height:auto}
+.ians-v312 #iansV30 .v30-hero h1{font-size:clamp(26px,2.2vw,38px);margin:4px 0 5px}
+.ians-v312 #iansV30 .v30-hero p{margin:0}
+.ians-v312 .v3101-hero-controls{gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.v312-view-toggle{display:inline-flex;border:1px solid rgba(120,180,225,.22);border-radius:10px;overflow:hidden;background:rgba(2,18,34,.42)}
+.v312-view-toggle button{border:0;background:transparent;color:#9eb5c8;padding:7px 10px;font:inherit;font-size:12px;cursor:pointer}
+.v312-view-toggle button.active{background:rgba(66,174,239,.18);color:#fff}
+.ians-v312 #iansV30 .v30-status{min-height:48px;grid-template-columns:repeat(4,1fr) auto}
+.ians-v312 #iansV30 .v30-status>div{padding:8px 14px}
+.ians-v312 #iansV30 .v30-scanbar{padding:10px 14px;margin-top:10px}
+.ians-v312 #iansV30 .v30-scan-actions{gap:5px;flex-wrap:wrap}
+.ians-v312 #iansV30 .v30-scan-actions button{padding:7px 9px;font-size:11px}
+.ians-v312 #iansV30 .v30-question{padding:8px 14px;margin-top:8px}
+.ians-v312 #iansV30 .v30-focus-grid{gap:10px;margin-top:8px}
+.ians-v312 #iansV30 .v30-focus-grid>button{min-height:96px;padding:14px}
+.ians-v312 #iansV30 .v30-focus-grid strong{font-size:17px}
+.ians-v312 #iansV30 .v30-workspace{margin-top:12px;min-height:0!important;padding:16px 18px 18px}
+.ians-v312 #iansV30 .v30-work-head{padding-bottom:10px;margin-bottom:8px}
+.ians-v312 #iansV30 .v30-work-head h2{font-size:24px;margin:2px 0}
+.ians-v312 #iansV30 .v30-subnav{gap:6px;margin:8px 0 10px;position:sticky;top:8px;z-index:18;background:linear-gradient(180deg,#06172a 74%,rgba(6,23,42,.92));padding:7px;border-radius:10px}
+.ians-v312 #iansV30 .v30-subnav button{padding:7px 10px}
+.ians-v312 #iansV30 .v30-content>.panel{margin:0!important}
+.ians-v312 #iansV30 .panel{padding:16px}
+.ians-v312 #iansV30 .section-title{margin-bottom:10px}
+.ians-v312 #iansV30 .section-title h3{font-size:20px;margin:2px 0}
+.ians-v312 #iansV30 .metric{padding:12px}
+.ians-v312 .v312-table-scroll{max-height:520px;overflow:auto;border-radius:10px;overscroll-behavior:contain}
+.ians-v312 .v312-table-scroll table{margin:0}
+.ians-v312 .v312-table-scroll thead{position:sticky;top:0;z-index:5;background:#07182c}
+.ians-v312 .v312-scroll-panel .filter-grid{position:sticky;top:50px;z-index:12;background:#07182c;padding:8px 0}
+.v312-inventory-tools{display:flex;align-items:center;justify-content:flex-end;gap:5px;margin:7px 0;font-size:11px;color:#8ea7bb}
+.v312-inventory-tools span{margin-right:auto}
+.v312-inventory-tools button{border:1px solid rgba(130,180,220,.22);background:transparent;color:#9eb5c8;border-radius:8px;padding:5px 8px;cursor:pointer}
+.v312-inventory-tools button.active{background:rgba(67,166,230,.16);color:#fff}
+.ians-v312 .v312-scroll-panel.v312-table-tall .v312-table-scroll{max-height:780px}
+.ians-v312 .v312-collapsible #v362QJob{display:none}
+.ians-v312 .v312-collapsible.open #v362QJob{display:block}
+.ians-v312 .v312-liveops{max-width:1480px;margin:10px auto!important;padding:12px 18px!important}
+.v312-live-track{display:flex;align-items:center;gap:12px;min-width:260px;flex:1;margin:8px 12px 0}
+.v312-live-line{height:3px;flex:1;border-radius:999px;background:linear-gradient(90deg,rgba(57,185,238,.9),rgba(95,111,232,.7),rgba(206,91,223,.55),rgba(20,40,70,.45));background-size:180% 100%;animation:v312flow 2.2s linear infinite}
+.v312-live-dots{display:flex;gap:4px}
+.v312-live-dots i{width:7px;height:7px;border-radius:50%;background:#53c5ee;box-shadow:0 0 10px currentColor;animation:v312pulse 1.2s ease-in-out infinite alternate}
+.v312-live-dots i:nth-child(2){animation-delay:.12s}.v312-live-dots i:nth-child(3){animation-delay:.24s}.v312-live-dots i:nth-child(4){animation-delay:.36s}.v312-live-dots i:nth-child(5){animation-delay:.48s}
+@keyframes v312flow{to{background-position:-180% 0}}@keyframes v312pulse{to{opacity:.28;transform:scale(.65)}}
+.v312-compact .v312-long-copy{display:none!important}
+.v312-compact #iansV30 details:not([open]){margin-block:6px}
+.v312-detail .v312-long-copy{display:block}
+.v312-detail #iansV30 .panel{padding:20px}
+@media (max-width:900px){.ians-v312 #iansV30 .v30-status{grid-template-columns:1fr 1fr}.ians-v312 #iansV30 .v30-focus-grid{grid-template-columns:1fr 1fr}.v312-view-toggle{order:5}}
+/* ===== END V3.12 ===== */

@@ -4996,7 +4996,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     shell.innerHTML=`
       <div class="v30-hero">
         <div>
-          <span class="v30-kicker">IANS · ONEDRIVE COMMAND V3.11.1</span>
+          <span class="v30-kicker">IANS · ONEDRIVE COMMAND V3.12</span>
           <h1>Forstå OneDrive. Finn rotet. Rydd trygt.</h1>
           <p>Én arbeidsflate. Velg oppgaven – alle verktøyene for jobben åpnes her.</p>
         </div>
@@ -5415,7 +5415,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     const dock=document.createElement("div");
     dock.id="v310StickyDock";
     dock.className="v310-sticky-dock";
-    dock.innerHTML=`<div class="v310-dock-state"><span class="eyebrow">IANS CONTROL · V3.11.1</span><strong id="v310DockMode">READ ONLY</strong></div>
+    dock.innerHTML=`<div class="v310-dock-state"><span class="eyebrow">IANS CONTROL · V3.12</span><strong id="v310DockMode">READ ONLY</strong></div>
       <button id="v310DockAction" class="btn action-top">Aktiver Action Mode</button>
       <button id="v310DockTop" class="btn ghost">↑ Topp</button>`;
     document.body.appendChild(dock);
@@ -5552,3 +5552,128 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   };
   console.info("[IANS] V3.11.1 interaction guard aktiv",window.v3111InteractionSelfTest());
 })();
+
+// ===== IANS OneDrive Command V3.12 · COMPACT WORKSPACE =====
+(() => {
+  const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
+  const state={mode:localStorage.getItem('ians.v312.view')||'compact'};
+
+  function installCompactControls(){
+    const shell=q('#iansV30'); if(!shell || q('#v312ViewToggle',shell)) return;
+    document.body.classList.add('ians-v312');
+    const heroControls=q('.v3101-hero-controls',shell);
+    if(heroControls){
+      const wrap=document.createElement('div'); wrap.id='v312ViewToggle'; wrap.className='v312-view-toggle';
+      wrap.innerHTML='<button data-v312-view="compact">Kompakt</button><button data-v312-view="detail">Detaljert</button>';
+      heroControls.prepend(wrap);
+      qa('[data-v312-view]',wrap).forEach(b=>b.onclick=()=>setView(b.dataset.v312View));
+    }
+    setView(state.mode);
+    simplifyLabels(shell);
+  }
+
+  function setView(mode){
+    state.mode=mode==='detail'?'detail':'compact';
+    localStorage.setItem('ians.v312.view',state.mode);
+    document.body.classList.toggle('v312-detail',state.mode==='detail');
+    document.body.classList.toggle('v312-compact',state.mode==='compact');
+    qa('[data-v312-view]').forEach(b=>b.classList.toggle('active',b.dataset.v312View===state.mode));
+  }
+
+  function simplifyLabels(shell){
+    const scanCopy=q('.v30-scan-copy small',shell); if(scanCopy)scanCopy.textContent='Scan, fortsett eller bruk Scan Vault.';
+    const work=q('#v30WorkKicker',shell); if(work)work.textContent='ARBEIDSOMRÅDE';
+  }
+
+  function compactAllFiles(){
+    const panel=q('#inventoryTable')?.closest('section.panel'); if(!panel)return;
+    panel.classList.add('v312-scroll-panel');
+    const summary=q('#filterSummary',panel);
+    if(summary && !q('#v312InventoryTools',panel)){
+      const tools=document.createElement('div'); tools.id='v312InventoryTools'; tools.className='v312-inventory-tools';
+      tools.innerHTML='<span>Filliste</span><button data-v312-table="compact" class="active">Kompakt</button><button data-v312-table="tall">Mer plass</button>';
+      summary.after(tools);
+      qa('[data-v312-table]',tools).forEach(b=>b.onclick=()=>{
+        panel.classList.toggle('v312-table-tall',b.dataset.v312Table==='tall');
+        qa('[data-v312-table]',tools).forEach(x=>x.classList.toggle('active',x===b));
+      });
+    }
+  }
+
+  function compactLargeTables(){
+    qa('#iansV30 .table-wrap').forEach(x=>x.classList.add('v312-table-scroll'));
+    compactAllFiles();
+  }
+
+  function hideLegacyPageStack(){
+    // V3.12 is a true single-workspace app. Functional panels are moved into #v30Content on demand.
+    const dash=q('#dashboard'); if(!dash)return;
+    [...dash.children].forEach(el=>{
+      if(el.matches('.modal,#folderBrowserModal')) return;
+      // Active panel is physically moved out of dashboard by the V3 shell and must remain visible.
+      el.classList.add('v312-dashboard-stashed');
+    });
+  }
+
+  function enhanceSubnav(){
+    const shell=q('#iansV30'); if(!shell)return;
+    const title=q('#v30WorkTitle',shell)?.textContent||'';
+    const sub=q('#v30Subnav',shell); if(!sub)return;
+    // Rename tabs into task language; no functionality is removed.
+    const map={
+      'Lagring':'Oversikt','Store filer':'Kandidater','Media':'Media',
+      'Duplikater':'Duplikater','Cleanup Review':'Alle filer','Organiser':'Organiser','Tomme mapper':'Tomme mapper',
+      'Kartlegging':'Kartlegging','Scan Vault':'Vault','Download & Verify':'Backup / Verify'
+    };
+    qa('button',sub).forEach(b=>{if(map[b.textContent.trim()])b.textContent=map[b.textContent.trim()]});
+    if(/Finn & analyser/i.test(title) && !qa('button',sub).some(b=>b.textContent==='Alle filer')){
+      const b=document.createElement('button'); b.textContent='Alle filer'; b.dataset.sub='review';
+      b.onclick=()=>{
+        const cleanup=qa('#iansV30 [data-focus]').find(x=>x.dataset.focus==='cleanup'); cleanup?.click();
+        setTimeout(()=>qa('#v30Subnav [data-sub]').find(x=>x.dataset.sub==='review')?.click(),30);
+      };
+      sub.appendChild(b);
+    }
+  }
+
+  function compactLiveOps(){
+    const live=q('#v288MidPulse'); if(!live)return;
+    live.classList.add('v312-liveops');
+    if(!q('.v312-live-track',live)){
+      const track=document.createElement('div'); track.className='v312-live-track';
+      track.innerHTML='<div class="v312-live-dots"><i></i><i></i><i></i><i></i><i></i></div><div class="v312-live-line"></div>';
+      const inner=live.firstElementChild||live; inner.appendChild(track);
+    }
+  }
+
+  function compactQuarantine(){
+    const p=[...qa('section.panel')].find(x=>/\bKARANTENE\b/i.test(x.innerText||'') && q('#v362QJob',x));
+    if(!p)return; p.classList.add('v312-collapsible');
+    const head=q('.section-title',p); if(head&&!q('[data-v312-collapse]',head)){
+      const b=document.createElement('button');b.className='btn ghost';b.dataset.v312Collapse='1';b.textContent='Vis detaljer';
+      (q('.actions',head)||head).appendChild(b);
+      b.onclick=()=>{p.classList.toggle('open');b.textContent=p.classList.contains('open')?'Skjul detaljer':'Vis detaljer'};
+    }
+  }
+
+  function cleanupPassiveCopy(){
+    // Decorative/passive sections have little value in compact mode; details remain available in Detail view.
+    qa('#iansV30 .muted').forEach(p=>{if((p.textContent||'').length>180)p.classList.add('v312-long-copy')});
+  }
+
+  function refresh(){
+    installCompactControls(); hideLegacyPageStack(); compactLargeTables(); compactLiveOps(); compactQuarantine(); cleanupPassiveCopy(); enhanceSubnav();
+  }
+
+  const observer=new MutationObserver(()=>{clearTimeout(window.__ians312);window.__ians312=setTimeout(refresh,80)});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{refresh();observer.observe(document.body,{childList:true,subtree:true})},650));
+  else setTimeout(()=>{refresh();observer.observe(document.body,{childList:true,subtree:true})},650);
+
+  window.v312SelfTest=()=>({
+    shell:!!q('#iansV30'), compactToggle:!!q('#v312ViewToggle'),
+    workspace:!!q('#v30Content'), stashed:qa('#dashboard>.v312-dashboard-stashed').length,
+    inventory:!!q('#inventoryTable'), liveOps:!!q('#v288MidPulse')
+  });
+  console.info('[IANS] V3.12 Compact Workspace aktiv');
+})();
+// ===== END V3.12 =====
