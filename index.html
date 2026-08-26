@@ -1156,6 +1156,37 @@
 <link href="https://www.ians.no/" hreflang="nb" rel="alternate"/><link href="https://www.ians.no/en/" hreflang="en" rel="alternate"/><link href="https://www.ians.no/se/" hreflang="sv" rel="alternate"/><link href="https://www.ians.no/dk/" hreflang="da" rel="alternate"/><link href="https://www.ians.no/fi/" hreflang="fi" rel="alternate"/><link href="https://www.ians.no/is/" hreflang="is" rel="alternate"/><link href="https://www.ians.no/tl/" hreflang="tl" rel="alternate"/><link href="https://www.ians.no/" hreflang="x-default" rel="alternate"/>    <link rel="stylesheet" href="/assets/css/language.css">
 <link rel="stylesheet" href="/assets/css/home-command-wide.css">
 <link rel="stylesheet" href="assets/css/ians-next.css">
+
+<!-- IANS HOME V3.12.2 COMPACT ORBIT -->
+<style id="ians-home-v3122">
+/* Five entrances: one compact desktop overview instead of giant cards. */
+@media (min-width:1181px){
+  .focus-section{padding:28px 0 44px!important}
+  .focus-heading{margin-bottom:16px!important;max-width:980px!important}
+  .focus-heading h2{font-size:clamp(1.7rem,2.4vw,2.45rem)!important;margin-bottom:6px!important}
+  .focus-heading p{font-size:.9rem!important;line-height:1.45!important}
+  .area-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:11px!important}
+  .area-card{min-height:228px!important;padding:15px!important;border-radius:16px!important}
+  .area-number{margin-bottom:10px!important;font-size:.58rem!important}
+  .area-top{grid-template-columns:48px minmax(0,1fr)!important;gap:10px!important}
+  .area-icon{width:46px!important;height:46px!important;border-radius:12px!important;transform:scale(.82);transform-origin:top left}
+  .category-pill{padding:4px 7px!important;margin-bottom:4px!important;font-size:.56rem!important}
+  .area-card h3{font-size:1.05rem!important;line-height:1.12!important}
+  .area-description{margin-top:9px!important;font-size:.72rem!important;line-height:1.4!important;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .tags{display:none!important}
+  .area-cta{min-height:36px!important;padding:7px 10px!important;font-size:.7rem!important;margin-top:12px!important}
+}
+@media (min-width:821px) and (max-width:1180px){
+  .area-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+  .area-card{min-height:240px!important;padding:17px!important}
+  .tags{display:none!important}
+}
+/* Orbit is a visual map; navigation lives in the explicit cards/buttons. */
+.ians-core-stage .ians-planet{animation:none!important;pointer-events:none!important;will-change:left,top;transform:translate(-50%,-50%)!important}
+.ians-core-stage .ians-planet > span{transform:none!important;rotate:0deg!important}
+</style>
+<!-- /IANS HOME V3.12.2 COMPACT ORBIT -->
+
 </head>
 <body>
 <header class="topbar">
@@ -1596,5 +1627,52 @@ Read Only er standard – Action Mode aktiveres først når du velger det.
     <script src="/assets/js/language.js" defer></script>
   <script defer src="assets/js/home-v47-orbit.js"></script>
 <div class="ians-next-badge">IANS Next · Master</div>
+
+<!-- IANS HOME V3.12.2 ORBIT ENGINE -->
+<script id="ians-home-orbit-v3122">
+(()=>{
+  const boot=()=>{
+    const stage=document.querySelector('.ians-core-stage');
+    if(!stage || stage.dataset.v3122Orbit==='1')return;
+    const planets=[...stage.querySelectorAll('.ians-planet')];
+    if(!planets.length)return;
+    stage.dataset.v3122Orbit='1';
+    // Different orbit radii and planet sizes. The planet itself never rotates,
+    // so labels such as OneDrive Command remain horizontal at every angle.
+    const radiusSteps=[.26,.32,.38,.44,.30,.36,.42,.47,.34,.40];
+    const sizeSteps=[74,66,82,70,78,64,86,72,68,80];
+    const speedSteps=[.000080,-.000066,.000055,-.000047,.000072,-.000058,.000043,-.000039,.000062,-.000051];
+    planets.forEach((el,i)=>{
+      const size=sizeSteps[i%sizeSteps.length];
+      el.style.width=size+'px'; el.style.minHeight=size+'px';
+      el.style.zIndex=String(5+(i%3));
+      el.setAttribute('aria-hidden','true');
+      el.tabIndex=-1;
+    });
+    let start=performance.now();
+    const frame=t=>{
+      const r=stage.getBoundingClientRect();
+      const base=Math.min(r.width,r.height);
+      const cx=r.width/2,cy=r.height/2;
+      planets.forEach((el,i)=>{
+        const f=radiusSteps[i%radiusSteps.length];
+        const rx=base*f;
+        const ry=rx*.78;
+        const phase=(Math.PI*2*i/planets.length)+(i%2?0.18:-0.08);
+        const a=phase+(t-start)*speedSteps[i%speedSteps.length];
+        el.style.left=(cx+Math.cos(a)*rx)+'px';
+        el.style.top=(cy+Math.sin(a)*ry)+'px';
+        el.style.transform='translate(-50%,-50%)';
+      });
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,120));
+  else setTimeout(boot,120);
+})();
+</script>
+<!-- /IANS HOME V3.12.2 ORBIT ENGINE -->
+
 </body>
 </html>

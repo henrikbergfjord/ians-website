@@ -1178,3 +1178,10 @@ body.ians-v30 #v288MidPulse .v288-pulse-line i{position:relative!important;left:
 .ians-v312 .v3121-scan-live>.v288-pulse-line,.ians-v312 .v3121-scan-live .v312-live-track{display:none!important}
 @media(max-width:1100px){.v3121-scan-live{grid-template-columns:auto 1fr!important}.v3121-scan-progress,.v39-live-metrics{grid-column:1/-1}.v3121-progress-meta{flex-wrap:wrap;white-space:normal}}
 /* ===== END V3.12.1 ===== */
+
+
+/* ===== V3.12.2 · Sleep/resume clarity ===== */
+#v3121ScanProgress.paused .v3121-progress-track{box-shadow:0 0 0 1px rgba(255,190,90,.18) inset}
+#v3121ScanProgress.paused #v3121ProgressLabel{color:#ffc36f}
+#v3121ScanProgress.running #v3121ProgressLabel{color:#8eeaff}
+/* ===== END V3.12.2 ===== */

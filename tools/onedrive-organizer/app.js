@@ -443,6 +443,8 @@ function iansTop25Insert(top,file){
 
 async function scanOneDrive(resumeState=null) {
   cancelRequested=false;
+  const scanRunToken=(window.__iansScanRunToken=(Number(window.__iansScanRunToken)||0)+1);
+  window.__iansScanHeartbeat=Date.now();
   scanVisualPct=resumeState?Math.max(5,Number(resumeState.visualPct)||5):5;
   updateScanMeter(Math.round(scanVisualPct),resumeState?"Fortsetter kartlegging":"Starter kartlegging");
   report=null;
@@ -507,7 +509,7 @@ async function scanOneDrive(resumeState=null) {
   startScanClock(scanStartedAt);
 
   async function checkpoint(force=false){
-    if(!force && Date.now()-lastCheckpoint<30000)return;
+    if(!force && Date.now()-lastCheckpoint<7000)return;
     lastCheckpoint=Date.now();
     await saveScanCheckpoint({
       version:"2.5",
@@ -529,8 +531,43 @@ async function scanOneDrive(resumeState=null) {
     });
   }
 
+  // V3.12.2: expose a safe checkpoint hook and protect scans across browser/macOS sleep.
+  window.__iansForceScanCheckpoint=()=>checkpoint(true);
+  let scanHiddenAt=0;
+  const scanLifecycleHidden=()=>{
+    scanHiddenAt=Date.now();
+    window.__iansScanHiddenAt=scanHiddenAt;
+    checkpoint(true).catch(err=>console.warn("[IANS V3.12.2] lifecycle checkpoint",err));
+  };
+  const scanLifecycleVisible=()=>{
+    if(document.visibilityState!=="visible" || !scanHiddenAt)return;
+    const sleptFor=Date.now()-scanHiddenAt;
+    scanHiddenAt=0;
+    if(sleptFor<20000)return;
+    // A closed Mac lid suspends JavaScript and network requests. Do not pretend the scan kept running.
+    // Invalidate this run, save what we have and unlock Resume. The stale run is ignored if its Graph call later returns.
+    checkpoint(true).catch(()=>{});
+    window.__iansScanRunToken=(Number(window.__iansScanRunToken)||0)+1;
+    cancelRequested=true;
+    try{ if(typeof scanRunningV38!=="undefined") scanRunningV38=false; }catch{}
+    const badge=document.getElementById("scanStateBadge"); if(badge)badge.textContent="PAUSET";
+    updateScanMeter(Math.round(scanVisualPct||5),"Mac/PC var i dvale · Resume klar");
+    if(els?.progressTitle)els.progressTitle.textContent="Kartlegging pauset etter dvale";
+    if(els?.progressPath)els.progressPath.textContent="Checkpoint er lagret. Trykk Resume for å fortsette trygt.";
+    setTimeout(()=>refreshCheckpointUi?.(),120);
+    if(typeof iansToast==="function")iansToast("Scan satt på pause","Mac/PC var i dvale. Checkpoint er bevart – trykk Resume for å fortsette.","success",9000);
+  };
+  document.addEventListener("visibilitychange",()=>{document.visibilityState==="hidden"?scanLifecycleHidden():scanLifecycleVisible()});
+  window.addEventListener("pagehide",scanLifecycleHidden);
+  document.addEventListener("freeze",scanLifecycleHidden);
+
   try{
     while(queue.length){
+      window.__iansScanHeartbeat=Date.now();
+      if(scanRunToken!==window.__iansScanRunToken){
+        await checkpoint(true);
+        throw new Error("SCAN_SLEEP_INTERRUPTED");
+      }
       if(cancelRequested){
         await checkpoint(true);
         throw new Error("SCAN_CANCELLED");
@@ -543,6 +580,11 @@ async function scanOneDrive(resumeState=null) {
       let children;
       try{
         children=await listAllChildren(folder.id);
+        window.__iansScanHeartbeat=Date.now();
+        if(scanRunToken!==window.__iansScanRunToken){
+          await checkpoint(true);
+          throw new Error("SCAN_SLEEP_INTERRUPTED");
+        }
       }catch(err){
         const msg=String(err?.message||err||"");
         // OneDrive can change during a multi-hour scan. A queued folder may have
@@ -669,8 +711,8 @@ async function scanOneDrive(resumeState=null) {
     els.exportBtn.disabled=false;
     document.getElementById("scanStateBadge").textContent="FERDIG";
   }catch(err){
-    if(err.message==="SCAN_CANCELLED"){
-      els.progressTitle.textContent="Kartlegging stoppet – checkpoint lagret";
+    if(err.message==="SCAN_CANCELLED" || err.message==="SCAN_SLEEP_INTERRUPTED"){
+      els.progressTitle.textContent=err.message==="SCAN_SLEEP_INTERRUPTED"?"Kartlegging pauset etter dvale – checkpoint lagret":"Kartlegging stoppet – checkpoint lagret";
       els.progressPath.textContent="Trykk Resume for å fortsette senere.";
       document.getElementById("scanStateBadge").textContent="PAUSET";
       updateScanMeter(Math.round(scanVisualPct||5),"Pauset · klar for Resume");
@@ -5790,3 +5832,48 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   console.info('[IANS] V3.12.1 Scan Progress Fix aktiv');
 })();
 // ===== END V3.12.1 =====
+
+
+// ===== IANS OneDrive Command V3.12.2 · SLEEP/RESUME RECOVERY =====
+(() => {
+  const q=(s,r=document)=>r.querySelector(s);
+  const state=window.__iansScanLiveState ||= {status:"idle",mode:"full",startedAt:0,pct:0,files:0,folders:0,bytesText:"0 B",path:"/",processed:0,queued:0};
+  const fmtBytesLocal=n=>typeof formatBytes==="function"?formatBytes(Number(n)||0):`${Number(n)||0} B`;
+  let lastHydrate=0;
+  async function hydrateCheckpoint(force=false){
+    if(!force && Date.now()-lastHydrate<2500)return;
+    lastHydrate=Date.now();
+    try{
+      const cp=await loadScanCheckpoint?.();
+      if(!cp)return;
+      const badge=(q('#scanStateBadge')?.textContent||'').toUpperCase();
+      if(/PAUSET|CHECKPOINT/.test(badge) || state.status==='paused' || document.visibilityState==='visible'){
+        state.files=Number(cp.stats?.files)||state.files||0;
+        state.folders=Number(cp.stats?.folders)||state.folders||0;
+        state.bytesText=fmtBytesLocal(cp.stats?.bytes||0);
+        state.processed=Number(cp.processedFolders)||0;
+        state.queued=Array.isArray(cp.queue)?cp.queue.length:0;
+        state.path=cp.queue?.[0]?.path||cp.scanRoot?.path||state.path||'/';
+        state.pct=Math.max(Number(cp.visualPct)||0,state.pct||0);
+        if(/PAUSET|CHECKPOINT/.test(badge))state.status='paused';
+        const f=q('#v39LiveFiles'),b=q('#v39LiveBytes'); if(f)f.textContent=new Intl.NumberFormat('nb-NO').format(state.files); if(b)b.textContent=state.bytesText;
+      }
+    }catch(e){console.warn('[IANS V3.12.2] checkpoint hydrate',e)}
+  }
+  document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible')setTimeout(()=>hydrateCheckpoint(true),250); });
+  window.addEventListener('pageshow',()=>setTimeout(()=>hydrateCheckpoint(true),250));
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#iansV30 [data-scan="full"]')){
+      // A stale lock can survive a suspended request. A new explicit Full scan invalidates stale network work.
+      const hb=Number(window.__iansScanHeartbeat)||0;
+      if(hb && Date.now()-hb>30000){
+        window.__iansScanRunToken=(Number(window.__iansScanRunToken)||0)+1;
+        try{scanRunningV38=false}catch{}
+      }
+    }
+  },true);
+  setInterval(()=>hydrateCheckpoint(false),2500);
+  window.v3122SleepResumeSelfTest=()=>({token:Number(window.__iansScanRunToken)||0,heartbeat:Number(window.__iansScanHeartbeat)||0,live:state.status,checkpointHook:typeof window.__iansForceScanCheckpoint==='function'});
+  console.info('[IANS] V3.12.2 Sleep/Resume Recovery aktiv');
+})();
+// ===== END V3.12.2 =====
