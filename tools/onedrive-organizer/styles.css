@@ -1031,3 +1031,50 @@ body.ians-v301 #iansCommandDashboard,body.ians-v301 #iansCleanupWorkbench,body.i
 .v39-report-table table{width:100%;border-collapse:collapse;font-size:11px}.v39-report-table th,.v39-report-table td{padding:8px;border-bottom:1px solid rgba(148,163,184,.12);vertical-align:top;text-align:left}.v39-report-table .path{max-width:300px;word-break:break-word}.error-text{color:#ff9aa8}
 .v39-file-confirm{display:grid;gap:6px;padding:14px;border:1px solid rgba(110,197,255,.18);border-radius:12px;background:rgba(3,18,34,.64);margin:12px 0}.v39-file-confirm strong{font-size:17px}.v39-file-confirm span{color:#90d8ff}.v39-file-confirm code{white-space:normal;word-break:break-word}
 @media(max-width:900px){.v39-live-metrics{margin-left:0}.v39-report-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* ===== V3.10 STICKY SAFE DELETE ===== */
+html{scroll-padding-top:104px}
+body{overflow-anchor:auto}
+#v292SmartCleanup,.v39-live-operations,.v310-stable-zone{overflow-anchor:none}
+.v310-sticky-dock{position:fixed;right:20px;top:72px;z-index:10050;display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(99,179,255,.3);border-radius:14px;background:rgba(6,16,29,.94);box-shadow:0 12px 35px rgba(0,0,0,.35);backdrop-filter:blur(14px)}
+.v310-dock-state{display:grid;gap:1px;min-width:128px}.v310-dock-state .eyebrow{font-size:8px}.v310-dock-state strong{font-size:11px;color:#9fb3c7}.v310-dock-state strong.active{color:var(--ok)}
+.v310-sticky-dock .btn{padding:8px 10px;font-size:11px}
+#v310DeleteSelected{margin-left:8px}
+#v292SmartCleanup td .row-actions{display:flex;gap:6px;white-space:nowrap}
+#v292SmartCleanup td:nth-child(3){white-space:nowrap;color:#a9bed0}
+@media(max-width:900px){.v310-sticky-dock{right:10px;left:10px;top:auto;bottom:10px;justify-content:flex-end}.v310-dock-state{margin-right:auto}}
+@media print{.v310-sticky-dock{display:none!important}}
+
+
+/* ===== IANS OneDrive Command V3.10.1 · CLEAN SHELL ===== */
+/* The V3 focus workspace is the only visible application chrome. */
+body.ians-v30 > .topbar,
+body.ians-v30 > .v293-tools-jump,
+body.ians-v30 .v31-workspace-bar{display:none!important}
+body.ians-v30 > main.container{width:100%;max-width:none;margin:0 auto 70px;padding:0}
+body.ians-v30 #iansV30{margin-top:12px}
+
+/* Action Mode is visible in the new hero, while the compact dock follows scroll. */
+.v3101-hero-controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.v3101-action-btn{border:1px solid rgba(99,179,255,.28);border-radius:11px;background:#0a2139;color:#eaf6ff;font-size:11px;font-weight:900;padding:9px 12px;cursor:pointer;white-space:nowrap}
+.v3101-action-btn:hover{border-color:#55caff;background:#0c2a48}
+.v3101-action-btn.active{border-color:rgba(92,227,166,.38);background:rgba(92,227,166,.09);color:#8af0bf}
+.v30-mode.active{border-color:rgba(92,227,166,.42);background:rgba(92,227,166,.1);color:#8af0bf}
+
+/* Keep the working surface stable while panels mount/unmount. */
+.v30-workspace{min-height:600px;contain:layout paint}
+.v30-content{min-height:430px;overflow-anchor:none}
+.v30-subnav{min-height:48px}
+#iansV30{overflow-anchor:none}
+
+/* Persistent control follows scrolling and no longer competes with a legacy header. */
+body.ians-v30 .v310-sticky-dock{top:14px;right:18px;z-index:12000}
+body.ians-v30 .v310-sticky-dock .v310-dock-state .eyebrow{font-size:8px}
+
+@media(max-width:720px){
+  .v3101-hero-controls{justify-content:flex-start}
+  body.ians-v30 .v310-sticky-dock{top:auto;right:10px;left:10px;bottom:10px}
+  .v30-workspace{min-height:520px}.v30-content{min-height:350px}
+}
+/* ===== END V3.10.1 ===== */

@@ -272,7 +272,7 @@ async function loadDriveQuota() {
 }
 
 function childrenUrl(folderId = null) {
-  const select = encodeURIComponent("id,name,size,folder,file,image,photo,createdDateTime,lastModifiedDateTime,webUrl");
+  const select = encodeURIComponent("id,name,size,folder,file,image,photo,createdDateTime,lastModifiedDateTime,webUrl,parentReference");
   return folderId
     ? `${GRAPH}/me/drive/items/${encodeURIComponent(folderId)}/children?$top=200&$select=${select}`
     : `${GRAPH}/me/drive/root/children?$top=200&$select=${select}`;
@@ -596,6 +596,7 @@ async function scanOneDrive(resumeState=null) {
         const hashes=item.file?.hashes||{};
         const f={
           id:item.id,name:item.name,path:itemPath,parentPath:folder.path,size,category,mimeType:mime,
+          driveId:item.parentReference?.driveId||null,
           createdDateTime:created,lastModifiedDateTime:item.lastModifiedDateTime||null,
           takenDateTime:taken,webUrl:item.webUrl||null,
           quickXorHash:hashes.quickXorHash||null,sha1Hash:hashes.sha1Hash||null,crc32Hash:hashes.crc32Hash||null
@@ -1664,7 +1665,7 @@ function v362QCreate(rows,sessionRoot,reason){
   const now=new Date();
   const jobId=now.toISOString().replace(/[-:TZ.]/g,"").slice(0,14);
   v362QJob={jobId,status:"prepared",createdAt:now.toISOString(),updatedAt:now.toISOString(),sessionRoot,reason,note:"Klar til start.",items:rows.map(f=>({
-    id:f.id,name:f.name,size:f.size||0,category:f.category||"",originalPath:f.path||"",originalRelativeParent:iansRelativeParentPath(f),
+    id:f.id,driveId:f.driveId||null,name:f.name,size:f.size||0,category:f.category||"",originalPath:f.path||"",originalRelativeParent:iansRelativeParentPath(f),
     takenDateTime:f.takenDateTime||"",createdDateTime:f.createdDateTime||"",modifiedDateTime:f.lastModifiedDateTime||"",status:"pending",attempts:0,error:"",quarantinePath:""
   }))};
   v362QSave();v362QRender();return v362QJob;
@@ -1697,11 +1698,11 @@ async function v362QRun(){
         try{
           const dest=await v362QGraphRetry(()=>v28EnsureNestedFolder(v362QJob.sessionRoot,item.originalRelativeParent),item);
           const folderId=await v362QGraphRetry(()=>v24EnsureFolder(dest),item);
-          await v362QGraphRetry(()=>v24Graph(`/me/drive/items/${encodeURIComponent(item.id)}`,{method:"PATCH",body:{parentReference:{id:folderId}}}),item);
+          await v362QGraphRetry(()=>v24Graph(item.driveId?`/drives/${encodeURIComponent(item.driveId)}/items/${encodeURIComponent(item.id)}`:`/me/drive/items/${encodeURIComponent(item.id)}`,{method:"PATCH",body:{parentReference:{id:folderId}}}),item);
           item.quarantinePath=`${dest}/${item.name}`.replace(/\/+/g,"/");item.status="done";item.movedAt=new Date().toISOString();
           const f=report?.files?.find(x=>x.id===item.id);if(f){f.parentPath=dest;f.path=item.quarantinePath;v24Selected.delete(f.id)}
           if(!v24Quarantine.some(x=>x.id===item.id&&x.quarantinePath===item.quarantinePath))v24Quarantine.push({
-            movedAt:item.movedAt,id:item.id,name:item.name,size:item.size,category:item.category,reason:v362QJob.reason,originalPath:item.originalPath,
+            movedAt:item.movedAt,id:item.id,driveId:item.driveId||null,name:item.name,size:item.size,category:item.category,reason:v362QJob.reason,originalPath:item.originalPath,
             quarantineRoot:v362QJob.sessionRoot,quarantinePath:item.quarantinePath,originalRelativeParent:item.originalRelativeParent,
             takenDateTime:item.takenDateTime,createdDateTime:item.createdDateTime,modifiedDateTime:item.modifiedDateTime,jobId:v362QJob.jobId,verified:false
           });
@@ -1736,7 +1737,7 @@ async function v362QVerify(){
   for(let i=0;i<done.length;i++){
     const item=done[i];
     try{
-      const remote=await v24Graph(`/me/drive/items/${encodeURIComponent(item.id)}?$select=id,name,size,parentReference`);
+      const remote=await v24Graph((item.driveId?`/drives/${encodeURIComponent(item.driveId)}/items/${encodeURIComponent(item.id)}`:`/me/drive/items/${encodeURIComponent(item.id)}`)+`?$select=id,name,size,parentReference`);
       const sizeOk=Number(remote?.size)===Number(item.size);const nameOk=remote?.name===item.name;
       item.verified=!!(remote?.id&&sizeOk&&nameOk);item.verifiedAt=new Date().toISOString();item.verifyError=item.verified?"":"Navn eller størrelse avviker";
       item.verified?ok++:bad++;
@@ -1784,7 +1785,7 @@ async function v24MoveRows(rows,dest,{quarantine=false,reason="Manuell flytting"
     }
 
     try{
-      await v24Graph(`/me/drive/items/${encodeURIComponent(f.id)}`,{
+      await v24Graph(f.driveId?`/drives/${encodeURIComponent(f.driveId)}/items/${encodeURIComponent(f.id)}`:`/me/drive/items/${encodeURIComponent(f.id)}`,{
         method:"PATCH",
         body:{parentReference:{id:folderId}}
       });
@@ -1914,6 +1915,48 @@ v24.photo?.addEventListener("click",()=>{
   };
 });
 
+
+function v310EncodeDrivePath(path=""){
+  return String(path||"").replace(/^\/+/,"").split("/").filter(Boolean).map(encodeURIComponent).join("/");
+}
+async function v310ResolveCurrentItem(file){
+  if(!file) throw new Error("Mangler filreferanse.");
+  const preferredDrive=String(file.driveId||"").trim();
+  const id=String(file.id||"").trim();
+  const byId=preferredDrive
+    ? `/drives/${encodeURIComponent(preferredDrive)}/items/${encodeURIComponent(id)}?$select=id,name,size,parentReference`
+    : `/me/drive/items/${encodeURIComponent(id)}?$select=id,name,size,parentReference`;
+  try{
+    const found=await v24Graph(byId);
+    return {item:found,driveId:found?.parentReference?.driveId||preferredDrive||null,resolvedBy:"id"};
+  }catch(err){
+    if(!/Graph\s+404|itemNotFound/i.test(String(err?.message||err))) throw err;
+  }
+  const encoded=v310EncodeDrivePath(file.path||"");
+  if(!encoded) throw new Error("Filen finnes ikke via lagret ID, og mangler brukbar sti. Kjør ny kartlegging.");
+  try{
+    const found=await v24Graph(`/me/drive/root:/${encoded}?$select=id,name,size,parentReference`);
+    return {item:found,driveId:found?.parentReference?.driveId||null,resolvedBy:"path"};
+  }catch(err){
+    if(/Graph\s+404|itemNotFound/i.test(String(err?.message||err))){
+      const e=new Error("Filen finnes ikke lenger på den kartlagte ID-en eller stien. Scan-dataene er sannsynligvis gamle – kjør ny kartlegging.");
+      e.code="IANS_STALE_SCAN"; throw e;
+    }
+    throw err;
+  }
+}
+async function v310TrashFile(file){
+  const resolved=await v310ResolveCurrentItem(file);
+  const targetDrive=resolved.driveId;
+  const targetId=resolved.item?.id;
+  if(!targetId) throw new Error("Kunne ikke finne gjeldende OneDrive-ID for filen.");
+  const endpoint=targetDrive
+    ? `/drives/${encodeURIComponent(targetDrive)}/items/${encodeURIComponent(targetId)}`
+    : `/me/drive/items/${encodeURIComponent(targetId)}`;
+  await v24Graph(endpoint,{method:"DELETE"});
+  return resolved;
+}
+
 async function v24TrashRows(rows){
   const total=rows.length;
   let ok=0,failed=0;
@@ -1942,7 +1985,7 @@ async function v24TrashRows(rows){
     v24UpdateProgress(index,total,f.name,"Sender til papirkurv");
 
     try{
-      await v24Graph(`/me/drive/items/${encodeURIComponent(f.id)}`,{method:"DELETE"});
+      await v310TrashFile(f);
       v24Selected.delete(f.id);
       report.files=report.files.filter(x=>x.id!==f.id);
       v24Log("Papirkurv",original,true,"Sendt til OneDrive-papirkurven");
@@ -4214,8 +4257,12 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
       </div>` :
       `<div class="v292-baseline first"><strong>Baseline opprettet</strong><span>Neste scan kan vise hva som faktisk har endret seg.</span></div>`;
 
-    const installers = s.oldInstallers.files.slice(0,6).map(f=>`
-      <tr><td class="path">${esc292(f.path)}</td><td>${esc292(f.category||"")}</td><td class="num">${fmtBytes292(f.size)}</td></tr>`).join("");
+    const installers = s.oldInstallers.files.slice(0,12).map(f=>{
+      const raw=f.lastModifiedDateTime||f.createdDateTime||f.takenDateTime||"";
+      const date=raw ? new Date(raw) : null;
+      const dateText=date && !Number.isNaN(date.getTime()) ? date.toISOString().slice(0,10) : "–";
+      return `<tr data-v310-smart-row="${esc292(f.id)}"><td class="path">${esc292(f.path)}</td><td>${esc292(f.category||"")}</td><td>${dateText}</td><td class="num">${fmtBytes292(f.size)}</td><td><div class="row-actions"><button class="btn mini ghost" data-preview="${esc292(f.id)}">Preview</button><button class="btn mini danger" data-v310-smart-trash="${esc292(f.id)}">Papirkurv</button></div></td></tr>`;
+    }).join("");
 
     const strong = s.duplicateCandidates.filter(x=>x.confidence==="strong").slice(0,5).map(g=>`
       <li><div><strong>${esc292(g.name)}</strong><small>${g.copies} kopier · ${fmtBytes292(g.sizeEach)}/stk</small></div><b>${fmtBytes292(g.potentialSavings)}</b></li>`).join("");
@@ -4264,7 +4311,7 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
       <details class="v292-details">
         <summary>Gamle installasjonsfiler i tydelige backup/ryddeområder · ${fmtNum292(s.oldInstallers.count)} filer · ${fmtBytes292(s.oldInstallers.bytes)}</summary>
         <p class="muted">Dette er kun review-kandidater. Filer i meningsfulle prosjekt-/kundemapper beskyttes.</p>
-        <div class="table-wrap"><table><thead><tr><th>Fil</th><th>Type</th><th>Størrelse</th></tr></thead><tbody>${installers||'<tr><td colspan="3">Ingen kandidater.</td></tr>'}</tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>Fil</th><th>Type</th><th>Dato</th><th>Størrelse</th><th>Handling</th></tr></thead><tbody>${installers||'<tr><td colspan="5">Ingen kandidater.</td></tr>'}</tbody></table></div>
       </details>
     `;
 
@@ -4910,11 +4957,14 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     shell.innerHTML=`
       <div class="v30-hero">
         <div>
-          <span class="v30-kicker">IANS · ONEDRIVE COMMAND V3.0</span>
+          <span class="v30-kicker">IANS · ONEDRIVE COMMAND V3.10.1</span>
           <h1>Forstå OneDrive. Finn rotet. Rydd trygt.</h1>
           <p>Én arbeidsflate. Velg oppgaven – alle verktøyene for jobben åpnes her.</p>
         </div>
-        <div class="v30-mode" id="v30Mode">READ ONLY</div>
+        <div class="v3101-hero-controls">
+          <div class="v30-mode" id="v30Mode">READ ONLY</div>
+          <button type="button" id="v30ActionMode" class="v3101-action-btn">Aktiver Action Mode</button>
+        </div>
       </div>
 
       <div class="v30-status">
@@ -4988,6 +5038,25 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     qa("[data-focus]",shell).forEach(b=>b.addEventListener("click",()=>showFocus(b.dataset.focus)));
     qa("[data-scan]",shell).forEach(b=>b.addEventListener("click",()=>runScanAction(b.dataset.scan)));
     q("#v30Settings",shell).onclick=()=>clickExisting(/innstillinger|settings/);
+    q("#v30ActionMode",shell).onclick=()=>{
+      const target=q("#topActionBtn") || q("#v24EnableAction") || q("#v310DockAction");
+      target?.click();
+      setTimeout(syncV3101Mode,120);
+    };
+
+    function syncV3101Mode(){
+      const mode=q("#v30Mode",shell), btn=q("#v30ActionMode",shell);
+      if(!mode||!btn)return;
+      const legacy=q("#topModeBadge");
+      const txt=(legacy?.textContent||"").toUpperCase();
+      const on=(typeof v24Enabled!=="undefined" && v24Enabled) || txt.includes("ACTION");
+      mode.textContent=on?"ACTION MODE":"READ ONLY";
+      mode.classList.toggle("active",on);
+      btn.textContent=on?"Action Mode aktiv":"Aktiver Action Mode";
+      btn.classList.toggle("active",on);
+    }
+    syncV3101Mode();
+    setInterval(syncV3101Mode,800);
 
     const st=statText();
     q("#v30Files").textContent=st.files;
@@ -5205,7 +5274,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     const verified=rows.filter(x=>x.verified===true).length, badVerify=rows.filter(x=>x.verified===false&&x.verifiedAt).length;
     const errRows=rows.filter(x=>x.status==="failed"||x.error||x.verifyError);
     const sample=rows.slice(0,200).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.status||"done")}</td><td>${x.verified===true?"✓":x.verifiedAt?"⚠":"–"}</td><td class="path">${esc(x.originalPath||"")}</td><td class="path">${esc(x.quarantinePath||"")}</td><td class="path error-text">${esc(x.error||x.verifyError||"")}</td></tr>`).join("");
-    v24Open(`<span class="eyebrow">KARANTENERAPPORT · V3.9</span><h2>${failed===rows.length&&rows.length?"Karantene mislyktes":"Karantenejobb – detaljert rapport"}</h2>
+    v24Open(`<span class="eyebrow">KARANTENERAPPORT · V3.10</span><h2>${failed===rows.length&&rows.length?"Karantene mislyktes":"Karantenejobb – detaljert rapport"}</h2>
       <div class="v39-report-stats"><div><span>VELLYKKET</span><strong>${fmtN(done)}</strong></div><div><span>FEIL</span><strong>${fmtN(failed)}</strong></div><div><span>GJENSTÅR</span><strong>${fmtN(pending)}</strong></div><div><span>VERIFY OK</span><strong>${fmtN(verified)}</strong></div></div>
       ${failed?`<div class="v39-report-warning"><strong>${fmtN(failed)} filer feilet.</strong><p>Feilårsaken vises per fil under. Resume prøver bare feilede eller gjenstående filer.</p></div>`:""}
       ${badVerify?`<div class="v39-report-warning"><strong>${fmtN(badVerify)} verify-avvik.</strong><p>Disse skal ikke slettes permanent før de er kontrollert.</p></div>`:""}
@@ -5223,7 +5292,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
       iansToast("Action Mode kreves","Aktiver Action Mode før du sender filer til OneDrive-papirkurven.","error",7000);
       E("v24EnableAction")?.scrollIntoView({behavior:"smooth",block:"center"}); return;
     }
-    v24Open(`<span class="eyebrow">RASK PAPIRKURV · V3.9</span><h2>Send denne filen til OneDrive-papirkurven?</h2>
+    v24Open(`<span class="eyebrow">RASK PAPIRKURV · V3.10</span><h2>Send denne filen til OneDrive-papirkurven?</h2>
       <div class="v39-file-confirm"><strong>${esc(file.name)}</strong><span>${esc(fmtB(file.size))}</span><code>${esc(file.path||"")}</code></div>
       <p class="muted">Dette bruker OneDrive-papirkurven – ikke permanent sletting.</p>
       <div class="actions"><button id="v39TrashCancel" class="btn ghost">Avbryt</button><button id="v39TrashConfirm" class="btn danger">Send til papirkurv</button></div>`);
@@ -5231,7 +5300,7 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     E("v39TrashConfirm").onclick=async()=>{
       const btn=E("v39TrashConfirm");btn.disabled=true;btn.textContent="Sender…";
       try{
-        await v24Graph(`/me/drive/items/${encodeURIComponent(file.id)}`,{method:"DELETE"});
+        await v310TrashFile(file);
         v24Log("Papirkurv",file.path,true,"Sendt til OneDrive-papirkurven");
         v24Selected.delete(file.id); reviewIds.delete(String(file.id));
         if(report?.files){
@@ -5257,5 +5326,98 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     }
   },700);
 
-  console.info("[IANS] OneDrive Command V3.9 Safety Ops aktiv – live operations, detaljert karantenerapport og rask papirkurv");
+  console.info("[IANS] OneDrive Command V3.10 Safety Ops aktiv – live operations, detaljert karantenerapport og rask papirkurv");
+})();
+
+
+// ===== IANS OneDrive Command V3.10 STICKY SAFE DELETE =====
+(() => {
+  const E=id=>document.getElementById(id);
+  const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+
+  function installStickyDock(){
+    if(E("v310StickyDock")) return;
+    const dock=document.createElement("div");
+    dock.id="v310StickyDock";
+    dock.className="v310-sticky-dock";
+    dock.innerHTML=`<div class="v310-dock-state"><span class="eyebrow">IANS CONTROL · V3.10.1</span><strong id="v310DockMode">READ ONLY</strong></div>
+      <button id="v310DockAction" class="btn action-top">Aktiver Action Mode</button>
+      <button id="v310DockTop" class="btn ghost">↑ Topp</button>`;
+    document.body.appendChild(dock);
+    E("v310DockTop").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+    E("v310DockAction").onclick=()=>{
+      const target=E("topActionBtn") || E("v24EnableAction");
+      target?.click();
+    };
+    syncStickyDock();
+  }
+  function syncStickyDock(){
+    const mode=E("v310DockMode"), btn=E("v310DockAction");
+    if(!mode||!btn)return;
+    const on=typeof v24Enabled!=="undefined" && v24Enabled;
+    mode.textContent=on?"ACTION MODE AKTIV":"READ ONLY";
+    mode.classList.toggle("active",on);
+    btn.textContent=on?"Action Mode aktiv":"Aktiver Action Mode";
+    btn.disabled=on;
+  }
+  const oldSet=typeof v24SetEnabled==="function"?v24SetEnabled:null;
+  if(oldSet){
+    v24SetEnabled=function(on){ oldSet(on); syncStickyDock(); };
+  }
+
+  function addInventoryBulkDelete(){
+    const panel=E("inventoryTable")?.closest("section.panel") || document.querySelector(".command-center");
+    if(!panel || E("v310DeleteSelected")) return;
+    const head=panel.querySelector(".section-title") || panel.querySelector(".command-center-head") || panel.firstElementChild;
+    const actions=head?.querySelector(".actions") || head;
+    if(!actions)return;
+    const b=document.createElement("button");
+    b.id="v310DeleteSelected"; b.className="btn danger"; b.textContent="Slett valgte";
+    b.title="Sender valgte filer til OneDrive-papirkurven. De kan gjenopprettes derfra.";
+    b.onclick=()=>{
+      if(!v24Selected?.size){ iansToast("Ingen filer valgt","Kryss av filer først.","error",5000); return; }
+      if(typeof v24Enabled!=="undefined"&&!v24Enabled){ iansToast("Action Mode kreves","Aktiver Action Mode først.","error",6000); return; }
+      v24.trash?.click();
+    };
+    actions.appendChild(b);
+  }
+
+  document.addEventListener("click",e=>{
+    const b=e.target.closest("[data-v310-smart-trash]");
+    if(!b)return;
+    const f=report?.files?.find(x=>String(x.id)===String(b.dataset.v310SmartTrash));
+    if(!f)return;
+    if(typeof v24Enabled!=="undefined"&&!v24Enabled){
+      iansToast("Action Mode kreves","Aktiver Action Mode før du sender filen til papirkurven.","error",6000); return;
+    }
+    v24Open(`<span class="eyebrow">SMART CLEANUP · PAPIRKURV</span><h2>Send denne filen til OneDrive-papirkurven?</h2><div class="v39-file-confirm"><strong>${esc(f.name)}</strong><span>${typeof formatBytes==="function"?formatBytes(f.size||0):f.size}</span><code>${esc(f.path||"")}</code></div><p class="muted">Filen kan gjenopprettes fra OneDrive-papirkurven.</p><div class="actions"><button id="v310SmartCancel" class="btn ghost">Avbryt</button><button id="v310SmartConfirm" class="btn danger">Send til papirkurv</button></div>`);
+    E("v310SmartCancel").onclick=v24Close;
+    E("v310SmartConfirm").onclick=async()=>{
+      const btn=E("v310SmartConfirm");btn.disabled=true;btn.textContent="Sender…";
+      try{
+        await v310TrashFile(f);
+        v24Log("Papirkurv",f.path,true,"Sendt til OneDrive-papirkurven");
+        v24Selected.delete(f.id);reviewIds.delete(String(f.id));
+        if(report?.files){report.files=report.files.filter(x=>x!==f);if(report.summary){report.summary.fileCount=report.files.length;report.summary.fileBytes=report.files.reduce((n,x)=>n+(Number(x.size)||0),0)}prepareV2(report);renderReport(report)}
+        v24Close();iansToast("Sendt til papirkurv",f.name,"success",6500);
+      }catch(err){btn.disabled=false;btn.textContent="Prøv igjen";iansToast("Papirkurv feilet",String(err?.message||err),"error",10000)}
+    };
+  });
+
+  const baseRenderV310=renderReport;
+  renderReport=function(r){
+    const y=window.scrollY;
+    baseRenderV310(r);
+    requestAnimationFrame(()=>{
+      addInventoryBulkDelete(); syncStickyDock();
+      // Avoid visible jumps caused by large dynamic panels being rebuilt above the viewport.
+      if(Math.abs(window.scrollY-y)>80) window.scrollTo({top:y,behavior:"auto"});
+    });
+  };
+
+  window.addEventListener("load",()=>{
+    installStickyDock(); addInventoryBulkDelete(); syncStickyDock();
+  });
+  setTimeout(()=>{installStickyDock();addInventoryBulkDelete();syncStickyDock();},500);
+  console.info("[IANS] OneDrive Command V3.10.1 aktiv – sticky control, path/drive-ID delete recovery, Smart Cleanup dato + papirkurv");
 })();
