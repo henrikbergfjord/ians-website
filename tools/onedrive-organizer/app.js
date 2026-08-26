@@ -300,17 +300,28 @@ function addFolderBytes(folderAgg, path, bytes) {
   }
 }
 
-function updateProgress(stats, queueLen, path) {
-  els.progressNumbers.textContent =
-    `${formatNumber(stats.files)} filer · ${formatNumber(stats.folders)} mapper · ${formatBytes(stats.bytes)}`;
-  els.progressPath.textContent = path || "Leser…";
-  // We do not know total folder count in advance. This is an activity indicator, not a completion percentage.
-  const pseudo = 12 + ((stats.folders % 70));
-  els.progressBar.style.width = `${Math.min(pseudo, 88)}%`;
-  els.progressTitle.textContent = queueLen
-    ? `Kartlegger… ${formatNumber(queueLen)} mapper i kø`
-    : "Fullfører analyse…";
+function scanEstimatedPct(processed, queued, done=false){
+  if(done){scanVisualPct=100;return 100}
+  const denom=Math.max(processed+queued+20,1);
+  const candidate=5+90*(processed/denom);
+  scanVisualPct=Math.max(scanVisualPct||5,Math.min(95,candidate));
+  return Math.round(scanVisualPct);
 }
+function updateScanMeter(pct,label){
+  const meter=document.getElementById("scanJobMeter"),pctEl=document.getElementById("scanJobPct"),phase=document.getElementById("scanJobPhase");
+  if(meter)meter.style.setProperty("--p",`${pct}%`);
+  if(pctEl)pctEl.textContent=`${pct}%`;
+  if(phase&&label)phase.textContent=label;
+}
+function updateProgress(stats, queueLen, path, processed=0) {
+  els.progressNumbers.textContent = `${formatNumber(stats.files)} filer · ${formatNumber(stats.folders)} mapper · ${formatBytes(stats.bytes)}`;
+  els.progressPath.textContent = path || "Leser…";
+  const pct=scanEstimatedPct(processed,queueLen,false);
+  els.progressBar.style.width = `${pct}%`;
+  updateScanMeter(pct,"Kartlegger oppdagede mapper");
+  els.progressTitle.textContent = queueLen ? `Kartlegger… ${formatNumber(queueLen)} mapper i kø` : "Fullfører analyse…";
+}
+
 
 
 // ===== V2.5 SCAN CONTROL + CHECKPOINT =====
@@ -319,6 +330,8 @@ const SCAN_DB_STORE = "checkpoints";
 const SCAN_DB_KEY = "active";
 let scanTimerHandle = null;
 let scanStartedDate = null;
+let scanVisualPct = 0;
+let scanRunningV38 = false;
 let selectedScanFolder = {id:null,path:"/"};
 let selectedDownloadFolder = {id:null,path:"/",name:"OneDrive"};
 let folderBrowserPurpose = "scan";
@@ -430,6 +443,8 @@ function iansTop25Insert(top,file){
 
 async function scanOneDrive(resumeState=null) {
   cancelRequested=false;
+  scanVisualPct=resumeState?Math.max(5,Number(resumeState.visualPct)||5):5;
+  updateScanMeter(Math.round(scanVisualPct),resumeState?"Fortsetter kartlegging":"Starter kartlegging");
   report=null;
   els.scanBtn.disabled=true;
   els.cancelBtn.classList.remove("hidden");
@@ -506,7 +521,8 @@ async function scanOneDrive(resumeState=null) {
       yearAgg:[...yearAgg.entries()],
       dateStats,
       processedFolders,
-      recoveryStats
+      recoveryStats,
+      visualPct:scanVisualPct
     });
   }
 
@@ -518,7 +534,7 @@ async function scanOneDrive(resumeState=null) {
       }
 
       const folder=queue.shift();
-      updateProgress(stats,queue.length,folder.path);
+      updateProgress(stats,queue.length,folder.path,processedFolders);
       updateLiveScanStats(stats,processedFolders,queue.length,folder.path);
 
       let children;
@@ -577,10 +593,12 @@ async function scanOneDrive(resumeState=null) {
           if(Number.isFinite(year)&&year>=1900&&year<=2200)yearAgg.set(year,(yearAgg.get(year)||0)+1);
         }
 
+        const hashes=item.file?.hashes||{};
         const f={
           id:item.id,name:item.name,path:itemPath,parentPath:folder.path,size,category,mimeType:mime,
           createdDateTime:created,lastModifiedDateTime:item.lastModifiedDateTime||null,
-          takenDateTime:taken,webUrl:item.webUrl||null
+          takenDateTime:taken,webUrl:item.webUrl||null,
+          quickXorHash:hashes.quickXorHash||null,sha1Hash:hashes.sha1Hash||null,crc32Hash:hashes.crc32Hash||null
         };
         files.push(f);
 
@@ -623,6 +641,7 @@ async function scanOneDrive(resumeState=null) {
         possibleDuplicateSavings:duplicates.reduce((s,d)=>s+d.potentialSavings,0)
       },
       dateStats,
+      hashStats:{withHash:files.filter(f=>!!(f.quickXorHash||f.sha1Hash||f.crc32Hash)).length,missingHash:files.filter(f=>!(f.quickXorHash||f.sha1Hash||f.crc32Hash)).length},
       types:[...typeAgg.entries()].map(([category,v])=>({category,...v})).sort((a,b)=>b.bytes-a.bytes),
       mediaYears:[...yearAgg.entries()].map(([year,count])=>({year,count})).sort((a,b)=>b.year-a.year),
       largestFolders:folders.slice(0,25),
@@ -637,6 +656,7 @@ async function scanOneDrive(resumeState=null) {
     els.progressTitle.textContent="Kartlegging ferdig";
     els.progressPath.textContent=`${formatNumber(stats.files)} filer analysert fra ${scanRoot.path}.` + (recoveryStats.missingFolders ? ` ${formatNumber(recoveryStats.missingFolders)} manglende mapper hoppet over (${formatNumber(recoveryStats.prunedQueuedFolders)} utdaterte køelementer fjernet).` : "");
     els.progressBar.style.width="100%";
+    updateScanMeter(100,"Kartlegging ferdig");
     els.exportBtn.disabled=false;
     document.getElementById("scanStateBadge").textContent="FERDIG";
   }catch(err){
@@ -644,12 +664,14 @@ async function scanOneDrive(resumeState=null) {
       els.progressTitle.textContent="Kartlegging stoppet – checkpoint lagret";
       els.progressPath.textContent="Trykk Resume for å fortsette senere.";
       document.getElementById("scanStateBadge").textContent="PAUSET";
+      updateScanMeter(Math.round(scanVisualPct||5),"Pauset · klar for Resume");
     }else{
       console.error(err);
       await checkpoint(true);
       els.progressTitle.textContent="Feil under kartlegging – checkpoint lagret";
       els.progressPath.textContent=err.message;
       document.getElementById("scanStateBadge").textContent="CHECKPOINT";
+      updateScanMeter(Math.round(scanVisualPct||5),"Feil · checkpoint lagret");
     }
   }finally{
     stopScanClock();
@@ -929,6 +951,19 @@ function inventoryHeaderLabel(label,key){
 }
 
 function fileDate(f){ return f.takenDateTime || f.createdDateTime || null; }
+function iansFingerprint(f){
+  if(f?.quickXorHash)return {type:"QuickXor",value:String(f.quickXorHash)};
+  if(f?.sha1Hash)return {type:"SHA1",value:String(f.sha1Hash).toLowerCase()};
+  if(f?.crc32Hash)return {type:"CRC32",value:String(f.crc32Hash).toLowerCase()};
+  return null;
+}
+function iansHashState(files){
+  const fps=(files||[]).map(iansFingerprint);
+  if(!fps.length||fps.every(x=>!x))return "missing";
+  if(fps.some(x=>!x))return "partial";
+  const type=fps[0].type;if(fps.some(x=>x.type!==type))return "partial";
+  return new Set(fps.map(x=>x.value)).size===1?"verified":"mismatch";
+}
 function isPossibleDuplicate(f){
   if(!report) return false;
   const k=`${f.name.toLowerCase()}|${f.size}`;
@@ -985,8 +1020,8 @@ function renderV2(){
     {label:inventoryHeaderLabel("Type","category"),sortKey:"category",key:"category"},
     {label:inventoryHeaderLabel("Størrelse","size"),sortKey:"size",className:"num",render:f=>escapeHtml(formatBytes(f.size))},
     {label:inventoryHeaderLabel("Dato","date"),sortKey:"date",render:f=>escapeHtml((fileDate(f)||"").slice(0,10)||"–")},
-    {label:inventoryHeaderLabel("Duplikat","duplicate"),sortKey:"duplicate",render:f=>isPossibleDuplicate(f)?"Mulig":"–"},
-    {label:"Handling",render:f=>`<div class="row-actions"><button class="btn mini ghost" data-preview="${escapeHtml(f.id)}">Preview</button><button class="btn mini ghost ${reviewIds.has(String(f.id))?"review-added":""}" aria-pressed="${reviewIds.has(String(f.id))?"true":"false"}" data-review="${escapeHtml(f.id)}">${reviewIds.has(String(f.id))?"Lagt til ✓":"Vurder"}</button></div>`}
+    {label:inventoryHeaderLabel("Duplikat","duplicate"),sortKey:"duplicate",render:f=>{if(!isPossibleDuplicate(f))return "–";const k=`${f.name.toLowerCase()}|${f.size}`;const g=report.files.filter(x=>`${x.name.toLowerCase()}|${x.size}`===k);const st=iansHashState(g);return st==="verified"?'<span class="dup-status verified">Hash-match</span>':st==="mismatch"?'<span class="dup-status blocked">IKKE lik</span>':'<span class="dup-status review">Review</span>'}},
+    {label:"Handling",render:f=>`<div class="row-actions"><button class="btn mini ghost" data-preview="${escapeHtml(f.id)}">Preview</button><button class="btn mini ghost ${reviewIds.has(String(f.id))?"review-added":""}" aria-pressed="${reviewIds.has(String(f.id))?"true":"false"}" data-review="${escapeHtml(f.id)}">${reviewIds.has(String(f.id))?"Lagt til ✓":"Vurder"}</button><button class="btn mini danger quick-trash" data-v39-trash="${escapeHtml(f.id)}" title="Send filen til OneDrive-papirkurven">Papirkurv</button></div>`}
   ],sorted.slice(0,maxRows));
 }
 function renderPhotoPlan(){
@@ -1311,7 +1346,9 @@ renderV2 = function(){
   if(!report || !v24Enabled) return;
   const table=v2.table.querySelector("table");
   if(!table) return;
-  const visible=filteredFiles().slice(0,500);
+  const rawVisible=filteredFiles();
+  const maxRows=report.files.length>=50000?250:500;
+  const visible=sortInventoryRows(rawVisible).slice(0,maxRows);
 
   const head=table.querySelector("thead tr");
   const th=document.createElement("th");
@@ -1493,8 +1530,8 @@ function v24UpdateProgress(done,total,fileName,status="Flytter"){
 
 function v24ShowActionResult({title,total,ok,failed,dest,quarantine=false}){
   const type=failed?"error":"success";
-  v24.modalContent.innerHTML=`<span class="eyebrow">${failed?"FULLFØRT MED FEIL":"FULLFØRT"}</span>
-    <h2>${escapeHtml(title)}</h2>
+  v24.modalContent.innerHTML=`<span class="eyebrow">${failed===total&&total?"MISLYKTES":failed?"FULLFØRT MED FEIL":"FULLFØRT"}</span>
+    <h2>${escapeHtml(failed===total&&total&&quarantine?"Karantene mislyktes – ingen filer flyttet":title)}</h2>
     <div class="action-result-box ${failed?"error":""}">
       <strong>${failed?`${ok} av ${total} fullført`:`Alle ${ok} filer er ferdig behandlet`}</strong>
       <div class="action-result-grid">
@@ -1511,8 +1548,8 @@ function v24ShowActionResult({title,total,ok,failed,dest,quarantine=false}){
     </div>`;
   document.getElementById("v24ResultClose").onclick=v24Close;
   document.getElementById("v24ResultManifest")?.addEventListener("click",()=>{
-    v24Close();
-    v24.qStatus?.scrollIntoView({behavior:"smooth",block:"center"});
+    if(typeof v39OpenQuarantineReport==="function")v39OpenQuarantineReport();
+    else{v24Close();v24.qStatus?.scrollIntoView({behavior:"smooth",block:"center"});}
   });
   iansToast(
     failed?"Handling fullført med feil":"Handling fullført",
@@ -1549,75 +1586,172 @@ async function v28EnsureNestedFolder(basePath,relativePath){
   return current;
 }
 
-async function v28MoveRowsStructuredQuarantine(rows,sessionRoot,{reason="Manuell vurdering",showProgress=true}={}){
-  const total=rows.length;
-  let ok=0,failed=0;
+// ===== V3.7 ROBUST QUARANTINE JOB ENGINE =====
+const V362_QJOB_KEY="ians_v362_quarantine_job_v1";
+const V362_QMANIFEST_KEY="ians_v362_quarantine_manifest_v1";
+const v362Q={
+  panel:document.getElementById("v362QJob"),title:document.getElementById("v362QJobTitle"),state:document.getElementById("v362QJobState"),
+  pct:document.getElementById("v362QJobPct"),fill:document.getElementById("v362QJobFill"),count:document.getElementById("v362QJobCount"),
+  bytes:document.getElementById("v362QJobBytes"),current:document.getElementById("v362QJobCurrent"),note:document.getElementById("v362QJobNote"),
+  start:document.getElementById("v362QStart"),pause:document.getElementById("v362QPause"),resume:document.getElementById("v362QResume"),verify:document.getElementById("v362QVerify")
+};
+let v362QJob=null;
+let v362QRunner=null;
+let v362QPauseRequested=false;
 
-  if(showProgress){
-    v24Open(v24ProgressMarkup(`Flytter ${formatNumber(total)} filer til strukturert karantene`,total));
-  }
-
-  await v24EnsureFolder(sessionRoot);
-
-  for(let index=0;index<rows.length;index++){
-    const f=rows[index];
-    const original=f.path;
-    const rel=iansRelativeParentPath(f);
-
-    if(showProgress){
-      v24UpdateProgress(index,total,f.name,"Bygger karantenestruktur");
+function v362QSave(){
+  try{ if(v362QJob)localStorage.setItem(V362_QJOB_KEY,JSON.stringify(v362QJob)); }
+  catch(e){console.warn("[IANS] quarantine job save failed",e)}
+}
+function v362QLoad(){
+  try{
+    const raw=localStorage.getItem(V362_QJOB_KEY);
+    if(raw)v362QJob=JSON.parse(raw);
+    const manifestRaw=localStorage.getItem(V362_QMANIFEST_KEY);
+    if(manifestRaw){
+      const saved=JSON.parse(manifestRaw);
+      if(Array.isArray(saved))v24Quarantine=saved;
     }
-
+    // A browser reload cannot preserve an in-flight JS promise. Mark as paused and make Resume explicit.
+    if(v362QJob?.status==="running"){
+      v362QJob.status="paused";
+      v362QJob.note="Nettleseren ble lastet på nytt. Jobben er trygt satt på pause og kan fortsettes med Resume.";
+      v362QSave();
+    }
+  }catch(e){console.warn("[IANS] quarantine job load failed",e);v362QJob=null}
+}
+function v362QSaveManifest(){
+  try{localStorage.setItem(V362_QMANIFEST_KEY,JSON.stringify(v24Quarantine))}
+  catch(e){console.warn("[IANS] quarantine manifest save failed",e)}
+}
+function v362QDoneCount(job=v362QJob){return job?job.items.filter(x=>x.status==="done").length:0}
+function v362QFailedCount(job=v362QJob){return job?job.items.filter(x=>x.status==="failed").length:0}
+function v362QDoneBytes(job=v362QJob){return job?job.items.filter(x=>x.status==="done").reduce((n,x)=>n+(Number(x.size)||0),0):0}
+function v362QRender(){
+  if(!v362Q?.panel)return;
+  const j=v362QJob;
+  if(!j){
+    v362Q.panel.dataset.state="idle";v362Q.title.textContent="Ingen karantenejobb";v362Q.state.textContent="Klar";
+    v362Q.pct.textContent="0%";v362Q.fill.style.width="0%";v362Q.panel.querySelector(".v362-qjob-meter")?.style.setProperty("--p","0%");
+    v362Q.count.textContent="0 / 0 filer";v362Q.bytes.textContent="0 B / 0 B";v362Q.current.textContent="Ingen aktiv fil";
+    v362Q.start.disabled=true;v362Q.pause.disabled=true;v362Q.resume.disabled=true;v362Q.verify.disabled=!v24Quarantine.length;
+    return;
+  }
+  const done=v362QDoneCount(j), failed=v362QFailedCount(j), processed=done+failed, total=j.items.length;
+  const pct=total?Math.round((processed/total)*100):100;
+  const totalBytes=j.items.reduce((n,x)=>n+(Number(x.size)||0),0), doneBytes=v362QDoneBytes(j);
+  v362Q.panel.dataset.state=j.status||"idle";
+  v362Q.title.textContent=`Karantenejobb ${j.jobId}`;
+  const labels={prepared:"Klar til start",running:"Kjører",paused:"Pauset",completed:"Fullført",failed:"Fullført med feil",verifying:"Verifiserer"};
+  v362Q.state.textContent=`${labels[j.status]||j.status}${failed?` · ${failed} feil`:""}`;
+  v362Q.pct.textContent=`${pct}%`;v362Q.fill.style.width=`${pct}%`;v362Q.panel.querySelector(".v362-qjob-meter")?.style.setProperty("--p",`${pct}%`);
+  v362Q.count.textContent=`${formatNumber(processed)} / ${formatNumber(total)} filer`;
+  v362Q.bytes.textContent=`${formatBytes(doneBytes)} / ${formatBytes(totalBytes)}`;
+  const active=j.items.find(x=>x.status==="moving")||j.items.find(x=>x.status==="pending")||j.items.find(x=>x.status==="failed");
+  v362Q.current.textContent=active?.name||"Ingen aktiv fil";
+  if(v362Q.note)v362Q.note.textContent=j.note||`Destinasjon: ${j.sessionRoot}`;
+  const running=j.status==="running"||j.status==="verifying";
+  v362Q.start.disabled=running||!(j.status==="prepared");
+  v362Q.pause.disabled=j.status!=="running";
+  v362Q.resume.disabled=running||!(j.status==="paused"||j.status==="failed");
+  v362Q.verify.disabled=running||done===0;
+  if(v24.quarantine){
+    v24.quarantine.textContent=running?`Vis jobb · ${processed}/${total}`:"Karantene";
+  }
+}
+function v362QCreate(rows,sessionRoot,reason){
+  if(v362QJob && ["prepared","running","paused"].includes(v362QJob.status))throw new Error("Det finnes allerede en aktiv karantenejobb. Bruk Start, Pause eller Resume i jobbstatusfeltet.");
+  const now=new Date();
+  const jobId=now.toISOString().replace(/[-:TZ.]/g,"").slice(0,14);
+  v362QJob={jobId,status:"prepared",createdAt:now.toISOString(),updatedAt:now.toISOString(),sessionRoot,reason,note:"Klar til start.",items:rows.map(f=>({
+    id:f.id,name:f.name,size:f.size||0,category:f.category||"",originalPath:f.path||"",originalRelativeParent:iansRelativeParentPath(f),
+    takenDateTime:f.takenDateTime||"",createdDateTime:f.createdDateTime||"",modifiedDateTime:f.lastModifiedDateTime||"",status:"pending",attempts:0,error:"",quarantinePath:""
+  }))};
+  v362QSave();v362QRender();return v362QJob;
+}
+function v362QSleep(ms){return new Promise(r=>setTimeout(r,ms))}
+async function v362QGraphRetry(fn,item,max=3){
+  let last;
+  for(let attempt=1;attempt<=max;attempt++){
+    try{item.attempts=(item.attempts||0)+1;v362QSave();return await fn()}
+    catch(err){
+      last=err;const msg=String(err?.message||err);const retryable=/Graph (429|500|502|503|504)|Failed to fetch|network/i.test(msg);
+      if(!retryable||attempt===max)break;
+      await v362QSleep(700*Math.pow(2,attempt-1));
+    }
+  }
+  throw last;
+}
+async function v362QRun(){
+  if(v362QRunner)return v362QRunner; // hard in-page lock: never start a second loop
+  if(!v362QJob)return;
+  v362QPauseRequested=false;
+  v362QJob.status="running";v362QJob.note="Jobben kjører. Pause skjer trygt mellom filer.";v362QJob.updatedAt=new Date().toISOString();v362QSave();v362QRender();
+  v362QRunner=(async()=>{
     try{
-      const dest=await v28EnsureNestedFolder(sessionRoot,rel);
-
-      await v24Graph(`/me/drive/items/${encodeURIComponent(f.id)}`,{
-        method:"PATCH",
-        body:{parentReference:{id:await v24EnsureFolder(dest)}}
-      });
-
-      f.parentPath=dest;
-      f.path=`${dest}/${f.name}`.replace(/\/+/g,"/");
-
-      v24Quarantine.push({
-        movedAt:new Date().toISOString(),
-        id:f.id,name:f.name,size:f.size,category:f.category,reason,
-        originalPath:original,
-        quarantineRoot:sessionRoot,
-        quarantinePath:f.path,
-        originalRelativeParent:rel,
-        takenDateTime:f.takenDateTime||"",
-        createdDateTime:f.createdDateTime||"",
-        modifiedDateTime:f.lastModifiedDateTime||""
-      });
-
-      v24Selected.delete(f.id);
-      v24Log("Karantene",original,true,`Flyttet til ${f.path}`);
-      ok++;
-    }catch(err){
-      failed++;
-      v24Log("Karantene",original,false,err.message);
+      await v24EnsureFolder(v362QJob.sessionRoot);
+      for(const item of v362QJob.items){
+        if(item.status==="done")continue;
+        if(v362QPauseRequested){v362QJob.status="paused";v362QJob.note="Pauset trygt mellom filer. Trykk Resume for å fortsette.";break}
+        item.status="moving";item.error="";v362QJob.updatedAt=new Date().toISOString();v362QSave();v362QRender();
+        try{
+          const dest=await v362QGraphRetry(()=>v28EnsureNestedFolder(v362QJob.sessionRoot,item.originalRelativeParent),item);
+          const folderId=await v362QGraphRetry(()=>v24EnsureFolder(dest),item);
+          await v362QGraphRetry(()=>v24Graph(`/me/drive/items/${encodeURIComponent(item.id)}`,{method:"PATCH",body:{parentReference:{id:folderId}}}),item);
+          item.quarantinePath=`${dest}/${item.name}`.replace(/\/+/g,"/");item.status="done";item.movedAt=new Date().toISOString();
+          const f=report?.files?.find(x=>x.id===item.id);if(f){f.parentPath=dest;f.path=item.quarantinePath;v24Selected.delete(f.id)}
+          if(!v24Quarantine.some(x=>x.id===item.id&&x.quarantinePath===item.quarantinePath))v24Quarantine.push({
+            movedAt:item.movedAt,id:item.id,name:item.name,size:item.size,category:item.category,reason:v362QJob.reason,originalPath:item.originalPath,
+            quarantineRoot:v362QJob.sessionRoot,quarantinePath:item.quarantinePath,originalRelativeParent:item.originalRelativeParent,
+            takenDateTime:item.takenDateTime,createdDateTime:item.createdDateTime,modifiedDateTime:item.modifiedDateTime,jobId:v362QJob.jobId,verified:false
+          });
+          v362QSaveManifest();v24Log("Karantene",item.originalPath,true,`Flyttet til ${item.quarantinePath}`);
+        }catch(err){item.status="failed";item.error=String(err?.message||err);v24Log("Karantene",item.originalPath,false,item.error)}
+        v362QJob.updatedAt=new Date().toISOString();v362QSave();v362QRender();
+        await v362QSleep(0);
+      }
+      if(v362QJob.status==="running"){
+        const failed=v362QFailedCount();v362QJob.status=failed?"failed":"completed";
+        v362QJob.completedAt=new Date().toISOString();v362QJob.note=failed?`${failed} filer feilet. Resume prøver bare de feilede/gjenstående filene på nytt.`:"Alle filer er behandlet. Kjør Verify som siste kontroll.";
+        v362QSave();
+        iansToast(failed?"Karantene fullført med feil":"Karantene ferdig",failed?`${v362QDoneCount()} flyttet · ${failed} feil.`:`${v362QDoneCount()} filer flyttet. Kjør Verify for kontroll.`,failed?"error":"success",9000);
+      }
+    }finally{
+      v362QRunner=null;v362QSave();v362QRender();v24RenderQuarantine();renderV2();renderPhotoPlan();renderCleanupPlan();if(typeof dupRenderBulk==="function")setTimeout(dupRenderBulk,0);
     }
-
-    if(showProgress){
-      v24UpdateProgress(index+1,total,f.name,"Flytter til karantene");
-    }
+  })();
+  return v362QRunner;
+}
+function v362QPause(){if(v362QJob?.status!=="running")return;v362QPauseRequested=true;v362QJob.note="Pause forespurt – stopper etter aktiv fil.";v362QSave();v362QRender()}
+async function v362QResume(){
+  if(!v362QJob||v362QRunner)return;
+  v362QJob.items.forEach(x=>{if(x.status==="moving"||x.status==="failed")x.status="pending"});
+  v362QJob.status="paused";v362QJob.note="Klar til å fortsette gjenstående filer.";v362QSave();v362QRender();return v362QRun();
+}
+async function v362QVerify(){
+  if(!v362QJob||v362QRunner)return;
+  const done=v362QJob.items.filter(x=>x.status==="done");if(!done.length)return;
+  const prev=v362QJob.status;v362QJob.status="verifying";v362QJob.note=`Verifiserer 0 / ${done.length} filer mot OneDrive…`;v362QSave();v362QRender();
+  let ok=0,bad=0;
+  for(let i=0;i<done.length;i++){
+    const item=done[i];
+    try{
+      const remote=await v24Graph(`/me/drive/items/${encodeURIComponent(item.id)}?$select=id,name,size,parentReference`);
+      const sizeOk=Number(remote?.size)===Number(item.size);const nameOk=remote?.name===item.name;
+      item.verified=!!(remote?.id&&sizeOk&&nameOk);item.verifiedAt=new Date().toISOString();item.verifyError=item.verified?"":"Navn eller størrelse avviker";
+      item.verified?ok++:bad++;
+      const m=v24Quarantine.find(x=>x.id===item.id&&x.jobId===v362QJob.jobId);if(m){m.verified=item.verified;m.verifiedAt=item.verifiedAt;m.verifyError=item.verifyError}
+    }catch(err){item.verified=false;item.verifiedAt=new Date().toISOString();item.verifyError=String(err?.message||err);bad++}
+    v362QJob.note=`Verifiserer ${i+1} / ${done.length} filer mot OneDrive…`;v362QSave();v362QSaveManifest();v362QRender();
   }
+  v362QJob.status=prev==="failed"?"failed":"completed";v362QJob.note=bad?`Verify ferdig: ${ok} bekreftet · ${bad} må kontrolleres.`:`Verify ferdig: ${ok} av ${done.length} filer bekreftet i OneDrive.`;v362QSave();v362QRender();v24RenderQuarantine();
+  iansToast(bad?"Verify ferdig med avvik":"Verify OK",bad?`${ok} bekreftet · ${bad} avvik.`:`${ok} filer bekreftet i OneDrive.`,bad?"error":"success",9000);
+}
 
-  v24RenderQuarantine();
-  renderV2();
-  renderPhotoPlan();
-  renderCleanupPlan();
-  if(typeof dupRenderBulk==="function") setTimeout(dupRenderBulk,0);
-
-  if(showProgress){
-    v24ShowActionResult({
-      title:"Strukturert karantene ferdig",
-      total,ok,failed,dest:sessionRoot,quarantine:true
-    });
-  }
-
-  return {total,ok,failed,dest:sessionRoot};
+// Compatibility wrapper used by older call sites. Progress is rendered on the page, not in a modal.
+async function v28MoveRowsStructuredQuarantine(rows,sessionRoot,{reason="Manuell vurdering",showProgress=true}={}){
+  v362QCreate(rows,sessionRoot,reason);
+  return v362QRun();
 }
 
 async function v24MoveRows(rows,dest,{quarantine=false,reason="Manuell flytting",showProgress=false}={}){
@@ -1709,38 +1843,44 @@ function v24RenderQuarantine(){
     return;
   }
   const total=v24Quarantine.reduce((s,x)=>s+x.size,0);
+  const verified=v24Quarantine.filter(x=>x.verified===true).length;
+  const verifyText=verified?` · ${formatNumber(verified)} verified`:"";
   v24.qStatus.className="";
-  v24.qStatus.innerHTML=`<strong>${formatNumber(v24Quarantine.length)} filer · ${formatBytes(total)}</strong>
-    <p class="muted">Original sti og karantenesti er registrert i manifestet.</p>`;
+  v24.qStatus.innerHTML=`<strong>${formatNumber(v24Quarantine.length)} filer · ${formatBytes(total)}${verifyText}</strong>
+    <p class="muted">Original sti, karantenesti, jobb-ID og Verify-status lagres i manifestet.</p>`;
   v24.qCsv.disabled=false;v24.qJson.disabled=false;
 }
 
 v24.quarantine?.addEventListener("click",()=>{
+  if(v362QJob && ["prepared","running","paused"].includes(v362QJob.status)){
+    v362Q.panel?.scrollIntoView({behavior:"smooth",block:"center"});
+    iansToast("Karantenejobb finnes",v362QJob.status==="running"?"Jobben kjører allerede. Ingen ny instans ble startet.":"Bruk Start eller Resume i jobbstatusfeltet.","success",5000);
+    return;
+  }
   const rows=v24Rows();
+  if(!rows.length){iansToast("Ingen filer valgt","Velg filer før du oppretter en karantenejobb.","error");return}
   const day=new Date().toISOString().slice(0,10);
-
   v24Open(`<span class="eyebrow">KARANTENE</span>
-    <h2>Flytt ${formatNumber(rows.length)} filer til gjennomgang</h2>
+    <h2>Forbered ${formatNumber(rows.length)} filer til gjennomgang</h2>
     <p>Destinasjon: <code>/_IANS Cleanup Review/${day}/</code></p>
+    <p class="muted">Etter bekreftelse opprettes én låst jobb. Fremdriften vises på selve siden, og samme jobb kan pauses, fortsettes og verifiseres.</p>
     <input id="v24Reason" class="action-input" value="${escapeHtml(v22SmartFilter||"Manuell vurdering")}">
     <div class="action-preview">${rows.slice(0,30).map(f=>`<div>${escapeHtml(f.path)} · ${formatBytes(f.size)}</div>`).join("")}</div>
-    <button id="v24QConfirm" class="btn primary">Flytt til karantene</button>`);
-
+    <button id="v24QConfirm" class="btn primary">Opprett og start jobb</button>`);
   document.getElementById("v24QConfirm").onclick=async()=>{
     const reason=document.getElementById("v24Reason").value||"Manuell vurdering";
-    const btn=document.getElementById("v24QConfirm");
-    if(btn){btn.disabled=true;btn.textContent="Starter…";}
     try{
-      await v28MoveRowsStructuredQuarantine(rows,`/_IANS Cleanup Review/${day}`,{
-        reason,
-        showProgress:true
-      });
-    }catch(err){
-      console.error("[IANS] quarantine batch failed",err);
-      iansToast("Karantene feilet",err.message,"error");
-    }
+      v362QCreate(rows,`/_IANS Cleanup Review/${day}`,reason);v24Close();v362Q.panel?.scrollIntoView({behavior:"smooth",block:"center"});await v362QRun();
+    }catch(err){console.error("[IANS] quarantine batch failed",err);iansToast("Karantene feilet",err.message,"error")}
   };
 });
+
+
+v362Q.start?.addEventListener("click",()=>v362QRun());
+v362Q.pause?.addEventListener("click",v362QPause);
+v362Q.resume?.addEventListener("click",()=>v362QResume());
+v362Q.verify?.addEventListener("click",()=>v362QVerify());
+v362QLoad();v362QRender();v24RenderQuarantine();
 
 v24.move?.addEventListener("click",()=>{
   const rows=v24Rows();
@@ -1882,8 +2022,8 @@ function v24Download(name,text,type="text/plain;charset=utf-8"){
 v24.qJson?.addEventListener("click",()=>v24Download("IANS-Quarantine-Manifest.json",JSON.stringify(v24Quarantine,null,2),"application/json"));
 v24.qCsv?.addEventListener("click",()=>{
   const lines=[
-    "Name,SizeBytes,Category,Reason,OriginalPath,QuarantinePath,MovedAt",
-    ...v24Quarantine.map(x=>[x.name,x.size,x.category,x.reason,x.originalPath,x.quarantinePath,x.movedAt].map(csvEscape).join(","))
+    "Name,SizeBytes,Category,Reason,OriginalPath,QuarantinePath,MovedAt,JobId,Verified,VerifiedAt,VerifyError",
+    ...v24Quarantine.map(x=>[x.name,x.size,x.category,x.reason,x.originalPath,x.quarantinePath,x.movedAt,x.jobId||"",x.verified===true?"YES":x.verified===false?"NO":"",x.verifiedAt||"",x.verifyError||""].map(csvEscape).join(","))
   ];
   v24Download("IANS-Quarantine-Report.csv","\ufeff"+lines.join("\n"),"text/csv;charset=utf-8");
 });
@@ -2038,13 +2178,17 @@ topStopScanBtn252?.addEventListener("click",()=>{
 });
 const _scan252 = scanOneDrive;
 scanOneDrive = async function(resumeState=null){
+  if(scanRunningV38){iansToast("Kartlegging kjører","Det finnes allerede én aktiv kartleggingsjobb. Bruk Pause eller vent til den er ferdig.","error",6000);return}
+  scanRunningV38=true;
   if(topStartScanBtn252)topStartScanBtn252.disabled=true;
   if(topStopScanBtn252)topStopScanBtn252.disabled=false;
-  try{
-    return await _scan252(resumeState);
-  }finally{
+  const a=document.getElementById("scanInlineStart"),p=document.getElementById("scanInlinePause"),r=document.getElementById("scanInlineResume"),v=document.getElementById("scanInlineVerify");
+  if(a)a.disabled=true;if(p)p.disabled=false;if(r)r.disabled=true;if(v)v.disabled=true;
+  try{return await _scan252(resumeState)}finally{
+    scanRunningV38=false;
     if(topStartScanBtn252)topStartScanBtn252.disabled=false;
     if(topStopScanBtn252)topStopScanBtn252.disabled=true;
+    if(a)a.disabled=false;if(p)p.disabled=true;if(r)r.disabled=false;if(v)v.disabled=!report;
   }
 };
 
@@ -2113,6 +2257,25 @@ if (!IS_MSAL_POPUP_CALLBACK) {
 }
 
 
+// ===== V3.8 UNIFIED SCAN VERIFY =====
+function v38VerifyScanCatalog(){
+  if(!report?.files?.length)return iansToast("Verify scan","Ingen ferdig kartlegging å kontrollere.","error",6000);
+  const ids=new Set(),dupeIds=[];let withHash=0;const buckets=new Map();
+  for(const f of report.files){if(ids.has(f.id))dupeIds.push(f.id);else ids.add(f.id);iansFingerprint(f)?withHash++:0;const k=`${String(f.name||"").toLowerCase()}|${Number(f.size)||0}`;if(!buckets.has(k))buckets.set(k,[]);buckets.get(k).push(f)}
+  let verifiedGroups=0,conflictGroups=0,manualGroups=0;
+  for(const g of buckets.values()){if(g.length<2)continue;const st=iansHashState(g);if(st==="verified")verifiedGroups++;else if(st==="mismatch")conflictGroups++;else manualGroups++}
+  const pct=Math.round(withHash/Math.max(report.files.length,1)*100);
+  const msg=`${formatNumber(report.files.length)} filer · ${pct}% med innholdshash · ${verifiedGroups} hash-match grupper · ${conflictGroups} navn/størrelse-grupper med hash-konflikt · ${manualGroups} grupper krever review${dupeIds.length?` · ${dupeIds.length} dupliserte item-ID-er`:""}.`;
+  iansToast(conflictGroups||dupeIds.length?"Verify scan · avvik funnet":"Verify scan · OK",msg,conflictGroups||dupeIds.length?"error":"success",12000);
+  const note=document.getElementById("scanVerifyResult");if(note)note.textContent=msg;
+}
+setTimeout(()=>{
+  document.getElementById("scanInlineStart")?.addEventListener("click",()=>document.getElementById("topStartScanBtn")?.click());
+  document.getElementById("scanInlinePause")?.addEventListener("click",()=>document.getElementById("topStopScanBtn")?.click());
+  document.getElementById("scanInlineResume")?.addEventListener("click",()=>document.getElementById("resumeScanBtn")?.click());
+  document.getElementById("scanInlineVerify")?.addEventListener("click",v38VerifyScanCatalog);
+},300);
+
 // ===== V2.8.4 Web Edition + Download & Verify LARGE DRIVE DUPLICATE REVIEW =====
 const dupBulkGroupsEl=document.getElementById("dupBulkGroups");
 const dupStatGroupsEl=document.getElementById("dupStatGroups");
@@ -2151,21 +2314,30 @@ async function dupBuildBulkGroupsAsync(){
   if(i&&i%2500===0)await v282Yield();
  }
  const groups=[];let n=0;
- for(const g of map.values()){
-  if(g.length>1&&Number(g[0].size)>0)groups.push({files:g,keeper:dupChooseKeeper(g),saving:(+g[0].size||0)*(g.length-1)});
+ for(const bucket of map.values()){
+  if(bucket.length<2||Number(bucket[0].size)<=0)continue;
+  const state=iansHashState(bucket);
+  if(state==="mismatch"){
+    const parts=new Map();
+    for(const f of bucket){const fp=iansFingerprint(f);const key=fp?`${fp.type}|${fp.value}`:`missing|${f.id}`;if(!parts.has(key))parts.set(key,[]);parts.get(key).push(f)}
+    for(const g of parts.values())if(g.length>1)groups.push({files:g,keeper:dupChooseKeeper(g),saving:(+g[0].size||0)*(g.length-1),hashState:"verified",fingerprint:iansFingerprint(g[0])});
+  }else{
+    groups.push({files:bucket,keeper:dupChooseKeeper(bucket),saving:(+bucket[0].size||0)*(bucket.length-1),hashState:state,fingerprint:state==="verified"?iansFingerprint(bucket[0]):null});
+  }
   if(++n%3000===0)await v282Yield();
  }
- groups.sort((a,b)=>b.saving-a.saving);return groups;
+ groups.sort((a,b)=>(a.hashState==="verified"?0:1)-(b.hashState==="verified"?0:1)||b.saving-a.saving);return groups;
 }
+
 function dupVisibleGroups(){return dupBulkGroups.slice(0,(dupBulkPage+1)*DUP_PAGE_SIZE)}
-function dupVisibleSuggestedIds(){const a=[];for(const g of dupVisibleGroups())for(const f of g.files)if(f.id!==g.keeper.id)a.push(f.id);return a}
-function dupAllSuggestedIds(){const a=[];for(const g of dupBulkGroups)for(const f of g.files)if(f.id!==g.keeper.id)a.push(f.id);return a}
+function dupVisibleSuggestedIds(){const a=[];for(const g of dupVisibleGroups())if(g.hashState==="verified")for(const f of g.files)if(f.id!==g.keeper.id)a.push(f.id);return a}
+function dupAllSuggestedIds(){const a=[];for(const g of dupBulkGroups)if(g.hashState==="verified")for(const f of g.files)if(f.id!==g.keeper.id)a.push(f.id);return a}
 function dupRefreshBulkStats(){
- const totalSuggested=dupBulkGroups.reduce((s,g)=>s+g.files.length-1,0);
+ const totalSuggested=dupBulkGroups.filter(g=>g.hashState==="verified").reduce((s,g)=>s+g.files.length-1,0);
  let selectedBytes=0;for(const f of report?.files||[])if(dupBulkSelected.has(f.id))selectedBytes+=+f.size||0;
  dupStatGroupsEl.textContent=formatNumber(dupBulkGroups.length);
  dupStatCopiesEl.textContent=formatNumber(totalSuggested);
- dupStatBytesEl.textContent=formatBytes(dupBulkGroups.reduce((s,g)=>s+g.saving,0));
+ dupStatBytesEl.textContent=formatBytes(dupBulkGroups.filter(g=>g.hashState==="verified").reduce((s,g)=>s+g.saving,0));
  dupStatSelectedEl.textContent=formatNumber(dupBulkSelected.size);
  dupBulkSelectionInfoEl.textContent=dupBulkSelected.size?`${formatNumber(dupBulkSelected.size)} ekstrakopier valgt · ${formatBytes(selectedBytes)} valgt for opprydding`:"Ingen ekstrakopier valgt.";
  dupQuarantineAllEl.disabled=!dupBulkSelected.size;dupTrashAllEl.disabled=!dupBulkSelected.size;
@@ -2180,12 +2352,12 @@ function dupSetGroupSelection(i,on){
 function dupRenderVisibleGroups(){
  const visible=dupVisibleGroups();
  dupBulkGroupsEl.innerHTML=visible.map((g,gi)=>`<article class="dup-group" data-dup-group="${gi}">
- <div class="dup-group-head"><div><h4>${escapeHtml(g.files[0].name)}</h4><small>${g.files.length} kopier · ${formatBytes(g.files[0].size||0)} per fil · ${formatBytes(g.saving)} mulig frigjøring</small></div>
- <div class="dup-group-actions"><button class="btn small primary" data-dup-mark-group="${gi}">Merk ekstrakopier</button><button class="btn small ghost" data-dup-clear-group="${gi}">Fjern gruppevalg</button><button class="btn small ghost" data-dup-preview-keeper="${escapeHtml(g.keeper.id)}">Preview behold</button></div></div>
+ <div class="dup-group-head"><div><h4>${escapeHtml(g.files[0].name)}</h4><small>${g.files.length} kopier · ${formatBytes(g.files[0].size||0)} per fil · ${formatBytes(g.saving)} mulig frigjøring</small><span class="dup-hash-state ${g.hashState}">${g.hashState==="verified"?`HASH MATCH · ${escapeHtml(g.fingerprint?.type||"")}`:g.hashState==="partial"?"MANUELL REVIEW · HASH MANGLER PÅ NOEN":"MANUELL REVIEW · HASH IKKE TILGJENGELIG"}</span></div>
+ <div class="dup-group-actions"><button class="btn small ${g.hashState==="verified"?"primary":"ghost"}" data-dup-mark-group="${gi}">${g.hashState==="verified"?"Merk hash-verifiserte ekstrakopier":"Merk manuelt etter review"}</button><button class="btn small ghost" data-dup-clear-group="${gi}">Fjern gruppevalg</button><button class="btn small ghost" data-dup-preview-keeper="${escapeHtml(g.keeper.id)}">Preview behold</button></div></div>
  <div class="dup-files">${g.files.map(f=>{const keep=f.id===g.keeper.id,checked=!keep&&dupBulkSelected.has(f.id);return`<div class="dup-file-row ${keep?"keeper":""} ${checked?"remove-selected":""}">
  <input type="checkbox" class="dup-bulk-check" data-dup-id="${escapeHtml(f.id)}" ${keep?"disabled":""} ${checked?"checked":""}>
  <div class="dup-file-main"><strong>${escapeHtml(f.name)}</strong><small>${escapeHtml(f.path||"")}</small></div>
- <div class="dup-file-meta"><span class="dup-pill ${keep?"keep":"candidate"}">${keep?"BEHOLD":"EKSTRAKOPI"}</span><span>${formatBytes(f.size||0)}</span><button class="btn small ghost" data-dup-preview="${escapeHtml(f.id)}">Preview</button></div></div>`}).join("")}</div></article>`).join("");
+ <div class="dup-file-meta"><span class="dup-pill ${keep?"keep":"candidate"}">${keep?"BEHOLD":g.hashState==="verified"?"HASH-MATCH":"REVIEW"}</span><span>${formatBytes(f.size||0)}</span><button class="btn small ghost" data-dup-preview="${escapeHtml(f.id)}">Preview</button></div></div>`}).join("")}</div></article>`).join("");
  if(visible.length<dupBulkGroups.length)dupBulkGroupsEl.insertAdjacentHTML("beforeend",`<button id="dupLoadMoreBtn" class="btn ghost dup-load-more">Vis ${Math.min(DUP_PAGE_SIZE,dupBulkGroups.length-visible.length)} grupper til</button>`);
  dupRefreshBulkStats();
 }
@@ -2208,7 +2380,7 @@ dupMarkAllSuggestedEl?.addEventListener("click",()=>{
  const large=(report?.files?.length||0)>=50000,ids=large?dupVisibleSuggestedIds():dupAllSuggestedIds();
  for(const id of ids)dupBulkSelected.add(id);
  document.querySelectorAll(".dup-bulk-check:not(:disabled)").forEach(cb=>{cb.checked=dupBulkSelected.has(cb.dataset.dupId);cb.closest(".dup-file-row")?.classList.toggle("remove-selected",cb.checked)});
- if(large)iansToast("Large Drive Safety",`Kun synlige grupper ble merket (${formatNumber(ids.length)} filer).`,"success",6000);
+ if(!ids.length)iansToast("Hash Safety","Ingen hash-verifiserte ekstrakopier å merke automatisk.","error",6000);else if(large)iansToast("Large Drive Safety",`Kun synlige hash-verifiserte grupper ble merket (${formatNumber(ids.length)} filer).`,"success",6000);
  dupRefreshBulkStats();
 });
 dupClearAllEl?.addEventListener("click",()=>{dupBulkSelected.clear();document.querySelectorAll(".dup-bulk-check").forEach(cb=>{cb.checked=false;cb.closest(".dup-file-row")?.classList.remove("remove-selected")});dupRefreshBulkStats()});
@@ -3202,11 +3374,12 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
     pulse.className = "v288-mid-pulse";
     pulse.innerHTML = `
       <div class="v288-pulse-icon">◎</div>
-      <div>
-        <span class="eyebrow">LIVE DATA WORKSPACE</span>
-        <strong>Analyse, backup og organisering i samme sikre arbeidsflyt</strong>
-        <small>Read Only → Preview → Verify → Action Mode</small>
+      <div class="v39-live-copy">
+        <span class="eyebrow">IANS LIVE OPERATIONS</span>
+        <strong id="v39LiveHeadline">Klar · ingen aktiv jobb</strong>
+        <small id="v39LiveDetail">Venter på kartlegging eller handling</small>
       </div>
+      <div class="v39-live-metrics"><span><b id="v39LiveFiles">–</b> filer</span><span><b id="v39LiveBytes">–</b> data</span><span><b id="v39LiveJob">Klar</b> jobb</span></div>
       <div class="v288-pulse-line"><i></i><i></i><i></i><i></i><i></i></div>
     `;
 
@@ -4982,3 +5155,107 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
  // ===== END IANS OneDrive Command V3.0 =====
 
 /* IANS V3.6 Stable Recovery: V3.3 auth baseline + Scan Vault physical export */
+
+
+// ===== IANS OneDrive Command V3.9 · SAFETY OPS =====
+(() => {
+  const E=id=>document.getElementById(id);
+  const esc=s=>escapeHtml(String(s??""));
+  const fmtN=n=>typeof formatNumber==="function"?formatNumber(n||0):new Intl.NumberFormat("nb-NO").format(n||0);
+  const fmtB=n=>typeof formatBytes==="function"?formatBytes(n||0):`${Math.round((n||0)/1048576)} MB`;
+
+  function currentScanBytes(){
+    const t=(E("scannedBytesLive")?.textContent||"").trim();
+    return t||"0 B";
+  }
+  function refreshLiveOps(){
+    const head=E("v39LiveHeadline"),detail=E("v39LiveDetail"),files=E("v39LiveFiles"),bytes=E("v39LiveBytes"),job=E("v39LiveJob");
+    if(!head)return;
+    if(files)files.textContent=report?.files?.length?fmtN(report.files.length):((E("fileCount")?.textContent||"–").trim());
+    if(bytes)bytes.textContent=report?.summary?.fileBytes?fmtB(report.summary.fileBytes):currentScanBytes();
+    if(scanRunningV38){
+      const pct=(E("scanJobPct")?.textContent||"…").trim();
+      const path=(E("activeFolderLive")?.textContent||"/").trim();
+      head.textContent=`Kartlegging pågår · ${pct}`; detail.textContent=`Aktiv mappe: ${path}`; if(job)job.textContent="SCAN"; return;
+    }
+    if(v362QJob && ["prepared","running","paused","failed","verifying"].includes(v362QJob.status)){
+      const done=v362QDoneCount(v362QJob), total=v362QJob.items?.length||0;
+      const labels={prepared:"klar",running:"kjører",paused:"pauset",failed:"feil / resume",verifying:"verify"};
+      head.textContent=`Karantene ${labels[v362QJob.status]||v362QJob.status} · ${done}/${total}`;
+      detail.textContent=v362QJob.note||v362QJob.sessionRoot||""; if(job)job.textContent="KARANTENE"; return;
+    }
+    if(report?.files?.length){
+      const hs=report.hashStats||{};
+      head.textContent=`Scan klar · ${fmtN(report.files.length)} filer`;
+      detail.textContent=`${fmtB(report.summary?.fileBytes||0)} · ${fmtN(hs.withHash||0)} filer med innholdshash`;
+      if(job)job.textContent="KLAR";
+    }else{
+      head.textContent="Klar · ingen aktiv jobb"; detail.textContent="Start en kartlegging for live status"; if(job)job.textContent="KLAR";
+    }
+  }
+  setInterval(refreshLiveOps,900); setTimeout(refreshLiveOps,350);
+
+  function reportRows(){
+    if(v362QJob?.items?.length)return v362QJob.items;
+    return (v24Quarantine||[]).map(x=>({id:x.id,name:x.name,size:x.size,originalPath:x.originalPath,quarantinePath:x.quarantinePath,status:"done",error:"",verified:x.verified,verifyError:x.verifyError}));
+  }
+  window.v39OpenQuarantineReport=function(){
+    const rows=reportRows();
+    const done=rows.filter(x=>x.status==="done").length, failed=rows.filter(x=>x.status==="failed").length, pending=rows.filter(x=>!["done","failed"].includes(x.status)).length;
+    const verified=rows.filter(x=>x.verified===true).length, badVerify=rows.filter(x=>x.verified===false&&x.verifiedAt).length;
+    const errRows=rows.filter(x=>x.status==="failed"||x.error||x.verifyError);
+    const sample=rows.slice(0,200).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.status||"done")}</td><td>${x.verified===true?"✓":x.verifiedAt?"⚠":"–"}</td><td class="path">${esc(x.originalPath||"")}</td><td class="path">${esc(x.quarantinePath||"")}</td><td class="path error-text">${esc(x.error||x.verifyError||"")}</td></tr>`).join("");
+    v24Open(`<span class="eyebrow">KARANTENERAPPORT · V3.9</span><h2>${failed===rows.length&&rows.length?"Karantene mislyktes":"Karantenejobb – detaljert rapport"}</h2>
+      <div class="v39-report-stats"><div><span>VELLYKKET</span><strong>${fmtN(done)}</strong></div><div><span>FEIL</span><strong>${fmtN(failed)}</strong></div><div><span>GJENSTÅR</span><strong>${fmtN(pending)}</strong></div><div><span>VERIFY OK</span><strong>${fmtN(verified)}</strong></div></div>
+      ${failed?`<div class="v39-report-warning"><strong>${fmtN(failed)} filer feilet.</strong><p>Feilårsaken vises per fil under. Resume prøver bare feilede eller gjenstående filer.</p></div>`:""}
+      ${badVerify?`<div class="v39-report-warning"><strong>${fmtN(badVerify)} verify-avvik.</strong><p>Disse skal ikke slettes permanent før de er kontrollert.</p></div>`:""}
+      <div class="v39-report-table"><table><thead><tr><th>Fil</th><th>Status</th><th>Verify</th><th>Original</th><th>Karantene</th><th>Feil / avvik</th></tr></thead><tbody>${sample||'<tr><td colspan="6">Ingen karantenedata.</td></tr>'}</tbody></table></div>
+      ${rows.length>200?`<p class="muted">Viser de første 200 av ${fmtN(rows.length)} rader. Bruk CSV/Manifest JSON for hele datasettet.</p>`:""}
+      <div class="actions"><button class="btn primary" id="v39ReportClose">Lukk</button><button class="btn ghost" id="v39ReportCsv">CSV</button><button class="btn ghost" id="v39ReportJson">Manifest JSON</button></div>`);
+    E("v39ReportClose").onclick=v24Close;
+    E("v39ReportCsv").onclick=()=>E("v24QCsv")?.click();
+    E("v39ReportJson").onclick=()=>E("v24QJson")?.click();
+  };
+
+  async function quickTrash(file){
+    if(!file)return;
+    if(!v24Enabled){
+      iansToast("Action Mode kreves","Aktiver Action Mode før du sender filer til OneDrive-papirkurven.","error",7000);
+      E("v24EnableAction")?.scrollIntoView({behavior:"smooth",block:"center"}); return;
+    }
+    v24Open(`<span class="eyebrow">RASK PAPIRKURV · V3.9</span><h2>Send denne filen til OneDrive-papirkurven?</h2>
+      <div class="v39-file-confirm"><strong>${esc(file.name)}</strong><span>${esc(fmtB(file.size))}</span><code>${esc(file.path||"")}</code></div>
+      <p class="muted">Dette bruker OneDrive-papirkurven – ikke permanent sletting.</p>
+      <div class="actions"><button id="v39TrashCancel" class="btn ghost">Avbryt</button><button id="v39TrashConfirm" class="btn danger">Send til papirkurv</button></div>`);
+    E("v39TrashCancel").onclick=v24Close;
+    E("v39TrashConfirm").onclick=async()=>{
+      const btn=E("v39TrashConfirm");btn.disabled=true;btn.textContent="Sender…";
+      try{
+        await v24Graph(`/me/drive/items/${encodeURIComponent(file.id)}`,{method:"DELETE"});
+        v24Log("Papirkurv",file.path,true,"Sendt til OneDrive-papirkurven");
+        v24Selected.delete(file.id); reviewIds.delete(String(file.id));
+        if(report?.files){
+          report.files=report.files.filter(x=>x.id!==file.id);
+          if(report.summary){report.summary.fileCount=report.files.length;report.summary.fileBytes=report.files.reduce((n,x)=>n+(Number(x.size)||0),0)}
+          prepareV2(report); renderReport(report);
+        }
+        v24Close();iansToast("Sendt til papirkurv",`${file.name} · ${fmtB(file.size)}`,"success",7000);
+      }catch(err){btn.disabled=false;btn.textContent="Prøv igjen";iansToast("Papirkurv feilet",String(err?.message||err),"error",10000)}
+    };
+  }
+  document.addEventListener("click",e=>{
+    const b=e.target.closest("[data-v39-trash]"); if(!b)return;
+    const f=report?.files?.find(x=>String(x.id)===String(b.dataset.v39Trash)); quickTrash(f);
+  });
+
+  // A report button is useful even when the old result modal is not open.
+  setTimeout(()=>{
+    const q=E("v24QStatus");
+    const bar=q?.previousElementSibling?.querySelector(".actions");
+    if(bar&&!E("v39QReport")){
+      const b=document.createElement("button");b.id="v39QReport";b.className="btn ghost";b.textContent="Rapport";b.onclick=window.v39OpenQuarantineReport;bar.prepend(b);
+    }
+  },700);
+
+  console.info("[IANS] OneDrive Command V3.9 Safety Ops aktiv – live operations, detaljert karantenerapport og rask papirkurv");
+})();

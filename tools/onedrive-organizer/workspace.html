@@ -6,7 +6,7 @@
   <title>IANS OneDrive Organizer V2.9.3 Web Edition · Read-only som standard · Lokal backup går direkte til brukerens valgte mappe</title>
   <meta name="robots" content="noindex,nofollow">
   <meta name="description" content="Read-only kartlegging og analyse av OneDrive via Microsoft Graph.">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=3.8.0">
 <link rel="stylesheet" href="../../assets/css/ians-next.css">
 </head>
 <body>
@@ -122,7 +122,7 @@
 
           <div class="scan-buttons-block">
             <button id="topStartScanBtn" class="btn primary">Start kartlegging</button>
-            <button id="topStopScanBtn" class="btn ghost" disabled>Stopp</button>
+            <button id="topStopScanBtn" class="btn ghost" disabled>Pause</button>
             <button id="resumeScanBtn" class="btn resume-btn" disabled>Resume</button>
             <button id="discardCheckpointBtn" class="btn ghost" disabled>Forkast checkpoint</button>
             <small id="checkpointSummary" class="muted">Ingen lagret skanning.</small>
@@ -177,32 +177,13 @@
           <button id="cancelBtn" class="btn danger hidden">Stopp</button>
         </div>
       </section>
-<section id="progressPanel" class="panel hidden">
-        <div class="progress-head">
-          <div>
-            <span class="eyebrow">KARTLEGGING</span>
-            <h3 id="progressTitle">Leser OneDrive…</h3>
-          </div>
-          <div id="progressNumbers" class="mono">0 filer · 0 mapper</div>
-        </div>
-        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
-        <p id="progressPath" class="muted">Starter…</p>
-        <div class="scan-visual-grid">
-          <div class="scan-donut-wrap">
-            <canvas id="scanDonut" width="220" height="220"></canvas>
-            <div class="donut-center">
-              <strong id="scanDonutFiles">0</strong>
-              <span>filer</span>
-            </div>
-          </div>
-          <div class="live-stats">
-            <div><span>Mapper behandlet</span><strong id="processedFoldersLive">0</strong></div>
-            <div><span>Mapper i kø</span><strong id="queuedFoldersLive">0</strong></div>
-            <div><span>Data kartlagt</span><strong id="scannedBytesLive">0 B</strong></div>
-            <div><span>Aktiv mappe</span><strong id="activeFolderLive">/</strong></div>
-          </div>
-        </div>
-
+<section id="progressPanel" class="panel hidden ians-job-card" data-job="scan">
+        <div class="ians-job-head"><div><span class="eyebrow">KARTLEGGING · IANS JOB ENGINE</span><h3 id="progressTitle">Leser OneDrive…</h3><small id="scanJobPhase">Klar</small></div><div id="scanJobMeter" class="ians-job-meter" style="--p:0%"><span id="scanJobPct">0%</span></div></div>
+        <div class="ians-job-track"><div id="progressBar" class="ians-job-fill"></div></div>
+        <div class="ians-job-line"><strong id="progressNumbers" class="mono">0 filer · 0 mapper</strong><span id="progressPath" class="muted">Starter…</span></div>
+        <div class="ians-job-actions"><button id="scanInlineStart" class="btn primary">Start</button><button id="scanInlinePause" class="btn ghost" disabled>Pause</button><button id="scanInlineResume" class="btn ghost">Resume</button><button id="scanInlineVerify" class="btn ghost" disabled>Verify scan</button></div>
+        <p id="scanVerifyResult" class="muted">Fremdriften er et konservativt estimat av oppdagede mapper; 100 % vises først når hele køen er ferdig.</p>
+        <div class="scan-visual-grid"><div class="scan-donut-wrap"><canvas id="scanDonut" width="220" height="220"></canvas><div class="donut-center"><strong id="scanDonutFiles">0</strong><span>filer</span></div></div><div class="live-stats"><div><span>Mapper behandlet</span><strong id="processedFoldersLive">0</strong></div><div><span>Mapper i kø</span><strong id="queuedFoldersLive">0</strong></div><div><span>Data kartlagt</span><strong id="scannedBytesLive">0 B</strong></div><div><span>Aktiv mappe</span><strong id="activeFolderLive">/</strong></div></div></div>
       </section>
 
       <section class="cards">
@@ -224,7 +205,7 @@
         <article class="metric panel">
           <span>Mulige duplikater</span>
           <strong id="duplicateCount">–</strong>
-          <small id="duplicateSize">samme navn + størrelse</small>
+          <small id="duplicateSize">hash-match / review / konflikt</small>
         </article>
       </section>
 
@@ -316,7 +297,7 @@
           <strong>Trygg arbeidsflyt:</strong>
           Verktøyet foreslår én kopi som beholdes i hver gruppe og markerer resten som ekstrakopier.
           Du trenger bare åpne Preview når du er usikker.
-          <br><small>Foreløpig er kandidatene basert på samme filnavn + samme størrelse, ikke hash-verifisering.</small>
+          <br><small>V3.8 bruker OneDrive-innholdshash når den er tilgjengelig. Grupper med hash-konflikt blandes aldri. Automatisk «Merk alle» gjelder bare hash-match grupper; grupper uten komplett hash må vurderes manuelt.</small>
         </div>
 
         <div class="duplicate-summary-grid">
@@ -328,7 +309,7 @@
 
         <div class="duplicate-toolbar">
           <div>
-            <button id="dupMarkAllSuggested" class="btn primary">Merk alle foreslåtte</button>
+            <button id="dupMarkAllSuggested" class="btn primary">Merk alle hash-verifiserte</button>
             <button id="dupClearAll" class="btn ghost">Fjern alle valg</button>
           </div>
           <div>
@@ -503,6 +484,32 @@
           </div>
         </div>
         <div id="v24QStatus" class="empty-state">Ingen filer er flyttet til karantene i denne økten.</div>
+
+        <div id="v362QJob" class="v362-qjob" aria-live="polite">
+          <div class="v362-qjob-head">
+            <div>
+              <span class="eyebrow">LIVE JOBBSTATUS</span>
+              <strong id="v362QJobTitle">Ingen karantenejobb</strong>
+              <small id="v362QJobState">Klar</small>
+            </div>
+            <div class="v362-qjob-meter" aria-label="Fremdrift">
+              <span id="v362QJobPct">0%</span>
+            </div>
+          </div>
+          <div class="v362-qjob-track"><div id="v362QJobFill" class="v362-qjob-fill"></div></div>
+          <div class="v362-qjob-stats">
+            <strong id="v362QJobCount">0 / 0 filer</strong>
+            <span id="v362QJobBytes">0 B / 0 B</span>
+            <span id="v362QJobCurrent">Ingen aktiv fil</span>
+          </div>
+          <div class="v362-qjob-actions">
+            <button id="v362QStart" class="btn primary" disabled>Start</button>
+            <button id="v362QPause" class="btn ghost" disabled>Pause</button>
+            <button id="v362QResume" class="btn ghost" disabled>Resume</button>
+            <button id="v362QVerify" class="btn ghost" disabled>Verify</button>
+          </div>
+          <p id="v362QJobNote" class="muted">Jobben vises her på siden og er ikke avhengig av popup-vinduet.</p>
+        </div>
       </section>
 
       <section class="panel">
@@ -799,7 +806,7 @@
     <p>IANS OneDrive Organizer V2.9.3.1 Portable Scan + Photo Intelligence · Ingen filer lastes ned under kartleggingen · Ingen skrive-/slettetilgang</p>
   </footer>
 
-  <script type="module" src="app.js?v=3.6.2"></script>
+  <script type="module" src="app.js?v=3.9.0"></script>
 <div class="ians-next-badge">IANS Next · Master</div>
 <script>window.addEventListener('load',()=>{if(location.hash){setTimeout(()=>{const e=document.querySelector(location.hash);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});},500)}});</script>
 

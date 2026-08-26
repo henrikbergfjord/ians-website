@@ -982,3 +982,52 @@ body.ians-v301 #iansCommandDashboard,body.ians-v301 #iansCleanupWorkbench,body.i
 .review-added{border-color:#27c2ff!important;box-shadow:0 0 0 1px rgba(39,194,255,.28) inset;color:#8fe5ff!important}
 .review-count{font-size:.72rem;font-weight:700;color:#7fdfff;margin-left:.55rem;white-space:nowrap}
 .ians-review-toast{position:fixed;right:24px;bottom:28px;z-index:100000;background:#0d2139;color:#eef8ff;border:1px solid rgba(77,201,255,.42);border-radius:12px;padding:12px 16px;box-shadow:0 12px 40px rgba(0,0,0,.35);opacity:0;transform:translateY(12px);pointer-events:none;transition:.18s ease;font-weight:700}.ians-review-toast.show{opacity:1;transform:translateY(0)}
+
+
+/* ===== V3.7 QUARANTINE JOB CONTROL ===== */
+.v362-qjob{margin-top:16px;padding:16px;border:1px solid #203850;border-radius:14px;background:linear-gradient(145deg,#081a2b,#071522)}
+.v362-qjob-head{display:flex;justify-content:space-between;gap:16px;align-items:center}
+.v362-qjob-head strong{display:block;font-size:16px;margin-top:3px}.v362-qjob-head small{display:block;color:#8298ad;margin-top:4px}
+.v362-qjob-meter{display:grid;place-items:center;width:66px;height:66px;border-radius:50%;background:conic-gradient(#49b9f2 var(--p,0%),#0b2438 0);position:relative;flex:0 0 auto}
+.v362-qjob-meter:after{content:"";position:absolute;inset:7px;border-radius:50%;background:#071522;border:1px solid rgba(80,160,210,.18)}
+.v362-qjob-meter span{position:relative;z-index:1;font-size:14px;font-weight:900}
+.v362-qjob-track{height:11px;border-radius:999px;background:#05111d;overflow:hidden;margin:14px 0 10px;border:1px solid rgba(71,143,194,.16)}
+.v362-qjob-fill{height:100%;width:0;background:linear-gradient(90deg,#1686d8,#67c7ff);transition:width .22s ease}
+.v362-qjob-stats{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:12px;align-items:center;font-size:12px;color:#91a6bb}
+.v362-qjob-stats strong{color:#dceaf5}.v362-qjob-stats span:last-child{text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.v362-qjob-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.v362-qjob[data-state="running"]{border-color:rgba(73,185,242,.42);box-shadow:0 0 0 1px rgba(73,185,242,.06) inset}
+.v362-qjob[data-state="paused"]{border-color:rgba(255,193,77,.38)}
+.v362-qjob[data-state="completed"]{border-color:rgba(111,227,165,.34)}
+.v362-qjob[data-state="failed"]{border-color:rgba(255,123,133,.4)}
+@media(max-width:720px){.v362-qjob-stats{grid-template-columns:1fr}.v362-qjob-stats span:last-child{text-align:left}.v362-qjob-head{align-items:flex-start}}
+
+
+/* ===== IANS V3.8 · Unified Job Progress + Hash Safety ===== */
+.ians-job-card{border-color:rgba(73,185,242,.28);background:linear-gradient(145deg,#081a2b,#071522)}
+.ians-job-head{display:flex;justify-content:space-between;gap:16px;align-items:center}.ians-job-head h3{margin:3px 0}.ians-job-head small{color:#8298ad}
+.ians-job-meter{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:conic-gradient(#49b9f2 var(--p,0%),#0b2438 0);position:relative;flex:0 0 auto}.ians-job-meter:after{content:"";position:absolute;inset:8px;border-radius:50%;background:#071522;border:1px solid rgba(80,160,210,.18)}.ians-job-meter span{position:relative;z-index:1;font-size:14px;font-weight:900}
+.ians-job-track{height:11px;border-radius:999px;background:#05111d;overflow:hidden;margin:14px 0 10px;border:1px solid rgba(71,143,194,.16)}.ians-job-fill{height:100%;width:0;background:linear-gradient(90deg,#1686d8,#67c7ff);transition:width .22s ease}
+.ians-job-line{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}.ians-job-line>span{text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ians-job-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.dup-hash-state{display:inline-flex;margin-top:7px;padding:4px 8px;border-radius:999px;font-size:9px;font-weight:900;letter-spacing:.06em;border:1px solid rgba(130,152,173,.24);color:#a9bbca}.dup-hash-state.verified{color:#7fe0aa;border-color:rgba(111,227,165,.32);background:rgba(111,227,165,.07)}.dup-hash-state.partial,.dup-hash-state.missing{color:#ffd27b;border-color:rgba(255,193,77,.32);background:rgba(255,193,77,.06)}
+@media(max-width:720px){.ians-job-line{grid-template-columns:1fr}.ians-job-line>span{text-align:left}.ians-job-head{align-items:flex-start}}
+
+
+/* ===== V3.9 SAFETY OPS ===== */
+.quick-trash{white-space:nowrap}
+.dup-status{display:inline-flex;align-items:center;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:800;letter-spacing:.04em;border:1px solid rgba(148,163,184,.22)}
+.dup-status.verified{color:#9ff4c5;background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.30)}
+.dup-status.review{color:#ffd58a;background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.30)}
+.dup-status.blocked{color:#ff9aa8;background:rgba(244,63,94,.10);border-color:rgba(244,63,94,.34)}
+.v39-live-copy{min-width:330px;display:flex;flex-direction:column;gap:3px}
+.v39-live-metrics{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto}
+.v39-live-metrics span{display:flex;flex-direction:column;min-width:86px;padding:8px 10px;border:1px solid rgba(110,197,255,.16);border-radius:10px;background:rgba(3,18,34,.58);font-size:10px;color:#86a0b8}
+.v39-live-metrics b{font-size:13px;color:#eaf5ff;margin-bottom:2px}
+.v39-report-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.v39-report-stats>div{padding:12px;border:1px solid rgba(110,197,255,.18);border-radius:12px;background:rgba(3,18,34,.64)}
+.v39-report-stats span{display:block;font-size:10px;color:#8fa9bf}.v39-report-stats strong{font-size:24px}
+.v39-report-warning{padding:12px 14px;margin:10px 0;border:1px solid rgba(244,63,94,.36);border-radius:12px;background:rgba(244,63,94,.08)}
+.v39-report-warning p{margin:5px 0 0;color:#b9c8d6}.v39-report-table{max-height:46vh;overflow:auto;border:1px solid rgba(110,197,255,.14);border-radius:12px;margin:12px 0}
+.v39-report-table table{width:100%;border-collapse:collapse;font-size:11px}.v39-report-table th,.v39-report-table td{padding:8px;border-bottom:1px solid rgba(148,163,184,.12);vertical-align:top;text-align:left}.v39-report-table .path{max-width:300px;word-break:break-word}.error-text{color:#ff9aa8}
+.v39-file-confirm{display:grid;gap:6px;padding:14px;border:1px solid rgba(110,197,255,.18);border-radius:12px;background:rgba(3,18,34,.64);margin:12px 0}.v39-file-confirm strong{font-size:17px}.v39-file-confirm span{color:#90d8ff}.v39-file-confirm code{white-space:normal;word-break:break-word}
+@media(max-width:900px){.v39-live-metrics{margin-left:0}.v39-report-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
