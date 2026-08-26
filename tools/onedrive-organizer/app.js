@@ -232,7 +232,7 @@ const iansSleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 function iansTransientMicrosoftError(err){
   const name=String(err?.name||"");
   const msg=String(err?.errorCode||err?.message||err||"");
-  return name==="AbortError" || /timed_out|timeout|monitor_window_timeout|network|failed to fetch|fetch failed|aborted|operation was aborted|temporar|ECONN|ENET|503|504/i.test(msg);
+  return name==="AbortError" || /timed_out|timeout|monitor_window_timeout|network|failed to fetch|fetch failed|aborted|operation was aborted|temporar|ECONN|ENET|429|500|502|503|504/i.test(msg);
 }
 function iansTimeoutPromise(promise,ms,label="Microsoft-kall"){
   return new Promise((resolve,reject)=>{
@@ -242,61 +242,107 @@ function iansTimeoutPromise(promise,ms,label="Microsoft-kall"){
     Promise.resolve(promise).then(v=>{clearTimeout(t);resolve(v)},e=>{clearTimeout(t);reject(e)});
   });
 }
-async function getToken(attempt = 0) {
-  const request = { scopes: SCOPES, account: activeAccount };
-  try {
-    const result = await iansTimeoutPromise(msalApp.acquireTokenSilent(request),30000,"MSAL token");
-    return result.accessToken;
-  } catch (err) {
-    if (err instanceof InteractionRequiredAuthError) {
-      throw new Error("Microsoft krever ny interaktiv innlogging. Logg ut og koble til OneDrive på nytt.");
-    }
-    // V3.12.4: timeouts/AbortError after sleep or a slow Microsoft response are transient.
-    if (iansTransientMicrosoftError(err) && attempt < 5) {
-      const delay=Math.min(1500 * (2 ** attempt), 12000);
-      updateScanMeter?.(Math.round(scanVisualPct||5),`Microsoft svarer tregt · nytt forsøk ${attempt+1}/5`);
-      await iansSleep(delay);
-      return getToken(attempt + 1);
-    }
-    throw err;
-  }
+
+// V3.12.5: one token broker for the entire scan. V3.12.4 could multiply
+// 5 token retries by 6 Graph retries, causing a retry storm before file 1.
+let iansTokenCache={accessToken:"",expiresAt:0,accountId:""};
+let iansTokenPromise=null;
+function iansInvalidateToken(){
+  iansTokenCache={accessToken:"",expiresAt:0,accountId:""};
+  iansTokenPromise=null;
 }
-async function graphFetch(url, attempt = 0) {
-  if (cancelRequested) throw new Error("SCAN_CANCELLED");
-  try {
-    const token = await getToken();
-    const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),45000);
-    let response;
-    try {
-      response = await fetch(url.startsWith("http") ? url : `${GRAPH}${url}`, {
-        headers: { Authorization: `Bearer ${token}` }, signal:controller.signal
-      });
-    } finally { clearTimeout(timeout); }
+function iansTokenUsable(){
+  const aid=activeAccount?.homeAccountId||activeAccount?.localAccountId||activeAccount?.username||"";
+  return !!iansTokenCache.accessToken && iansTokenCache.accountId===aid && Date.now()<iansTokenCache.expiresAt-120000;
+}
+async function getToken(attempt=0){
+  if(iansTokenUsable()) return iansTokenCache.accessToken;
+  if(iansTokenPromise) return iansTokenPromise;
+  const request={scopes:SCOPES,account:activeAccount};
+  iansTokenPromise=(async()=>{
+    try{
+      const result=await iansTimeoutPromise(msalApp.acquireTokenSilent(request),15000,"MSAL token");
+      const aid=activeAccount?.homeAccountId||activeAccount?.localAccountId||activeAccount?.username||"";
+      const exp=result?.expiresOn instanceof Date ? result.expiresOn.getTime() : Date.now()+45*60*1000;
+      iansTokenCache={accessToken:result.accessToken,expiresAt:exp,accountId:aid};
+      return result.accessToken;
+    }catch(err){
+      if(err instanceof InteractionRequiredAuthError || /interaction_required|login_required|consent_required/i.test(String(err?.errorCode||err?.message||""))){
+        const e=new Error("Microsoft-økten må fornyes. Logg ut og koble til OneDrive på nytt.");
+        e.name="IansAuthRequiredError";
+        throw e;
+      }
+      if(iansTransientMicrosoftError(err) && attempt<2){
+        const next=attempt+1;
+        updateScanMeter?.(Math.round(scanVisualPct||5),`Microsoft-token svarer tregt · nytt forsøk ${next}/3`);
+        await iansSleep(next*1500);
+        iansTokenPromise=null;
+        return getToken(next);
+      }
+      const e=new Error(`TOKEN_STAGE: ${err?.message||err}`);
+      e.name="IansTokenStageError";
+      e.cause=err;
+      throw e;
+    }finally{
+      iansTokenPromise=null;
+    }
+  })();
+  return iansTokenPromise;
+}
 
-    if ((response.status === 429 || response.status === 500 || response.status === 502 || response.status === 503 || response.status === 504) && attempt < 6) {
-      const retryAfter = Number(response.headers.get("Retry-After")) || Math.min(2 ** attempt, 30);
-      updateScanMeter?.(Math.round(scanVisualPct||5),`Microsoft Graph er opptatt · prøver igjen ${attempt+1}/6`);
-      await iansSleep(retryAfter * 1000);
-      return graphFetch(url, attempt + 1);
-    }
-
-    if (!response.ok) {
-      let detail = "";
-      try { detail = JSON.stringify(await response.json()); } catch {}
-      throw new Error(`Graph ${response.status}: ${detail || response.statusText}`);
-    }
-    return response.json();
-  } catch(err) {
-    if (err?.message === "SCAN_CANCELLED") throw err;
-    if (iansTransientMicrosoftError(err) && attempt < 6) {
-      const delay=Math.min(1500 * (2 ** attempt),15000);
-      updateScanMeter?.(Math.round(scanVisualPct||5),`Forbindelsen ble avbrutt · prøver igjen ${attempt+1}/6`);
-      await iansSleep(delay);
-      return graphFetch(url,attempt+1);
-    }
+async function graphFetch(url,attempt=0,authRetried=false){
+  if(cancelRequested) throw new Error("SCAN_CANCELLED");
+  let token;
+  try{
+    token=await getToken();
+  }catch(err){
+    // Token broker owns token retries. Never feed token failures back into the
+    // Graph retry loop; that was the V3.12.4 retry-storm bug.
     throw err;
   }
+
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),30000);
+  let response;
+  try{
+    response=await fetch(url.startsWith("http")?url:`${GRAPH}${url}`,{
+      headers:{Authorization:`Bearer ${token}`},signal:controller.signal
+    });
+  }catch(err){
+    if(err?.message==="SCAN_CANCELLED") throw err;
+    if(iansTransientMicrosoftError(err) && attempt<4){
+      const next=attempt+1;
+      updateScanMeter?.(Math.round(scanVisualPct||5),`Graph-forbindelse treg · nytt forsøk ${next}/5`);
+      await iansSleep(Math.min(1000*(2**attempt),8000));
+      return graphFetch(url,next,authRetried);
+    }
+    throw err;
+  }finally{clearTimeout(timeout)}
+
+  if(response.status===401 && !authRetried){
+    iansInvalidateToken();
+    updateScanMeter?.(Math.round(scanVisualPct||5),"Microsoft-token fornyes · ett nytt forsøk");
+    return graphFetch(url,attempt,true);
+  }
+  if([429,500,502,503,504].includes(response.status) && attempt<4){
+    const next=attempt+1;
+    const retryAfter=Number(response.headers.get("Retry-After"))||Math.min(2**attempt,15);
+    updateScanMeter?.(Math.round(scanVisualPct||5),`Microsoft Graph er opptatt · nytt forsøk ${next}/5`);
+    await iansSleep(retryAfter*1000);
+    return graphFetch(url,next,authRetried);
+  }
+  if(!response.ok){
+    let detail="";try{detail=JSON.stringify(await response.json())}catch{}
+    throw new Error(`Graph ${response.status}: ${detail||response.statusText}`);
+  }
+  return response.json();
+}
+
+async function iansScanPreflight(){
+  updateScanMeter?.(Math.round(scanVisualPct||5),"Kontrollerer Microsoft-tilkobling");
+  const drive=await graphFetch("/me/drive/root?$select=id,name,parentReference");
+  if(!drive?.id) throw new Error("PREFLIGHT_STAGE: OneDrive root kunne ikke bekreftes.");
+  return drive;
 }
 
 async function loadDriveQuota() {
@@ -545,7 +591,15 @@ async function scanOneDrive(resumeState=null) {
     const mode=document.querySelector('input[name="scanScope"]:checked')?.value||"all";
     scanRoot=mode==="folder"?selectedScanFolder:{id:null,path:"/"};
     queue=[{id:scanRoot.id,path:scanRoot.path,driveId:null,lastModifiedDateTime:null}];
-    await clearScanCheckpoint();
+    // V3.12.5: never erase a good Resume checkpoint before Microsoft has
+    // proven that this new scan can actually reach OneDrive.
+    try{
+      await iansScanPreflight();
+      await clearScanCheckpoint();
+    }catch(err){
+      err.message=`PREFLIGHT_STAGE: ${String(err?.message||err).replace(/^PREFLIGHT_STAGE:\s*/,"")}`;
+      throw err;
+    }
   }
 
   startScanClock(scanStartedAt);
@@ -764,10 +818,15 @@ async function scanOneDrive(resumeState=null) {
     }else{
       console.error(err);
       await checkpoint(true);
-      const transient=iansTransientMicrosoftError(err);
+      const stageMsg=String(err?.message||err||"");
+      const transient=iansTransientMicrosoftError(err) || /^TOKEN_STAGE:|^PREFLIGHT_STAGE:/i.test(stageMsg);
       if(transient){
-        els.progressTitle.textContent="Microsoft-forbindelsen ble pauset – checkpoint lagret";
-        els.progressPath.textContent="OneDrive svarte ikke etter flere forsøk. Trykk Resume; skanningen fortsetter fra checkpoint uten å starte på nytt.";
+        els.progressTitle.textContent="Microsoft-forbindelsen ble pauset – checkpoint beholdt";
+        els.progressPath.textContent=/^TOKEN_STAGE:/i.test(stageMsg)
+          ? "Token-kallet stoppet før selve filskanningen. Resume/checkpoint er bevart. Prøv Resume; hvis dette gjentar seg, logg ut og inn én gang."
+          : /^PREFLIGHT_STAGE:/i.test(stageMsg)
+            ? "Forbindelsestesten mot OneDrive root feilet før scanstart. Eksisterende checkpoint er ikke slettet."
+            : "OneDrive svarte ikke etter flere forsøk. Trykk Resume; skanningen fortsetter fra checkpoint uten å starte på nytt.";
         document.getElementById("scanStateBadge").textContent="PAUSET";
         updateScanMeter(Math.round(scanVisualPct||5),"Midlertidig Microsoft-feil · Resume klar");
       }else{
@@ -5946,3 +6005,12 @@ window.v3124ScanRecoverySelfTest=()=>({
   liveStatus:window.__iansScanLiveState?.status||'idle'
 });
 // ===== END V3.12.4 =====
+
+// ===== IANS OneDrive Command V3.12.5 · TOKEN BROKER + PREFLIGHT =====
+window.v3125ScanTokenBrokerSelfTest=()=>({
+  tokenBroker:typeof getToken==="function" && typeof iansInvalidateToken==="function",
+  preflight:typeof iansScanPreflight==="function",
+  graphFetch:typeof graphFetch==="function"
+});
+console.info('[IANS] V3.12.5 Token Broker + Scan Preflight aktiv');
+// ===== END V3.12.5 =====
