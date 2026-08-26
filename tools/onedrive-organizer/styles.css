@@ -1185,3 +1185,28 @@ body.ians-v30 #v288MidPulse .v288-pulse-line i{position:relative!important;left:
 #v3121ScanProgress.paused #v3121ProgressLabel{color:#ffc36f}
 #v3121ScanProgress.running #v3121ProgressLabel{color:#8eeaff}
 /* ===== END V3.12.2 ===== */
+
+/* IANS V3.12.3 · Scan Stability + Compact Scan & Vault */
+.ians-v312 #progressPanel.ians-job-card{padding:15px 17px!important;margin-bottom:12px!important}
+.ians-v312 #progressPanel .ians-job-head{align-items:center!important}
+.ians-v312 #progressPanel .ians-job-meter{width:58px!important;height:58px!important}
+.ians-v312 #progressPanel .ians-job-meter:after{inset:7px!important}
+.ians-v312 #progressPanel .ians-job-track{height:8px!important;margin:10px 0 8px!important}
+.ians-v312 #progressPanel .ians-job-actions{margin-top:9px!important;gap:6px!important}
+.ians-v312 #progressPanel .ians-job-actions .btn{padding:7px 10px!important;font-size:10px!important}
+.ians-v312 #progressPanel #scanVerifyResult{margin:8px 0 0!important;font-size:10px!important}
+.ians-v312 #progressPanel .scan-visual-grid{grid-template-columns:92px minmax(0,1fr)!important;gap:14px!important;margin-top:10px!important;align-items:center!important}
+.ians-v312 #progressPanel .scan-donut-wrap{width:86px!important;height:86px!important;margin:0!important}
+.ians-v312 #progressPanel .scan-donut-wrap canvas{width:86px!important;height:86px!important}
+.ians-v312 #progressPanel .donut-center strong{font-size:18px!important}
+.ians-v312 #progressPanel .donut-center span{font-size:9px!important}
+.ians-v312 #progressPanel .live-stats{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important}
+.ians-v312 #progressPanel .live-stats>div{min-height:54px!important;padding:9px 10px!important}
+.ians-v312 #progressPanel .live-stats span{font-size:9px!important}
+.ians-v312 #progressPanel .live-stats strong{font-size:12px!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:900px){.ians-v312 #progressPanel .scan-visual-grid{grid-template-columns:1fr!important}.ians-v312 #progressPanel .scan-donut-wrap{margin:auto!important}.ians-v312 #progressPanel .live-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+/* IANS V3.12.4 · Scan recovery state polish */
+.ians-v312 #progressPanel .ians-job-card{max-width:100%!important}
+.ians-v312 #progressPanel #scanJobPhase{white-space:normal!important;line-height:1.35!important}
+.ians-v312 #progressPanel #activeFolderLive{max-width:100%!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}

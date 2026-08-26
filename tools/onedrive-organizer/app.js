@@ -228,38 +228,75 @@ async function signIn() {
     els.loginPanel.appendChild(p);
   }
 }
-async function getToken() {
+const iansSleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+function iansTransientMicrosoftError(err){
+  const name=String(err?.name||"");
+  const msg=String(err?.errorCode||err?.message||err||"");
+  return name==="AbortError" || /timed_out|timeout|monitor_window_timeout|network|failed to fetch|fetch failed|aborted|operation was aborted|temporar|ECONN|ENET|503|504/i.test(msg);
+}
+function iansTimeoutPromise(promise,ms,label="Microsoft-kall"){
+  return new Promise((resolve,reject)=>{
+    const t=setTimeout(()=>{
+      const e=new Error(`${label} timed_out after ${ms} ms`); e.name="IansTimeoutError"; reject(e);
+    },ms);
+    Promise.resolve(promise).then(v=>{clearTimeout(t);resolve(v)},e=>{clearTimeout(t);reject(e)});
+  });
+}
+async function getToken(attempt = 0) {
   const request = { scopes: SCOPES, account: activeAccount };
   try {
-    const result = await msalApp.acquireTokenSilent(request);
+    const result = await iansTimeoutPromise(msalApp.acquireTokenSilent(request),30000,"MSAL token");
     return result.accessToken;
   } catch (err) {
     if (err instanceof InteractionRequiredAuthError) {
       throw new Error("Microsoft krever ny interaktiv innlogging. Logg ut og koble til OneDrive på nytt.");
+    }
+    // V3.12.4: timeouts/AbortError after sleep or a slow Microsoft response are transient.
+    if (iansTransientMicrosoftError(err) && attempt < 5) {
+      const delay=Math.min(1500 * (2 ** attempt), 12000);
+      updateScanMeter?.(Math.round(scanVisualPct||5),`Microsoft svarer tregt · nytt forsøk ${attempt+1}/5`);
+      await iansSleep(delay);
+      return getToken(attempt + 1);
     }
     throw err;
   }
 }
 async function graphFetch(url, attempt = 0) {
   if (cancelRequested) throw new Error("SCAN_CANCELLED");
-  const token = await getToken();
+  try {
+    const token = await getToken();
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),45000);
+    let response;
+    try {
+      response = await fetch(url.startsWith("http") ? url : `${GRAPH}${url}`, {
+        headers: { Authorization: `Bearer ${token}` }, signal:controller.signal
+      });
+    } finally { clearTimeout(timeout); }
 
-  const response = await fetch(url.startsWith("http") ? url : `${GRAPH}${url}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
+    if ((response.status === 429 || response.status === 500 || response.status === 502 || response.status === 503 || response.status === 504) && attempt < 6) {
+      const retryAfter = Number(response.headers.get("Retry-After")) || Math.min(2 ** attempt, 30);
+      updateScanMeter?.(Math.round(scanVisualPct||5),`Microsoft Graph er opptatt · prøver igjen ${attempt+1}/6`);
+      await iansSleep(retryAfter * 1000);
+      return graphFetch(url, attempt + 1);
+    }
 
-  if ((response.status === 429 || response.status === 503 || response.status === 504) && attempt < 6) {
-    const retryAfter = Number(response.headers.get("Retry-After")) || Math.min(2 ** attempt, 30);
-    await new Promise(r => setTimeout(r, retryAfter * 1000));
-    return graphFetch(url, attempt + 1);
+    if (!response.ok) {
+      let detail = "";
+      try { detail = JSON.stringify(await response.json()); } catch {}
+      throw new Error(`Graph ${response.status}: ${detail || response.statusText}`);
+    }
+    return response.json();
+  } catch(err) {
+    if (err?.message === "SCAN_CANCELLED") throw err;
+    if (iansTransientMicrosoftError(err) && attempt < 6) {
+      const delay=Math.min(1500 * (2 ** attempt),15000);
+      updateScanMeter?.(Math.round(scanVisualPct||5),`Forbindelsen ble avbrutt · prøver igjen ${attempt+1}/6`);
+      await iansSleep(delay);
+      return graphFetch(url,attempt+1);
+    }
+    throw err;
   }
-
-  if (!response.ok) {
-    let detail = "";
-    try { detail = JSON.stringify(await response.json()); } catch {}
-    throw new Error(`Graph ${response.status}: ${detail || response.statusText}`);
-  }
-  return response.json();
 }
 
 async function loadDriveQuota() {
@@ -454,6 +491,11 @@ async function scanOneDrive(resumeState=null) {
   els.exportBtn.disabled=true;
   els.progressBar.style.width="8%";
   document.getElementById("scanStateBadge").textContent="SKANNER";
+  if(window.__iansScanLiveState){
+    window.__iansScanLiveState.status="running";
+    window.__iansScanLiveState.startedAt=Date.now();
+    window.__iansScanLiveState.pct=Math.max(1,Math.round(scanVisualPct||1));
+  }
 
   let stats={files:0,folders:0,bytes:0};
   let files=[];
@@ -557,7 +599,8 @@ async function scanOneDrive(resumeState=null) {
     setTimeout(()=>refreshCheckpointUi?.(),120);
     if(typeof iansToast==="function")iansToast("Scan satt på pause","Mac/PC var i dvale. Checkpoint er bevart – trykk Resume for å fortsette.","success",9000);
   };
-  document.addEventListener("visibilitychange",()=>{document.visibilityState==="hidden"?scanLifecycleHidden():scanLifecycleVisible()});
+  const scanVisibilityHandler=()=>{document.visibilityState==="hidden"?scanLifecycleHidden():scanLifecycleVisible()};
+  document.addEventListener("visibilitychange",scanVisibilityHandler);
   window.addEventListener("pagehide",scanLifecycleHidden);
   document.addEventListener("freeze",scanLifecycleHidden);
 
@@ -710,21 +753,36 @@ async function scanOneDrive(resumeState=null) {
     updateScanMeter(100,"Kartlegging ferdig");
     els.exportBtn.disabled=false;
     document.getElementById("scanStateBadge").textContent="FERDIG";
+    if(window.__iansScanLiveState){window.__iansScanLiveState.status="done";window.__iansScanLiveState.pct=100;}
   }catch(err){
     if(err.message==="SCAN_CANCELLED" || err.message==="SCAN_SLEEP_INTERRUPTED"){
       els.progressTitle.textContent=err.message==="SCAN_SLEEP_INTERRUPTED"?"Kartlegging pauset etter dvale – checkpoint lagret":"Kartlegging stoppet – checkpoint lagret";
       els.progressPath.textContent="Trykk Resume for å fortsette senere.";
       document.getElementById("scanStateBadge").textContent="PAUSET";
       updateScanMeter(Math.round(scanVisualPct||5),"Pauset · klar for Resume");
+      if(window.__iansScanLiveState)window.__iansScanLiveState.status="paused";
     }else{
       console.error(err);
       await checkpoint(true);
-      els.progressTitle.textContent="Feil under kartlegging – checkpoint lagret";
-      els.progressPath.textContent=err.message;
-      document.getElementById("scanStateBadge").textContent="CHECKPOINT";
-      updateScanMeter(Math.round(scanVisualPct||5),"Feil · checkpoint lagret");
+      const transient=iansTransientMicrosoftError(err);
+      if(transient){
+        els.progressTitle.textContent="Microsoft-forbindelsen ble pauset – checkpoint lagret";
+        els.progressPath.textContent="OneDrive svarte ikke etter flere forsøk. Trykk Resume; skanningen fortsetter fra checkpoint uten å starte på nytt.";
+        document.getElementById("scanStateBadge").textContent="PAUSET";
+        updateScanMeter(Math.round(scanVisualPct||5),"Midlertidig Microsoft-feil · Resume klar");
+      }else{
+        els.progressTitle.textContent="Feil under kartlegging – checkpoint lagret";
+        els.progressPath.textContent=err.message;
+        document.getElementById("scanStateBadge").textContent="CHECKPOINT";
+        updateScanMeter(Math.round(scanVisualPct||5),"Feil · checkpoint lagret");
+      }
+      if(window.__iansScanLiveState)window.__iansScanLiveState.status="paused";
     }
   }finally{
+    document.removeEventListener("visibilitychange",scanVisibilityHandler);
+    window.removeEventListener("pagehide",scanLifecycleHidden);
+    document.removeEventListener("freeze",scanLifecycleHidden);
+    window.__iansForceScanCheckpoint=null;
     stopScanClock();
     els.scanBtn.disabled=false;
     els.cancelBtn.classList.add("hidden");
@@ -5877,3 +5935,14 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   console.info('[IANS] V3.12.2 Sleep/Resume Recovery aktiv');
 })();
 // ===== END V3.12.2 =====
+
+
+// ===== IANS OneDrive Command V3.12.4 · SCAN RECOVERY HARDENING =====
+console.info('[IANS] V3.12.4 Scan Recovery Hardening aktiv');
+window.v3124ScanRecoverySelfTest=()=>({
+  transientAbort:iansTransientMicrosoftError(Object.assign(new Error('The operation was aborted'),{name:'AbortError'})),
+  transientTimeout:iansTransientMicrosoftError(new Error('timed_out')),
+  checkpointHook:typeof window.__iansForceScanCheckpoint==='function' || window.__iansForceScanCheckpoint===null,
+  liveStatus:window.__iansScanLiveState?.status||'idle'
+});
+// ===== END V3.12.4 =====
