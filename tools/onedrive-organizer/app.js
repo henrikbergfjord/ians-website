@@ -255,6 +255,51 @@ function iansTokenUsable(){
   const aid=activeAccount?.homeAccountId||activeAccount?.localAccountId||activeAccount?.username||"";
   return !!iansTokenCache.accessToken && iansTokenCache.accountId===aid && Date.now()<iansTokenCache.expiresAt-120000;
 }
+
+// V3.12.7: explicit scan starts are user gestures. Prime MSAL with an interactive
+// popup immediately from that click instead of waiting for a hidden-iframe
+// acquireTokenSilent call that can time out before file 1.
+let iansInteractiveAuthPromise=null;
+function iansCacheAuthResult(result){
+  if(result?.account){
+    activeAccount=result.account;
+    try{msalApp?.setActiveAccount(activeAccount)}catch{}
+  }
+  if(!result?.accessToken) throw new Error("Microsoft returnerte ikke access token.");
+  const aid=activeAccount?.homeAccountId||activeAccount?.localAccountId||activeAccount?.username||"";
+  const exp=result?.expiresOn instanceof Date ? result.expiresOn.getTime() : Date.now()+45*60*1000;
+  iansTokenCache={accessToken:result.accessToken,expiresAt:exp,accountId:aid};
+  return result.accessToken;
+}
+function iansPrimeInteractiveAuth(reason="Full scan") {
+  if(iansTokenUsable()) return Promise.resolve(iansTokenCache.accessToken);
+  if(iansInteractiveAuthPromise) return iansInteractiveAuthPromise;
+  if(!msalApp) return Promise.reject(new Error("MSAL er ikke initialisert."));
+  const request={
+    scopes:SCOPES,
+    account:activeAccount||undefined,
+    loginHint:activeAccount?.username||undefined,
+    redirectUri:POPUP_REDIRECT_URI
+  };
+  iansScanStage?.("AUTH",`${reason}: åpner Microsoft-sesjon`);
+  updateScanMeter?.(Math.round(scanVisualPct||5),"Bekrefter Microsoft-tilkobling");
+  // acquireTokenPopup is invoked synchronously from the user's click. This is
+  // deliberate: Edge can block a popup if we first await a 15 s silent timeout.
+  const raw=msalApp.acquireTokenPopup(request);
+  iansInteractiveAuthPromise=Promise.resolve(raw)
+    .then(iansCacheAuthResult)
+    .catch(err=>{
+      const e=new Error(`AUTH_POPUP_STAGE: ${err?.message||err}`);
+      e.name="IansAuthPopupError";
+      e.cause=err;
+      throw e;
+    })
+    .finally(()=>{iansInteractiveAuthPromise=null;});
+  // Make getToken() consume the same in-flight popup instead of starting a
+  // parallel silent acquisition.
+  iansTokenPromise=iansInteractiveAuthPromise;
+  return iansInteractiveAuthPromise;
+}
 async function getToken(attempt=0){
   if(iansTokenUsable()) return iansTokenCache.accessToken;
   if(iansTokenPromise) return iansTokenPromise;
@@ -272,12 +317,11 @@ async function getToken(attempt=0){
         e.name="IansAuthRequiredError";
         throw e;
       }
-      if(iansTransientMicrosoftError(err) && attempt<2){
-        const next=attempt+1;
-        updateScanMeter?.(Math.round(scanVisualPct||5),`Microsoft-token svarer tregt · nytt forsøk ${next}/3`);
-        await iansSleep(next*1500);
-        iansTokenPromise=null;
-        return getToken(next);
+      if(iansTransientMicrosoftError(err)){
+        const e=new Error(`SILENT_AUTH_TIMEOUT: ${err?.message||err}`);
+        e.name="IansSilentAuthTimeout";
+        e.cause=err;
+        throw e;
       }
       const e=new Error(`TOKEN_STAGE: ${err?.message||err}`);
       e.name="IansTokenStageError";
@@ -352,7 +396,7 @@ function iansEnsureScanDiagnostics(){
   const bar=document.createElement("div");
   bar.id="iansScanDiagnostics";
   bar.className="ians-scan-diagnostics";
-  bar.innerHTML=`<span>SCAN START</span><strong id="iansScanStageLine">READY · v3.12.6</strong><small>AUTH → DRIVE → ROOT → CHECKPOINT → ENUMERATION</small>`;
+  bar.innerHTML=`<span>SCAN START</span><strong id="iansScanStageLine">READY · v3.12.7</strong><small>AUTH → DRIVE → ROOT → CHECKPOINT → ENUMERATION</small>`;
   host.prepend(bar);
 }
 setTimeout(iansEnsureScanDiagnostics,900);
@@ -5310,18 +5354,39 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     // That could rediscover the V3 button itself when the legacy button was moved/hidden,
     // causing a recursive click loop before Graph was ever called.
     if(action==="full"){
-      showFocus("scan");
       iansEnsureScanDiagnostics();
       iansScanStage("READY","Full scan-knapp mottatt");
-      try{ await scanOneDrive(); }catch(err){ console.error("[IANS V3.12.6] direct full scan",err); }
+      // Important: invoke popup auth while the click is still a trusted user
+      // gesture. Only then switch view/start the scan.
+      const authPromise=iansPrimeInteractiveAuth("Full scan");
+      showFocus("scan");
+      try{
+        await authPromise;
+        iansScanStage("AUTH","Microsoft-token OK");
+        await scanOneDrive();
+      }catch(err){
+        iansScanStage("AUTH",`STOPP · ${String(err?.message||err).replace(/^AUTH_POPUP_STAGE:\s*/,"")}`);
+        iansToast?.("Microsoft-tilkobling feilet",String(err?.message||err),"error",9000);
+        console.error("[IANS V3.12.7] interactive auth/full scan",err);
+      }
       return;
     }
     if(action==="resume"){
+      iansEnsureScanDiagnostics();
+      const authPromise=iansPrimeInteractiveAuth("Resume");
       showFocus("scan");
       const cp=await loadScanCheckpoint();
       if(!cp){ iansScanStage("READY","ingen checkpoint å fortsette"); iansToast?.("Ingen checkpoint","Det finnes ingen lagret scan å fortsette.","error",5000); return; }
       iansScanStage("CHECKPOINT","Resume checkpoint lastet");
-      try{ await scanOneDrive(cp); }catch(err){ console.error("[IANS V3.12.6] direct resume",err); }
+      try{
+        await authPromise;
+        iansScanStage("AUTH","Microsoft-token OK");
+        await scanOneDrive(cp);
+      }catch(err){
+        iansScanStage("AUTH",`STOPP · ${String(err?.message||err).replace(/^AUTH_POPUP_STAGE:\s*/,"")}`);
+        iansToast?.("Microsoft-tilkobling feilet",String(err?.message||err),"error",9000);
+        console.error("[IANS V3.12.7] interactive auth/resume",err);
+      }
       return;
     }
     if(action==="quick"){
@@ -6063,12 +6128,13 @@ console.info('[IANS] V3.12.5 Token Broker + Scan Preflight aktiv');
 // ===== END V3.12.5 =====
 
 
-// ===== IANS OneDrive Command V3.12.6 · SCAN START BRIDGE =====
+// ===== IANS OneDrive Command V3.12.7 · AUTH RECOVERY =====
 window.v3126ScanStartBridgeSelfTest=()=>({
   directStart:typeof scanOneDrive==="function",
   diagnostics:typeof iansScanStage==="function",
   stage:window.__iansScanStage||null,
   legacyScanButton:!!document.getElementById("scanBtn")
 });
-console.info('[IANS] V3.12.6 Scan Start Bridge + Diagnostics aktiv');
-// ===== END V3.12.6 =====
+console.info('[IANS] V3.12.7 Auth Recovery + Interactive Token Prime aktiv');
+window.v3127AuthSelfTest=()=>({interactive:typeof iansPrimeInteractiveAuth==="function",tokenCache:iansTokenUsable(),stage:window.__iansScanStage||null});
+// ===== END V3.12.7 =====
