@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>IAN'S ORBIT · The Lost Core</title>
+<meta name="description" content="IAN'S ORBIT – et originalt nettleserspill på ians.no.">
+<link rel="stylesheet" href="styles.css?v=100">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <a class="brand" href="../../index.html" aria-label="Tilbake til IANS">IANS</a>
+    <div class="title">
+      <strong>IAN'S ORBIT</strong>
+      <span>THE LOST CORE</span>
+    </div>
+    <button id="soundBtn" class="iconbtn" aria-label="Lyd">🔊</button>
+  </header>
+
+  <main class="stage-wrap">
+    <canvas id="game" width="1280" height="720" aria-label="IAN'S ORBIT spillområde"></canvas>
+
+    <section id="hud" class="hud hidden" aria-live="polite">
+      <div class="hud-card"><span>⚡ CORE</span><strong id="crystals">0 / 5</strong></div>
+      <div class="hud-card"><span>🪙 COINS</span><strong id="coins">0</strong></div>
+      <div class="hud-card"><span>⭐ SCORE</span><strong id="score">0</strong></div>
+      <div class="hud-card"><span>⏱️ TID</span><strong id="timer">0:00</strong></div>
+    </section>
+
+    <section id="startScreen" class="overlay">
+      <div class="panel hero-panel">
+        <div class="eyebrow">IANS GAMES · ORIGINAL</div>
+        <h1>IAN'S ORBIT</h1>
+        <h2>THE LOST CORE</h2>
+        <p>IANS CORE har mistet fem energikrystaller. Finn dem, løs oppgavene og åpne portalen før energien forsvinner.</p>
+        <div class="hero-grid">
+          <div><b>🏃 Utforsk</b><span>Løp, hopp og finn hemmelige områder.</span></div>
+          <div><b>🧠 Tenk</b><span>Matte, logikk og mønsteroppgaver.</span></div>
+          <div><b>💎 Samle</b><span>Finn 5 krystaller og masse coins.</span></div>
+        </div>
+        <div class="controls">
+          <span>← → / A D = løp</span>
+          <span>↑ / W / SPACE = hopp</span>
+          <span>E = bruk portal / svar</span>
+        </div>
+        <button id="playBtn" class="primary">START EVENTYRET</button>
+        <p class="small">Ingen chat · ingen kjøp · ingen reklame</p>
+      </div>
+    </section>
+
+    <section id="quizScreen" class="overlay hidden">
+      <div class="panel quiz-panel">
+        <div class="eyebrow">ENERGILÅS</div>
+        <h2 id="quizTitle">Løs oppgaven</h2>
+        <p id="quizQuestion"></p>
+        <div id="quizAnswers" class="answers"></div>
+        <p id="quizFeedback" class="feedback"></p>
+      </div>
+    </section>
+
+    <section id="finishScreen" class="overlay hidden">
+      <div class="panel finish-panel">
+        <div class="eyebrow">MISSION COMPLETE</div>
+        <h1>CORE RESTORED!</h1>
+        <p>Du fant alle krystallene og åpnet portalen.</p>
+        <div class="result-grid">
+          <div><span>⭐ SCORE</span><strong id="finalScore">0</strong></div>
+          <div><span>🪙 COINS</span><strong id="finalCoins">0</strong></div>
+          <div><span>⏱️ TID</span><strong id="finalTime">0:00</strong></div>
+          <div><span>🏆 BESTE</span><strong id="bestScore">0</strong></div>
+        </div>
+        <div id="badge" class="badge">MASTER EXPLORER</div>
+        <button id="againBtn" class="primary">SPILL IGJEN</button>
+      </div>
+    </section>
+
+    <div class="mobile-controls">
+      <button data-key="left">◀</button>
+      <button data-key="right">▶</button>
+      <button data-key="jump">⬆</button>
+      <button data-key="use">E</button>
+    </div>
+  </main>
+</div>
+<script src="game.js?v=100"></script>
+</body>
+</html>
