@@ -6339,7 +6339,10 @@ window.__iansV313SelfTest=()=>({
     if (isKnownUiNull) {
       state.uiErrors += 1;
       state.lastError = msg;
-      console.warn("[IANS V3.14.1] Legacy UI sync-feil isolert; scanmotor fortsetter.");
+      if (!window.__iansV3141LegacyUiWarned) {
+  window.__iansV3141LegacyUiWarned = true;
+  console.info("[IANS V3.14.4] Legacy UI sync-lag er deaktivert som datakilde.");
+}
       event.preventDefault();
       return;
     }
@@ -6554,4 +6557,229 @@ window.__iansV313SelfTest=()=>({
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot3143);
   else boot3143();
+})();
+
+// ===== IANS OneDrive Command V3.14.4 · Single Source of Truth =====
+(() => {
+  "use strict";
+
+  const ACTIVE_KEY = "ians_v3144_active_scan";
+  const RESET_KEY = "ians_v3144_clean_reset";
+  const PREV_KEY = "ians_v3144_previous_scan";
+
+  const parse = v => { try { return JSON.parse(v); } catch { return null; } };
+  const $ = id => document.getElementById(id);
+
+  function isActive3144(){
+    const s = parse(sessionStorage.getItem(ACTIVE_KEY));
+    return !!(s && s.status === "running");
+  }
+
+  function capturePrevious3144(){
+    const root = findLiveRoot3144();
+    if(!root) return;
+    const txt = root.innerText || "";
+    const file = txt.match(/(\d{1,3}(?:[\s\u00a0]\d{3})+)\s*filer/i);
+    const gb = txt.match(/(\d+(?:[.,]\d+)?)\s*GB/i);
+    if(file || gb){
+      localStorage.setItem(PREV_KEY, JSON.stringify({
+        filesText: file ? file[1] : "",
+        sizeText: gb ? gb[1] + " GB" : "",
+        savedAt: new Date().toISOString()
+      }));
+    }
+  }
+
+  function findLiveRoot3144(){
+    const all = [...document.querySelectorAll("body *")];
+    const label = all.find(el => /IANS LIVE OPERATIONS/i.test((el.textContent||"").trim()));
+    if(!label) return null;
+    let p = label;
+    for(let i=0;i<6 && p;i++,p=p.parentElement){
+      const t=(p.innerText||"");
+      if(/ingen aktiv scan|kartlegging pågår|aktiv mappe/i.test(t) && /filer/i.test(t)) return p;
+    }
+    return label.parentElement?.parentElement || label.parentElement;
+  }
+
+  function zeroLeaf(el){
+    if(!el || el.children.length) return;
+    const t=(el.textContent||"").trim();
+
+    if(/^\d+(?:[.,]\d+)?%$/.test(t)) {
+      el.textContent="0%";
+      return;
+    }
+    if(/^\d{1,3}(?:[\s\u00a0]\d{3})+$/.test(t)) {
+      el.textContent="0";
+      return;
+    }
+    if(/^\d+(?:[.,]\d+)?\s*(?:GB|MB|TB)$/i.test(t)) {
+      el.textContent="0 B";
+      return;
+    }
+    if(/^(\d+)\s*filer$/i.test(t)) {
+      el.textContent="0 filer";
+      return;
+    }
+  }
+
+  function enforceIdleUi3144(){
+    if(isActive3144()) return;
+    if(localStorage.getItem(RESET_KEY)!=="1") return;
+
+    const root=findLiveRoot3144();
+    if(root){
+      [...root.querySelectorAll("*")].forEach(zeroLeaf);
+
+      const leaves=[...root.querySelectorAll("*")].filter(el=>!el.children.length);
+      leaves.forEach(el=>{
+        const t=(el.textContent||"").trim();
+        if(/kartlegging pågår/i.test(t)) el.textContent="Klar · ingen aktiv jobb";
+        if(/aktiv mappe:/i.test(t)) el.textContent="Aktiv mappe: /";
+        if(/scan|jobb/i.test(t) && /^SCAN$/i.test(t)) el.textContent="KLAR";
+      });
+    }
+
+    ["fileCount","folderCount","processedFoldersLive","queuedFoldersLive"].forEach(id=>{
+      const el=$(id); if(el) el.textContent="0";
+    });
+    const b=$("scannedBytesLive"); if(b) b.textContent="0 B";
+    const p=$("scanProgressPct"); if(p) p.textContent="0%";
+  }
+
+  async function clearIndexedDbCheckpoint3144(){
+    try{
+      await new Promise(resolve=>{
+        const req=indexedDB.open("ians_onedrive_scan_v25",1);
+        req.onerror=()=>resolve();
+        req.onupgradeneeded=()=>{
+          const db=req.result;
+          if(!db.objectStoreNames.contains("checkpoints")) db.createObjectStore("checkpoints");
+        };
+        req.onsuccess=()=>{
+          const db=req.result;
+          try{
+            if(!db.objectStoreNames.contains("checkpoints")) { db.close(); resolve(); return; }
+            const tx=db.transaction("checkpoints","readwrite");
+            tx.objectStore("checkpoints").delete("active");
+            tx.oncomplete=()=>{db.close();resolve()};
+            tx.onerror=()=>{db.close();resolve()};
+          }catch{db.close();resolve()}
+        };
+      });
+    }catch{}
+  }
+
+  function clearScanStorage3144(){
+    capturePrevious3144();
+
+    Object.keys(localStorage).forEach(k=>{
+      if(
+        /^ians_/i.test(k) &&
+        /(scan|checkpoint|report|cache|resume|enumerat)/i.test(k) &&
+        !/(quarantine|review|action|pro|client|config|feedback|media)/i.test(k)
+      ){
+        localStorage.removeItem(k);
+      }
+    });
+
+    Object.keys(sessionStorage).forEach(k=>{
+      if(
+        /^ians_/i.test(k) &&
+        /(scan|checkpoint|resume|enumerat)/i.test(k)
+      ){
+        sessionStorage.removeItem(k);
+      }
+    });
+
+    sessionStorage.removeItem(ACTIVE_KEY);
+    localStorage.setItem(RESET_KEY,"1");
+  }
+
+  function newScanSession3144(){
+    const s={
+      scanId:`scan-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`,
+      startedAt:new Date().toISOString(),
+      status:"running"
+    };
+    sessionStorage.setItem(ACTIVE_KEY,JSON.stringify(s));
+    localStorage.removeItem(RESET_KEY);
+    console.info(`[IANS SCAN SESSION] ${s.scanId} · LIVE state owner=V3.14.4`);
+    return s;
+  }
+
+  function bindResetButton3144(){
+    const btn=$("iansClearScanCacheBtn");
+    if(!btn || btn.dataset.v3144==="1") return;
+    btn.dataset.v3144="1";
+
+    // erstatter eldre handler ved å klone knappen
+    const clone=btn.cloneNode(true);
+    btn.replaceWith(clone);
+
+    clone.addEventListener("click", async e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      const prev=parse(localStorage.getItem(PREV_KEY));
+      const msg=[
+        "Nullstill lokal scan-data?",
+        "",
+        "Dette fjerner lokale scan/cache/checkpoint-data og stopper automatisk Resume.",
+        "Det slettes IKKE filer i OneDrive.",
+        "Karantene/review-historikk beholdes.",
+        prev ? `Forrige scan beholdes som historikk: ${prev.filesText||""}${prev.sizeText ? " · "+prev.sizeText : ""}` : "",
+        "",
+        "Fortsette?"
+      ].filter(Boolean).join("\n");
+      if(!confirm(msg)) return;
+
+      clearScanStorage3144();
+      await clearIndexedDbCheckpoint3144();
+      console.info("[IANS CACHE RESET] V3.14.4 clean reset complete · no auto-resume");
+      location.reload();
+    });
+  }
+
+  document.addEventListener("click", e=>{
+    const b=e.target.closest("button");
+    if(!b) return;
+    const t=(b.textContent||"").trim();
+
+    if(/full\s*scan|full\s*skann/i.test(t)){
+      const existing=parse(sessionStorage.getItem(ACTIVE_KEY));
+      if(existing?.status==="running"){
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        console.warn(`[IANS SCAN BLOCKED] aktiv scan finnes: ${existing.scanId}`);
+        return;
+      }
+      newScanSession3144();
+    }
+  }, true);
+
+  let scheduled=false;
+  const observer3144=new MutationObserver(()=>{
+    if(scheduled) return;
+    scheduled=true;
+    requestAnimationFrame(()=>{
+      scheduled=false;
+      enforceIdleUi3144();
+      bindResetButton3144();
+    });
+  });
+
+  function boot3144(){
+    bindResetButton3144();
+    enforceIdleUi3144();
+    observer3144.observe(document.documentElement,{subtree:true,childList:true,characterData:true});
+    setTimeout(enforceIdleUi3144,300);
+    setTimeout(enforceIdleUi3144,900);
+    setTimeout(enforceIdleUi3144,1800);
+    console.info("[IANS] V3.14.4 Single Source of Truth aktiv · LIVE state controlled");
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot3144);
+  else boot3144();
 })();
