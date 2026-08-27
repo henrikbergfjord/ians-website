@@ -6383,3 +6383,232 @@ window.__iansV313SelfTest=()=>({
   console.info("[IANS] V3.14.1 Clean Runtime aktiv · legacy scan/auth layers removed · UI errors isolated");
 })();
 // ===== END IANS OneDrive Command V3.14.1 =====
+
+// ===== IANS OneDrive Command V3.14.2 · Scan Session Isolation =====
+(() => {
+  "use strict";
+  const V = "3.14.2";
+  const SESSION_KEY = "ians_v3142_active_scan_session";
+  const PREVIOUS_KEY = "ians_v3142_previous_scan_summary";
+  const LEGACY_KEYS = [
+    "ians_scan_state","ians_scan_report","ians_scan_cache","ians_last_scan",
+    "ians_v293_scan","ians_v294_scan","ians_v311_scan","ians_v312_scan",
+    "ians_v313_scan","ians_v314_scan"
+  ];
+  let currentSession = null;
+  let currentStats = {files:0, folders:0, bytes:0, retries:0, failedFolders:0};
+  let sessionStarted = false;
+
+  const $v3142 = id => document.getElementById(id);
+  const fmtN3142 = n => new Intl.NumberFormat("nb-NO").format(Number(n)||0);
+  const fmtB3142 = n => {
+    n = Number(n)||0;
+    if (!n) return "0 B";
+    const u=["B","KB","MB","GB","TB","PB"];
+    const i=Math.min(Math.floor(Math.log(n)/Math.log(1024)),u.length-1);
+    return `${(n/Math.pow(1024,i)).toFixed(i>=3?2:1)} ${u[i]}`;
+  };
+  const newScanId3142 = () => `scan-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
+  const safeJson3142 = v => { try{return JSON.parse(v)}catch{return null} };
+
+  function snapshotOldVisibleState3142(){
+    const fileText =
+      $v3142("fileCount")?.textContent ||
+      document.querySelector("[data-live-files]")?.textContent ||
+      "";
+    const sizeText =
+      $v3142("fileSize")?.textContent ||
+      document.querySelector("[data-live-bytes]")?.textContent ||
+      "";
+    if (fileText || sizeText) {
+      localStorage.setItem(PREVIOUS_KEY, JSON.stringify({
+        savedAt:new Date().toISOString(),
+        filesText:fileText.trim(),
+        sizeText:sizeText.trim(),
+        source:"legacy-visible-state"
+      }));
+    }
+  }
+
+  async function clearLegacyCheckpointOnly3142(){
+    try{
+      await new Promise(resolve=>{
+        const req=indexedDB.open("ians_onedrive_scan_v25",1);
+        req.onerror=()=>resolve();
+        req.onupgradeneeded=()=>{
+          const db=req.result;
+          if(!db.objectStoreNames.contains("checkpoints")) db.createObjectStore("checkpoints");
+        };
+        req.onsuccess=()=>{
+          const db=req.result;
+          try{
+            if(!db.objectStoreNames.contains("checkpoints")) { db.close(); resolve(); return; }
+            const tx=db.transaction("checkpoints","readwrite");
+            tx.objectStore("checkpoints").delete("active");
+            tx.oncomplete=()=>{db.close();resolve()};
+            tx.onerror=()=>{db.close();resolve()};
+          }catch{db.close();resolve()}
+        };
+      });
+    }catch{}
+  }
+
+  function clearLegacyLocalScanState3142(){
+    for(const k of LEGACY_KEYS) localStorage.removeItem(k);
+    Object.keys(localStorage).forEach(k=>{
+      if (/^ians_/i.test(k) &&
+          /(scan|checkpoint|report|cache)/i.test(k) &&
+          !/(quarantine|review|action|pro|client|config|feedback|media)/i.test(k) &&
+          k !== PREVIOUS_KEY && k !== SESSION_KEY) {
+        localStorage.removeItem(k);
+      }
+    });
+  }
+
+  async function beginFreshSession3142(source="full-scan"){
+    if(sessionStarted) return currentSession;
+    snapshotOldVisibleState3142();
+    clearLegacyLocalScanState3142();
+    await clearLegacyCheckpointOnly3142();
+
+    currentStats={files:0,folders:0,bytes:0,retries:0,failedFolders:0};
+    currentSession={
+      scanId:newScanId3142(),
+      startedAt:new Date().toISOString(),
+      source,
+      status:"running",
+      stats:{...currentStats}
+    };
+    sessionStarted=true;
+    sessionStorage.setItem(SESSION_KEY,JSON.stringify(currentSession));
+
+    ["fileCount","folderCount","processedFoldersLive","queuedFoldersLive"].forEach(x=>{
+      const el=$v3142(x); if(el) el.textContent="0";
+    });
+    const bytes=$v3142("scannedBytesLive"); if(bytes) bytes.textContent="0 B";
+
+    console.info(`[IANS SCAN SESSION] ${currentSession.scanId} · fresh Graph session · previous cache isolated`);
+    return currentSession;
+  }
+
+  function completeSession3142(){
+    if(!currentSession) return;
+    currentSession.status=currentStats.failedFolders ? "completed-with-errors" : "completed";
+    currentSession.completedAt=new Date().toISOString();
+    currentSession.stats={...currentStats};
+    sessionStorage.setItem(SESSION_KEY,JSON.stringify(currentSession));
+    console.info(`[IANS SCAN COMPLETE] ${currentSession.scanId} · ${fmtN3142(currentStats.files)} files · ${fmtB3142(currentStats.bytes)} · retries ${currentStats.retries} · failed ${currentStats.failedFolders}`);
+  }
+
+  const nativeFetch3142 = window.fetch.bind(window);
+  window.fetch = async function(input, init){
+    const url = typeof input==="string" ? input : (input?.url || "");
+    const isGraph = /^https:\/\/graph\.microsoft\.com\//i.test(url);
+    if(!isGraph) return nativeFetch3142(input,init);
+
+    let last;
+    let recoveredStatus = null;
+    for(let attempt=0; attempt<6; attempt++){
+      last = await nativeFetch3142(input,init);
+      if(![429,500,502,503,504].includes(last.status)){
+        if(recoveredStatus !== null){
+          console.info(`[IANS GRAPH RECOVERED] HTTP ${recoveredStatus} · ${url}`);
+        }
+        return last;
+      }
+      recoveredStatus = last.status;
+      if(attempt>=5) break;
+
+      currentStats.retries++;
+      const ra=Number(last.headers.get("Retry-After"));
+      const wait=Number.isFinite(ra)&&ra>0 ? ra : Math.min(2**attempt,15);
+      console.warn(`[IANS GRAPH RETRY] HTTP ${last.status} · attempt ${attempt+1}/6 · wait ${wait}s`);
+      await new Promise(r=>setTimeout(r,wait*1000));
+    }
+    if(last && [429,500,502,503,504].includes(last.status)){
+      console.error(`[IANS GRAPH FAILED] HTTP ${last.status} after 6 attempts · ${url}`);
+    }
+    return last;
+  };
+
+  document.addEventListener("click", e=>{
+    const b=e.target.closest("#scanBtn,#fullScanBtn,[data-action='full-scan'],[data-scan='full'],button");
+    if(!b) return;
+    const text=(b.textContent||"").trim().toLowerCase();
+    const isFull =
+      b.id==="scanBtn" || b.id==="fullScanBtn" ||
+      b.dataset?.action==="full-scan" || b.dataset?.scan==="full" ||
+      /full\s*scan|full\s*skann|fullstendig\s*scan|fullstendig\s*skann/.test(text);
+    if(!isFull) return;
+
+    const active = safeJson3142(sessionStorage.getItem(SESSION_KEY));
+    if(active?.status==="running" && sessionStarted){
+      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+      console.warn(`[IANS SCAN BLOCKED] aktiv scan finnes: ${active.scanId}`);
+      if(typeof iansToast==="function") iansToast("Scan kjører allerede","Stopp eller fullfør aktiv scan før du starter en ny.","warning",5000);
+      return;
+    }
+    beginFreshSession3142("full-scan").catch(err=>console.error("[IANS V3.14.2] session init",err));
+  }, true);
+
+  const observer3142 = new MutationObserver(()=>{
+    if(!currentSession) return;
+    const n = t => Number(String(t||"").replace(/[^\d]/g,""))||0;
+    const f=$v3142("fileCount"); if(f) currentStats.files=Math.max(currentStats.files,n(f.textContent));
+    const fo=$v3142("folderCount"); if(fo) currentStats.folders=Math.max(currentStats.folders,n(fo.textContent));
+    currentSession.stats={...currentStats};
+    sessionStorage.setItem(SESSION_KEY,JSON.stringify(currentSession));
+
+    const badge=$v3142("scanStateBadge");
+    const status=(badge?.textContent||"").toUpperCase();
+    if(/FERDIG|COMPLETE|COMPLETED/.test(status) && currentSession.status==="running"){
+      completeSession3142();
+    }
+  });
+  if(document.documentElement) observer3142.observe(document.documentElement,{subtree:true,childList:true,characterData:true});
+
+  function addCacheControl3142(){
+    if($v3142("v3142CacheBtn")) return;
+    const host =
+      document.querySelector(".header-actions,.top-actions,.toolbar-actions,.scan-controls") ||
+      $v3142("progressPanel") || document.querySelector("header");
+    if(!host) return;
+
+    const btn=document.createElement("button");
+    btn.id="v3142CacheBtn";
+    btn.type="button";
+    btn.className="btn ghost";
+    btn.textContent="Nullstill lokal scan-data";
+    btn.title="Fjerner bare lokale scan/checkpoint-data. OneDrive-filer, innlogging og karantenehistorikk røres ikke.";
+    btn.addEventListener("click",async()=>{
+      const prev=safeJson3142(localStorage.getItem(PREVIOUS_KEY));
+      const msg=[
+        "Dette nullstiller lokal scan-cache og aktivt checkpoint.",
+        "",
+        "Det slettes IKKE filer i OneDrive.",
+        "Innlogging, Client ID, Pro-status og karantene/review-historikk beholdes.",
+        prev ? `\nForrige snapshot: ${prev.filesText||"ukjent"} · ${prev.sizeText||""}` : "",
+        "",
+        "Fortsette?"
+      ].join("\n");
+      if(!confirm(msg)) return;
+      clearLegacyLocalScanState3142();
+      await clearLegacyCheckpointOnly3142();
+      sessionStorage.removeItem(SESSION_KEY);
+      currentSession=null; sessionStarted=false;
+      console.info("[IANS CACHE RESET] lokal scan-data nullstilt · quarantine/review preserved");
+      if(typeof iansToast==="function") iansToast("Lokal scan-data nullstilt","OneDrive og karantenehistorikk er ikke endret.","success",5000);
+      else alert("Lokal scan-data er nullstilt. OneDrive og karantenehistorikk er ikke endret.");
+    });
+    host.appendChild(btn);
+  }
+
+  function boot3142(){
+    addCacheControl3142();
+    setTimeout(addCacheControl3142,800);
+    setTimeout(addCacheControl3142,2200);
+    console.info("[IANS] V3.14.2 Scan Session Isolation aktiv · fresh sessions · cache control · Graph 429/5xx recovery");
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot3142);
+  else boot3142();
+})();
