@@ -6511,7 +6511,7 @@ window.__iansV313SelfTest=()=>({
   console.info("[IANS] V3.15 Unified Graph Scan Engine aktiv · browser reader + scan share Graph children flow · single promise · abortable fetch");
 })();
 // ===== /IANS-V315-RUNTIME =====
-// ===== IANS OneDrive Command V3.16.1 · SINGLE SCAN OWNER + DEBUG =====
+// ===== IANS OneDrive Command V3.17 · SINGLE SCAN OWNER + DEBUG =====
 (() => {
   "use strict";
   const VERSION="3.16.1";
@@ -6567,7 +6567,7 @@ window.__iansV313SelfTest=()=>({
     const legacy=locateLegacyLive();
     p=document.createElement("section"); p.id="iansV3161Live"; p.className="ians-v3161-live";
     p.innerHTML=`
-      <div class="ians-v3161-left"><div class="ians-v3161-dot">◎</div><div><div class="ians-v3161-eyebrow">IANS LIVE OPERATIONS · V3.16.1</div><strong id="v3161Title">Klar · ingen aktiv jobb</strong><span id="v3161Sub">Én scan-eier · debug kan aktiveres ved behov</span></div></div>
+      <div class="ians-v3161-left"><div class="ians-v3161-dot">◎</div><div><div class="ians-v3161-eyebrow">IANS LIVE OPERATIONS · V3.17</div><strong id="v3161Title">Klar · ingen aktiv jobb</strong><span id="v3161Sub">Én scan-eier · debug kan aktiveres ved behov</span></div></div>
       <div class="ians-v3161-mid"><div class="ians-v3161-row"><span id="v3161Path">Ingen aktiv scan</span><b id="v3161Pct">0%</b></div><div class="ians-v3161-track"><i id="v3161Bar"></i></div><div class="ians-v3161-row small"><span id="v3161Phase">IDLE</span><span id="v3161Queue">0 mapper i kø</span></div></div>
       <div class="ians-v3161-stats"><div><b id="v3161Files">0</b><span>filer</span></div><div><b id="v3161Bytes">0 B</b><span>data</span></div><div><b id="v3161State">KLAR</b><span>jobb</span></div></div>
       <div class="ians-v3161-debug"><button id="v3161DebugToggle" type="button">Debug: AV</button><button id="v3161DebugCopy" type="button">Kopier debug</button><span id="v3161DebugCount">0/${DEBUG_MAX} hendelser</span></div>`;
@@ -6624,13 +6624,13 @@ window.__iansV313SelfTest=()=>({
     if(!(isFull||isResume||isStop))return;
     ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();
     if(isStop){dlog("STOP_CLICK");try{window.IANS_V315?.abort?.()}catch{};return;}
-    if(!window.IANS_V315?.scan){console.error("[IANS V3.16.1] Unified scan engine missing");dlog("ENGINE_MISSING");return;}
-    if(activeScanId){dlog("SECOND_CLICK_BLOCKED",{button:b.id||txt});console.warn(`[IANS V3.16.1] blokkert ekstra scan-start · aktiv=${activeScanId}`);return;}
+    if(!window.IANS_V315?.scan){console.error("[IANS V3.17] Unified scan engine missing");dlog("ENGINE_MISSING");return;}
+    if(activeScanId){dlog("SECOND_CLICK_BLOCKED",{button:b.id||txt});console.warn(`[IANS V3.17] blokkert ekstra scan-start · aktiv=${activeScanId}`);return;}
     activeScanId=newScanId();dlog(isResume?"RESUME_CLICK":"FULL_SCAN_CLICK",{button:b.id||txt});
     try{
       if(isResume){const cp=typeof loadScanCheckpoint==="function"?await loadScanCheckpoint():null;if(!cp){dlog("NO_CHECKPOINT");activeScanId=null;return;}await window.IANS_V315.scan(cp);}
       else{if(typeof clearScanCheckpoint==="function")await clearScanCheckpoint();await window.IANS_V315.scan(null);}
-    }catch(err){dlog("ROUTED_SCAN_ERROR",{message:err?.message||String(err),stack:String(err?.stack||"")});console.error("[IANS V3.16.1] routed scan failed",err);activeScanId=null;}
+    }catch(err){dlog("ROUTED_SCAN_ERROR",{message:err?.message||String(err),stack:String(err?.stack||"")});console.error("[IANS V3.17] routed scan failed",err);activeScanId=null;}
   },true);
 
   // Keep local reset safe and explicit. Scan/cache only; never deletes OneDrive content.
@@ -6650,6 +6650,310 @@ window.__iansV313SelfTest=()=>({
   function boot(){style();document.getElementById("iansV316Live")?.remove();ensurePanel();render({phase:"IDLE",files:0,folders:0,bytes:0,queued:0,path:"/"});document.documentElement.dataset.iansRuntime="3.16.1";}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
   window.IANS_V3161={version:VERSION,state:()=>last,debug:{on:()=>setDebug(true),off:()=>setDebug(false),toggle:()=>setDebug(!debugEnabled),events:()=>debugEvents.slice(),copy:()=>JSON.stringify(debugEvents,null,2)}};
-  console.info("[IANS] V3.16.1 Single Scan Owner + Debug aktiv · legacy scan owners removed · debug auto-off 10 min · ring buffer 600");
+  console.info("[IANS] V3.17 Single Scan Owner + Debug aktiv · legacy scan owners removed · debug auto-off 10 min · ring buffer 600");
 })();
 // ===== /IANS-V3161-RUNTIME =====
+
+
+
+// ===== IANS OneDrive Command V3.17 · Sleep / Network / Auth Resume Recovery =====
+(() => {
+  const TAG = "[IANS V3.17]";
+  const GRAPH_HOST = "graph.microsoft.com";
+  const READ_SCOPES_317 = (typeof SCOPES !== "undefined" && Array.isArray(SCOPES) && SCOPES.length)
+    ? SCOPES : ["Files.Read"];
+
+  let recoveryInFlight317 = null;
+  let networkWasLost317 = !navigator.onLine;
+  let sleepSuspected317 = false;
+  let hiddenAt317 = 0;
+
+  const log317 = (event, extra={}) => {
+    try { console.info(TAG, event, extra); } catch {}
+  };
+
+  function setRecoveryUi317(state, detail="") {
+    try {
+      const badge =
+        document.getElementById("scanStateBadge") ||
+        document.querySelector("[data-scan-state]");
+
+      const title =
+        document.getElementById("progressTitle") ||
+        document.querySelector("[data-scan-title]");
+
+      const path =
+        document.getElementById("progressPath") ||
+        document.querySelector("[data-scan-detail]");
+
+      const op =
+        document.getElementById("liveOperationText") ||
+        document.querySelector(".ians-live-operation .status-text");
+
+      if (badge) badge.textContent = state;
+      if (title && /WAIT|SUSP|AUTH|RESUM|NETT|PAUS|SKANN|SCAN/i.test(state)) {
+        title.textContent = detail || state;
+      }
+      if (path && detail) path.textContent = detail;
+      if (op && detail) op.textContent = detail;
+    } catch {}
+  }
+
+  function activeAccount317() {
+    try {
+      if (typeof activeAccount !== "undefined" && activeAccount) return activeAccount;
+      if (typeof msalApp !== "undefined" && msalApp) {
+        return msalApp.getActiveAccount?.() || msalApp.getAllAccounts?.()?.[0] || null;
+      }
+    } catch {}
+    return null;
+  }
+
+  async function freshReadToken317(forceRefresh=false) {
+    if (typeof msalApp === "undefined" || !msalApp) {
+      throw new Error("MSAL_NOT_READY");
+    }
+
+    let account = activeAccount317();
+    if (!account) {
+      const accounts = msalApp.getAllAccounts?.() || [];
+      account = accounts[0] || null;
+      if (account) {
+        try { msalApp.setActiveAccount(account); } catch {}
+        try {
+          if (typeof activeAccount !== "undefined") activeAccount = account;
+        } catch {}
+      }
+    }
+    if (!account) throw new Error("NO_ACTIVE_ACCOUNT");
+
+    const request = {
+      scopes: READ_SCOPES_317,
+      account,
+      forceRefresh: !!forceRefresh
+    };
+
+    const result = await msalApp.acquireTokenSilent(request);
+    const token = result?.accessToken;
+
+    if (typeof token !== "string" || token.trim().length < 20) {
+      throw new Error("INVALID_ACCESS_TOKEN");
+    }
+    return token.trim();
+  }
+
+  async function recoverAuth317(reason="401") {
+    if (recoveryInFlight317) return recoveryInFlight317;
+
+    recoveryInFlight317 = (async () => {
+      setRecoveryUi317("AUTH", "Microsoft-tilgang fornyes før skanningen fortsetter…");
+      log317("AUTH_REFRESH_START", {reason});
+
+      try {
+        const token = await freshReadToken317(true);
+        setRecoveryUi317("GRAPH VERIFY", "Kontrollerer Microsoft Graph…");
+
+        const verify = await originalFetch317("https://graph.microsoft.com/v1.0/me/drive?$select=id", {
+          headers: { Authorization: `Bearer ${token}` },
+          cache: "no-store"
+        });
+
+        if (!verify.ok) {
+          throw new Error(`GRAPH_VERIFY_${verify.status}`);
+        }
+
+        log317("AUTH_REFRESH_OK");
+        setRecoveryUi317("RESUMING", "Microsoft Graph er klar · fortsetter fra aktiv kø/checkpoint…");
+        return token;
+      } catch (err) {
+        log317("AUTH_REFRESH_FAILED", {message: err?.message || String(err)});
+        setRecoveryUi317("LOGIN REQUIRED", "Skanningen er bevart. Logg inn igjen for å fortsette.");
+        throw err;
+      } finally {
+        setTimeout(() => { recoveryInFlight317 = null; }, 250);
+      }
+    })();
+
+    return recoveryInFlight317;
+  }
+
+  function waitForOnline317(timeoutMs=120000) {
+    if (navigator.onLine) return Promise.resolve();
+
+    setRecoveryUi317("WAITING FOR NETWORK", "Internett er borte · skanningen beholdes og fortsetter når nettet er tilbake…");
+    log317("NETWORK_WAIT");
+
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        window.removeEventListener("online", online);
+        reject(new Error("NETWORK_WAIT_TIMEOUT"));
+      }, timeoutMs);
+
+      function online() {
+        clearTimeout(timer);
+        window.removeEventListener("online", online);
+        resolve();
+      }
+      window.addEventListener("online", online, {once:true});
+    });
+  }
+
+  function isGraph317(input) {
+    try {
+      const raw = typeof input === "string" ? input : input?.url;
+      if (!raw) return false;
+      return new URL(raw, location.href).hostname === GRAPH_HOST;
+    } catch {
+      return false;
+    }
+  }
+
+  function authHeader317(input, init) {
+    try {
+      const h = new Headers(init?.headers || (input instanceof Request ? input.headers : undefined));
+      return h.get("Authorization") || "";
+    } catch {
+      return "";
+    }
+  }
+
+  function tokenLooksBroken317(header) {
+    if (!header || !/^Bearer\s+/i.test(header)) return true;
+    const token = header.replace(/^Bearer\s+/i, "").trim();
+    return !token || token === "undefined" || token === "null" ||
+      token === "[object Object]" || token.length < 20;
+  }
+
+  async function withToken317(input, init, token) {
+    const headers = new Headers(init?.headers || (input instanceof Request ? input.headers : undefined));
+    headers.set("Authorization", `Bearer ${token}`);
+
+    if (input instanceof Request) {
+      const req = new Request(input, {...(init || {}), headers});
+      return originalFetch317(req);
+    }
+    return originalFetch317(input, {...(init || {}), headers});
+  }
+
+  const originalFetch317 = window.fetch.bind(window);
+
+  window.fetch = async function iansFetch317(input, init) {
+    if (!isGraph317(input)) return originalFetch317(input, init);
+
+    // If the Mac has just woken up without network, do not kill the active scan.
+    if (!navigator.onLine) {
+      networkWasLost317 = true;
+      await waitForOnline317();
+      await new Promise(r => setTimeout(r, 800));
+    }
+
+    // Replace obviously unusable bearer values before Graph sees them.
+    let header = authHeader317(input, init);
+    if (tokenLooksBroken317(header)) {
+      try {
+        const token = await freshReadToken317(false);
+        return await withToken317(input, init, token);
+      } catch (err) {
+        log317("TOKEN_PREFLIGHT_FAILED", {message: err?.message || String(err)});
+      }
+    }
+
+    let response;
+    try {
+      response = await originalFetch317(input, init);
+    } catch (err) {
+      // Typical sleep/wake: active socket disappears while Chromium thinks it is online.
+      log317("GRAPH_NETWORK_ERROR", {message: err?.message || String(err)});
+      setRecoveryUi317("NETWORK RECOVERY", "Graph-forbindelsen ble brutt · venter på stabilt nett…");
+
+      if (!navigator.onLine) await waitForOnline317();
+      await new Promise(r => setTimeout(r, 1200));
+
+      const token = await freshReadToken317(false);
+      response = await withToken317(input, init, token);
+    }
+
+    if (response.status !== 401) return response;
+
+    // Never let a sleep-expired / malformed token terminate the scan on first 401.
+    log317("GRAPH_401_INTERCEPTED");
+    const fresh = await recoverAuth317("Graph 401");
+    const retry = await withToken317(input, init, fresh);
+
+    if (retry.status === 401) {
+      log317("GRAPH_401_AFTER_REFRESH");
+      setRecoveryUi317("LOGIN REQUIRED", "Microsoft krever ny innlogging. Checkpoint og skannekø er bevart.");
+    } else {
+      log317("GRAPH_RETRY_OK", {status: retry.status});
+      setRecoveryUi317("SCANNING", "Tilkobling gjenopprettet · skanningen fortsetter…");
+    }
+    return retry;
+  };
+
+  // Sleep/network lifecycle signals. We do not start a second scan here.
+  // The existing scan loop is allowed to continue; fetch recovery keeps it alive.
+  window.addEventListener("offline", () => {
+    networkWasLost317 = true;
+    setRecoveryUi317("SUSPENDED", "Internett forsvant · aktiv skanning er midlertidig satt på vent…");
+    log317("OFFLINE");
+  });
+
+  window.addEventListener("online", async () => {
+    if (!networkWasLost317 && !sleepSuspected317) return;
+    networkWasLost317 = false;
+    setRecoveryUi317("RECOVERING", "Internett er tilbake · kontrollerer Microsoft-tilgang…");
+    log317("ONLINE_RECOVERY");
+
+    try {
+      await recoverAuth317("online/wake");
+      setRecoveryUi317("SCANNING", "Tilkobling gjenopprettet · eksisterende skanning fortsetter.");
+    } catch {}
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      hiddenAt317 = Date.now();
+      return;
+    }
+    const hiddenFor = hiddenAt317 ? Date.now() - hiddenAt317 : 0;
+    if (hiddenFor > 15000) {
+      sleepSuspected317 = true;
+      log317("WAKE_SUSPECTED", {hiddenMs:hiddenFor});
+      setTimeout(async () => {
+        try {
+          if (!navigator.onLine) await waitForOnline317();
+          await recoverAuth317("wake");
+          setRecoveryUi317("SCANNING", "Mac våknet · Graph kontrollert · fortsetter samme skanning.");
+        } catch {}
+        sleepSuspected317 = false;
+      }, 1000);
+    }
+  });
+
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted) return;
+    sleepSuspected317 = true;
+    log317("PAGE_RESTORED_FROM_BFCACHE");
+  });
+
+  // Guard against unhandled network promise noise after sleep.
+  window.addEventListener("unhandledrejection", (event) => {
+    const msg = String(event?.reason?.message || event?.reason || "");
+    if (/Failed to fetch|NetworkError|Load failed|network|Graph 401/i.test(msg)) {
+      log317("UNHANDLED_NETWORK_REJECTION", {message:msg.slice(0,180)});
+    }
+  });
+
+  window.IANS_V317_RECOVERY = {
+    version: "3.17",
+    status: () => ({
+      online: navigator.onLine,
+      account: activeAccount317()?.username || null,
+      recoveryInFlight: !!recoveryInFlight317
+    }),
+    refreshAuth: () => recoverAuth317("manual-debug")
+  };
+
+  log317("Sleep / Network / Auth Resume Recovery active");
+})();
+
