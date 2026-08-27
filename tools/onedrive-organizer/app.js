@@ -6783,3 +6783,269 @@ window.__iansV313SelfTest=()=>({
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot3144);
   else boot3144();
 })();
+
+// ===== IANS OneDrive Command V3.15 · Unified Graph Scan Engine =====
+// Single scan runtime. Uses the same proven Graph children pattern as the folder browser.
+// Installer replaces any older V3.15 block before appending this release.
+(() => {
+  const V315 = "3.15.0";
+  const BEGIN = "IANS-V315-RUNTIME";
+  let activePromise = null;
+  let runSeq = 0;
+
+  const $315 = id => document.getElementById(id);
+  const fmtN315 = n => typeof formatNumber === "function" ? formatNumber(n) : new Intl.NumberFormat("nb-NO").format(Number(n)||0);
+  const fmtB315 = n => typeof formatBytes === "function" ? formatBytes(n) : `${((Number(n)||0)/1073741824).toFixed(2)} GB`;
+  const sleep315 = ms => new Promise(r => setTimeout(r, ms));
+
+  function setText315(id, text){ const e=$315(id); if(e)e.textContent=text; }
+  function setWidth315(pct){
+    try { if(typeof els!=="undefined" && els?.progressBar) els.progressBar.style.width=`${pct}%`; } catch {}
+  }
+  function title315(text){
+    try { if(typeof els!=="undefined" && els?.progressTitle) els.progressTitle.textContent=text; } catch {}
+  }
+  function path315(text){
+    try { if(typeof els!=="undefined" && els?.progressPath) els.progressPath.textContent=text; } catch {}
+  }
+  function state315(phase, extra={}){
+    const detail={version:V315,phase,at:new Date().toISOString(),...extra};
+    window.IANS_V315_STATE=detail;
+    try{ window.dispatchEvent(new CustomEvent("ians:v315-scan-state",{detail})); }catch{}
+    console.info(`[IANS V3.15] ${phase}`,extra);
+  }
+  function badge315(text){
+    setText315("scanStateBadge",text);
+    // V3.14.x live layer may listen to DOM; it must only see one authoritative value.
+    document.documentElement.dataset.iansScanState=String(text||"").toLowerCase();
+  }
+  function uiStart315(){
+    try{
+      if(typeof els!=="undefined"){
+        if(els.scanBtn)els.scanBtn.disabled=true;
+        if(els.cancelBtn)els.cancelBtn.classList.remove("hidden");
+        if(els.progressPanel)els.progressPanel.classList.remove("hidden");
+        if(els.exportBtn)els.exportBtn.disabled=true;
+      }
+    }catch{}
+    const topStart=$315("topStartScanBtn252")||$315("topStartScanBtn"); if(topStart)topStart.disabled=true;
+    const topStop=$315("topStopScanBtn252")||$315("topStopScanBtn"); if(topStop)topStop.disabled=false;
+  }
+  function uiStop315(){
+    try{
+      if(typeof els!=="undefined"){
+        if(els.scanBtn)els.scanBtn.disabled=false;
+        if(els.cancelBtn)els.cancelBtn.classList.add("hidden");
+      }
+    }catch{}
+    const topStart=$315("topStartScanBtn252")||$315("topStartScanBtn"); if(topStart)topStart.disabled=false;
+    const topStop=$315("topStopScanBtn252")||$315("topStopScanBtn"); if(topStop)topStop.disabled=true;
+  }
+
+  async function token315(){
+    state315("AUTH");
+    if(typeof getToken!=="function") throw new Error("V3.15 fant ikke getToken(). Last inn V3.14 auth-baseline først.");
+    const t=await getToken();
+    if(!t)throw new Error("Microsoft Graph-token mangler.");
+    state315("TOKEN_OK");
+    return t;
+  }
+
+  async function graphJson315(url, token, attempt=0, signal=null){
+    const absolute=/^https?:/i.test(url)?url:`${typeof GRAPH!=="undefined"?GRAPH:"https://graph.microsoft.com/v1.0"}${url}`;
+    let res;
+    try{
+      res=await fetch(absolute,{headers:{Authorization:`Bearer ${token}`},signal});
+    }catch(err){
+      if(err?.name==="AbortError")throw new Error("SCAN_CANCELLED");
+      throw err;
+    }
+    if((res.status===429||res.status===503||res.status===504)&&attempt<7){
+      const retry=Math.max(1,Number(res.headers.get("Retry-After"))||Math.min(2**attempt,30));
+      state315("GRAPH_RETRY",{status:res.status,retrySeconds:retry});
+      await sleep315(retry*1000);
+      return graphJson315(url,token,attempt+1,signal);
+    }
+    if(!res.ok){
+      let detail=""; try{detail=JSON.stringify(await res.json())}catch{}
+      throw new Error(`Graph ${res.status}: ${detail||res.statusText}`);
+    }
+    return res.json();
+  }
+
+  function childrenUrl315(folderId=null){
+    const select=encodeURIComponent("id,name,size,folder,file,image,photo,createdDateTime,lastModifiedDateTime,webUrl,parentReference");
+    const base=typeof GRAPH!=="undefined"?GRAPH:"https://graph.microsoft.com/v1.0";
+    return folderId
+      ? `${base}/me/drive/items/${encodeURIComponent(folderId)}/children?$top=200&$select=${select}`
+      : `${base}/me/drive/root/children?$top=200&$select=${select}`;
+  }
+
+  async function listChildren315(folderId, token, signal){
+    let url=childrenUrl315(folderId),items=[],pages=0;
+    while(url){
+      const data=await graphJson315(url,token,0,signal);
+      pages++;
+      items.push(...(data.value||[]));
+      url=data["@odata.nextLink"]||null;
+      state315("GRAPH_PAGE",{pages,items:items.length,folderId:folderId||"root"});
+    }
+    return items;
+  }
+
+  function addFolderBytes315(map,path,bytes){
+    if(typeof addFolderBytes==="function")return addFolderBytes(map,path,bytes);
+    if(!bytes)return; const parts=String(path||"/").split("/").filter(Boolean); let cur="";
+    map.set("/",(map.get("/")||0)+bytes); for(const part of parts){cur+="/"+part;map.set(cur,(map.get(cur)||0)+bytes);}
+  }
+  function category315(name,mime){
+    if(typeof categoryOf==="function")return categoryOf(name,mime);
+    if(/^image\//i.test(mime)||/\.(jpe?g|png|heic|heif|gif|webp|tiff?)$/i.test(name||""))return "Bilder";
+    if(/^video\//i.test(mime)||/\.(mov|mp4|m4v|avi|mkv|3gp)$/i.test(name||""))return "Video";
+    if(/\.(pdf|docx?|xlsx?|pptx?|txt|rtf)$/i.test(name||""))return "Dokumenter";
+    return "Annet";
+  }
+  function top25Insert315(top,file){
+    if(typeof iansTop25Insert==="function")return iansTop25Insert(top,file);
+    top.push(file);top.sort((a,b)=>(b.size||0)-(a.size||0));if(top.length>25)top.length=25;
+  }
+
+  function selectedRoot315(resumeState){
+    if(resumeState?.scanRoot)return resumeState.scanRoot;
+    let mode="all"; try{mode=document.querySelector('input[name="scanScope"]:checked')?.value||"all"}catch{}
+    if(mode==="folder" && typeof selectedScanFolder!=="undefined" && selectedScanFolder?.id){
+      return {id:selectedScanFolder.id,path:selectedScanFolder.path||"/"};
+    }
+    return {id:null,path:"/"};
+  }
+
+  async function scan315(resumeState=null){
+    if(activePromise){ state315("IGNORED_SECOND_START"); return activePromise; }
+    const myRun=++runSeq;
+    const aborter=new AbortController();
+    window.IANS_V315_ABORT=()=>aborter.abort();
+    activePromise=(async()=>{
+      try{
+        // Hard reset only at the boundary of a real new scan. This prevents stale guard flags from blocking Graph.
+        try{ cancelRequested=false; }catch{}
+        try{ report=null; }catch{}
+        uiStart315(); badge315("STARTER"); setWidth315(0);
+        title315(resumeState?"Fortsetter kartlegging…":"Starter kartlegging…");
+        path315("Klargjør Microsoft Graph…");
+        state315("START",{run:myRun,resume:!!resumeState});
+
+        const token=await token315();
+        // Prove drive/root before queue seed. Folder browser already proves this route works.
+        const drive=await graphJson315("/me/drive?$select=id,driveType,name",token,0,aborter.signal);
+        state315("DRIVE_OK",{driveId:drive?.id||"",driveType:drive?.driveType||""});
+        const rootItem=await graphJson315("/me/drive/root?$select=id,name,folder,parentReference",token,0,aborter.signal);
+        state315("ROOT_OK",{rootId:rootItem?.id||""});
+
+        let stats={files:0,folders:0,bytes:0};
+        let files=[],largestFilesTop=[],folderAgg=new Map(),queue=[],typeAgg=new Map(),yearAgg=new Map(),duplicateMap=new Map();
+        let dateStats={taken:0,created:0,unknown:0},processedFolders=0;
+        let scanRoot=selectedRoot315(resumeState),scanStartedAt=new Date().toISOString(),lastCheckpoint=Date.now();
+
+        if(resumeState){
+          stats=resumeState.stats||stats; files=resumeState.files||[]; folderAgg=new Map(resumeState.folderAgg||[]);
+          queue=Array.isArray(resumeState.queue)?resumeState.queue.slice():[]; typeAgg=new Map(resumeState.typeAgg||[]); yearAgg=new Map(resumeState.yearAgg||[]);
+          dateStats=resumeState.dateStats||dateStats; processedFolders=resumeState.processedFolders||0; scanStartedAt=resumeState.scanStartedAt||scanStartedAt;
+          for(const f of files){
+            const k=`${String(f.name||"").toLowerCase()}|${Number(f.size)||0}`; const dg=duplicateMap.get(k);
+            if(dg){dg.count++;dg.potentialSavings+=(Number(f.size)||0);if(dg.paths.length<8)dg.paths.push(f.path)}
+            else duplicateMap.set(k,{name:f.name,sizeEach:Number(f.size)||0,count:1,potentialSavings:0,paths:[f.path]});
+            top25Insert315(largestFilesTop,f);
+          }
+          state315("QUEUE_RESTORED",{queued:queue.length,files:stats.files});
+        }else{
+          // IMPORTANT: seed with actual selected item id; root is represented as null and maps to /me/drive/root/children.
+          queue=[{id:scanRoot.id||null,path:scanRoot.path||"/"}];
+          if(typeof clearScanCheckpoint==="function")await clearScanCheckpoint();
+          state315("QUEUE_SEEDED",{queued:1,rootId:scanRoot.id||rootItem?.id||"root",path:scanRoot.path||"/"});
+        }
+
+        if(!queue.length)throw new Error("SCAN-E04 · QUEUE NOT SEEDED");
+        badge315("SKANNER");
+        if(typeof startScanClock==="function")startScanClock(scanStartedAt);
+
+        async function checkpoint315(force=false){
+          if(typeof saveScanCheckpoint!=="function")return;
+          if(!force && Date.now()-lastCheckpoint<30000)return; lastCheckpoint=Date.now();
+          await saveScanCheckpoint({version:"3.15",account:typeof activeAccount!=="undefined"?(activeAccount?.username||""):"",savedAt:new Date().toISOString(),scanStartedAt,scanRoot,stats,files,folderAgg:[...folderAgg],queue,typeAgg:[...typeAgg],yearAgg:[...yearAgg],dateStats,processedFolders});
+        }
+
+        let firstChildren=false;
+        while(queue.length){
+          if(aborter.signal.aborted)throw new Error("SCAN_CANCELLED");
+          try{if(cancelRequested)throw new Error("SCAN_CANCELLED")}catch{}
+          const folder=queue.shift();
+          title315(`Kartlegger… ${fmtN315(queue.length)} mapper i kø`);
+          path315(folder.path||"/");
+          setWidth315(Math.min(88,8+(processedFolders%80)));
+          try{ if(typeof updateLiveScanStats==="function")updateLiveScanStats(stats,processedFolders,queue.length,folder.path); }catch{}
+
+          const children=await listChildren315(folder.id||null,token,aborter.signal);
+          if(!firstChildren){ firstChildren=true; state315("FIRST_PAGE_OK",{children:children.length,path:folder.path||"/"}); }
+          processedFolders++;
+
+          for(const item of children){
+            const itemPath=(folder.path||"/")==="/"?`/${item.name}`:`${folder.path}/${item.name}`;
+            if(item.folder){stats.folders++;queue.push({id:item.id,path:itemPath});if(!folderAgg.has(itemPath))folderAgg.set(itemPath,0);continue;}
+            if(!item.file)continue;
+            const size=Number(item.size)||0; stats.files++;stats.bytes+=size;addFolderBytes315(folderAgg,folder.path||"/",size);
+            const mime=item.file?.mimeType||"",category=category315(item.name,mime),cur=typeAgg.get(category)||{count:0,bytes:0};cur.count++;cur.bytes+=size;typeAgg.set(category,cur);
+            const taken=item.photo?.takenDateTime||null,created=item.createdDateTime||null,dateValue=taken||created||null;
+            if(taken)dateStats.taken++;else if(created)dateStats.created++;else dateStats.unknown++;
+            if((category==="Bilder"||category==="Video")&&dateValue){const y=new Date(dateValue).getUTCFullYear();if(Number.isFinite(y)&&y>=1900&&y<=2200)yearAgg.set(y,(yearAgg.get(y)||0)+1)}
+            const f={id:item.id,name:item.name,path:itemPath,parentPath:folder.path||"/",size,category,mimeType:mime,createdDateTime:created,lastModifiedDateTime:item.lastModifiedDateTime||null,takenDateTime:taken,webUrl:item.webUrl||null};
+            files.push(f);top25Insert315(largestFilesTop,f);
+            const dk=`${String(item.name||"").toLowerCase()}|${size}`,dg=duplicateMap.get(dk);
+            if(dg){dg.count++;dg.potentialSavings+=size;if(dg.paths.length<8)dg.paths.push(itemPath)}else duplicateMap.set(dk,{name:item.name,sizeEach:size,count:1,potentialSavings:0,paths:[itemPath]});
+          }
+          path315(`${fmtN315(stats.files)} filer · ${fmtN315(processedFolders)} mapper lest · ${fmtB315(stats.bytes)} · aktiv: ${folder.path||"/"}`);
+          state315("FOLDER_DONE",{path:folder.path||"/",files:stats.files,foldersProcessed:processedFolders,queued:queue.length,bytes:stats.bytes});
+          await checkpoint315(false);
+        }
+
+        const duplicates=[...duplicateMap.values()].filter(g=>g.count>1&&g.sizeEach>0).map(g=>({name:g.name,sizeEach:g.sizeEach,copies:g.count,potentialSavings:g.potentialSavings,paths:g.paths})).sort((a,b)=>b.potentialSavings-a.potentialSavings);
+        const folders=[...folderAgg].filter(([p])=>p!=="/").map(([path,bytes])=>({path,bytes})).sort((a,b)=>b.bytes-a.bytes);
+        const built={generatedAt:new Date().toISOString(),scanRoot,scanStartedAt,account:{name:typeof activeAccount!=="undefined"?(activeAccount?.name||""):"",username:typeof activeAccount!=="undefined"?(activeAccount?.username||""):""},summary:{files:stats.files,folders:stats.folders,fileBytes:stats.bytes,possibleDuplicateGroups:duplicates.length,possibleDuplicateSavings:duplicates.reduce((s,d)=>s+d.potentialSavings,0)},dateStats,types:[...typeAgg].map(([category,v])=>({category,...v})).sort((a,b)=>b.bytes-a.bytes),mediaYears:[...yearAgg].map(([year,count])=>({year,count})).sort((a,b)=>b.year-a.year),largestFolders:folders.slice(0,25),largestFiles:largestFilesTop,possibleDuplicates:duplicates.slice(0,200),files};
+        try{report=built}catch{window.report=built}
+        if(typeof clearScanCheckpoint==="function")await clearScanCheckpoint();
+        try{if(typeof renderReport==="function")renderReport(built)}catch(err){console.warn("[IANS V3.15] renderReport warning",err)}
+        try{if(typeof updateLiveScanStats==="function")updateLiveScanStats(stats,processedFolders,0,scanRoot.path)}catch{}
+        title315("Kartlegging ferdig");path315(`${fmtN315(stats.files)} filer analysert fra ${scanRoot.path||"/"}.`);setWidth315(100);badge315("FERDIG");
+        try{if(typeof els!=="undefined"&&els?.exportBtn)els.exportBtn.disabled=false}catch{}
+        state315("COMPLETE",{files:stats.files,folders:processedFolders,bytes:stats.bytes});
+        return built;
+      }catch(err){
+        const cancelled=err?.message==="SCAN_CANCELLED";
+        console.error("[IANS V3.15] scan",err);
+        if(cancelled){title315("Kartlegging stoppet – checkpoint lagret");path315("Trykk Fortsett/Resume for å fortsette senere.");badge315("PAUSET");state315("PAUSED")}
+        else{title315("Skanningen stoppet");path315(err?.message||String(err));badge315("FEIL");state315("ERROR",{message:err?.message||String(err)})}
+        throw err;
+      }finally{
+        try{if(typeof stopScanClock==="function")stopScanClock()}catch{}
+        uiStop315();
+        try{if(typeof refreshCheckpointUi==="function")await refreshCheckpointUi()}catch{}
+        activePromise=null; window.IANS_V315_ABORT=null;
+      }
+    })();
+    return activePromise;
+  }
+
+  // Replace the public scan entry point so every existing button uses one engine.
+  try{ scanOneDrive=scan315; }catch{ window.scanOneDrive=scan315; }
+
+  // Cancel must abort the actual in-flight fetch as well as set the legacy flag.
+  document.addEventListener("click",e=>{
+    const b=e.target.closest("#topStopScanBtn,#topStopScanBtn252,#cancelBtn,[data-scan-stop]");
+    if(!b)return;
+    try{cancelRequested=true}catch{}
+    try{window.IANS_V315_ABORT?.()}catch{}
+  },true);
+
+  window.IANS_V315={version:V315,scan:scan315,getState:()=>window.IANS_V315_STATE||null,abort:()=>window.IANS_V315_ABORT?.()};
+  console.info("[IANS] V3.15 Unified Graph Scan Engine aktiv · browser reader + scan share Graph children flow · single promise · abortable fetch");
+})();
+// ===== /IANS-V315-RUNTIME =====
