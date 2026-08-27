@@ -6057,212 +6057,161 @@ window.__iansV313SelfTest=()=>({
   account:activeAccount?.username||null
 });
 // ===== END V3.13 =====
-// ===== IANS OneDrive Command V3.12.0 · AUTH RECOVERY + SINGLE FLIGHT =====
+// ===== IANS OneDrive Command V3.14 · CLEAN AUTH BASELINE =====
+// Auth/Graph baseline restored from the known-good V3.4 model.
+// Keeps the current UI, scan engine, reports and Action Mode.
 (() => {
-  const V312 = "3.12.0";
-  const READ_TOKEN_SKEW_MS = 5 * 60 * 1000;
-  const POPUP_COOLDOWN_MS = 1500;
+  const VERSION = "3.14.0";
+  const DIAG_ID = "iansAuthDiagV314";
+  let diagRunning = false;
 
-  let readTokenCache312 = null;
-  let readTokenPromise312 = null;
-  let lastPopupAt312 = 0;
-  let scanPromise312 = null;
-
-  const authCode312 = (err) => String(
-    err?.errorCode || err?.code || err?.name || ""
-  ).toLowerCase();
-
-  const authMessage312 = (err) => String(
-    err?.errorMessage || err?.message || ""
-  ).toLowerCase();
-
-  function isTimedOut312(err) {
-    const code = authCode312(err);
-    const msg = authMessage312(err);
-    return code.includes("timed_out") ||
-           code.includes("monitor_window_timeout") ||
-           msg.includes("timed_out") ||
-           msg.includes("timed out") ||
-           msg.includes("timeout");
-  }
-
-  function needsInteraction312(err) {
-    if (typeof InteractionRequiredAuthError !== "undefined" &&
-        err instanceof InteractionRequiredAuthError) return true;
-
-    const code = authCode312(err);
-    const msg = authMessage312(err);
-    return isTimedOut312(err) ||
-           code.includes("interaction_required") ||
-           code.includes("consent_required") ||
-           code.includes("login_required") ||
-           code.includes("no_account_error") ||
-           code.includes("user_login_error") ||
-           msg.includes("interaction required") ||
-           msg.includes("consent required") ||
-           msg.includes("login required");
-  }
-
-  function currentAccount312() {
+  function accountV314() {
     if (!msalApp) return null;
-    const acct = activeAccount ||
-                 msalApp.getActiveAccount?.() ||
-                 msalApp.getAllAccounts?.()[0] ||
-                 null;
-    if (acct && acct !== activeAccount) {
-      activeAccount = acct;
-      try { msalApp.setActiveAccount(acct); } catch {}
+    const account =
+      activeAccount ||
+      msalApp.getActiveAccount?.() ||
+      msalApp.getAllAccounts?.()[0] ||
+      null;
+
+    if (account && account !== activeAccount) {
+      activeAccount = account;
+      try { msalApp.setActiveAccount(account); } catch {}
     }
-    return acct;
+    return account;
   }
 
-  function cacheToken312(result) {
-    if (!result?.accessToken) return;
-    const exp = result.expiresOn instanceof Date
-      ? result.expiresOn.getTime()
-      : (Date.now() + 45 * 60 * 1000);
-    readTokenCache312 = {
-      token: result.accessToken,
-      expiresAt: exp
-    };
+  function setDiagV314(step, ok, detail = "") {
+    const box = document.getElementById(DIAG_ID);
+    if (!box) return;
+    const row = box.querySelector(`[data-step="${step}"]`);
+    if (!row) return;
+    row.dataset.state = ok === true ? "ok" : ok === false ? "fail" : "wait";
+    const mark = ok === true ? "✓" : ok === false ? "✕" : "…";
+    row.querySelector(".v314-mark").textContent = mark;
+    row.querySelector(".v314-detail").textContent = detail || "";
   }
 
-  function cachedToken312() {
-    if (!readTokenCache312?.token) return null;
-    if ((readTokenCache312.expiresAt || 0) - READ_TOKEN_SKEW_MS <= Date.now()) {
-      readTokenCache312 = null;
-      return null;
+  function resetDiagV314() {
+    for (const step of ["MSAL", "ACCOUNT", "TOKEN", "DRIVE", "ROOT"]) {
+      setDiagV314(step, null, "");
     }
-    return readTokenCache312.token;
   }
 
-  async function popupReadToken312(account) {
-    const now = Date.now();
-    const wait = Math.max(0, POPUP_COOLDOWN_MS - (now - lastPopupAt312));
-    if (wait) await new Promise(r => setTimeout(r, wait));
-    lastPopupAt312 = Date.now();
+  function installDiagV314() {
+    if (document.getElementById(DIAG_ID)) return;
 
-    const result = await msalApp.acquireTokenPopup({
-      scopes: [...new Set(["User.Read", ...SCOPES])],
-      account,
-      redirectUri: POPUP_REDIRECT_URI,
-      prompt: "select_account"
+    const style = document.createElement("style");
+    style.textContent = `
+      #${DIAG_ID}{
+        position:fixed;right:18px;bottom:18px;z-index:99999;
+        width:min(360px,calc(100vw - 36px));padding:14px 16px;
+        border:1px solid rgba(148,163,184,.28);border-radius:16px;
+        background:rgba(10,18,32,.94);backdrop-filter:blur(14px);
+        box-shadow:0 18px 50px rgba(0,0,0,.32);color:#e5eefb;
+        font:12px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+      }
+      #${DIAG_ID} .v314-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:8px}
+      #${DIAG_ID} strong{font-size:12px;letter-spacing:.04em}
+      #${DIAG_ID} button{border:1px solid rgba(148,163,184,.32);border-radius:9px;background:rgba(30,41,59,.7);color:#e5eefb;padding:5px 9px;cursor:pointer}
+      #${DIAG_ID} .v314-row{display:grid;grid-template-columns:20px 60px 1fr;gap:7px;padding:3px 0;align-items:start}
+      #${DIAG_ID} .v314-row[data-state="ok"] .v314-mark{color:#86efac}
+      #${DIAG_ID} .v314-row[data-state="fail"] .v314-mark{color:#fca5a5}
+      #${DIAG_ID} .v314-row[data-state="wait"] .v314-mark{color:#fde68a}
+      #${DIAG_ID} .v314-detail{color:#94a3b8;overflow-wrap:anywhere}
+      #${DIAG_ID} .v314-foot{margin-top:8px;color:#94a3b8}
+    `;
+    document.head.appendChild(style);
+
+    const box = document.createElement("div");
+    box.id = DIAG_ID;
+    box.innerHTML = `
+      <div class="v314-head">
+        <strong>OneDrive AUTH · V3.14</strong>
+        <button type="button" id="iansAuthTestV314">Test forbindelse</button>
+      </div>
+      ${["MSAL","ACCOUNT","TOKEN","DRIVE","ROOT"].map(step => `
+        <div class="v314-row" data-step="${step}" data-state="wait">
+          <span class="v314-mark">…</span><span>${step}</span><span class="v314-detail"></span>
+        </div>`).join("")}
+      <div class="v314-foot">Ren V3.4-baseline: loginPopup ved innlogging, silent token under lesing.</div>
+    `;
+    document.body.appendChild(box);
+
+    document.getElementById("iansAuthTestV314")?.addEventListener("click", () => {
+      window.IANS_AUTH_V314.selfTest();
     });
-
-    if (result?.account) {
-      activeAccount = result.account;
-      try { msalApp.setActiveAccount(result.account); } catch {}
-    }
-    cacheToken312(result);
-    return result.accessToken;
   }
 
-  async function robustReadToken312({interactiveFallback = true} = {}) {
-    const cached = cachedToken312();
-    if (cached) return cached;
+  // ------------------------------------------------------------------
+  // 1. CLEAN TOKEN READER
+  // Same principle as the known-good V3.4:
+  // acquireTokenSilent only during normal read operations.
+  // No redirect, popup-prime, broker loop or retry storm.
+  // ------------------------------------------------------------------
+  getToken = async function getTokenV314() {
+    if (!msalApp) {
+      throw new Error("MSAL er ikke initialisert.");
+    }
 
-    if (readTokenPromise312) return readTokenPromise312;
-
-    readTokenPromise312 = (async () => {
-      if (!msalApp) throw new Error("Microsoft-tilkoblingen er ikke initialisert.");
-
-      const account = currentAccount312();
-      if (!account) {
-        throw new Error("Ingen Microsoft-konto er valgt. Koble til OneDrive på nytt.");
-      }
-
-      try {
-        const result = await msalApp.acquireTokenSilent({
-          scopes: SCOPES,
-          account,
-          forceRefresh: false
-        });
-        cacheToken312(result);
-        return result.accessToken;
-      } catch (err) {
-        console.warn("[IANS V3.12] Silent token failed", authCode312(err), err);
-
-        if (!interactiveFallback || !needsInteraction312(err)) throw err;
-
-        // A timed-out hidden/silent auth flow is treated as an interaction
-        // requirement. Exactly one popup is allowed through this shared lock.
-        try {
-          return await popupReadToken312(account);
-        } catch (popupErr) {
-          console.error("[IANS V3.12] Popup token recovery failed", popupErr);
-          const code = authCode312(popupErr);
-          if (code.includes("popup_window_error") ||
-              code.includes("empty_window_error") ||
-              code.includes("popup_window_closed")) {
-            throw new Error(
-              "Microsoft-innlogging må åpnes på nytt. Tillat popup fra ians.no og trykk Koble til OneDrive."
-            );
-          }
-          throw popupErr;
-        }
-      }
-    })();
+    const account = accountV314();
+    if (!account) {
+      throw new Error("Ingen Microsoft-konto er aktiv. Logg inn på OneDrive på nytt.");
+    }
 
     try {
-      return await readTokenPromise312;
-    } finally {
-      readTokenPromise312 = null;
-    }
-  }
+      const result = await msalApp.acquireTokenSilent({
+        scopes: SCOPES,
+        account
+      });
 
-  // Replace the old token function for every Graph reader:
-  // quota, scan, folder browser, preview and read-only analysis.
-  getToken = async function() {
-    return robustReadToken312({interactiveFallback: true});
+      if (!result?.accessToken) {
+        throw new Error("Microsoft returnerte ikke access token.");
+      }
+      return result.accessToken;
+    } catch (err) {
+      console.error("[IANS V3.14] acquireTokenSilent failed", err);
+
+      if (
+        (typeof InteractionRequiredAuthError !== "undefined" &&
+         err instanceof InteractionRequiredAuthError) ||
+        /interaction_required|login_required|consent_required|timed_out|timeout/i.test(
+          `${err?.errorCode || ""} ${err?.message || ""}`
+        )
+      ) {
+        throw new Error(
+          "Microsoft-sessionen må fornyes. Logg ut av OneDrive Command, koble til OneDrive på nytt og prøv igjen."
+        );
+      }
+      throw err;
+    }
   };
 
-  // Browser reader gets its own resilient Graph retry path and never inherits
-  // the scan cancel flag.
-  listBrowserFolders = async function(folderId = null) {
-    const folders = [];
+  // ------------------------------------------------------------------
+  // 2. CLEAN FOLDER BROWSER
+  // Deliberately independent of cancelRequested / scan state.
+  // ------------------------------------------------------------------
+  listBrowserFolders = async function listBrowserFoldersV314(folderId = null) {
+    const token = await getToken();
+
     let url = folderId
       ? `${GRAPH}/me/drive/items/${encodeURIComponent(folderId)}/children?$select=id,name,folder,parentReference&$top=200`
       : `${GRAPH}/me/drive/root/children?$select=id,name,folder,parentReference&$top=200`;
 
-    let page = 0;
+    const folders = [];
+
     while (url) {
-      page += 1;
-      let attempt = 0;
-      let data = null;
+      const res = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store"
+      });
 
-      while (attempt < 6) {
-        const token = await robustReadToken312({interactiveFallback: true});
-        const res = await fetch(url, {
-          headers: { Authorization: `Bearer ${token}` },
-          cache: "no-store"
-        });
-
-        if (res.status === 401 && attempt === 0) {
-          readTokenCache312 = null;
-          attempt += 1;
-          continue;
-        }
-
-        if ([429, 503, 504].includes(res.status) && attempt < 5) {
-          const retryAfter = Number(res.headers.get("Retry-After")) ||
-            Math.min(2 ** attempt, 20);
-          await new Promise(r => setTimeout(r, retryAfter * 1000));
-          attempt += 1;
-          continue;
-        }
-
-        if (!res.ok) {
-          let detail = "";
-          try { detail = JSON.stringify(await res.json()); } catch {}
-          throw new Error(`Graph ${res.status}: ${detail || res.statusText}`);
-        }
-
-        data = await res.json();
-        break;
+      if (!res.ok) {
+        let detail = "";
+        try { detail = JSON.stringify(await res.json()); } catch {}
+        throw new Error(`Graph ${res.status}: ${detail || res.statusText}`);
       }
 
-      if (!data) throw new Error(`Kunne ikke lese mappeside ${page}.`);
-
+      const data = await res.json();
       for (const item of data.value || []) {
         if (item.folder) folders.push(item);
       }
@@ -6270,83 +6219,133 @@ window.__iansV313SelfTest=()=>({
     }
 
     return folders.sort((a, b) =>
-      (a.name || "").localeCompare(b.name || "", "nb", {sensitivity: "base"})
+      (a.name || "").localeCompare(b.name || "", "nb", { sensitivity: "base" })
     );
   };
 
-  // Single-flight guard: multiple UI handlers may request a scan, but only
-  // one engine instance is allowed. A stale cancel flag is reset for a new run.
-  if (typeof scanOneDrive === "function") {
-    const baseScan312 = scanOneDrive;
-    scanOneDrive = async function(resumeState = null) {
-      if (scanPromise312) {
-        console.info("[IANS V3.12] Scan already active; joining existing run.");
-        return scanPromise312;
+  // ------------------------------------------------------------------
+  // 3. CLEAN INTERACTIVE LOGIN
+  // Popup is only used from an explicit user login action.
+  // No popup/redirect is inserted in front of scanOneDrive().
+  // ------------------------------------------------------------------
+  signIn = async function signInV314() {
+    if (!msalApp) {
+      if (typeof els !== "undefined" && els?.setupMessage) {
+        els.setupMessage.textContent = "Lagre Client ID først.";
+        els.setupPanel?.classList.remove("hidden");
       }
+      return;
+    }
 
-      cancelRequested = false;
-      scanPromise312 = (async () => {
-        try {
-          return await baseScan312(resumeState);
-        } finally {
-          scanPromise312 = null;
-        }
-      })();
-
-      return scanPromise312;
-    };
-  }
-
-  function authHealthUi312() {
-    const host = document.querySelector(".header-actions,.top-actions,.toolbar-actions");
-    if (!host || document.getElementById("iansAuthHealth312")) return;
-
-    const badge = document.createElement("span");
-    badge.id = "iansAuthHealth312";
-    badge.className = "badge safe";
-    badge.textContent = "AUTH READY · V3.12";
-    badge.title = "Felles MSAL tokenmotor aktiv for skann og mappebrowser.";
-    host.appendChild(badge);
-  }
-
-  // Prevent stale visible "active scan" state from being interpreted as a
-  // running JavaScript job after a page reload. Checkpoints are kept intact.
-  function normalizeUi312() {
     try {
-      const state = document.getElementById("scanStateBadge");
-      if (state && /SKANN|KARTLEGG|AKTIV/i.test(state.textContent || "")) {
-        state.textContent = "Klar";
+      const result = await msalApp.loginPopup({
+        scopes: ["User.Read", ...SCOPES],
+        prompt: "select_account",
+        redirectUri: POPUP_REDIRECT_URI
+      });
+
+      if (!result?.account) {
+        throw new Error("Microsoft returnerte ingen konto.");
       }
-      const stop = document.getElementById("topStopScanBtn");
-      if (stop) stop.disabled = true;
-      const start = document.getElementById("topStartScanBtn");
-      if (start) start.disabled = false;
-    } catch {}
-  }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      authHealthUi312();
-      normalizeUi312();
-    }, {once: true});
-  } else {
-    authHealthUi312();
-    normalizeUi312();
-  }
+      activeAccount = result.account;
+      msalApp.setActiveAccount(activeAccount);
+      if (typeof showDashboard === "function") showDashboard();
 
-  window.IANS_AUTH_V312 = {
-    version: V312,
-    clearTokenCache() { readTokenCache312 = null; },
-    tokenStatus() {
-      return {
-        account: currentAccount312()?.username || null,
-        cached: Boolean(cachedToken312()),
-        tokenRequestActive: Boolean(readTokenPromise312),
-        scanActive: Boolean(scanPromise312)
-      };
+      resetDiagV314();
+      setDiagV314("MSAL", true, "initialisert");
+      setDiagV314("ACCOUNT", true, activeAccount.username || activeAccount.name || "konto aktiv");
+    } catch (err) {
+      console.error("[IANS V3.14] loginPopup failed", err);
+      const old = document.getElementById("loginError");
+      if (old) old.remove();
+
+      if (typeof els !== "undefined" && els?.loginPanel) {
+        const p = document.createElement("p");
+        p.id = "loginError";
+        p.className = "message";
+        p.textContent = `Innlogging feilet: ${err.message}`;
+        els.loginPanel.appendChild(p);
+      } else {
+        alert(`Innlogging feilet: ${err.message}`);
+      }
     }
   };
 
-  console.info("[IANS] OneDrive Command V3.12.0 Auth Recovery + Single Flight aktiv");
+  // ------------------------------------------------------------------
+  // 4. DIAGNOSTIC: tells us exactly where the chain stops.
+  // MSAL -> ACCOUNT -> TOKEN -> DRIVE -> ROOT
+  // ------------------------------------------------------------------
+  async function selfTestV314() {
+    if (diagRunning) return;
+    diagRunning = true;
+    resetDiagV314();
+
+    try {
+      if (!msalApp) throw new Error("MSAL ikke initialisert");
+      setDiagV314("MSAL", true, "initialisert");
+
+      const account = accountV314();
+      if (!account) {
+        setDiagV314("ACCOUNT", false, "ingen aktiv konto");
+        throw new Error("Ingen aktiv Microsoft-konto");
+      }
+      setDiagV314("ACCOUNT", true, account.username || account.name || "aktiv");
+
+      let token;
+      try {
+        token = await getToken();
+        setDiagV314("TOKEN", true, "silent token OK");
+      } catch (err) {
+        setDiagV314("TOKEN", false, err.message || String(err));
+        throw err;
+      }
+
+      const driveRes = await fetch(`${GRAPH}/me/drive?$select=id,driveType,quota`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store"
+      });
+      if (!driveRes.ok) {
+        const text = await driveRes.text();
+        setDiagV314("DRIVE", false, `HTTP ${driveRes.status} ${text.slice(0,120)}`);
+        throw new Error(`Drive HTTP ${driveRes.status}`);
+      }
+      const drive = await driveRes.json();
+      setDiagV314("DRIVE", true, drive.driveType || "drive OK");
+
+      const rootRes = await fetch(
+        `${GRAPH}/me/drive/root/children?$select=id,name,folder&$top=5`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          cache: "no-store"
+        }
+      );
+      if (!rootRes.ok) {
+        const text = await rootRes.text();
+        setDiagV314("ROOT", false, `HTTP ${rootRes.status} ${text.slice(0,120)}`);
+        throw new Error(`Root HTTP ${rootRes.status}`);
+      }
+      const root = await rootRes.json();
+      setDiagV314("ROOT", true, `${(root.value || []).length} element(er) lest`);
+    } catch (err) {
+      console.error("[IANS V3.14] auth self-test stopped", err);
+    } finally {
+      diagRunning = false;
+    }
+  }
+
+  window.IANS_AUTH_V314 = {
+    version: VERSION,
+    selfTest: selfTestV314,
+    account: () => accountV314()?.username || null
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", installDiagV314, { once: true });
+  } else {
+    installDiagV314();
+  }
+
+  console.info("[IANS] V3.14 Clean Auth Baseline active");
 })();
-// ===== END IANS OneDrive Command V3.12.0 =====
+// ===== END IANS OneDrive Command V3.14 =====
