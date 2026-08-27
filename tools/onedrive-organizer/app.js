@@ -7050,140 +7050,149 @@ window.__iansV313SelfTest=()=>({
 })();
 // ===== /IANS-V315-RUNTIME =====
 
-// ===== IANS OneDrive Command V3.15.1 · Live UI Isolation =====
-// Prevents restored/historical browser scan data from taking over the LIVE panel.
-// LIVE panel now reflects only the current V3.15 scan session.
+
+// ===== IANS OneDrive Command V3.16 · CLEAN RUNTIME =====
+// One click router + one visible LIVE owner. Legacy scan button handlers are intercepted
+// before target-level listeners can fire, so only the V3.15 unified Graph engine runs.
 (() => {
-  const VERSION = "3.15.1";
-  const ACTIVE = new Set([
-    "START","AUTH","TOKEN_OK","DRIVE_OK","ROOT_OK","QUEUE_SEEDED","QUEUE_RESTORED",
-    "GRAPH_PAGE","GRAPH_RETRY","FIRST_PAGE_OK","FOLDER_DONE"
-  ]);
-  const TERMINAL = new Set(["COMPLETE","ERROR","PAUSED"]);
-  let applying = false;
-  let resetTimer = null;
-  let currentSessionSeen = false;
+  const VERSION = "3.16.0";
+  const ACTIVE = new Set(["START","AUTH","TOKEN_OK","DRIVE_OK","ROOT_OK","QUEUE_SEEDED","QUEUE_RESTORED","GRAPH_PAGE","GRAPH_RETRY","FIRST_PAGE_OK","FOLDER_DONE"]);
+  let last = { phase:"IDLE", files:0, folders:0, bytes:0, queued:0, path:"/", at:null };
 
-  const byId = id => document.getElementById(id);
-  const getEls = () => {
-    let x = {};
-    try { if (typeof els !== "undefined" && els) x = els; } catch {}
-    return x;
-  };
-  const progressBar = () => getEls().progressBar || byId("progressBar") || document.querySelector('[data-scan-progress-bar]');
-  const progressTitle = () => getEls().progressTitle || byId("progressTitle") || document.querySelector('[data-scan-progress-title]');
-  const progressPath = () => getEls().progressPath || byId("progressPath") || document.querySelector('[data-scan-progress-path]');
-  const badge = () => byId("scanStateBadge") || document.querySelector('[data-scan-state-badge]');
+  const fmtN = n => typeof formatNumber === "function" ? formatNumber(Number(n)||0) : new Intl.NumberFormat("nb-NO").format(Number(n)||0);
+  const fmtB = n => typeof formatBytes === "function" ? formatBytes(Number(n)||0) : `${((Number(n)||0)/1073741824).toFixed(2)} GB`;
+  const esc = s => String(s??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-  function setText(el, value) {
-    if (el && el.textContent !== value) el.textContent = value;
-  }
-  function setWidth(value) {
-    const el = progressBar();
-    if (el && el.style.width !== value) el.style.width = value;
-  }
-  function currentPhase() {
-    return String(window.IANS_V315_STATE?.phase || "IDLE").toUpperCase();
-  }
-  function isActive() { return ACTIVE.has(currentPhase()); }
-
-  function clearHistoricalLiveState(reason = "idle") {
-    if (applying || isActive()) return;
-    applying = true;
-    try {
-      setText(badge(), "KLAR");
-      setText(progressTitle(), "Klar · ingen aktiv jobb");
-      setText(progressPath(), "Start en kartlegging for live status");
-      setWidth("0%");
-      document.documentElement.dataset.iansScanState = "klar";
-
-      // The old live-stat renderer is allowed to exist, but idle must always be zero.
-      const stats = document.querySelectorAll('[data-live-scan-files],[data-live-scan-bytes],[data-live-scan-folders],[data-live-scan-queue]');
-      stats.forEach(node => {
-        const key = Object.keys(node.dataset).find(k => k.startsWith('liveScan')) || '';
-        if (/bytes/i.test(key)) setText(node, "0 B");
-        else setText(node, "0");
-      });
-    } finally {
-      applying = false;
-    }
-    console.info(`[IANS V3.15.1] LIVE_IDLE_CLEARED · ${reason}`);
+  function locateLegacyLive(){
+    return document.querySelector("#v311LiveOperations, #liveOperations, .live-operations, [data-live-operations]")
+      || document.querySelector("#scanJobMeter")?.closest("section,div.panel,div")
+      || document.querySelector("#processedFoldersLive")?.closest("section,div.panel,div");
   }
 
-  // Guard the known live-stat entry point. Historical/browser restore calls are ignored
-  // unless a CURRENT V3.15 scan session is actually active.
-  try {
-    const original = typeof updateLiveScanStats === "function" ? updateLiveScanStats : null;
-    if (original && !original.__ians3151Wrapped) {
-      const wrapped = function(...args) {
-        if (!isActive()) {
-          console.debug("[IANS V3.15.1] ignored stale updateLiveScanStats", currentPhase());
-          return;
-        }
-        return original.apply(this, args);
-      };
-      wrapped.__ians3151Wrapped = true;
-      updateLiveScanStats = wrapped;
-      window.updateLiveScanStats = wrapped;
+  function ensurePanel(){
+    let p=document.getElementById("iansV316Live");
+    if(p) return p;
+    const legacy=locateLegacyLive();
+    p=document.createElement("section");
+    p.id="iansV316Live";
+    p.className="ians-v316-live";
+    p.innerHTML=`
+      <div class="ians-v316-left">
+        <div class="ians-v316-dot">◎</div>
+        <div><div class="ians-v316-eyebrow">IANS LIVE OPERATIONS · V3.16</div>
+        <strong id="v316Title">Klar · ingen aktiv jobb</strong>
+        <span id="v316Sub">Start en kartlegging for live status</span></div>
+      </div>
+      <div class="ians-v316-mid">
+        <div class="ians-v316-row"><span id="v316Path">Ingen aktiv scan</span><b id="v316Pct">0%</b></div>
+        <div class="ians-v316-track"><i id="v316Bar"></i></div>
+        <div class="ians-v316-row small"><span id="v316Phase">IDLE</span><span id="v316Queue">0 mapper i kø</span></div>
+      </div>
+      <div class="ians-v316-stats">
+        <div><b id="v316Files">0</b><span>filer</span></div>
+        <div><b id="v316Bytes">0 B</b><span>data</span></div>
+        <div><b id="v316State">KLAR</b><span>jobb</span></div>
+      </div>`;
+    if(legacy){
+      legacy.dataset.iansLegacyLive="hidden";
+      legacy.style.display="none";
+      legacy.insertAdjacentElement("afterend",p);
+    } else {
+      const focus=document.querySelector("#workspaceFocus, .workspace-focus, main")||document.body;
+      focus.prepend(p);
     }
-  } catch (err) {
-    console.warn("[IANS V3.15.1] updateLiveScanStats guard warning", err);
+    return p;
   }
 
-  // V3.15 is the only authority for live scan state.
-  window.addEventListener("ians:v315-scan-state", ev => {
-    const phase = String(ev?.detail?.phase || "").toUpperCase();
-    if (!phase) return;
-    if (resetTimer) { clearTimeout(resetTimer); resetTimer = null; }
+  function pctFor(s){
+    if(s.phase==="COMPLETE") return 100;
+    if(!ACTIVE.has(s.phase)) return 0;
+    if(["START","AUTH","TOKEN_OK","DRIVE_OK","ROOT_OK","QUEUE_SEEDED","QUEUE_RESTORED"].includes(s.phase)) return 0;
+    const done=Number(s.foldersProcessed||s.folders||0), q=Number(s.queued||0);
+    if(done<=0) return 0;
+    return Math.min(99,Math.max(1,Math.round(done/Math.max(done+q,1)*100)));
+  }
 
-    if (ACTIVE.has(phase)) {
-      currentSessionSeen = true;
-      document.documentElement.dataset.iansLiveOwner = "v315";
-      return;
+  function render(s=last){
+    ensurePanel();
+    const active=ACTIVE.has(s.phase), terminal=["COMPLETE","ERROR","PAUSED"].includes(s.phase);
+    const pct=pctFor(s);
+    const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+    set("v316Pct",`${pct}%`);
+    const bar=document.getElementById("v316Bar"); if(bar)bar.style.width=`${pct}%`;
+    set("v316Phase",s.phase||"IDLE");
+    set("v316Files",fmtN(s.files||0));
+    set("v316Bytes",fmtB(s.bytes||0));
+    set("v316Queue",`${fmtN(s.queued||0)} mapper i kø`);
+    set("v316Path",active ? (s.path||"Klargjør Graph…") : "Ingen aktiv scan");
+    if(active){
+      set("v316Title","Kartlegging pågår"); set("v316Sub","Live-data fra én V3.16 scan-session"); set("v316State","SCAN");
+    } else if(s.phase==="ERROR"){
+      set("v316Title","Skanningen stoppet"); set("v316Sub",s.message||"Se Console for detaljert feil"); set("v316State","FEIL");
+    } else if(s.phase==="PAUSED"){
+      set("v316Title","Kartlegging pauset"); set("v316Sub","Checkpoint er lagret"); set("v316State","PAUSE");
+    } else if(s.phase==="COMPLETE"){
+      set("v316Title","Kartlegging ferdig"); set("v316Sub",`${fmtN(s.files||0)} filer analysert`); set("v316State","FERDIG");
+    } else {
+      set("v316Title","Klar · ingen aktiv jobb"); set("v316Sub","Start en kartlegging for live status"); set("v316State","KLAR");
+      set("v316Files","0"); set("v316Bytes","0 B"); set("v316Queue","0 mapper i kø"); set("v316Pct","0%"); if(bar)bar.style.width="0%";
     }
+  }
 
-    if (phase === "COMPLETE") {
-      // Show completion briefly, then remove 100% from LIVE. The report remains available
-      // in the report/results area; it is not a live operation anymore.
-      resetTimer = setTimeout(() => clearHistoricalLiveState("completed"), 2500);
-      return;
-    }
+  function normalize(detail={}){
+    const phase=String(detail.phase||"IDLE").toUpperCase();
+    return {
+      ...last,...detail,phase,
+      files:Number(detail.files ?? last.files ?? 0),
+      folders:Number(detail.foldersProcessed ?? detail.folders ?? last.folders ?? 0),
+      queued:Number(detail.queued ?? last.queued ?? 0),
+      bytes:Number(detail.bytes ?? last.bytes ?? 0),
+      path:detail.path ?? last.path ?? "/"
+    };
+  }
 
-    if (phase === "ERROR" || phase === "PAUSED") {
-      resetTimer = setTimeout(() => clearHistoricalLiveState(phase.toLowerCase()), 4500);
-    }
+  window.addEventListener("ians:v315-scan-state", ev=>{
+    last=normalize(ev.detail||{});
+    render(last);
+    if(last.phase==="COMPLETE") setTimeout(()=>{ last={phase:"IDLE",files:0,folders:0,bytes:0,queued:0,path:"/"}; render(last); },3000);
   });
 
-  // Legacy renderers can still write directly to the DOM. When there is no current scan,
-  // immediately restore the truthful idle view instead of showing cached 100% / old bytes.
-  const observer = new MutationObserver(() => {
-    if (applying || isActive()) return;
-    const bar = progressBar();
-    const title = progressTitle();
-    const path = progressPath();
-    const b = badge();
-    const stale100 = bar && (bar.style.width === "100%" || bar.getAttribute("aria-valuenow") === "100");
-    const staleWords = [title?.textContent, path?.textContent, b?.textContent].filter(Boolean).join(" ");
-    if (stale100 || /kartlegg|skann|scan|ferdig|100%/i.test(staleWords)) {
-      queueMicrotask(() => clearHistoricalLiveState("legacy-dom-write"));
-    }
-  });
+  // Capture-phase router. This is the key V3.16 cleanup: old target listeners never run.
+  document.addEventListener("click", async ev=>{
+    const b=ev.target.closest("#scanBtn,#topStartScanBtn,#topStartScanBtn252,[data-scan-action='full'],button");
+    if(!b) return;
+    const txt=(b.textContent||"").trim().toLowerCase();
+    const isFull=b.id==="scanBtn"||b.id==="topStartScanBtn"||b.id==="topStartScanBtn252"||b.dataset.scanAction==="full"||txt==="full scan"||txt==="fullscan";
+    const isResume=b.id==="resumeScanBtn"||b.dataset.scanAction==="resume"||txt==="fortsett"||txt==="resume";
+    const isStop=b.id==="cancelBtn"||b.id==="topStopScanBtn"||b.id==="topStopScanBtn252"||b.dataset.scanStop!==undefined;
+    if(!(isFull||isResume||isStop)) return;
+    ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation();
+    if(isStop){ try{window.IANS_V315?.abort?.()}catch{}; return; }
+    if(!window.IANS_V315?.scan){ console.error("[IANS V3.16] Unified scan engine missing"); return; }
+    try{
+      if(isResume){
+        const cp=typeof loadScanCheckpoint==="function" ? await loadScanCheckpoint() : null;
+        if(!cp){console.warn("[IANS V3.16] Ingen checkpoint å fortsette");return;}
+        await window.IANS_V315.scan(cp);
+      } else {
+        // New Full Scan must never silently resume stale browser data.
+        if(typeof clearScanCheckpoint==="function") await clearScanCheckpoint();
+        await window.IANS_V315.scan(null);
+      }
+    }catch(err){ console.error("[IANS V3.16] routed scan failed",err); }
+  }, true);
 
-  const startObserver = () => {
-    const root = getEls().progressPanel || document.querySelector('[data-live-operations], #liveOperations, .live-operations') || document.body;
-    observer.observe(root, {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:["style","aria-valuenow","class"]});
-    clearHistoricalLiveState("startup");
-  };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", startObserver, {once:true});
-  else startObserver();
+  function style(){
+    if(document.getElementById("iansV316Style"))return;
+    const s=document.createElement("style");s.id="iansV316Style";s.textContent=`
+      .ians-v316-live{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(420px,1.5fr) auto;gap:28px;align-items:center;background:rgba(4,22,40,.92);border:1px solid rgba(72,166,220,.24);border-radius:18px;padding:18px 22px;margin:14px 0;color:#eaf7ff}
+      .ians-v316-left{display:flex;gap:16px;align-items:center}.ians-v316-dot{width:48px;height:48px;border:1px solid #36c6ff;border-radius:50%;display:grid;place-items:center;color:#52d4ff;font-size:25px}.ians-v316-eyebrow{font-size:11px;letter-spacing:1.5px;color:#66d5ff;font-weight:800}.ians-v316-left strong{display:block;font-size:16px;margin:4px 0}.ians-v316-left span{display:block;color:#8fa8bc;font-size:13px}.ians-v316-row{display:flex;justify-content:space-between;gap:12px;font-size:13px}.ians-v316-row.small{margin-top:6px;color:#7f9bb1;font-size:11px}.ians-v316-track{height:8px;background:#10263a;border-radius:99px;overflow:hidden;margin-top:8px}.ians-v316-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#48ccff,#9275ff);transition:width .18s ease}.ians-v316-stats{display:grid;grid-template-columns:repeat(3,minmax(86px,1fr));gap:10px}.ians-v316-stats div{border:1px solid rgba(72,166,220,.25);border-radius:10px;padding:10px 12px}.ians-v316-stats b,.ians-v316-stats span{display:block}.ians-v316-stats b{font-size:15px}.ians-v316-stats span{font-size:10px;color:#7f9bb1;margin-top:3px}@media(max-width:900px){.ians-v316-live{grid-template-columns:1fr}.ians-v316-stats{grid-template-columns:repeat(3,1fr)}}`;
+    document.head.appendChild(s);
+  }
 
-  // Public helper for diagnostics.
-  window.IANS_V3151 = {
-    version: VERSION,
-    clearLive: () => clearHistoricalLiveState("manual"),
-    phase: currentPhase
-  };
-
-  console.info("[IANS] V3.15.1 Live UI Isolation aktiv · historical browser result blocked from LIVE · 100% auto-clears");
+  function boot(){ style(); ensurePanel(); render({phase:"IDLE",files:0,folders:0,bytes:0,queued:0,path:"/"}); document.documentElement.dataset.iansRuntime="3.16"; }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
+  window.IANS_V316={version:VERSION,state:()=>last,render};
+  console.info("[IANS] V3.16 Clean Runtime aktiv · capture router · one Graph scan entry · dedicated LIVE owner");
 })();
-// ===== /IANS-V3151-RUNTIME =====
+// ===== /IANS-V316-RUNTIME =====
