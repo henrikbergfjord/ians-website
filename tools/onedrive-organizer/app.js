@@ -7049,3 +7049,141 @@ window.__iansV313SelfTest=()=>({
   console.info("[IANS] V3.15 Unified Graph Scan Engine aktiv · browser reader + scan share Graph children flow · single promise · abortable fetch");
 })();
 // ===== /IANS-V315-RUNTIME =====
+
+// ===== IANS OneDrive Command V3.15.1 · Live UI Isolation =====
+// Prevents restored/historical browser scan data from taking over the LIVE panel.
+// LIVE panel now reflects only the current V3.15 scan session.
+(() => {
+  const VERSION = "3.15.1";
+  const ACTIVE = new Set([
+    "START","AUTH","TOKEN_OK","DRIVE_OK","ROOT_OK","QUEUE_SEEDED","QUEUE_RESTORED",
+    "GRAPH_PAGE","GRAPH_RETRY","FIRST_PAGE_OK","FOLDER_DONE"
+  ]);
+  const TERMINAL = new Set(["COMPLETE","ERROR","PAUSED"]);
+  let applying = false;
+  let resetTimer = null;
+  let currentSessionSeen = false;
+
+  const byId = id => document.getElementById(id);
+  const getEls = () => {
+    let x = {};
+    try { if (typeof els !== "undefined" && els) x = els; } catch {}
+    return x;
+  };
+  const progressBar = () => getEls().progressBar || byId("progressBar") || document.querySelector('[data-scan-progress-bar]');
+  const progressTitle = () => getEls().progressTitle || byId("progressTitle") || document.querySelector('[data-scan-progress-title]');
+  const progressPath = () => getEls().progressPath || byId("progressPath") || document.querySelector('[data-scan-progress-path]');
+  const badge = () => byId("scanStateBadge") || document.querySelector('[data-scan-state-badge]');
+
+  function setText(el, value) {
+    if (el && el.textContent !== value) el.textContent = value;
+  }
+  function setWidth(value) {
+    const el = progressBar();
+    if (el && el.style.width !== value) el.style.width = value;
+  }
+  function currentPhase() {
+    return String(window.IANS_V315_STATE?.phase || "IDLE").toUpperCase();
+  }
+  function isActive() { return ACTIVE.has(currentPhase()); }
+
+  function clearHistoricalLiveState(reason = "idle") {
+    if (applying || isActive()) return;
+    applying = true;
+    try {
+      setText(badge(), "KLAR");
+      setText(progressTitle(), "Klar · ingen aktiv jobb");
+      setText(progressPath(), "Start en kartlegging for live status");
+      setWidth("0%");
+      document.documentElement.dataset.iansScanState = "klar";
+
+      // The old live-stat renderer is allowed to exist, but idle must always be zero.
+      const stats = document.querySelectorAll('[data-live-scan-files],[data-live-scan-bytes],[data-live-scan-folders],[data-live-scan-queue]');
+      stats.forEach(node => {
+        const key = Object.keys(node.dataset).find(k => k.startsWith('liveScan')) || '';
+        if (/bytes/i.test(key)) setText(node, "0 B");
+        else setText(node, "0");
+      });
+    } finally {
+      applying = false;
+    }
+    console.info(`[IANS V3.15.1] LIVE_IDLE_CLEARED · ${reason}`);
+  }
+
+  // Guard the known live-stat entry point. Historical/browser restore calls are ignored
+  // unless a CURRENT V3.15 scan session is actually active.
+  try {
+    const original = typeof updateLiveScanStats === "function" ? updateLiveScanStats : null;
+    if (original && !original.__ians3151Wrapped) {
+      const wrapped = function(...args) {
+        if (!isActive()) {
+          console.debug("[IANS V3.15.1] ignored stale updateLiveScanStats", currentPhase());
+          return;
+        }
+        return original.apply(this, args);
+      };
+      wrapped.__ians3151Wrapped = true;
+      updateLiveScanStats = wrapped;
+      window.updateLiveScanStats = wrapped;
+    }
+  } catch (err) {
+    console.warn("[IANS V3.15.1] updateLiveScanStats guard warning", err);
+  }
+
+  // V3.15 is the only authority for live scan state.
+  window.addEventListener("ians:v315-scan-state", ev => {
+    const phase = String(ev?.detail?.phase || "").toUpperCase();
+    if (!phase) return;
+    if (resetTimer) { clearTimeout(resetTimer); resetTimer = null; }
+
+    if (ACTIVE.has(phase)) {
+      currentSessionSeen = true;
+      document.documentElement.dataset.iansLiveOwner = "v315";
+      return;
+    }
+
+    if (phase === "COMPLETE") {
+      // Show completion briefly, then remove 100% from LIVE. The report remains available
+      // in the report/results area; it is not a live operation anymore.
+      resetTimer = setTimeout(() => clearHistoricalLiveState("completed"), 2500);
+      return;
+    }
+
+    if (phase === "ERROR" || phase === "PAUSED") {
+      resetTimer = setTimeout(() => clearHistoricalLiveState(phase.toLowerCase()), 4500);
+    }
+  });
+
+  // Legacy renderers can still write directly to the DOM. When there is no current scan,
+  // immediately restore the truthful idle view instead of showing cached 100% / old bytes.
+  const observer = new MutationObserver(() => {
+    if (applying || isActive()) return;
+    const bar = progressBar();
+    const title = progressTitle();
+    const path = progressPath();
+    const b = badge();
+    const stale100 = bar && (bar.style.width === "100%" || bar.getAttribute("aria-valuenow") === "100");
+    const staleWords = [title?.textContent, path?.textContent, b?.textContent].filter(Boolean).join(" ");
+    if (stale100 || /kartlegg|skann|scan|ferdig|100%/i.test(staleWords)) {
+      queueMicrotask(() => clearHistoricalLiveState("legacy-dom-write"));
+    }
+  });
+
+  const startObserver = () => {
+    const root = getEls().progressPanel || document.querySelector('[data-live-operations], #liveOperations, .live-operations') || document.body;
+    observer.observe(root, {subtree:true, childList:true, characterData:true, attributes:true, attributeFilter:["style","aria-valuenow","class"]});
+    clearHistoricalLiveState("startup");
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", startObserver, {once:true});
+  else startObserver();
+
+  // Public helper for diagnostics.
+  window.IANS_V3151 = {
+    version: VERSION,
+    clearLive: () => clearHistoricalLiveState("manual"),
+    phase: currentPhase
+  };
+
+  console.info("[IANS] V3.15.1 Live UI Isolation aktiv · historical browser result blocked from LIVE · 100% auto-clears");
+})();
+// ===== /IANS-V3151-RUNTIME =====
