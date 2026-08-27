@@ -1216,3 +1216,6 @@ body.ians-v30 #v288MidPulse .v288-pulse-line i{position:relative!important;left:
 .ians-scan-diagnostics{display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:center;margin:0 0 12px;padding:9px 12px;border:1px solid rgba(77,205,255,.28);border-radius:10px;background:rgba(5,22,39,.72);font-size:11px;color:#91a8ba}
 .ians-scan-diagnostics span{font-size:9px;letter-spacing:.14em;font-weight:800;color:#58d6ff}.ians-scan-diagnostics strong{color:#eaf7ff;font-size:11px}.ians-scan-diagnostics small{justify-self:end;color:#6f8799}
 @media(max-width:900px){.ians-scan-diagnostics{grid-template-columns:1fr}.ians-scan-diagnostics small{justify-self:start}}
+
+/* IANS V3.13 Clean Scan Engine */
+#iansScanDiagnostics strong{letter-spacing:.015em}

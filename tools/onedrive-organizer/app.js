@@ -242,210 +242,50 @@ async function signIn() {
   }
 }
 const iansSleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-function iansTransientMicrosoftError(err){
-  const name=String(err?.name||"");
-  const msg=String(err?.errorCode||err?.message||err||"");
-  return name==="AbortError" || /timed_out|timeout|monitor_window_timeout|network|failed to fetch|fetch failed|aborted|operation was aborted|temporar|ECONN|ENET|429|500|502|503|504/i.test(msg);
-}
-function iansTimeoutPromise(promise,ms,label="Microsoft-kall"){
-  return new Promise((resolve,reject)=>{
-    const t=setTimeout(()=>{
-      const e=new Error(`${label} timed_out after ${ms} ms`); e.name="IansTimeoutError"; reject(e);
-    },ms);
-    Promise.resolve(promise).then(v=>{clearTimeout(t);resolve(v)},e=>{clearTimeout(t);reject(e)});
-  });
-}
 
-// V3.12.5: one token broker for the entire scan. V3.12.4 could multiply
-// 5 token retries by 6 Graph retries, causing a retry storm before file 1.
-let iansTokenCache={accessToken:"",expiresAt:0,accountId:""};
-let iansTokenPromise=null;
-function iansInvalidateToken(){
-  iansTokenCache={accessToken:"",expiresAt:0,accountId:""};
-  iansTokenPromise=null;
-}
-function iansTokenUsable(){
-  const aid=activeAccount?.homeAccountId||activeAccount?.localAccountId||activeAccount?.username||"";
-  return !!iansTokenCache.accessToken && iansTokenCache.accountId===aid && Date.now()<iansTokenCache.expiresAt-120000;
-}
-
-// V3.12.7: explicit scan starts are user gestures. Prime MSAL with an interactive
-// popup immediately from that click instead of waiting for a hidden-iframe
-// acquireTokenSilent call that can time out before file 1.
-let iansInteractiveAuthPromise=null;
-function iansCacheAuthResult(result){
-  if(result?.account){
-    activeAccount=result.account;
-    try{msalApp?.setActiveAccount(activeAccount)}catch{}
+// ===== V3.13 CLEAN AUTH + GRAPH PATH =====
+// Scan uses the already connected Microsoft account. No scan-specific popup,
+// redirect, hidden preflight, token broker, or nested token retry loops.
+async function getToken() {
+  if (!msalApp) throw new Error("Microsoft-tilkoblingen er ikke initialisert.");
+  if (!activeAccount) {
+    activeAccount = msalApp.getActiveAccount?.() || msalApp.getAllAccounts?.()?.[0] || null;
+    if (activeAccount) msalApp.setActiveAccount?.(activeAccount);
   }
-  if(!result?.accessToken) throw new Error("Microsoft returnerte ikke access token.");
-  const aid=activeAccount?.homeAccountId||activeAccount?.localAccountId||activeAccount?.username||"";
-  const exp=result?.expiresOn instanceof Date ? result.expiresOn.getTime() : Date.now()+45*60*1000;
-  iansTokenCache={accessToken:result.accessToken,expiresAt:exp,accountId:aid};
-  return result.accessToken;
-}
-function iansPrimeInteractiveAuth(reason="Full scan") {
-  if(iansTokenUsable()) return Promise.resolve(iansTokenCache.accessToken);
-  if(iansInteractiveAuthPromise) return iansInteractiveAuthPromise;
-  if(!msalApp) return Promise.reject(new Error("MSAL er ikke initialisert."));
-  const request={
-    scopes:SCOPES,
-    account:activeAccount||undefined,
-    loginHint:activeAccount?.username||undefined,
-    redirectUri:POPUP_REDIRECT_URI
-  };
-  iansScanStage?.("AUTH",`${reason}: åpner Microsoft-sesjon`);
-  updateScanMeter?.(Math.round(scanVisualPct||5),"Bekrefter Microsoft-tilkobling");
-  // acquireTokenPopup is invoked synchronously from the user's click. This is
-  // deliberate: Edge can block a popup if we first await a 15 s silent timeout.
-  const raw=msalApp.acquireTokenPopup(request);
-  iansInteractiveAuthPromise=Promise.resolve(raw)
-    .then(iansCacheAuthResult)
-    .catch(err=>{
-      const e=new Error(`AUTH_POPUP_STAGE: ${err?.message||err}`);
-      e.name="IansAuthPopupError";
-      e.cause=err;
-      throw e;
-    })
-    .finally(()=>{iansInteractiveAuthPromise=null;});
-  // Make getToken() consume the same in-flight popup instead of starting a
-  // parallel silent acquisition.
-  iansTokenPromise=iansInteractiveAuthPromise;
-  return iansInteractiveAuthPromise;
-}
-// V3.12.8: browser-safe redirect handshake for explicit Full Scan / Resume.
-// The requested action survives the round-trip in sessionStorage and resumes
-// automatically after MSAL returns to the live IANS page.
-const IANS_PENDING_SCAN_KEY="ians_pending_scan_action_v3128";
-function iansSetPendingScan(action){
-  sessionStorage.setItem(IANS_PENDING_SCAN_KEY,JSON.stringify({action,time:Date.now()}));
-}
-function iansTakePendingScan(){
-  try{
-    const raw=sessionStorage.getItem(IANS_PENDING_SCAN_KEY);
-    if(!raw)return null;
-    const data=JSON.parse(raw);
-    if(!data?.action || Date.now()-Number(data.time||0)>10*60*1000){sessionStorage.removeItem(IANS_PENDING_SCAN_KEY);return null;}
-    sessionStorage.removeItem(IANS_PENDING_SCAN_KEY);
-    return data.action;
-  }catch{sessionStorage.removeItem(IANS_PENDING_SCAN_KEY);return null;}
-}
-async function iansBeginRedirectAuth(action="full"){
-  if(!msalApp)throw new Error("MSAL er ikke initialisert.");
-  iansEnsureScanDiagnostics?.();
-  iansScanStage?.("AUTH",`${action==="resume"?"Resume":"Full scan"}: sender til Microsoft sikkert`);
-  iansSetPendingScan(action);
-  const request={
-    scopes:SCOPES,
-    account:activeAccount||undefined,
-    loginHint:activeAccount?.username||undefined,
-    redirectUri:APP_REDIRECT_URI,
-    prompt:"select_account"
-  };
-  // Redirect auth deliberately replaces popup auth for scan startup.
-  return msalApp.acquireTokenRedirect(request);
-}
-async function iansResumeAfterRedirect(){
-  const action=iansTakePendingScan();
-  if(!action)return;
-  const authErr=sessionStorage.getItem("ians_scan_auth_error");
-  sessionStorage.removeItem("ians_scan_auth_error");
-  iansEnsureScanDiagnostics?.();
-  if(authErr){iansScanStage?.("AUTH",`STOPP · ${authErr}`);return;}
-  iansScanStage?.("AUTH","Microsoft redirect-token OK");
-  // Give Command Center time to mount before driving the real scan engine.
-  await iansSleep(450);
-  if(action==="resume"){
-    const cp=await loadScanCheckpoint();
-    if(!cp){iansScanStage?.("CHECKPOINT","ingen checkpoint å fortsette");return;}
-    iansScanStage?.("CHECKPOINT","Resume checkpoint lastet");
-    await scanOneDrive(cp);
-  }else{
-    await scanOneDrive();
-  }
-}
-
-async function getToken(attempt=0){
-  if(iansTokenUsable()) return iansTokenCache.accessToken;
-  if(iansTokenPromise) return iansTokenPromise;
-  const request={scopes:SCOPES,account:activeAccount};
-  iansTokenPromise=(async()=>{
-    try{
-      const result=await iansTimeoutPromise(msalApp.acquireTokenSilent(request),15000,"MSAL token");
-      const aid=activeAccount?.homeAccountId||activeAccount?.localAccountId||activeAccount?.username||"";
-      const exp=result?.expiresOn instanceof Date ? result.expiresOn.getTime() : Date.now()+45*60*1000;
-      iansTokenCache={accessToken:result.accessToken,expiresAt:exp,accountId:aid};
-      return result.accessToken;
-    }catch(err){
-      if(err instanceof InteractionRequiredAuthError || /interaction_required|login_required|consent_required/i.test(String(err?.errorCode||err?.message||""))){
-        const e=new Error("Microsoft-økten må fornyes. Logg ut og koble til OneDrive på nytt.");
-        e.name="IansAuthRequiredError";
-        throw e;
-      }
-      if(iansTransientMicrosoftError(err)){
-        const e=new Error(`SILENT_AUTH_TIMEOUT: ${err?.message||err}`);
-        e.name="IansSilentAuthTimeout";
-        e.cause=err;
-        throw e;
-      }
-      const e=new Error(`TOKEN_STAGE: ${err?.message||err}`);
-      e.name="IansTokenStageError";
-      e.cause=err;
-      throw e;
-    }finally{
-      iansTokenPromise=null;
-    }
-  })();
-  return iansTokenPromise;
-}
-
-async function graphFetch(url,attempt=0,authRetried=false){
-  if(cancelRequested) throw new Error("SCAN_CANCELLED");
-  let token;
-  try{
-    token=await getToken();
-  }catch(err){
-    // Token broker owns token retries. Never feed token failures back into the
-    // Graph retry loop; that was the V3.12.4 retry-storm bug.
-    throw err;
-  }
-
-  const controller=new AbortController();
-  const timeout=setTimeout(()=>controller.abort(),30000);
-  let response;
-  try{
-    response=await fetch(url.startsWith("http")?url:`${GRAPH}${url}`,{
-      headers:{Authorization:`Bearer ${token}`},signal:controller.signal
-    });
-  }catch(err){
-    if(err?.message==="SCAN_CANCELLED") throw err;
-    if(iansTransientMicrosoftError(err) && attempt<4){
-      const next=attempt+1;
-      updateScanMeter?.(Math.round(scanVisualPct||5),`Graph-forbindelse treg · nytt forsøk ${next}/5`);
-      await iansSleep(Math.min(1000*(2**attempt),8000));
-      return graphFetch(url,next,authRetried);
+  if (!activeAccount) throw new Error("Ingen Microsoft-konto er koblet til. Logg inn på nytt.");
+  const request = { scopes: SCOPES, account: activeAccount };
+  try {
+    iansScanStage?.("AUTH", "bruker eksisterende Microsoft-økt");
+    const result = await msalApp.acquireTokenSilent(request);
+    if (!result?.accessToken) throw new Error("Microsoft returnerte ikke access token.");
+    return result.accessToken;
+  } catch (err) {
+    if (err instanceof InteractionRequiredAuthError || /interaction_required|login_required|consent_required/i.test(String(err?.errorCode||err?.message||""))) {
+      throw new Error("Microsoft-økten må fornyes. Logg ut og koble til OneDrive på nytt.");
     }
     throw err;
-  }finally{clearTimeout(timeout)}
+  }
+}
 
-  if(response.status===401 && !authRetried){
-    iansInvalidateToken();
-    updateScanMeter?.(Math.round(scanVisualPct||5),"Microsoft-token fornyes · ett nytt forsøk");
-    return graphFetch(url,attempt,true);
+async function graphFetch(url, attempt = 0) {
+  if (cancelRequested) throw new Error("SCAN_CANCELLED");
+  const token = await getToken();
+  const target = url.startsWith("http") ? url : `${GRAPH}${url}`;
+  const response = await fetch(target, { headers: { Authorization: `Bearer ${token}` } });
+
+  if ([429, 500, 502, 503, 504].includes(response.status) && attempt < 5) {
+    const retryAfter = Number(response.headers.get("Retry-After")) || Math.min(2 ** attempt, 20);
+    updateScanMeter?.(Math.round(scanVisualPct||5), `Microsoft Graph er opptatt · nytt forsøk ${attempt+2}/6`);
+    await iansSleep(retryAfter * 1000);
+    return graphFetch(url, attempt + 1);
   }
-  if([429,500,502,503,504].includes(response.status) && attempt<4){
-    const next=attempt+1;
-    const retryAfter=Number(response.headers.get("Retry-After"))||Math.min(2**attempt,15);
-    updateScanMeter?.(Math.round(scanVisualPct||5),`Microsoft Graph er opptatt · nytt forsøk ${next}/5`);
-    await iansSleep(retryAfter*1000);
-    return graphFetch(url,next,authRetried);
-  }
-  if(!response.ok){
-    let detail="";try{detail=JSON.stringify(await response.json())}catch{}
+  if (!response.ok) {
+    let detail=""; try { detail=JSON.stringify(await response.json()); } catch {}
     throw new Error(`Graph ${response.status}: ${detail||response.statusText}`);
   }
   return response.json();
 }
+// ===== END V3.13 CLEAN AUTH + GRAPH PATH =====
 
 // ===== V3.12.6 SCAN START DIAGNOSTICS =====
 const IANS_SCAN_STAGES=["READY","AUTH","DRIVE","ROOT","CHECKPOINT","ENUMERATION","COMPLETE"];
@@ -461,23 +301,11 @@ function iansEnsureScanDiagnostics(){
   const bar=document.createElement("div");
   bar.id="iansScanDiagnostics";
   bar.className="ians-scan-diagnostics";
-  bar.innerHTML=`<span>SCAN START</span><strong id="iansScanStageLine">READY · v3.12.8</strong><small>AUTH → DRIVE → ROOT → CHECKPOINT → ENUMERATION</small>`;
+  bar.innerHTML=`<span>SCAN START</span><strong id="iansScanStageLine">READY · v3.13</strong><small>AUTH → DRIVE → ROOT → CHECKPOINT → ENUMERATION</small>`;
   host.prepend(bar);
 }
 setTimeout(iansEnsureScanDiagnostics,900);
 // ===== END V3.12.6 SCAN START DIAGNOSTICS =====
-
-async function iansScanPreflight(){
-  iansEnsureScanDiagnostics();
-  iansScanStage("AUTH","henter/gjenbruker token");
-  updateScanMeter?.(Math.round(scanVisualPct||5),"Kontrollerer Microsoft-tilkobling");
-  await getToken();
-  iansScanStage("DRIVE","token OK");
-  const drive=await graphFetch("/me/drive/root?$select=id,name,parentReference");
-  iansScanStage("ROOT",drive?.id?"OneDrive root OK":"root mangler");
-  if(!drive?.id) throw new Error("PREFLIGHT_STAGE: OneDrive root kunne ikke bekreftes.");
-  return drive;
-}
 
 async function loadDriveQuota() {
   const drive = await graphFetch("/me/drive?$select=id,driveType,name,quota");
@@ -727,16 +555,10 @@ async function scanOneDrive(resumeState=null) {
     const mode=document.querySelector('input[name="scanScope"]:checked')?.value||"all";
     scanRoot=mode==="folder"?selectedScanFolder:{id:null,path:"/"};
     queue=[{id:scanRoot.id,path:scanRoot.path,driveId:null,lastModifiedDateTime:null}];
-    // V3.12.5: never erase a good Resume checkpoint before Microsoft has
-    // proven that this new scan can actually reach OneDrive.
-    try{
-      await iansScanPreflight();
-      iansScanStage("CHECKPOINT","preflight OK · klargjør ny scan");
-      await clearScanCheckpoint();
-    }catch(err){
-      err.message=`PREFLIGHT_STAGE: ${String(err?.message||err).replace(/^PREFLIGHT_STAGE:\s*/,"")}`;
-      throw err;
-    }
+    // V3.13: do not block scan startup behind a separate auth/root preflight.
+    // The first real enumeration call proves the connection, as in the working engine.
+    iansScanStage("CHECKPOINT","ny scan klargjort");
+    await clearScanCheckpoint();
   }
 
   startScanClock(scanStartedAt);
@@ -2536,29 +2358,34 @@ topStopScanBtn252?.addEventListener("click",()=>{
   cancelRequested=true;
 });
 const _scan252 = scanOneDrive;
-scanOneDrive = async function(resumeState=null){
-  if(scanRunningV38){iansToast("Kartlegging kjører","Det finnes allerede én aktiv kartleggingsjobb. Bruk Pause eller vent til den er ferdig.","error",6000);return}
+let iansActiveScanPromise = null;
+scanOneDrive = function(resumeState=null){
+  if(iansActiveScanPromise){
+    iansToast?.("Kartlegging kjører","Det finnes allerede én aktiv kartleggingsjobb. Bruk Pause eller vent til den er ferdig.","error",6000);
+    return iansActiveScanPromise;
+  }
   scanRunningV38=true;
   if(topStartScanBtn252)topStartScanBtn252.disabled=true;
   if(topStopScanBtn252)topStopScanBtn252.disabled=false;
   const a=document.getElementById("scanInlineStart"),p=document.getElementById("scanInlinePause"),r=document.getElementById("scanInlineResume"),v=document.getElementById("scanInlineVerify");
   if(a)a.disabled=true;if(p)p.disabled=false;if(r)r.disabled=true;if(v)v.disabled=true;
-  try{return await _scan252(resumeState)}finally{
+  iansActiveScanPromise=Promise.resolve(_scan252(resumeState)).finally(()=>{
     scanRunningV38=false;
+    iansActiveScanPromise=null;
     if(topStartScanBtn252)topStartScanBtn252.disabled=false;
     if(topStopScanBtn252)topStopScanBtn252.disabled=true;
     if(a)a.disabled=false;if(p)p.disabled=true;if(r)r.disabled=false;if(v)v.disabled=!report;
-  }
+  });
+  return iansActiveScanPromise;
 };
 
-// V3.12.1: The original scan button was bound to the pre-wrapper function reference.
-// Rebind it so Full scan uses the authoritative job lock and Live Operations state.
+// Rebind the original button to the one authoritative V3.13 scan entry point.
 try{
   if(els?.scanBtn && typeof _scan252==="function"){
     els.scanBtn.removeEventListener("click", _scan252);
     els.scanBtn.addEventListener("click", scanOneDrive);
   }
-}catch(e){console.warn("[IANS V3.12.1] scan button rebind",e)}
+}catch(e){console.warn("[IANS V3.13] scan button rebind",e)}
 
 // Hide the old scan button to avoid two competing primary controls.
 setTimeout(()=>{
@@ -5414,41 +5241,47 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     showFocus(state.focus);
   }
 
+  async function quickScanV313(){
+    iansEnsureScanDiagnostics();
+    iansScanStage("READY","Hurtigscan starter · rotnivå");
+    showFocus("scan");
+    try{
+      const children=await listAllChildren(null);
+      const files=children.filter(x=>x.file).length;
+      const folders=children.filter(x=>x.folder).length;
+      const bytes=children.reduce((s,x)=>s+(x.file?Number(x.size||0):0),0);
+      iansScanStage("COMPLETE",`Hurtigscan OK · ${files} filer · ${folders} mapper`);
+      updateScanMeter?.(100,`Hurtigscan ferdig · ${files} filer · ${folders} mapper`);
+      iansToast?.("Hurtigscan ferdig",`${files} filer · ${folders} mapper på rotnivå · ${formatBytes(bytes)}`,"success",7000);
+      return {files,folders,bytes,children};
+    }catch(err){
+      iansScanStage("AUTH",`STOPP · ${String(err?.message||err)}`);
+      iansToast?.("Hurtigscan feilet",String(err?.message||err),"error",9000);
+      throw err;
+    }
+  }
+
   async function runScanAction(action){
-    // V3.12.6: Never search-and-click a button labelled "Full scan".
-    // That could rediscover the V3 button itself when the legacy button was moved/hidden,
-    // causing a recursive click loop before Graph was ever called.
     if(action==="full"){
       iansEnsureScanDiagnostics();
-      iansScanStage("READY","Full scan-knapp mottatt");
+      iansScanStage("READY","Full scan starter direkte");
       showFocus("scan");
-      try{
-        await iansBeginRedirectAuth("full");
-      }catch(err){
-        iansScanStage("AUTH",`STOPP · ${String(err?.message||err)}`);
-        iansToast?.("Microsoft-tilkobling feilet",String(err?.message||err),"error",9000);
-        console.error("[IANS V3.12.8] redirect auth/full scan",err);
-      }
+      try{ await scanOneDrive(); }
+      catch(err){ console.error("[IANS V3.13] full scan",err); }
       return;
     }
     if(action==="resume"){
       iansEnsureScanDiagnostics();
       showFocus("scan");
       const cp=await loadScanCheckpoint();
-      if(!cp){ iansScanStage("READY","ingen checkpoint å fortsette"); iansToast?.("Ingen checkpoint","Det finnes ingen lagret scan å fortsette.","error",5000); return; }
-      iansScanStage("CHECKPOINT","Resume checkpoint funnet · autentiserer");
-      try{
-        await iansBeginRedirectAuth("resume");
-      }catch(err){
-        iansScanStage("AUTH",`STOPP · ${String(err?.message||err)}`);
-        iansToast?.("Microsoft-tilkobling feilet",String(err?.message||err),"error",9000);
-        console.error("[IANS V3.12.8] redirect auth/resume",err);
-      }
+      if(!cp){iansScanStage("CHECKPOINT","ingen checkpoint å fortsette");iansToast?.("Ingen checkpoint","Det finnes ingen lagret scan å fortsette.","error",5000);return;}
+      iansScanStage("CHECKPOINT","Resume starter direkte");
+      try{ await scanOneDrive(cp); }
+      catch(err){ console.error("[IANS V3.13] resume",err); }
       return;
     }
     if(action==="quick"){
-      showFocus("scan");
-      iansScanStage("READY","Scan & Vault åpnet");
+      await quickScanV313();
       return;
     }
     const direct={import:"importScanBtn",export:"exportScanBtn"};
@@ -6097,10 +5930,8 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     syncCard(s);
   }
 
-  // The top "Hurtigscan" control in V3.12 only opened the scanner; make that explicit until a true shallow-scan engine exists.
   function clarifyQuick(){
-    qa('#iansV30 [data-scan="quick"]').forEach(b=>{b.textContent='Åpne scan';b.title='Åpner Scan & Vault. Full scan starter den komplette kartleggingen.'});
-    qa('#v30ContextActions button').filter?.(()=>false);
+    qa('#iansV30 [data-scan="quick"]').forEach(b=>{b.textContent='Hurtigscan';b.title='Tester Microsoft Graph og leser rotnivået uten å starte full kartlegging.'});
   }
 
   // Full scan should immediately show as running, before the first Graph response arrives.
@@ -6213,3 +6044,16 @@ window.v3128RedirectAuthSelfTest=()=>({
 });
 console.info('[IANS] V3.12.8 Redirect Auth Handshake aktiv');
 // ===== END V3.12.8 =====
+
+
+// ===== IANS OneDrive Command V3.13 · CLEAN SCAN ENGINE =====
+console.info("[IANS] V3.13 Clean Scan Engine aktiv · single promise · direct Graph enumeration · no scan preflight/redirect");
+window.__iansV313SelfTest=()=>({
+  version:"3.13",
+  directScan:typeof scanOneDrive==="function",
+  singlePromise:typeof iansActiveScanPromise!=="undefined",
+  preflight:typeof iansScanPreflight==="function",
+  redirect:typeof iansBeginRedirectAuth==="function",
+  account:activeAccount?.username||null
+});
+// ===== END V3.13 =====
