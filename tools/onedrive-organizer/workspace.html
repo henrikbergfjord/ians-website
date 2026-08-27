@@ -10,6 +10,27 @@
 <link rel="stylesheet" href="../../assets/css/ians-next.css">
 </head>
 <body>
+
+<div id="iansScanStateControls" style="max-width:1180px;margin:14px auto 10px;padding:0 18px;">
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 12px;border:1px solid rgba(95,190,255,.28);border-radius:10px;background:rgba(8,24,42,.66);">
+    <button type="button" class="btn ghost" id="iansClearScanCacheBtn">Nullstill lokal scan-data</button>
+    <div id="iansPrevScanBadge" hidden style="font-size:12px;opacity:.9;">
+      <strong>Forrige lagrede scan</strong>
+      <span> · historisk resultat, ikke aktiv scan</span>
+      <span id="iansPrevScanValues" style="margin-left:8px;"></span>
+    </div>
+  </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  var b=document.getElementById("iansClearScanCacheBtn");
+  if(b) b.addEventListener("click", function(){
+    var evt=new MouseEvent("click",{bubbles:true,cancelable:true});
+    Object.defineProperty(evt,"target",{value:b});
+  }, {once:false});
+});
+</script>
+
         <a class="btn ghost v293-tools-jump" href="#v293Portable">Tools</a>
 
   <header class="topbar">
@@ -806,7 +827,7 @@
     <p>IANS OneDrive Organizer V2.9.3.1 Portable Scan + Photo Intelligence · Ingen filer lastes ned under kartleggingen · Ingen skrive-/slettetilgang</p>
   </footer>
 
-  <script type="module" src="app.js?v=31421-1787820819"></script>
+  <script type="module" src="app.js?v=3143-1787822065"></script>
 <div class="ians-next-badge">IANS Next · Master</div>
 <script>window.addEventListener('load',()=>{if(location.hash){setTimeout(()=>{const e=document.querySelector(location.hash);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});},500)}});</script>
 

@@ -6384,394 +6384,174 @@ window.__iansV313SelfTest=()=>({
 })();
 // ===== END IANS OneDrive Command V3.14.1 =====
 
-// ===== IANS OneDrive Command V3.14.2 · Scan Session Isolation =====
-(() => {
-  "use strict";
-  const V = "3.14.2";
-  const SESSION_KEY = "ians_v3142_active_scan_session";
-  const PREVIOUS_KEY = "ians_v3142_previous_scan_summary";
-  const LEGACY_KEYS = [
-    "ians_scan_state","ians_scan_report","ians_scan_cache","ians_last_scan",
-    "ians_v293_scan","ians_v294_scan","ians_v311_scan","ians_v312_scan",
-    "ians_v313_scan","ians_v314_scan"
-  ];
-  let currentSession = null;
-  let currentStats = {files:0, folders:0, bytes:0, retries:0, failedFolders:0};
-  let sessionStarted = false;
 
-  const $v3142 = id => document.getElementById(id);
-  const fmtN3142 = n => new Intl.NumberFormat("nb-NO").format(Number(n)||0);
-  const fmtB3142 = n => {
-    n = Number(n)||0;
-    if (!n) return "0 B";
-    const u=["B","KB","MB","GB","TB","PB"];
-    const i=Math.min(Math.floor(Math.log(n)/Math.log(1024)),u.length-1);
-    return `${(n/Math.pow(1024,i)).toFixed(i>=3?2:1)} ${u[i]}`;
-  };
-  const newScanId3142 = () => `scan-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
-  const safeJson3142 = v => { try{return JSON.parse(v)}catch{return null} };
 
-  function snapshotOldVisibleState3142(){
-    const fileText =
-      $v3142("fileCount")?.textContent ||
-      document.querySelector("[data-live-files]")?.textContent ||
-      "";
-    const sizeText =
-      $v3142("fileSize")?.textContent ||
-      document.querySelector("[data-live-bytes]")?.textContent ||
-      "";
-    if (fileText || sizeText) {
-      localStorage.setItem(PREVIOUS_KEY, JSON.stringify({
-        savedAt:new Date().toISOString(),
-        filesText:fileText.trim(),
-        sizeText:sizeText.trim(),
-        source:"legacy-visible-state"
-      }));
-    }
-  }
-
-  async function clearLegacyCheckpointOnly3142(){
-    try{
-      await new Promise(resolve=>{
-        const req=indexedDB.open("ians_onedrive_scan_v25",1);
-        req.onerror=()=>resolve();
-        req.onupgradeneeded=()=>{
-          const db=req.result;
-          if(!db.objectStoreNames.contains("checkpoints")) db.createObjectStore("checkpoints");
-        };
-        req.onsuccess=()=>{
-          const db=req.result;
-          try{
-            if(!db.objectStoreNames.contains("checkpoints")) { db.close(); resolve(); return; }
-            const tx=db.transaction("checkpoints","readwrite");
-            tx.objectStore("checkpoints").delete("active");
-            tx.oncomplete=()=>{db.close();resolve()};
-            tx.onerror=()=>{db.close();resolve()};
-          }catch{db.close();resolve()}
-        };
-      });
-    }catch{}
-  }
-
-  function clearLegacyLocalScanState3142(){
-    for(const k of LEGACY_KEYS) localStorage.removeItem(k);
-    Object.keys(localStorage).forEach(k=>{
-      if (/^ians_/i.test(k) &&
-          /(scan|checkpoint|report|cache)/i.test(k) &&
-          !/(quarantine|review|action|pro|client|config|feedback|media)/i.test(k) &&
-          k !== PREVIOUS_KEY && k !== SESSION_KEY) {
-        localStorage.removeItem(k);
-      }
-    });
-  }
-
-  async function beginFreshSession3142(source="full-scan"){
-    if(sessionStarted) return currentSession;
-    snapshotOldVisibleState3142();
-    clearLegacyLocalScanState3142();
-    await clearLegacyCheckpointOnly3142();
-
-    currentStats={files:0,folders:0,bytes:0,retries:0,failedFolders:0};
-    currentSession={
-      scanId:newScanId3142(),
-      startedAt:new Date().toISOString(),
-      source,
-      status:"running",
-      stats:{...currentStats}
-    };
-    sessionStarted=true;
-    sessionStorage.setItem(SESSION_KEY,JSON.stringify(currentSession));
-
-    ["fileCount","folderCount","processedFoldersLive","queuedFoldersLive"].forEach(x=>{
-      const el=$v3142(x); if(el) el.textContent="0";
-    });
-    const bytes=$v3142("scannedBytesLive"); if(bytes) bytes.textContent="0 B";
-
-    console.info(`[IANS SCAN SESSION] ${currentSession.scanId} · fresh Graph session · previous cache isolated`);
-    return currentSession;
-  }
-
-  function completeSession3142(){
-    if(!currentSession) return;
-    currentSession.status=currentStats.failedFolders ? "completed-with-errors" : "completed";
-    currentSession.completedAt=new Date().toISOString();
-    currentSession.stats={...currentStats};
-    sessionStorage.setItem(SESSION_KEY,JSON.stringify(currentSession));
-    console.info(`[IANS SCAN COMPLETE] ${currentSession.scanId} · ${fmtN3142(currentStats.files)} files · ${fmtB3142(currentStats.bytes)} · retries ${currentStats.retries} · failed ${currentStats.failedFolders}`);
-  }
-
-  const nativeFetch3142 = window.fetch.bind(window);
-  window.fetch = async function(input, init){
-    const url = typeof input==="string" ? input : (input?.url || "");
-    const isGraph = /^https:\/\/graph\.microsoft\.com\//i.test(url);
-    if(!isGraph) return nativeFetch3142(input,init);
-
-    let last;
-    let recoveredStatus = null;
-    for(let attempt=0; attempt<6; attempt++){
-      last = await nativeFetch3142(input,init);
-      if(![429,500,502,503,504].includes(last.status)){
-        if(recoveredStatus !== null){
-          console.info(`[IANS GRAPH RECOVERED] HTTP ${recoveredStatus} · ${url}`);
-        }
-        return last;
-      }
-      recoveredStatus = last.status;
-      if(attempt>=5) break;
-
-      currentStats.retries++;
-      const ra=Number(last.headers.get("Retry-After"));
-      const wait=Number.isFinite(ra)&&ra>0 ? ra : Math.min(2**attempt,15);
-      console.warn(`[IANS GRAPH RETRY] HTTP ${last.status} · attempt ${attempt+1}/6 · wait ${wait}s`);
-      await new Promise(r=>setTimeout(r,wait*1000));
-    }
-    if(last && [429,500,502,503,504].includes(last.status)){
-      console.error(`[IANS GRAPH FAILED] HTTP ${last.status} after 6 attempts · ${url}`);
-    }
-    return last;
-  };
-
-  document.addEventListener("click", e=>{
-    const b=e.target.closest("#scanBtn,#fullScanBtn,[data-action='full-scan'],[data-scan='full'],button");
-    if(!b) return;
-    const text=(b.textContent||"").trim().toLowerCase();
-    const isFull =
-      b.id==="scanBtn" || b.id==="fullScanBtn" ||
-      b.dataset?.action==="full-scan" || b.dataset?.scan==="full" ||
-      /full\s*scan|full\s*skann|fullstendig\s*scan|fullstendig\s*skann/.test(text);
-    if(!isFull) return;
-
-    const active = safeJson3142(sessionStorage.getItem(SESSION_KEY));
-    if(active?.status==="running" && sessionStarted){
-      e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
-      console.warn(`[IANS SCAN BLOCKED] aktiv scan finnes: ${active.scanId}`);
-      if(typeof iansToast==="function") iansToast("Scan kjører allerede","Stopp eller fullfør aktiv scan før du starter en ny.","warning",5000);
-      return;
-    }
-    beginFreshSession3142("full-scan").catch(err=>console.error("[IANS V3.14.2] session init",err));
-  }, true);
-
-  const observer3142 = new MutationObserver(()=>{
-    if(!currentSession) return;
-    const n = t => Number(String(t||"").replace(/[^\d]/g,""))||0;
-    const f=$v3142("fileCount"); if(f) currentStats.files=Math.max(currentStats.files,n(f.textContent));
-    const fo=$v3142("folderCount"); if(fo) currentStats.folders=Math.max(currentStats.folders,n(fo.textContent));
-    currentSession.stats={...currentStats};
-    sessionStorage.setItem(SESSION_KEY,JSON.stringify(currentSession));
-
-    const badge=$v3142("scanStateBadge");
-    const status=(badge?.textContent||"").toUpperCase();
-    if(/FERDIG|COMPLETE|COMPLETED/.test(status) && currentSession.status==="running"){
-      completeSession3142();
-    }
-  });
-  if(document.documentElement) observer3142.observe(document.documentElement,{subtree:true,childList:true,characterData:true});
-
-  function addCacheControl3142(){
-    if($v3142("v3142CacheBtn")) return;
-    const host =
-      document.querySelector(".header-actions,.top-actions,.toolbar-actions,.scan-controls") ||
-      $v3142("progressPanel") || document.querySelector("header");
-    if(!host) return;
-
-    const btn=document.createElement("button");
-    btn.id="v3142CacheBtn";
-    btn.type="button";
-    btn.className="btn ghost";
-    btn.textContent="Nullstill lokal scan-data";
-    btn.title="Fjerner bare lokale scan/checkpoint-data. OneDrive-filer, innlogging og karantenehistorikk røres ikke.";
-    btn.addEventListener("click",async()=>{
-      const prev=safeJson3142(localStorage.getItem(PREVIOUS_KEY));
-      const msg=[
-        "Dette nullstiller lokal scan-cache og aktivt checkpoint.",
-        "",
-        "Det slettes IKKE filer i OneDrive.",
-        "Innlogging, Client ID, Pro-status og karantene/review-historikk beholdes.",
-        prev ? `\nForrige snapshot: ${prev.filesText||"ukjent"} · ${prev.sizeText||""}` : "",
-        "",
-        "Fortsette?"
-      ].join("\n");
-      if(!confirm(msg)) return;
-      clearLegacyLocalScanState3142();
-      await clearLegacyCheckpointOnly3142();
-      sessionStorage.removeItem(SESSION_KEY);
-      currentSession=null; sessionStarted=false;
-      console.info("[IANS CACHE RESET] lokal scan-data nullstilt · quarantine/review preserved");
-      if(typeof iansToast==="function") iansToast("Lokal scan-data nullstilt","OneDrive og karantenehistorikk er ikke endret.","success",5000);
-      else alert("Lokal scan-data er nullstilt. OneDrive og karantenehistorikk er ikke endret.");
-    });
-    host.appendChild(btn);
-  }
-
-  function boot3142(){
-    addCacheControl3142();
-    setTimeout(addCacheControl3142,800);
-    setTimeout(addCacheControl3142,2200);
-    console.info("[IANS] V3.14.2 Scan Session Isolation aktiv · fresh sessions · cache control · Graph 429/5xx recovery");
-  }
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot3142);
-  else boot3142();
-})();
-
-// ===== IANS OneDrive Command V3.14.2.1 · Workspace Cache Fix =====
+// ===== IANS OneDrive Command V3.14.3 · Clean Scan State UI =====
 (() => {
   "use strict";
 
-  const PREVIOUS_KEY = "ians_v3142_previous_scan_summary";
-  const SESSION_KEY = "ians_v3142_active_scan_session";
+  const SESSION_KEY = "ians_v3143_active_scan_session";
+  const PREVIOUS_KEY = "ians_v3143_previous_scan_summary";
 
-  const byId = id => document.getElementById(id);
-  const safeJson = v => { try { return JSON.parse(v); } catch { return null; } };
+  const $ = id => document.getElementById(id);
+  const parse = v => { try { return JSON.parse(v); } catch { return null; } };
+  const newId = () => `scan-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
 
-  async function clearCheckpoint31421(){
-    try{
-      await new Promise(resolve=>{
-        const req=indexedDB.open("ians_onedrive_scan_v25",1);
-        req.onerror=()=>resolve();
-        req.onupgradeneeded=()=>{
-          const db=req.result;
-          if(!db.objectStoreNames.contains("checkpoints")) db.createObjectStore("checkpoints");
+  async function clearCheckpoint3143(){
+    try {
+      await new Promise(resolve => {
+        const req = indexedDB.open("ians_onedrive_scan_v25",1);
+        req.onerror = () => resolve();
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains("checkpoints")) db.createObjectStore("checkpoints");
         };
-        req.onsuccess=()=>{
-          const db=req.result;
-          try{
-            if(!db.objectStoreNames.contains("checkpoints")) { db.close(); resolve(); return; }
-            const tx=db.transaction("checkpoints","readwrite");
+        req.onsuccess = () => {
+          const db = req.result;
+          try {
+            if (!db.objectStoreNames.contains("checkpoints")) { db.close(); resolve(); return; }
+            const tx = db.transaction("checkpoints","readwrite");
             tx.objectStore("checkpoints").delete("active");
-            tx.oncomplete=()=>{db.close();resolve()};
-            tx.onerror=()=>{db.close();resolve()};
-          }catch{
-            db.close(); resolve();
-          }
+            tx.oncomplete = () => { db.close(); resolve(); };
+            tx.onerror = () => { db.close(); resolve(); };
+          } catch { db.close(); resolve(); }
         };
       });
-    }catch{}
+    } catch {}
   }
 
-  function clearLocalScanOnly31421(){
-    Object.keys(localStorage).forEach(k=>{
+  function clearLocalScanData3143(){
+    Object.keys(localStorage).forEach(k => {
       if (
         /^ians_/i.test(k) &&
         /(scan|checkpoint|report|cache)/i.test(k) &&
-        !/(quarantine|review|action|pro|client|config|feedback|media)/i.test(k) &&
-        k !== PREVIOUS_KEY
-      ) {
-        localStorage.removeItem(k);
-      }
+        !/(quarantine|review|action|pro|client|config|feedback|media)/i.test(k)
+      ) localStorage.removeItem(k);
     });
     sessionStorage.removeItem(SESSION_KEY);
   }
 
-  function createCacheButton31421(){
-    if(byId("v31421CacheBtn")) return;
+  function detectHistoricalValues3143(){
+    const fileCandidates = [...document.querySelectorAll("body *")].filter(el => {
+      if (el.children.length) return false;
+      return /161[\s\u00a0]?729/.test((el.textContent||"").trim());
+    });
+    const sizeCandidates = [...document.querySelectorAll("body *")].filter(el => {
+      if (el.children.length) return false;
+      return /858[.,]62\s*GB/i.test((el.textContent||"").trim());
+    });
 
-    const scanRow =
-      document.querySelector(".scan-actions") ||
-      document.querySelector(".scan-controls") ||
-      document.querySelector(".mapping-actions") ||
-      document.querySelector("[data-scan-actions]") ||
-      document.querySelector(".toolbar") ||
-      document.querySelector("main");
+    return {
+      files: fileCandidates[0]?.textContent?.trim() || "",
+      size: sizeCandidates[0]?.textContent?.trim() || ""
+    };
+  }
 
-    if(!scanRow) return;
+  function setHistoricalBadge3143(){
+    const state = parse(sessionStorage.getItem(SESSION_KEY));
+    const badge = $("iansPrevScanBadge");
+    if (!badge) return;
 
-    const btn=document.createElement("button");
-    btn.id="v31421CacheBtn";
-    btn.type="button";
-    btn.className="btn ghost";
-    btn.textContent="Nullstill lokal scan-data";
-    btn.title="Fjerner kun lokale scan/checkpoint-data. OneDrive-filer og karantene/review-historikk beholdes.";
+    if (state?.status === "running") {
+      badge.hidden = true;
+      return;
+    }
 
-    btn.addEventListener("click", async ()=>{
-      const prev=safeJson(localStorage.getItem(PREVIOUS_KEY));
-      const lines=[
-        "Dette nullstiller lokal scan-cache og aktivt checkpoint.",
+    const hist = detectHistoricalValues3143();
+    if (hist.files || hist.size) {
+      badge.hidden = false;
+      const val = $("iansPrevScanValues");
+      if (val) val.textContent = [hist.files,hist.size].filter(Boolean).join(" · ");
+    } else {
+      badge.hidden = true;
+    }
+  }
+
+  function resetLiveUi3143(){
+    const ids = ["fileCount","folderCount","processedFoldersLive","queuedFoldersLive"];
+    ids.forEach(id => { const el=$(id); if(el) el.textContent="0"; });
+    const b=$("scannedBytesLive"); if(b) b.textContent="0 B";
+
+    [...document.querySelectorAll("body *")].forEach(el => {
+      if (el.children.length) return;
+      const t=(el.textContent||"").trim();
+      if (/^161[\s\u00a0]?729$/.test(t)) el.textContent="0";
+      if (/^858[.,]62\s*GB$/i.test(t)) el.textContent="0 B";
+    });
+  }
+
+  async function startFreshSession3143(){
+    const existing = parse(sessionStorage.getItem(SESSION_KEY));
+    if (existing?.status === "running") return existing;
+
+    const hist = detectHistoricalValues3143();
+    if (hist.files || hist.size) {
+      localStorage.setItem(PREVIOUS_KEY, JSON.stringify({
+        filesText: hist.files,
+        sizeText: hist.size,
+        savedAt: new Date().toISOString()
+      }));
+    }
+
+    await clearCheckpoint3143();
+    resetLiveUi3143();
+
+    const session = {
+      scanId: newId(),
+      startedAt: new Date().toISOString(),
+      status: "running"
+    };
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    console.info(`[IANS SCAN SESSION] ${session.scanId} · fresh scan state`);
+    setHistoricalBadge3143();
+    return session;
+  }
+
+  document.addEventListener("click", async e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const t = (b.textContent||"").trim();
+
+    if (/nullstill lokal scan-data/i.test(t)) {
+      e.preventDefault();
+      const prev = parse(localStorage.getItem(PREVIOUS_KEY));
+      const msg = [
+        "Dette nullstiller bare lokal scan/cache/checkpoint-data.",
         "",
         "Det slettes IKKE filer i OneDrive.",
         "Karantene/review-historikk beholdes.",
-        prev ? `Forrige snapshot: ${prev.filesText || "ukjent"} ${prev.sizeText ? "· " + prev.sizeText : ""}` : "",
+        prev ? `Forrige scan: ${prev.filesText||""}${prev.sizeText ? " · "+prev.sizeText : ""}` : "",
         "",
         "Fortsette?"
-      ].filter(Boolean);
-
-      if(!confirm(lines.join("\n"))) return;
-
-      clearLocalScanOnly31421();
-      await clearCheckpoint31421();
-      console.info("[IANS CACHE RESET] workspace scan-cache nullstilt · quarantine/review preserved");
+      ].filter(Boolean).join("\n");
+      if (!confirm(msg)) return;
+      clearLocalScanData3143();
+      await clearCheckpoint3143();
+      console.info("[IANS CACHE RESET] local scan state cleared");
       location.reload();
-    });
-
-    // Legg knappen rett før/etter Full scan hvis mulig
-    const fullBtn = [...document.querySelectorAll("button")].find(b =>
-      /full\s*scan|full\s*skann/i.test((b.textContent||"").trim())
-    );
-
-    if(fullBtn?.parentElement){
-      fullBtn.parentElement.appendChild(btn);
-    } else {
-      scanRow.prepend(btn);
+      return;
     }
-  }
 
-  function markPreviousScan31421(){
-    const active = safeJson(sessionStorage.getItem(SESSION_KEY));
-    if(active?.status === "running") return;
-
-    const texts=[...document.querySelectorAll("body *")];
-    const candidate = texts.find(el => {
-      const t=(el.textContent||"").trim();
-      return /161[\s\u00a0]?729/.test(t) && /858[.,]62/.test(t);
-    });
-
-    if(!candidate) return;
-
-    let badge=byId("v31421PreviousBadge");
-    if(!badge){
-      badge=document.createElement("div");
-      badge.id="v31421PreviousBadge";
-      badge.style.cssText="margin:8px 0;padding:8px 10px;border:1px solid rgba(96,190,255,.35);border-radius:8px;font-size:12px;opacity:.9";
-      badge.innerHTML="<strong>Forrige lagrede scan</strong> · historisk resultat, ikke aktiv scan";
-      candidate.parentElement?.insertBefore(badge,candidate);
-    }
-  }
-
-  function resetLiveCountersBeforeFreshScan31421(){
-    const ids=["fileCount","folderCount","processedFoldersLive","queuedFoldersLive","scannedBytesLive"];
-    ids.forEach(id=>{
-      const el=byId(id);
-      if(!el) return;
-      el.textContent = id==="scannedBytesLive" ? "0 B" : "0";
-    });
-
-    [...document.querySelectorAll("body *")].forEach(el=>{
-      if(el.children.length) return;
-      const t=(el.textContent||"").trim();
-      if(/^161[\s\u00a0]?729$/.test(t)) el.textContent="0";
-      if(/^858[.,]62\s*GB$/i.test(t)) el.textContent="0 B";
-    });
-  }
-
-  document.addEventListener("click", e=>{
-    const b=e.target.closest("button");
-    if(!b) return;
-    const t=(b.textContent||"").trim();
-    if(/full\s*scan|full\s*skann/i.test(t)){
-      resetLiveCountersBeforeFreshScan31421();
-      console.info("[IANS LIVE RESET] Full Scan starter med nullstilte live-tall");
+    if (/full\s*scan|full\s*skann/i.test(t)) {
+      const existing = parse(sessionStorage.getItem(SESSION_KEY));
+      if (existing?.status === "running") {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        console.warn(`[IANS SCAN BLOCKED] aktiv scan finnes: ${existing.scanId}`);
+        return;
+      }
+      await startFreshSession3143();
     }
   }, true);
 
-  function boot(){
-    createCacheButton31421();
-    markPreviousScan31421();
-    setTimeout(createCacheButton31421,700);
-    setTimeout(markPreviousScan31421,900);
-    setTimeout(createCacheButton31421,1800);
-    setTimeout(markPreviousScan31421,2000);
-    console.info("[IANS] V3.14.2.1 Workspace Cache Fix aktiv · previous scan labeled · cache button visible");
+  function boot3143(){
+    setHistoricalBadge3143();
+    setTimeout(setHistoricalBadge3143, 800);
+    setTimeout(setHistoricalBadge3143, 1800);
+    console.info("[IANS] V3.14.3 Clean Scan State UI aktiv · historical vs live separated");
   }
 
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot);
-  else boot();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot3143);
+  else boot3143();
 })();
