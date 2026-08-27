@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>IAN: The Adventure</title>
+<meta name="description" content="IAN: The Adventure – et originalt eventyrspill på ians.no.">
+<link rel="stylesheet" href="styles.css?v=100">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <a href="../../index.html" class="brand">IANS GAMES</a>
+    <div class="game-title">
+      <strong>IAN: THE ADVENTURE</strong>
+      <span>Skole · Fotball · Verdener · Kosekatt</span>
+    </div>
+    <button id="soundBtn" class="small-btn">🔊</button>
+  </header>
+
+  <main class="shell">
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="avatar-mini">I</div>
+        <div><b>IAN</b><span>Danielsen barneskole</span></div>
+      </div>
+      <button class="menu-btn active" data-world="school">🏫 Skolen</button>
+      <button class="menu-btn" data-world="football">⚽ Fotball</button>
+      <button class="menu-btn" data-world="beach">🏝️ Solstranden</button>
+      <button class="menu-btn" data-world="neon">🌃 Neonbyen</button>
+      <button class="menu-btn" data-world="jungle">🌴 Jungelen</button>
+      <button class="menu-btn" data-world="space">🚀 Romstasjonen</button>
+      <div class="stats-card">
+        <span>⭐ Stjerner <b id="starsStat">0</b></span>
+        <span>🪙 Coins <b id="coinsStat">0</b></span>
+        <span>🐾 Kattekos <b id="catStat">0</b></span>
+      </div>
+    </aside>
+
+    <section class="game-area">
+      <canvas id="game" width="1280" height="720"></canvas>
+
+      <div class="hud">
+        <div><span>VERDEN</span><b id="worldLabel">Danielsen barneskole</b></div>
+        <div><span>OPPDRAG</span><b id="missionLabel">Finn skolegårdens hemmelighet</b></div>
+        <div><span>COINS</span><b id="coinHud">0</b></div>
+      </div>
+
+      <div id="message" class="message hidden"></div>
+
+      <div id="startOverlay" class="overlay">
+        <div class="hero-panel">
+          <div class="eyebrow">ET ORIGINALT IANS-SPILL</div>
+          <h1>IAN</h1>
+          <h2>THE ADVENTURE</h2>
+          <p>Ian går på Danielsen barneskole, spiller fotball, utforsker ville verdener – og prøver å få fem sekunder i fred fra den altfor kosete katten Mio.</p>
+          <div class="features">
+            <div>🧭 <b>Se deg rundt</b><span>Fri kamerafølelse og store verdener.</span></div>
+            <div>⚽ <b>Spill fotball</b><span>Drible, skyt og score mål.</span></div>
+            <div>🐈 <b>Mio følger etter</b><span>Og krever kos. Hele tiden.</span></div>
+            <div>🌍 <b>6 verdener</b><span>Skole, strand, neonby, jungel og rom.</span></div>
+          </div>
+          <div class="controls-line">
+            <span>WASD / piltaster = gå</span>
+            <span>Mus = se rundt</span>
+            <span>SPACE = hopp</span>
+            <span>E = samhandle</span>
+            <span>F = spark ball</span>
+          </div>
+          <button id="startBtn" class="primary">START EVENTYRET</button>
+        </div>
+      </div>
+
+      <div id="worldOverlay" class="overlay hidden">
+        <div class="world-panel">
+          <div class="eyebrow">NY VERDEN</div>
+          <h2 id="worldTitle">Solstranden</h2>
+          <p id="worldText"></p>
+          <button id="enterWorldBtn" class="primary">UTFORSK</button>
+        </div>
+      </div>
+
+      <div id="finishOverlay" class="overlay hidden">
+        <div class="world-panel">
+          <div class="eyebrow">EVENTYR FULLFØRT</div>
+          <h2>Ian fant alle verdenene!</h2>
+          <p>Og Mio fant Ian. Selvfølgelig.</p>
+          <div class="finish-grid">
+            <div><span>⭐ STJERNER</span><b id="finalStars">0</b></div>
+            <div><span>🪙 COINS</span><b id="finalCoins">0</b></div>
+            <div><span>🐾 KOS</span><b id="finalCat">0</b></div>
+          </div>
+          <button id="restartBtn" class="primary">SPILL IGJEN</button>
+        </div>
+      </div>
+
+      <div class="mobile-controls">
+        <div>
+          <button data-action="left">◀</button>
+          <button data-action="right">▶</button>
+        </div>
+        <div>
+          <button data-action="jump">⬆</button>
+          <button data-action="use">E</button>
+          <button data-action="kick">⚽</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="game.js?v=100"></script>
+</body>
+</html>
