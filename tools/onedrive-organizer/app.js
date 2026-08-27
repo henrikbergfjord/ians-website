@@ -5849,151 +5849,8 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
 // ===== END V3.12 =====
 
 
-// ===== IANS OneDrive Command V3.12.1 · SCAN PROGRESS FIX =====
-(() => {
-  const q=(s,r=document)=>r.querySelector(s), qa=(s,r=document)=>[...r.querySelectorAll(s)];
-  const fmtN=n=>typeof formatNumber==="function"?formatNumber(Number(n)||0):new Intl.NumberFormat("nb-NO").format(Number(n)||0);
-  const now=()=>Date.now();
-  const state=window.__iansScanLiveState ||= {status:"idle",mode:"full",startedAt:0,pct:0,files:0,folders:0,bytesText:"0 B",path:"/",processed:0,queued:0};
-
-  function parseN(v){return Number(String(v||"").replace(/[^0-9]/g,""))||0}
-  function readLegacy(){
-    const badge=(q('#scanStateBadge')?.textContent||'').trim().toUpperCase();
-    const phase=(q('#scanJobPhase')?.textContent||'').trim();
-    const pct=parseN(q('#scanJobPct')?.textContent)||state.pct||0;
-    const path=(q('#activeFolderLive')?.textContent||q('#progressPath')?.textContent||state.path||'/').trim();
-    const processed=parseN(q('#processedFoldersLive')?.textContent);
-    const queued=parseN(q('#queuedFoldersLive')?.textContent);
-    const bytesText=(q('#scannedBytesLive')?.textContent||state.bytesText||'0 B').trim();
-    let files=state.files||0, folders=state.folders||0;
-    const nums=(q('#progressNumbers')?.textContent||'');
-    const fm=nums.match(/([\d\s.]+)\s*filer/i); if(fm)files=parseN(fm[1]);
-    const dm=nums.match(/([\d\s.]+)\s*mapper/i); if(dm)folders=parseN(dm[1]);
-    let status=state.status;
-    if(/SKANNER|KARTLEGGER/.test(badge))status='running';
-    else if(/PAUSET|CHECKPOINT/.test(badge))status='paused';
-    else if(/FERDIG|IMPORTERT/.test(badge))status='done';
-    state.status=status; state.pct=pct; state.path=path; state.processed=processed; state.queued=queued; state.bytesText=bytesText; state.files=files; state.folders=folders; state.phase=phase;
-    if(status==='running'&&!state.startedAt)state.startedAt=now();
-    return state;
-  }
-
-  function ensureUi(){
-    const live=q('#v288MidPulse'); if(!live)return null;
-    live.classList.add('v3121-scan-live');
-    let host=q('#v3121ScanProgress',live);
-    if(!host){
-      host=document.createElement('div'); host.id='v3121ScanProgress'; host.className='v3121-scan-progress';
-      host.innerHTML=`
-        <div class="v3121-progress-top"><span id="v3121ProgressLabel">Ingen aktiv scan</span><strong id="v3121ProgressPct">0%</strong></div>
-        <div class="v3121-progress-track"><i id="v3121ProgressFill"></i><span class="v3121-progress-spark"><b></b><b></b><b></b><b></b><b></b></span></div>
-        <div class="v3121-progress-meta"><span id="v3121ProgressPath">/</span><span id="v3121ProgressStats">0 filer · 0 B</span><span id="v3121ProgressTime">00:00</span></div>
-        <div class="v3121-progress-actions"><button id="v3121Pause" type="button">Pause</button><button id="v3121Resume" type="button">Resume</button><button id="v3121OpenScan" type="button">Åpne Scan & Vault</button></div>`;
-      const metrics=q('.v39-live-metrics',live); (metrics||live).insertAdjacentElement(metrics?'beforebegin':'beforeend',host);
-      q('#v3121Pause',host).onclick=()=>{ if(typeof cancelRequested!=="undefined")cancelRequested=true; };
-      q('#v3121Resume',host).onclick=()=>q('#resumeScanBtn')?.click();
-      q('#v3121OpenScan',host).onclick=()=>q('#iansV30 [data-focus="scan"]')?.click();
-    }
-    return host;
-  }
-
-  function syncCard(s){
-    const card=q('#iansV30 [data-focus="scan"]'); if(!card)return;
-    let badge=q('.v3121-card-badge',card);
-    if(!badge){badge=document.createElement('em');badge.className='v3121-card-badge';card.appendChild(badge)}
-    const active=s.status==='running'; card.classList.toggle('v3121-running',active);
-    badge.textContent=active?`SCAN ${Math.max(1,s.pct)}%`:s.status==='paused'?'PAUSET':s.status==='done'?'KLAR':'';
-    badge.hidden=!badge.textContent;
-  }
-
-  function render(){
-    const s=readLegacy(), host=ensureUi(); if(!host)return;
-    const running=s.status==='running', paused=s.status==='paused';
-    const pct=Math.max(0,Math.min(100,Number(s.pct)||0));
-    const label=q('#v3121ProgressLabel',host), pctEl=q('#v3121ProgressPct',host), fill=q('#v3121ProgressFill',host);
-    const path=q('#v3121ProgressPath',host), stats=q('#v3121ProgressStats',host), time=q('#v3121ProgressTime',host);
-    const pause=q('#v3121Pause',host), resume=q('#v3121Resume',host);
-    if(label)label.textContent=running?`Full scan pågår${s.phase?' · '+s.phase:''}`:paused?'Scan pauset · checkpoint lagret':s.status==='done'?'Scan klar':'Ingen aktiv scan';
-    if(pctEl)pctEl.textContent=`${pct}%`;
-    if(fill)fill.style.width=`${pct}%`;
-    if(path)path.textContent=`Aktiv mappe: ${s.path||'/'}`;
-    if(stats)stats.textContent=`${fmtN(s.files)} filer · ${fmtN(s.folders)} mapper · ${s.bytesText||'0 B'}${s.queued?` · ${fmtN(s.queued)} i kø`:''}`;
-    const sec=s.startedAt?Math.max(0,Math.floor((now()-s.startedAt)/1000)):0;
-    if(time)time.textContent=`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
-    if(pause)pause.disabled=!running;
-    if(resume)resume.disabled=!paused;
-    host.classList.toggle('running',running); host.classList.toggle('paused',paused);
-    const oldHead=q('#v39LiveHeadline'), oldDetail=q('#v39LiveDetail'), oldJob=q('#v39LiveJob');
-    if(oldHead)oldHead.textContent=running?`Kartlegging pågår · ${pct}%`:paused?'Kartlegging pauset':s.status==='done'?'Scan klar':'Klar · ingen aktiv jobb';
-    if(oldDetail)oldDetail.textContent=running?`Aktiv mappe: ${s.path||'/'}`:paused?'Resume fortsetter fra checkpoint':'Start en kartlegging for live status';
-    if(oldJob)oldJob.textContent=running?'SCAN':paused?'PAUSE':s.status==='done'?'KLAR':'KLAR';
-    syncCard(s);
-  }
-
-  function clarifyQuick(){
-    qa('#iansV30 [data-scan="quick"]').forEach(b=>{b.textContent='Hurtigscan';b.title='Tester Microsoft Graph og leser rotnivået uten å starte full kartlegging.'});
-  }
-
-  // Full scan should immediately show as running, before the first Graph response arrives.
-  document.addEventListener('click',e=>{
-    const full=e.target.closest('#iansV30 [data-scan="full"]');
-    if(full){state.status='running';state.mode='full';state.startedAt=now();state.pct=Math.max(1,state.pct||1);setTimeout(render,0)}
-    const resume=e.target.closest('#resumeScanBtn,[data-scan="resume"]');
-    if(resume){state.status='running';state.startedAt=state.startedAt||now();setTimeout(render,0)}
-  },true);
-
-  const mo=new MutationObserver(()=>{clearTimeout(window.__ians3121Render);window.__ians3121Render=setTimeout(render,40)});
-  function boot(){ensureUi();clarifyQuick();render();mo.observe(document.body,{subtree:true,childList:true,characterData:true});setInterval(render,500)}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,700));else setTimeout(boot,700);
-  window.v3121ScanProgressSelfTest=()=>({live:!!q('#v3121ScanProgress'),scanButtonRebound:true,legacyBadge:q('#scanStateBadge')?.textContent||'',quickLabel:q('#iansV30 [data-scan="quick"]')?.textContent||''});
-  console.info('[IANS] V3.12.1 Scan Progress Fix aktiv');
-})();
-// ===== END V3.12.1 =====
 
 
-// ===== IANS OneDrive Command V3.12.2 · SLEEP/RESUME RECOVERY =====
-(() => {
-  const q=(s,r=document)=>r.querySelector(s);
-  const state=window.__iansScanLiveState ||= {status:"idle",mode:"full",startedAt:0,pct:0,files:0,folders:0,bytesText:"0 B",path:"/",processed:0,queued:0};
-  const fmtBytesLocal=n=>typeof formatBytes==="function"?formatBytes(Number(n)||0):`${Number(n)||0} B`;
-  let lastHydrate=0;
-  async function hydrateCheckpoint(force=false){
-    if(!force && Date.now()-lastHydrate<2500)return;
-    lastHydrate=Date.now();
-    try{
-      const cp=await loadScanCheckpoint?.();
-      if(!cp)return;
-      const badge=(q('#scanStateBadge')?.textContent||'').toUpperCase();
-      if(/PAUSET|CHECKPOINT/.test(badge) || state.status==='paused' || document.visibilityState==='visible'){
-        state.files=Number(cp.stats?.files)||state.files||0;
-        state.folders=Number(cp.stats?.folders)||state.folders||0;
-        state.bytesText=fmtBytesLocal(cp.stats?.bytes||0);
-        state.processed=Number(cp.processedFolders)||0;
-        state.queued=Array.isArray(cp.queue)?cp.queue.length:0;
-        state.path=cp.queue?.[0]?.path||cp.scanRoot?.path||state.path||'/';
-        state.pct=Math.max(Number(cp.visualPct)||0,state.pct||0);
-        if(/PAUSET|CHECKPOINT/.test(badge))state.status='paused';
-        const f=q('#v39LiveFiles'),b=q('#v39LiveBytes'); if(f)f.textContent=new Intl.NumberFormat('nb-NO').format(state.files); if(b)b.textContent=state.bytesText;
-      }
-    }catch(e){console.warn('[IANS V3.12.2] checkpoint hydrate',e)}
-  }
-  document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible')setTimeout(()=>hydrateCheckpoint(true),250); });
-  window.addEventListener('pageshow',()=>setTimeout(()=>hydrateCheckpoint(true),250));
-  document.addEventListener('click',e=>{
-    if(e.target.closest('#iansV30 [data-scan="full"]')){
-      // A stale lock can survive a suspended request. A new explicit Full scan invalidates stale network work.
-      const hb=Number(window.__iansScanHeartbeat)||0;
-      if(hb && Date.now()-hb>30000){
-        window.__iansScanRunToken=(Number(window.__iansScanRunToken)||0)+1;
-        try{scanRunningV38=false}catch{}
-      }
-    }
-  },true);
-  setInterval(()=>hydrateCheckpoint(false),2500);
-  window.v3122SleepResumeSelfTest=()=>({token:Number(window.__iansScanRunToken)||0,heartbeat:Number(window.__iansScanHeartbeat)||0,live:state.status,checkpointHook:typeof window.__iansForceScanCheckpoint==='function'});
-  console.info('[IANS] V3.12.2 Sleep/Resume Recovery aktiv');
-})();
-// ===== END V3.12.2 =====
 
 
 // ===== IANS OneDrive Command V3.12.4 · SCAN RECOVERY HARDENING =====
@@ -6389,401 +6246,6 @@ window.__iansV313SelfTest=()=>({
 
 
 
-// ===== IANS OneDrive Command V3.14.3 · Clean Scan State UI =====
-(() => {
-  "use strict";
-
-  const SESSION_KEY = "ians_v3143_active_scan_session";
-  const PREVIOUS_KEY = "ians_v3143_previous_scan_summary";
-
-  const $ = id => document.getElementById(id);
-  const parse = v => { try { return JSON.parse(v); } catch { return null; } };
-  const newId = () => `scan-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
-
-  async function clearCheckpoint3143(){
-    try {
-      await new Promise(resolve => {
-        const req = indexedDB.open("ians_onedrive_scan_v25",1);
-        req.onerror = () => resolve();
-        req.onupgradeneeded = () => {
-          const db = req.result;
-          if (!db.objectStoreNames.contains("checkpoints")) db.createObjectStore("checkpoints");
-        };
-        req.onsuccess = () => {
-          const db = req.result;
-          try {
-            if (!db.objectStoreNames.contains("checkpoints")) { db.close(); resolve(); return; }
-            const tx = db.transaction("checkpoints","readwrite");
-            tx.objectStore("checkpoints").delete("active");
-            tx.oncomplete = () => { db.close(); resolve(); };
-            tx.onerror = () => { db.close(); resolve(); };
-          } catch { db.close(); resolve(); }
-        };
-      });
-    } catch {}
-  }
-
-  function clearLocalScanData3143(){
-    Object.keys(localStorage).forEach(k => {
-      if (
-        /^ians_/i.test(k) &&
-        /(scan|checkpoint|report|cache)/i.test(k) &&
-        !/(quarantine|review|action|pro|client|config|feedback|media)/i.test(k)
-      ) localStorage.removeItem(k);
-    });
-    sessionStorage.removeItem(SESSION_KEY);
-  }
-
-  function detectHistoricalValues3143(){
-    const fileCandidates = [...document.querySelectorAll("body *")].filter(el => {
-      if (el.children.length) return false;
-      return /161[\s\u00a0]?729/.test((el.textContent||"").trim());
-    });
-    const sizeCandidates = [...document.querySelectorAll("body *")].filter(el => {
-      if (el.children.length) return false;
-      return /858[.,]62\s*GB/i.test((el.textContent||"").trim());
-    });
-
-    return {
-      files: fileCandidates[0]?.textContent?.trim() || "",
-      size: sizeCandidates[0]?.textContent?.trim() || ""
-    };
-  }
-
-  function setHistoricalBadge3143(){
-    const state = parse(sessionStorage.getItem(SESSION_KEY));
-    const badge = $("iansPrevScanBadge");
-    if (!badge) return;
-
-    if (state?.status === "running") {
-      badge.hidden = true;
-      return;
-    }
-
-    const hist = detectHistoricalValues3143();
-    if (hist.files || hist.size) {
-      badge.hidden = false;
-      const val = $("iansPrevScanValues");
-      if (val) val.textContent = [hist.files,hist.size].filter(Boolean).join(" · ");
-    } else {
-      badge.hidden = true;
-    }
-  }
-
-  function resetLiveUi3143(){
-    const ids = ["fileCount","folderCount","processedFoldersLive","queuedFoldersLive"];
-    ids.forEach(id => { const el=$(id); if(el) el.textContent="0"; });
-    const b=$("scannedBytesLive"); if(b) b.textContent="0 B";
-
-    [...document.querySelectorAll("body *")].forEach(el => {
-      if (el.children.length) return;
-      const t=(el.textContent||"").trim();
-      if (/^161[\s\u00a0]?729$/.test(t)) el.textContent="0";
-      if (/^858[.,]62\s*GB$/i.test(t)) el.textContent="0 B";
-    });
-  }
-
-  async function startFreshSession3143(){
-    const existing = parse(sessionStorage.getItem(SESSION_KEY));
-    if (existing?.status === "running") return existing;
-
-    const hist = detectHistoricalValues3143();
-    if (hist.files || hist.size) {
-      localStorage.setItem(PREVIOUS_KEY, JSON.stringify({
-        filesText: hist.files,
-        sizeText: hist.size,
-        savedAt: new Date().toISOString()
-      }));
-    }
-
-    await clearCheckpoint3143();
-    resetLiveUi3143();
-
-    const session = {
-      scanId: newId(),
-      startedAt: new Date().toISOString(),
-      status: "running"
-    };
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
-    console.info(`[IANS SCAN SESSION] ${session.scanId} · fresh scan state`);
-    setHistoricalBadge3143();
-    return session;
-  }
-
-  document.addEventListener("click", async e => {
-    const b = e.target.closest("button");
-    if (!b) return;
-    const t = (b.textContent||"").trim();
-
-    if (/nullstill lokal scan-data/i.test(t)) {
-      e.preventDefault();
-      const prev = parse(localStorage.getItem(PREVIOUS_KEY));
-      const msg = [
-        "Dette nullstiller bare lokal scan/cache/checkpoint-data.",
-        "",
-        "Det slettes IKKE filer i OneDrive.",
-        "Karantene/review-historikk beholdes.",
-        prev ? `Forrige scan: ${prev.filesText||""}${prev.sizeText ? " · "+prev.sizeText : ""}` : "",
-        "",
-        "Fortsette?"
-      ].filter(Boolean).join("\n");
-      if (!confirm(msg)) return;
-      clearLocalScanData3143();
-      await clearCheckpoint3143();
-      console.info("[IANS CACHE RESET] local scan state cleared");
-      location.reload();
-      return;
-    }
-
-    if (/full\s*scan|full\s*skann/i.test(t)) {
-      const existing = parse(sessionStorage.getItem(SESSION_KEY));
-      if (existing?.status === "running") {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        console.warn(`[IANS SCAN BLOCKED] aktiv scan finnes: ${existing.scanId}`);
-        return;
-      }
-      await startFreshSession3143();
-    }
-  }, true);
-
-  function boot3143(){
-    setHistoricalBadge3143();
-    setTimeout(setHistoricalBadge3143, 800);
-    setTimeout(setHistoricalBadge3143, 1800);
-    console.info("[IANS] V3.14.3 Clean Scan State UI aktiv · historical vs live separated");
-  }
-
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot3143);
-  else boot3143();
-})();
-
-// ===== IANS OneDrive Command V3.14.4 · Single Source of Truth =====
-(() => {
-  "use strict";
-
-  const ACTIVE_KEY = "ians_v3144_active_scan";
-  const RESET_KEY = "ians_v3144_clean_reset";
-  const PREV_KEY = "ians_v3144_previous_scan";
-
-  const parse = v => { try { return JSON.parse(v); } catch { return null; } };
-  const $ = id => document.getElementById(id);
-
-  function isActive3144(){
-    const s = parse(sessionStorage.getItem(ACTIVE_KEY));
-    return !!(s && s.status === "running");
-  }
-
-  function capturePrevious3144(){
-    const root = findLiveRoot3144();
-    if(!root) return;
-    const txt = root.innerText || "";
-    const file = txt.match(/(\d{1,3}(?:[\s\u00a0]\d{3})+)\s*filer/i);
-    const gb = txt.match(/(\d+(?:[.,]\d+)?)\s*GB/i);
-    if(file || gb){
-      localStorage.setItem(PREV_KEY, JSON.stringify({
-        filesText: file ? file[1] : "",
-        sizeText: gb ? gb[1] + " GB" : "",
-        savedAt: new Date().toISOString()
-      }));
-    }
-  }
-
-  function findLiveRoot3144(){
-    const all = [...document.querySelectorAll("body *")];
-    const label = all.find(el => /IANS LIVE OPERATIONS/i.test((el.textContent||"").trim()));
-    if(!label) return null;
-    let p = label;
-    for(let i=0;i<6 && p;i++,p=p.parentElement){
-      const t=(p.innerText||"");
-      if(/ingen aktiv scan|kartlegging pågår|aktiv mappe/i.test(t) && /filer/i.test(t)) return p;
-    }
-    return label.parentElement?.parentElement || label.parentElement;
-  }
-
-  function zeroLeaf(el){
-    if(!el || el.children.length) return;
-    const t=(el.textContent||"").trim();
-
-    if(/^\d+(?:[.,]\d+)?%$/.test(t)) {
-      el.textContent="0%";
-      return;
-    }
-    if(/^\d{1,3}(?:[\s\u00a0]\d{3})+$/.test(t)) {
-      el.textContent="0";
-      return;
-    }
-    if(/^\d+(?:[.,]\d+)?\s*(?:GB|MB|TB)$/i.test(t)) {
-      el.textContent="0 B";
-      return;
-    }
-    if(/^(\d+)\s*filer$/i.test(t)) {
-      el.textContent="0 filer";
-      return;
-    }
-  }
-
-  function enforceIdleUi3144(){
-    if(isActive3144()) return;
-    if(localStorage.getItem(RESET_KEY)!=="1") return;
-
-    const root=findLiveRoot3144();
-    if(root){
-      [...root.querySelectorAll("*")].forEach(zeroLeaf);
-
-      const leaves=[...root.querySelectorAll("*")].filter(el=>!el.children.length);
-      leaves.forEach(el=>{
-        const t=(el.textContent||"").trim();
-        if(/kartlegging pågår/i.test(t)) el.textContent="Klar · ingen aktiv jobb";
-        if(/aktiv mappe:/i.test(t)) el.textContent="Aktiv mappe: /";
-        if(/scan|jobb/i.test(t) && /^SCAN$/i.test(t)) el.textContent="KLAR";
-      });
-    }
-
-    ["fileCount","folderCount","processedFoldersLive","queuedFoldersLive"].forEach(id=>{
-      const el=$(id); if(el) el.textContent="0";
-    });
-    const b=$("scannedBytesLive"); if(b) b.textContent="0 B";
-    const p=$("scanProgressPct"); if(p) p.textContent="0%";
-  }
-
-  async function clearIndexedDbCheckpoint3144(){
-    try{
-      await new Promise(resolve=>{
-        const req=indexedDB.open("ians_onedrive_scan_v25",1);
-        req.onerror=()=>resolve();
-        req.onupgradeneeded=()=>{
-          const db=req.result;
-          if(!db.objectStoreNames.contains("checkpoints")) db.createObjectStore("checkpoints");
-        };
-        req.onsuccess=()=>{
-          const db=req.result;
-          try{
-            if(!db.objectStoreNames.contains("checkpoints")) { db.close(); resolve(); return; }
-            const tx=db.transaction("checkpoints","readwrite");
-            tx.objectStore("checkpoints").delete("active");
-            tx.oncomplete=()=>{db.close();resolve()};
-            tx.onerror=()=>{db.close();resolve()};
-          }catch{db.close();resolve()}
-        };
-      });
-    }catch{}
-  }
-
-  function clearScanStorage3144(){
-    capturePrevious3144();
-
-    Object.keys(localStorage).forEach(k=>{
-      if(
-        /^ians_/i.test(k) &&
-        /(scan|checkpoint|report|cache|resume|enumerat)/i.test(k) &&
-        !/(quarantine|review|action|pro|client|config|feedback|media)/i.test(k)
-      ){
-        localStorage.removeItem(k);
-      }
-    });
-
-    Object.keys(sessionStorage).forEach(k=>{
-      if(
-        /^ians_/i.test(k) &&
-        /(scan|checkpoint|resume|enumerat)/i.test(k)
-      ){
-        sessionStorage.removeItem(k);
-      }
-    });
-
-    sessionStorage.removeItem(ACTIVE_KEY);
-    localStorage.setItem(RESET_KEY,"1");
-  }
-
-  function newScanSession3144(){
-    const s={
-      scanId:`scan-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`,
-      startedAt:new Date().toISOString(),
-      status:"running"
-    };
-    sessionStorage.setItem(ACTIVE_KEY,JSON.stringify(s));
-    localStorage.removeItem(RESET_KEY);
-    console.info(`[IANS SCAN SESSION] ${s.scanId} · LIVE state owner=V3.14.4`);
-    return s;
-  }
-
-  function bindResetButton3144(){
-    const btn=$("iansClearScanCacheBtn");
-    if(!btn || btn.dataset.v3144==="1") return;
-    btn.dataset.v3144="1";
-
-    // erstatter eldre handler ved å klone knappen
-    const clone=btn.cloneNode(true);
-    btn.replaceWith(clone);
-
-    clone.addEventListener("click", async e=>{
-      e.preventDefault();
-      e.stopPropagation();
-      const prev=parse(localStorage.getItem(PREV_KEY));
-      const msg=[
-        "Nullstill lokal scan-data?",
-        "",
-        "Dette fjerner lokale scan/cache/checkpoint-data og stopper automatisk Resume.",
-        "Det slettes IKKE filer i OneDrive.",
-        "Karantene/review-historikk beholdes.",
-        prev ? `Forrige scan beholdes som historikk: ${prev.filesText||""}${prev.sizeText ? " · "+prev.sizeText : ""}` : "",
-        "",
-        "Fortsette?"
-      ].filter(Boolean).join("\n");
-      if(!confirm(msg)) return;
-
-      clearScanStorage3144();
-      await clearIndexedDbCheckpoint3144();
-      console.info("[IANS CACHE RESET] V3.14.4 clean reset complete · no auto-resume");
-      location.reload();
-    });
-  }
-
-  document.addEventListener("click", e=>{
-    const b=e.target.closest("button");
-    if(!b) return;
-    const t=(b.textContent||"").trim();
-
-    if(/full\s*scan|full\s*skann/i.test(t)){
-      const existing=parse(sessionStorage.getItem(ACTIVE_KEY));
-      if(existing?.status==="running"){
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        console.warn(`[IANS SCAN BLOCKED] aktiv scan finnes: ${existing.scanId}`);
-        return;
-      }
-      newScanSession3144();
-    }
-  }, true);
-
-  let scheduled=false;
-  const observer3144=new MutationObserver(()=>{
-    if(scheduled) return;
-    scheduled=true;
-    requestAnimationFrame(()=>{
-      scheduled=false;
-      enforceIdleUi3144();
-      bindResetButton3144();
-    });
-  });
-
-  function boot3144(){
-    bindResetButton3144();
-    enforceIdleUi3144();
-    observer3144.observe(document.documentElement,{subtree:true,childList:true,characterData:true});
-    setTimeout(enforceIdleUi3144,300);
-    setTimeout(enforceIdleUi3144,900);
-    setTimeout(enforceIdleUi3144,1800);
-    console.info("[IANS] V3.14.4 Single Source of Truth aktiv · LIVE state controlled");
-  }
-
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot3144);
-  else boot3144();
-})();
-
 // ===== IANS OneDrive Command V3.15 · Unified Graph Scan Engine =====
 // Single scan runtime. Uses the same proven Graph children pattern as the folder browser.
 // Installer replaces any older V3.15 block before appending this release.
@@ -7049,150 +6511,145 @@ window.__iansV313SelfTest=()=>({
   console.info("[IANS] V3.15 Unified Graph Scan Engine aktiv · browser reader + scan share Graph children flow · single promise · abortable fetch");
 })();
 // ===== /IANS-V315-RUNTIME =====
-
-
-// ===== IANS OneDrive Command V3.16 · CLEAN RUNTIME =====
-// One click router + one visible LIVE owner. Legacy scan button handlers are intercepted
-// before target-level listeners can fire, so only the V3.15 unified Graph engine runs.
+// ===== IANS OneDrive Command V3.16.1 · SINGLE SCAN OWNER + DEBUG =====
 (() => {
-  const VERSION = "3.16.0";
-  const ACTIVE = new Set(["START","AUTH","TOKEN_OK","DRIVE_OK","ROOT_OK","QUEUE_SEEDED","QUEUE_RESTORED","GRAPH_PAGE","GRAPH_RETRY","FIRST_PAGE_OK","FOLDER_DONE"]);
-  let last = { phase:"IDLE", files:0, folders:0, bytes:0, queued:0, path:"/", at:null };
-
-  const fmtN = n => typeof formatNumber === "function" ? formatNumber(Number(n)||0) : new Intl.NumberFormat("nb-NO").format(Number(n)||0);
-  const fmtB = n => typeof formatBytes === "function" ? formatBytes(Number(n)||0) : `${((Number(n)||0)/1073741824).toFixed(2)} GB`;
-  const esc = s => String(s??"").replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  "use strict";
+  const VERSION="3.16.1";
+  const DEBUG_MS=10*60*1000;
+  const DEBUG_MAX=600;
+  const ACTIVE=new Set(["START","AUTH","TOKEN_OK","DRIVE_OK","ROOT_OK","QUEUE_SEEDED","QUEUE_RESTORED","GRAPH_PAGE","GRAPH_RETRY","FIRST_PAGE_OK","FOLDER_DONE"]);
+  let last={phase:"IDLE",files:0,folders:0,bytes:0,queued:0,path:"/"};
+  let activeScanId=null;
+  let debugEnabled=false, debugUntil=0, debugTimer=null, debugEvents=[];
+  const fmtN=n=>typeof formatNumber==="function"?formatNumber(Number(n)||0):new Intl.NumberFormat("nb-NO").format(Number(n)||0);
+  const fmtB=n=>typeof formatBytes==="function"?formatBytes(Number(n)||0):`${((Number(n)||0)/1073741824).toFixed(2)} GB`;
+  const nowIso=()=>new Date().toISOString();
+  const newScanId=()=>`scan-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,7)}`;
+  function dlog(type,data={}){
+    if(!debugEnabled)return;
+    const ev={at:nowIso(),scanId:activeScanId||"none",type,...data};
+    debugEvents.push(ev); if(debugEvents.length>DEBUG_MAX)debugEvents.splice(0,debugEvents.length-DEBUG_MAX);
+    console.info(`[IANS DEBUG ${VERSION}] [${ev.scanId}] ${type}`,data);
+    renderDebugStatus();
+  }
+  function setDebug(on){
+    if(debugTimer){clearTimeout(debugTimer);debugTimer=null;}
+    debugEnabled=!!on;
+    if(debugEnabled){
+      debugUntil=Date.now()+DEBUG_MS;
+      debugEvents=[];
+      dlog("DEBUG_ON",{autoOffMinutes:10,maxEvents:DEBUG_MAX});
+      debugTimer=setTimeout(()=>setDebug(false),DEBUG_MS);
+    }else{
+      if(debugEvents.length) console.info(`[IANS DEBUG ${VERSION}] DEBUG_OFF · ${debugEvents.length} events kept in memory until refresh`);
+      debugUntil=0;
+    }
+    renderDebugStatus();
+  }
+  function debugText(){
+    if(!debugEnabled)return "Debug: AV";
+    const sec=Math.max(0,Math.ceil((debugUntil-Date.now())/1000));
+    return `Debug: PÅ ${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`;
+  }
+  function renderDebugStatus(){
+    const b=document.getElementById("v3161DebugToggle"); if(b)b.textContent=debugText();
+    const n=document.getElementById("v3161DebugCount"); if(n)n.textContent=`${debugEvents.length}/${DEBUG_MAX} hendelser`;
+  }
+  setInterval(()=>{if(debugEnabled)renderDebugStatus()},1000);
 
   function locateLegacyLive(){
     return document.querySelector("#v311LiveOperations, #liveOperations, .live-operations, [data-live-operations]")
       || document.querySelector("#scanJobMeter")?.closest("section,div.panel,div")
       || document.querySelector("#processedFoldersLive")?.closest("section,div.panel,div");
   }
-
   function ensurePanel(){
-    let p=document.getElementById("iansV316Live");
-    if(p) return p;
+    let p=document.getElementById("iansV3161Live"); if(p)return p;
     const legacy=locateLegacyLive();
-    p=document.createElement("section");
-    p.id="iansV316Live";
-    p.className="ians-v316-live";
+    p=document.createElement("section"); p.id="iansV3161Live"; p.className="ians-v3161-live";
     p.innerHTML=`
-      <div class="ians-v316-left">
-        <div class="ians-v316-dot">◎</div>
-        <div><div class="ians-v316-eyebrow">IANS LIVE OPERATIONS · V3.16</div>
-        <strong id="v316Title">Klar · ingen aktiv jobb</strong>
-        <span id="v316Sub">Start en kartlegging for live status</span></div>
-      </div>
-      <div class="ians-v316-mid">
-        <div class="ians-v316-row"><span id="v316Path">Ingen aktiv scan</span><b id="v316Pct">0%</b></div>
-        <div class="ians-v316-track"><i id="v316Bar"></i></div>
-        <div class="ians-v316-row small"><span id="v316Phase">IDLE</span><span id="v316Queue">0 mapper i kø</span></div>
-      </div>
-      <div class="ians-v316-stats">
-        <div><b id="v316Files">0</b><span>filer</span></div>
-        <div><b id="v316Bytes">0 B</b><span>data</span></div>
-        <div><b id="v316State">KLAR</b><span>jobb</span></div>
-      </div>`;
-    if(legacy){
-      legacy.dataset.iansLegacyLive="hidden";
-      legacy.style.display="none";
-      legacy.insertAdjacentElement("afterend",p);
-    } else {
-      const focus=document.querySelector("#workspaceFocus, .workspace-focus, main")||document.body;
-      focus.prepend(p);
-    }
+      <div class="ians-v3161-left"><div class="ians-v3161-dot">◎</div><div><div class="ians-v3161-eyebrow">IANS LIVE OPERATIONS · V3.16.1</div><strong id="v3161Title">Klar · ingen aktiv jobb</strong><span id="v3161Sub">Én scan-eier · debug kan aktiveres ved behov</span></div></div>
+      <div class="ians-v3161-mid"><div class="ians-v3161-row"><span id="v3161Path">Ingen aktiv scan</span><b id="v3161Pct">0%</b></div><div class="ians-v3161-track"><i id="v3161Bar"></i></div><div class="ians-v3161-row small"><span id="v3161Phase">IDLE</span><span id="v3161Queue">0 mapper i kø</span></div></div>
+      <div class="ians-v3161-stats"><div><b id="v3161Files">0</b><span>filer</span></div><div><b id="v3161Bytes">0 B</b><span>data</span></div><div><b id="v3161State">KLAR</b><span>jobb</span></div></div>
+      <div class="ians-v3161-debug"><button id="v3161DebugToggle" type="button">Debug: AV</button><button id="v3161DebugCopy" type="button">Kopier debug</button><span id="v3161DebugCount">0/${DEBUG_MAX} hendelser</span></div>`;
+    if(legacy){legacy.dataset.iansLegacyLive="hidden";legacy.style.display="none";legacy.insertAdjacentElement("afterend",p);} else {(document.querySelector("#workspaceFocus, .workspace-focus, main")||document.body).prepend(p);}
+    p.querySelector("#v3161DebugToggle").onclick=()=>setDebug(!debugEnabled);
+    p.querySelector("#v3161DebugCopy").onclick=async()=>{
+      const payload=JSON.stringify({version:VERSION,exportedAt:nowIso(),activeScanId,lastState:last,events:debugEvents},null,2);
+      try{await navigator.clipboard.writeText(payload);p.querySelector("#v3161DebugCopy").textContent="Kopiert";setTimeout(()=>{const b=document.getElementById("v3161DebugCopy");if(b)b.textContent="Kopier debug"},1500);}catch{console.log(payload)}
+    };
     return p;
   }
-
   function pctFor(s){
-    if(s.phase==="COMPLETE") return 100;
-    if(!ACTIVE.has(s.phase)) return 0;
-    if(["START","AUTH","TOKEN_OK","DRIVE_OK","ROOT_OK","QUEUE_SEEDED","QUEUE_RESTORED"].includes(s.phase)) return 0;
-    const done=Number(s.foldersProcessed||s.folders||0), q=Number(s.queued||0);
-    if(done<=0) return 0;
+    if(s.phase==="COMPLETE")return 100;
+    if(!ACTIVE.has(s.phase))return 0;
+    if(["START","AUTH","TOKEN_OK","DRIVE_OK","ROOT_OK","QUEUE_SEEDED","QUEUE_RESTORED"].includes(s.phase))return 0;
+    const done=Number(s.foldersProcessed||s.folders||0),q=Number(s.queued||0); if(done<=0)return 0;
     return Math.min(99,Math.max(1,Math.round(done/Math.max(done+q,1)*100)));
   }
-
+  function normalize(d={}){const phase=String(d.phase||"IDLE").toUpperCase();return {...last,...d,phase,files:Number(d.files??last.files??0),folders:Number(d.foldersProcessed??d.folders??last.folders??0),queued:Number(d.queued??last.queued??0),bytes:Number(d.bytes??last.bytes??0),path:d.path??last.path??"/"};}
   function render(s=last){
-    ensurePanel();
-    const active=ACTIVE.has(s.phase), terminal=["COMPLETE","ERROR","PAUSED"].includes(s.phase);
-    const pct=pctFor(s);
-    const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
-    set("v316Pct",`${pct}%`);
-    const bar=document.getElementById("v316Bar"); if(bar)bar.style.width=`${pct}%`;
-    set("v316Phase",s.phase||"IDLE");
-    set("v316Files",fmtN(s.files||0));
-    set("v316Bytes",fmtB(s.bytes||0));
-    set("v316Queue",`${fmtN(s.queued||0)} mapper i kø`);
-    set("v316Path",active ? (s.path||"Klargjør Graph…") : "Ingen aktiv scan");
-    if(active){
-      set("v316Title","Kartlegging pågår"); set("v316Sub","Live-data fra én V3.16 scan-session"); set("v316State","SCAN");
-    } else if(s.phase==="ERROR"){
-      set("v316Title","Skanningen stoppet"); set("v316Sub",s.message||"Se Console for detaljert feil"); set("v316State","FEIL");
-    } else if(s.phase==="PAUSED"){
-      set("v316Title","Kartlegging pauset"); set("v316Sub","Checkpoint er lagret"); set("v316State","PAUSE");
-    } else if(s.phase==="COMPLETE"){
-      set("v316Title","Kartlegging ferdig"); set("v316Sub",`${fmtN(s.files||0)} filer analysert`); set("v316State","FERDIG");
-    } else {
-      set("v316Title","Klar · ingen aktiv jobb"); set("v316Sub","Start en kartlegging for live status"); set("v316State","KLAR");
-      set("v316Files","0"); set("v316Bytes","0 B"); set("v316Queue","0 mapper i kø"); set("v316Pct","0%"); if(bar)bar.style.width="0%";
-    }
+    ensurePanel(); const active=ACTIVE.has(s.phase),pct=pctFor(s),set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+    set("v3161Pct",`${pct}%`); const bar=document.getElementById("v3161Bar");if(bar)bar.style.width=`${pct}%`;
+    set("v3161Phase",s.phase||"IDLE");set("v3161Files",fmtN(s.files||0));set("v3161Bytes",fmtB(s.bytes||0));set("v3161Queue",`${fmtN(s.queued||0)} mapper i kø`);set("v3161Path",active?(s.path||"Klargjør Graph…"):"Ingen aktiv scan");
+    if(active){set("v3161Title","Kartlegging pågår");set("v3161Sub",`Scan ${activeScanId||"starter"} · én aktiv eier`);set("v3161State","SCAN");}
+    else if(s.phase==="ERROR"){set("v3161Title","Skanningen stoppet");set("v3161Sub",s.message||"Se debug/Console");set("v3161State","FEIL");}
+    else if(s.phase==="PAUSED"){set("v3161Title","Kartlegging pauset");set("v3161Sub","Checkpoint lagret");set("v3161State","PAUSE");}
+    else if(s.phase==="COMPLETE"){set("v3161Title","Kartlegging ferdig");set("v3161Sub",`${fmtN(s.files||0)} filer analysert`);set("v3161State","FERDIG");}
+    else{set("v3161Title","Klar · ingen aktiv jobb");set("v3161Sub","Én scan-eier · debug kan aktiveres ved behov");set("v3161State","KLAR");set("v3161Files","0");set("v3161Bytes","0 B");set("v3161Queue","0 mapper i kø");set("v3161Pct","0%");if(bar)bar.style.width="0%";}
+    renderDebugStatus();
   }
 
-  function normalize(detail={}){
-    const phase=String(detail.phase||"IDLE").toUpperCase();
-    return {
-      ...last,...detail,phase,
-      files:Number(detail.files ?? last.files ?? 0),
-      folders:Number(detail.foldersProcessed ?? detail.folders ?? last.folders ?? 0),
-      queued:Number(detail.queued ?? last.queued ?? 0),
-      bytes:Number(detail.bytes ?? last.bytes ?? 0),
-      path:detail.path ?? last.path ?? "/"
+  window.addEventListener("ians:v315-scan-state",ev=>{last=normalize(ev.detail||{});dlog(`STATE_${last.phase}`,ev.detail||{});render(last);if(last.phase==="COMPLETE")setTimeout(()=>{last={phase:"IDLE",files:0,folders:0,bytes:0,queued:0,path:"/"};activeScanId=null;render(last)},3000);if(["ERROR","PAUSED"].includes(last.phase))setTimeout(()=>{activeScanId=null},1000);});
+  window.addEventListener("error",ev=>dlog("WINDOW_ERROR",{message:ev.message,source:ev.filename,line:ev.lineno,col:ev.colno}));
+  window.addEventListener("unhandledrejection",ev=>dlog("UNHANDLED_REJECTION",{reason:String(ev.reason?.stack||ev.reason||"")}));
+
+  // Graph request diagnostics without logging Authorization headers or tokens.
+  if(!window.__ians3161FetchWrapped){
+    window.__ians3161FetchWrapped=true; const nativeFetch=window.fetch.bind(window);
+    window.fetch=async function(input,init){
+      const url=typeof input==="string"?input:(input?.url||""); const graph=/graph\.microsoft\.com/i.test(url); const t0=performance.now();
+      if(graph)dlog("GRAPH_REQUEST",{url:url.replace(/\?.*$/,"?…")});
+      try{const res=await nativeFetch(input,init);if(graph)dlog("GRAPH_RESPONSE",{status:res.status,ok:res.ok,ms:Math.round(performance.now()-t0),url:url.replace(/\?.*$/,"?…")});return res;}
+      catch(err){if(graph)dlog("GRAPH_FETCH_ERROR",{name:err?.name||"Error",message:err?.message||String(err),ms:Math.round(performance.now()-t0)});throw err;}
     };
   }
 
-  window.addEventListener("ians:v315-scan-state", ev=>{
-    last=normalize(ev.detail||{});
-    render(last);
-    if(last.phase==="COMPLETE") setTimeout(()=>{ last={phase:"IDLE",files:0,folders:0,bytes:0,queued:0,path:"/"}; render(last); },3000);
-  });
-
-  // Capture-phase router. This is the key V3.16 cleanup: old target listeners never run.
-  document.addEventListener("click", async ev=>{
-    const b=ev.target.closest("#scanBtn,#topStartScanBtn,#topStartScanBtn252,[data-scan-action='full'],button");
-    if(!b) return;
+  // SINGLE owner. Legacy full-scan/session click listeners are physically removed by installer.
+  document.addEventListener("click",async ev=>{
+    const b=ev.target.closest("#scanBtn,#topStartScanBtn,#topStartScanBtn252,[data-scan-action='full'],#resumeScanBtn,[data-scan-action='resume'],#cancelBtn,#topStopScanBtn,#topStopScanBtn252,[data-scan-stop],button");if(!b)return;
     const txt=(b.textContent||"").trim().toLowerCase();
     const isFull=b.id==="scanBtn"||b.id==="topStartScanBtn"||b.id==="topStartScanBtn252"||b.dataset.scanAction==="full"||txt==="full scan"||txt==="fullscan";
     const isResume=b.id==="resumeScanBtn"||b.dataset.scanAction==="resume"||txt==="fortsett"||txt==="resume";
     const isStop=b.id==="cancelBtn"||b.id==="topStopScanBtn"||b.id==="topStopScanBtn252"||b.dataset.scanStop!==undefined;
-    if(!(isFull||isResume||isStop)) return;
-    ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation();
-    if(isStop){ try{window.IANS_V315?.abort?.()}catch{}; return; }
-    if(!window.IANS_V315?.scan){ console.error("[IANS V3.16] Unified scan engine missing"); return; }
+    if(!(isFull||isResume||isStop))return;
+    ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();
+    if(isStop){dlog("STOP_CLICK");try{window.IANS_V315?.abort?.()}catch{};return;}
+    if(!window.IANS_V315?.scan){console.error("[IANS V3.16.1] Unified scan engine missing");dlog("ENGINE_MISSING");return;}
+    if(activeScanId){dlog("SECOND_CLICK_BLOCKED",{button:b.id||txt});console.warn(`[IANS V3.16.1] blokkert ekstra scan-start · aktiv=${activeScanId}`);return;}
+    activeScanId=newScanId();dlog(isResume?"RESUME_CLICK":"FULL_SCAN_CLICK",{button:b.id||txt});
     try{
-      if(isResume){
-        const cp=typeof loadScanCheckpoint==="function" ? await loadScanCheckpoint() : null;
-        if(!cp){console.warn("[IANS V3.16] Ingen checkpoint å fortsette");return;}
-        await window.IANS_V315.scan(cp);
-      } else {
-        // New Full Scan must never silently resume stale browser data.
-        if(typeof clearScanCheckpoint==="function") await clearScanCheckpoint();
-        await window.IANS_V315.scan(null);
-      }
-    }catch(err){ console.error("[IANS V3.16] routed scan failed",err); }
-  }, true);
+      if(isResume){const cp=typeof loadScanCheckpoint==="function"?await loadScanCheckpoint():null;if(!cp){dlog("NO_CHECKPOINT");activeScanId=null;return;}await window.IANS_V315.scan(cp);}
+      else{if(typeof clearScanCheckpoint==="function")await clearScanCheckpoint();await window.IANS_V315.scan(null);}
+    }catch(err){dlog("ROUTED_SCAN_ERROR",{message:err?.message||String(err),stack:String(err?.stack||"")});console.error("[IANS V3.16.1] routed scan failed",err);activeScanId=null;}
+  },true);
 
-  function style(){
-    if(document.getElementById("iansV316Style"))return;
-    const s=document.createElement("style");s.id="iansV316Style";s.textContent=`
-      .ians-v316-live{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(420px,1.5fr) auto;gap:28px;align-items:center;background:rgba(4,22,40,.92);border:1px solid rgba(72,166,220,.24);border-radius:18px;padding:18px 22px;margin:14px 0;color:#eaf7ff}
-      .ians-v316-left{display:flex;gap:16px;align-items:center}.ians-v316-dot{width:48px;height:48px;border:1px solid #36c6ff;border-radius:50%;display:grid;place-items:center;color:#52d4ff;font-size:25px}.ians-v316-eyebrow{font-size:11px;letter-spacing:1.5px;color:#66d5ff;font-weight:800}.ians-v316-left strong{display:block;font-size:16px;margin:4px 0}.ians-v316-left span{display:block;color:#8fa8bc;font-size:13px}.ians-v316-row{display:flex;justify-content:space-between;gap:12px;font-size:13px}.ians-v316-row.small{margin-top:6px;color:#7f9bb1;font-size:11px}.ians-v316-track{height:8px;background:#10263a;border-radius:99px;overflow:hidden;margin-top:8px}.ians-v316-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#48ccff,#9275ff);transition:width .18s ease}.ians-v316-stats{display:grid;grid-template-columns:repeat(3,minmax(86px,1fr));gap:10px}.ians-v316-stats div{border:1px solid rgba(72,166,220,.25);border-radius:10px;padding:10px 12px}.ians-v316-stats b,.ians-v316-stats span{display:block}.ians-v316-stats b{font-size:15px}.ians-v316-stats span{font-size:10px;color:#7f9bb1;margin-top:3px}@media(max-width:900px){.ians-v316-live{grid-template-columns:1fr}.ians-v316-stats{grid-template-columns:repeat(3,1fr)}}`;
-    document.head.appendChild(s);
-  }
+  // Keep local reset safe and explicit. Scan/cache only; never deletes OneDrive content.
+  document.addEventListener("click",async ev=>{
+    const b=ev.target.closest("#iansClearScanCacheBtn,button"); if(!b||!/nullstill lokal scan-data/i.test((b.textContent||"").trim()))return;
+    ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();
+    if(!confirm("Nullstill lokal scan-data?\n\nDette sletter bare lokal scan/cache/checkpoint-data i nettleseren. Ingen filer i OneDrive slettes."))return;
+    Object.keys(localStorage).forEach(k=>{if(/^ians_/i.test(k)&&/(scan|checkpoint|report|cache|resume|enumerat)/i.test(k)&&!/(quarantine|review|action|pro|client|config|feedback|media)/i.test(k))localStorage.removeItem(k)});
+    Object.keys(sessionStorage).forEach(k=>{if(/^ians_/i.test(k)&&/(scan|checkpoint|resume|enumerat)/i.test(k))sessionStorage.removeItem(k)});
+    try{await new Promise(r=>{const q=indexedDB.deleteDatabase("ians_onedrive_scan_v25");q.onsuccess=q.onerror=q.onblocked=()=>r()})}catch{}
+    location.reload();
+  },true);
 
-  function boot(){ style(); ensurePanel(); render({phase:"IDLE",files:0,folders:0,bytes:0,queued:0,path:"/"}); document.documentElement.dataset.iansRuntime="3.16"; }
+  function style(){if(document.getElementById("iansV3161Style"))return;const s=document.createElement("style");s.id="iansV3161Style";s.textContent=`
+    .ians-v3161-live{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(420px,1.5fr) auto;gap:22px;align-items:center;background:rgba(4,22,40,.94);border:1px solid rgba(72,166,220,.28);border-radius:18px;padding:18px 22px;margin:14px 0;color:#eaf7ff;position:relative}.ians-v3161-left{display:flex;gap:16px;align-items:center}.ians-v3161-dot{width:48px;height:48px;border:1px solid #36c6ff;border-radius:50%;display:grid;place-items:center;color:#52d4ff;font-size:25px}.ians-v3161-eyebrow{font-size:11px;letter-spacing:1.5px;color:#66d5ff;font-weight:800}.ians-v3161-left strong{display:block;font-size:16px;margin:4px 0}.ians-v3161-left span{display:block;color:#8fa8bc;font-size:13px}.ians-v3161-row{display:flex;justify-content:space-between;gap:12px;font-size:13px}.ians-v3161-row.small{margin-top:6px;color:#7f9bb1;font-size:11px}.ians-v3161-track{height:8px;background:#10263a;border-radius:99px;overflow:hidden;margin-top:8px}.ians-v3161-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#48ccff,#9275ff);transition:width .18s ease}.ians-v3161-stats{display:grid;grid-template-columns:repeat(3,minmax(86px,1fr));gap:10px}.ians-v3161-stats div{border:1px solid rgba(72,166,220,.25);border-radius:10px;padding:10px 12px}.ians-v3161-stats b,.ians-v3161-stats span{display:block}.ians-v3161-stats b{font-size:15px}.ians-v3161-stats span{font-size:10px;color:#7f9bb1;margin-top:3px}.ians-v3161-debug{grid-column:1/-1;display:flex;gap:8px;align-items:center;border-top:1px solid rgba(72,166,220,.15);padding-top:10px}.ians-v3161-debug button{border:1px solid rgba(72,166,220,.35);background:#0a2438;color:#dff6ff;border-radius:8px;padding:7px 11px;cursor:pointer}.ians-v3161-debug span{font-size:11px;color:#7f9bb1}@media(max-width:900px){.ians-v3161-live{grid-template-columns:1fr}.ians-v3161-stats{grid-template-columns:repeat(3,1fr)}}`;
+    document.head.appendChild(s)}
+  function boot(){style();document.getElementById("iansV316Live")?.remove();ensurePanel();render({phase:"IDLE",files:0,folders:0,bytes:0,queued:0,path:"/"});document.documentElement.dataset.iansRuntime="3.16.1";}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
-  window.IANS_V316={version:VERSION,state:()=>last,render};
-  console.info("[IANS] V3.16 Clean Runtime aktiv · capture router · one Graph scan entry · dedicated LIVE owner");
+  window.IANS_V3161={version:VERSION,state:()=>last,debug:{on:()=>setDebug(true),off:()=>setDebug(false),toggle:()=>setDebug(!debugEnabled),events:()=>debugEvents.slice(),copy:()=>JSON.stringify(debugEvents,null,2)}};
+  console.info("[IANS] V3.16.1 Single Scan Owner + Debug aktiv · legacy scan owners removed · debug auto-off 10 min · ring buffer 600");
 })();
-// ===== /IANS-V316-RUNTIME =====
+// ===== /IANS-V3161-RUNTIME =====
