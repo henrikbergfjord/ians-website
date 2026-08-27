@@ -168,9 +168,22 @@ async function initMsal() {
   try {
     await msalApp.initialize();
 
+    // V3.12.8: process a full-page MSAL redirect before reading accounts.
+    // This avoids Edge popup/hidden-iframe stalls during scan startup.
+    let redirectResult = null;
+    try {
+      redirectResult = await msalApp.handleRedirectPromise();
+    } catch (redirectErr) {
+      console.error("[IANS V3.12.8] redirect auth result", redirectErr);
+      sessionStorage.setItem("ians_scan_auth_error", String(redirectErr?.message || redirectErr));
+    }
+
     const accounts = msalApp.getAllAccounts();
-    activeAccount = msalApp.getActiveAccount() || accounts[0] || null;
+    activeAccount = redirectResult?.account || msalApp.getActiveAccount() || accounts[0] || null;
     if (activeAccount) msalApp.setActiveAccount(activeAccount);
+    if (redirectResult?.accessToken) {
+      try { iansCacheAuthResult(redirectResult); } catch {}
+    }
 
     els.setupPanel.classList.add("hidden");
     if (activeAccount) showDashboard();
@@ -300,6 +313,58 @@ function iansPrimeInteractiveAuth(reason="Full scan") {
   iansTokenPromise=iansInteractiveAuthPromise;
   return iansInteractiveAuthPromise;
 }
+// V3.12.8: browser-safe redirect handshake for explicit Full Scan / Resume.
+// The requested action survives the round-trip in sessionStorage and resumes
+// automatically after MSAL returns to the live IANS page.
+const IANS_PENDING_SCAN_KEY="ians_pending_scan_action_v3128";
+function iansSetPendingScan(action){
+  sessionStorage.setItem(IANS_PENDING_SCAN_KEY,JSON.stringify({action,time:Date.now()}));
+}
+function iansTakePendingScan(){
+  try{
+    const raw=sessionStorage.getItem(IANS_PENDING_SCAN_KEY);
+    if(!raw)return null;
+    const data=JSON.parse(raw);
+    if(!data?.action || Date.now()-Number(data.time||0)>10*60*1000){sessionStorage.removeItem(IANS_PENDING_SCAN_KEY);return null;}
+    sessionStorage.removeItem(IANS_PENDING_SCAN_KEY);
+    return data.action;
+  }catch{sessionStorage.removeItem(IANS_PENDING_SCAN_KEY);return null;}
+}
+async function iansBeginRedirectAuth(action="full"){
+  if(!msalApp)throw new Error("MSAL er ikke initialisert.");
+  iansEnsureScanDiagnostics?.();
+  iansScanStage?.("AUTH",`${action==="resume"?"Resume":"Full scan"}: sender til Microsoft sikkert`);
+  iansSetPendingScan(action);
+  const request={
+    scopes:SCOPES,
+    account:activeAccount||undefined,
+    loginHint:activeAccount?.username||undefined,
+    redirectUri:APP_REDIRECT_URI,
+    prompt:"select_account"
+  };
+  // Redirect auth deliberately replaces popup auth for scan startup.
+  return msalApp.acquireTokenRedirect(request);
+}
+async function iansResumeAfterRedirect(){
+  const action=iansTakePendingScan();
+  if(!action)return;
+  const authErr=sessionStorage.getItem("ians_scan_auth_error");
+  sessionStorage.removeItem("ians_scan_auth_error");
+  iansEnsureScanDiagnostics?.();
+  if(authErr){iansScanStage?.("AUTH",`STOPP · ${authErr}`);return;}
+  iansScanStage?.("AUTH","Microsoft redirect-token OK");
+  // Give Command Center time to mount before driving the real scan engine.
+  await iansSleep(450);
+  if(action==="resume"){
+    const cp=await loadScanCheckpoint();
+    if(!cp){iansScanStage?.("CHECKPOINT","ingen checkpoint å fortsette");return;}
+    iansScanStage?.("CHECKPOINT","Resume checkpoint lastet");
+    await scanOneDrive(cp);
+  }else{
+    await scanOneDrive();
+  }
+}
+
 async function getToken(attempt=0){
   if(iansTokenUsable()) return iansTokenCache.accessToken;
   if(iansTokenPromise) return iansTokenPromise;
@@ -396,7 +461,7 @@ function iansEnsureScanDiagnostics(){
   const bar=document.createElement("div");
   bar.id="iansScanDiagnostics";
   bar.className="ians-scan-diagnostics";
-  bar.innerHTML=`<span>SCAN START</span><strong id="iansScanStageLine">READY · v3.12.7</strong><small>AUTH → DRIVE → ROOT → CHECKPOINT → ENUMERATION</small>`;
+  bar.innerHTML=`<span>SCAN START</span><strong id="iansScanStageLine">READY · v3.12.8</strong><small>AUTH → DRIVE → ROOT → CHECKPOINT → ENUMERATION</small>`;
   host.prepend(bar);
 }
 setTimeout(iansEnsureScanDiagnostics,900);
@@ -5356,36 +5421,28 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     if(action==="full"){
       iansEnsureScanDiagnostics();
       iansScanStage("READY","Full scan-knapp mottatt");
-      // Important: invoke popup auth while the click is still a trusted user
-      // gesture. Only then switch view/start the scan.
-      const authPromise=iansPrimeInteractiveAuth("Full scan");
       showFocus("scan");
       try{
-        await authPromise;
-        iansScanStage("AUTH","Microsoft-token OK");
-        await scanOneDrive();
+        await iansBeginRedirectAuth("full");
       }catch(err){
-        iansScanStage("AUTH",`STOPP · ${String(err?.message||err).replace(/^AUTH_POPUP_STAGE:\s*/,"")}`);
+        iansScanStage("AUTH",`STOPP · ${String(err?.message||err)}`);
         iansToast?.("Microsoft-tilkobling feilet",String(err?.message||err),"error",9000);
-        console.error("[IANS V3.12.7] interactive auth/full scan",err);
+        console.error("[IANS V3.12.8] redirect auth/full scan",err);
       }
       return;
     }
     if(action==="resume"){
       iansEnsureScanDiagnostics();
-      const authPromise=iansPrimeInteractiveAuth("Resume");
       showFocus("scan");
       const cp=await loadScanCheckpoint();
       if(!cp){ iansScanStage("READY","ingen checkpoint å fortsette"); iansToast?.("Ingen checkpoint","Det finnes ingen lagret scan å fortsette.","error",5000); return; }
-      iansScanStage("CHECKPOINT","Resume checkpoint lastet");
+      iansScanStage("CHECKPOINT","Resume checkpoint funnet · autentiserer");
       try{
-        await authPromise;
-        iansScanStage("AUTH","Microsoft-token OK");
-        await scanOneDrive(cp);
+        await iansBeginRedirectAuth("resume");
       }catch(err){
-        iansScanStage("AUTH",`STOPP · ${String(err?.message||err).replace(/^AUTH_POPUP_STAGE:\s*/,"")}`);
+        iansScanStage("AUTH",`STOPP · ${String(err?.message||err)}`);
         iansToast?.("Microsoft-tilkobling feilet",String(err?.message||err),"error",9000);
-        console.error("[IANS V3.12.7] interactive auth/resume",err);
+        console.error("[IANS V3.12.8] redirect auth/resume",err);
       }
       return;
     }
@@ -6138,3 +6195,21 @@ window.v3126ScanStartBridgeSelfTest=()=>({
 console.info('[IANS] V3.12.7 Auth Recovery + Interactive Token Prime aktiv');
 window.v3127AuthSelfTest=()=>({interactive:typeof iansPrimeInteractiveAuth==="function",tokenCache:iansTokenUsable(),stage:window.__iansScanStage||null});
 // ===== END V3.12.7 =====
+
+// ===== IANS OneDrive Command V3.12.8 · REDIRECT AUTH HANDSHAKE =====
+setTimeout(()=>{
+  iansResumeAfterRedirect().catch(err=>{
+    iansEnsureScanDiagnostics?.();
+    iansScanStage?.("AUTH",`STOPP · ${String(err?.message||err)}`);
+    console.error("[IANS V3.12.8] resume after redirect",err);
+  });
+},1400);
+window.v3128RedirectAuthSelfTest=()=>({
+  redirect:typeof iansBeginRedirectAuth==="function",
+  resume:typeof iansResumeAfterRedirect==="function",
+  pending:sessionStorage.getItem(IANS_PENDING_SCAN_KEY)||null,
+  account:activeAccount?.username||null,
+  stage:window.__iansScanStage||null
+});
+console.info('[IANS] V3.12.8 Redirect Auth Handshake aktiv');
+// ===== END V3.12.8 =====
