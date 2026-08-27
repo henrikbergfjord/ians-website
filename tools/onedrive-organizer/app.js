@@ -6006,44 +6006,7 @@ window.v3124ScanRecoverySelfTest=()=>({
 });
 // ===== END V3.12.4 =====
 
-// ===== IANS OneDrive Command V3.12.5 · TOKEN BROKER + PREFLIGHT =====
-window.v3125ScanTokenBrokerSelfTest=()=>({
-  tokenBroker:typeof getToken==="function" && typeof iansInvalidateToken==="function",
-  preflight:typeof iansScanPreflight==="function",
-  graphFetch:typeof graphFetch==="function"
-});
-console.info('[IANS] V3.12.5 Token Broker + Scan Preflight aktiv');
-// ===== END V3.12.5 =====
 
-
-// ===== IANS OneDrive Command V3.12.7 · AUTH RECOVERY =====
-window.v3126ScanStartBridgeSelfTest=()=>({
-  directStart:typeof scanOneDrive==="function",
-  diagnostics:typeof iansScanStage==="function",
-  stage:window.__iansScanStage||null,
-  legacyScanButton:!!document.getElementById("scanBtn")
-});
-console.info('[IANS] V3.12.7 Auth Recovery + Interactive Token Prime aktiv');
-window.v3127AuthSelfTest=()=>({interactive:typeof iansPrimeInteractiveAuth==="function",tokenCache:iansTokenUsable(),stage:window.__iansScanStage||null});
-// ===== END V3.12.7 =====
-
-// ===== IANS OneDrive Command V3.12.8 · REDIRECT AUTH HANDSHAKE =====
-setTimeout(()=>{
-  iansResumeAfterRedirect().catch(err=>{
-    iansEnsureScanDiagnostics?.();
-    iansScanStage?.("AUTH",`STOPP · ${String(err?.message||err)}`);
-    console.error("[IANS V3.12.8] resume after redirect",err);
-  });
-},1400);
-window.v3128RedirectAuthSelfTest=()=>({
-  redirect:typeof iansBeginRedirectAuth==="function",
-  resume:typeof iansResumeAfterRedirect==="function",
-  pending:sessionStorage.getItem(IANS_PENDING_SCAN_KEY)||null,
-  account:activeAccount?.username||null,
-  stage:window.__iansScanStage||null
-});
-console.info('[IANS] V3.12.8 Redirect Auth Handshake aktiv');
-// ===== END V3.12.8 =====
 
 
 // ===== IANS OneDrive Command V3.13 · CLEAN SCAN ENGINE =====
@@ -6349,3 +6312,74 @@ window.__iansV313SelfTest=()=>({
   console.info("[IANS] V3.14 Clean Auth Baseline active");
 })();
 // ===== END IANS OneDrive Command V3.14 =====
+
+// ===== IANS OneDrive Command V3.14.1 · CLEAN RUNTIME GUARD =====
+(() => {
+  const VERSION = "3.14.1";
+  const state = {
+    legacyRedirectErrors: 0,
+    uiErrors: 0,
+    lastError: null,
+    installedAt: new Date().toISOString()
+  };
+
+  // Last-resort protection: old presentation-layer MutationObservers must never
+  // kill scan enumeration. We only suppress the exact known legacy UI null-write.
+  window.addEventListener("error", (event) => {
+    const msg = String(event?.error?.message || event?.message || "");
+    const stack = String(event?.error?.stack || "");
+    const isKnownUiNull =
+      msg.includes("Cannot set properties of null") &&
+      msg.includes("textContent") &&
+      (stack.includes("MutationObserver.sync") || stack.includes(" at sync"));
+
+    const isOldRedirect =
+      msg.includes("iansResumeAfterRedirect is not defined");
+
+    if (isKnownUiNull) {
+      state.uiErrors += 1;
+      state.lastError = msg;
+      console.warn("[IANS V3.14.1] Legacy UI sync-feil isolert; scanmotor fortsetter.");
+      event.preventDefault();
+      return;
+    }
+
+    if (isOldRedirect) {
+      state.legacyRedirectErrors += 1;
+      state.lastError = msg;
+      console.warn("[IANS V3.14.1] Legacy redirect-feil isolert.");
+      event.preventDefault();
+    }
+  }, true);
+
+  // Runtime health badge.
+  function installBadge() {
+    if (document.getElementById("iansRuntime3141")) return;
+    const box=document.createElement("div");
+    box.id="iansRuntime3141";
+    box.style.cssText=[
+      "position:fixed","right:18px","bottom:180px","z-index:99998",
+      "padding:8px 10px","border-radius:10px",
+      "border:1px solid rgba(134,239,172,.35)",
+      "background:rgba(10,18,32,.92)","color:#bbf7d0",
+      "font:11px system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+    ].join(";");
+    box.textContent="RUNTIME CLEAN · V3.14.1";
+    box.title="Legacy V3.12.5/V3.12.7/V3.12.8 runtime fjernet. V3.13 scan + V3.14 auth beholdt.";
+    document.body.appendChild(box);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", installBadge, {once:true});
+  } else {
+    installBadge();
+  }
+
+  window.IANS_RUNTIME_V3141 = {
+    version: VERSION,
+    status: () => ({...state})
+  };
+
+  console.info("[IANS] V3.14.1 Clean Runtime aktiv · legacy scan/auth layers removed · UI errors isolated");
+})();
+// ===== END IANS OneDrive Command V3.14.1 =====
