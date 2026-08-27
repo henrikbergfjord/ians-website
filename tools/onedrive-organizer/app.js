@@ -6612,3 +6612,166 @@ window.__iansV313SelfTest=()=>({
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot3142);
   else boot3142();
 })();
+
+// ===== IANS OneDrive Command V3.14.2.1 · Workspace Cache Fix =====
+(() => {
+  "use strict";
+
+  const PREVIOUS_KEY = "ians_v3142_previous_scan_summary";
+  const SESSION_KEY = "ians_v3142_active_scan_session";
+
+  const byId = id => document.getElementById(id);
+  const safeJson = v => { try { return JSON.parse(v); } catch { return null; } };
+
+  async function clearCheckpoint31421(){
+    try{
+      await new Promise(resolve=>{
+        const req=indexedDB.open("ians_onedrive_scan_v25",1);
+        req.onerror=()=>resolve();
+        req.onupgradeneeded=()=>{
+          const db=req.result;
+          if(!db.objectStoreNames.contains("checkpoints")) db.createObjectStore("checkpoints");
+        };
+        req.onsuccess=()=>{
+          const db=req.result;
+          try{
+            if(!db.objectStoreNames.contains("checkpoints")) { db.close(); resolve(); return; }
+            const tx=db.transaction("checkpoints","readwrite");
+            tx.objectStore("checkpoints").delete("active");
+            tx.oncomplete=()=>{db.close();resolve()};
+            tx.onerror=()=>{db.close();resolve()};
+          }catch{
+            db.close(); resolve();
+          }
+        };
+      });
+    }catch{}
+  }
+
+  function clearLocalScanOnly31421(){
+    Object.keys(localStorage).forEach(k=>{
+      if (
+        /^ians_/i.test(k) &&
+        /(scan|checkpoint|report|cache)/i.test(k) &&
+        !/(quarantine|review|action|pro|client|config|feedback|media)/i.test(k) &&
+        k !== PREVIOUS_KEY
+      ) {
+        localStorage.removeItem(k);
+      }
+    });
+    sessionStorage.removeItem(SESSION_KEY);
+  }
+
+  function createCacheButton31421(){
+    if(byId("v31421CacheBtn")) return;
+
+    const scanRow =
+      document.querySelector(".scan-actions") ||
+      document.querySelector(".scan-controls") ||
+      document.querySelector(".mapping-actions") ||
+      document.querySelector("[data-scan-actions]") ||
+      document.querySelector(".toolbar") ||
+      document.querySelector("main");
+
+    if(!scanRow) return;
+
+    const btn=document.createElement("button");
+    btn.id="v31421CacheBtn";
+    btn.type="button";
+    btn.className="btn ghost";
+    btn.textContent="Nullstill lokal scan-data";
+    btn.title="Fjerner kun lokale scan/checkpoint-data. OneDrive-filer og karantene/review-historikk beholdes.";
+
+    btn.addEventListener("click", async ()=>{
+      const prev=safeJson(localStorage.getItem(PREVIOUS_KEY));
+      const lines=[
+        "Dette nullstiller lokal scan-cache og aktivt checkpoint.",
+        "",
+        "Det slettes IKKE filer i OneDrive.",
+        "Karantene/review-historikk beholdes.",
+        prev ? `Forrige snapshot: ${prev.filesText || "ukjent"} ${prev.sizeText ? "· " + prev.sizeText : ""}` : "",
+        "",
+        "Fortsette?"
+      ].filter(Boolean);
+
+      if(!confirm(lines.join("\n"))) return;
+
+      clearLocalScanOnly31421();
+      await clearCheckpoint31421();
+      console.info("[IANS CACHE RESET] workspace scan-cache nullstilt · quarantine/review preserved");
+      location.reload();
+    });
+
+    // Legg knappen rett før/etter Full scan hvis mulig
+    const fullBtn = [...document.querySelectorAll("button")].find(b =>
+      /full\s*scan|full\s*skann/i.test((b.textContent||"").trim())
+    );
+
+    if(fullBtn?.parentElement){
+      fullBtn.parentElement.appendChild(btn);
+    } else {
+      scanRow.prepend(btn);
+    }
+  }
+
+  function markPreviousScan31421(){
+    const active = safeJson(sessionStorage.getItem(SESSION_KEY));
+    if(active?.status === "running") return;
+
+    const texts=[...document.querySelectorAll("body *")];
+    const candidate = texts.find(el => {
+      const t=(el.textContent||"").trim();
+      return /161[\s\u00a0]?729/.test(t) && /858[.,]62/.test(t);
+    });
+
+    if(!candidate) return;
+
+    let badge=byId("v31421PreviousBadge");
+    if(!badge){
+      badge=document.createElement("div");
+      badge.id="v31421PreviousBadge";
+      badge.style.cssText="margin:8px 0;padding:8px 10px;border:1px solid rgba(96,190,255,.35);border-radius:8px;font-size:12px;opacity:.9";
+      badge.innerHTML="<strong>Forrige lagrede scan</strong> · historisk resultat, ikke aktiv scan";
+      candidate.parentElement?.insertBefore(badge,candidate);
+    }
+  }
+
+  function resetLiveCountersBeforeFreshScan31421(){
+    const ids=["fileCount","folderCount","processedFoldersLive","queuedFoldersLive","scannedBytesLive"];
+    ids.forEach(id=>{
+      const el=byId(id);
+      if(!el) return;
+      el.textContent = id==="scannedBytesLive" ? "0 B" : "0";
+    });
+
+    [...document.querySelectorAll("body *")].forEach(el=>{
+      if(el.children.length) return;
+      const t=(el.textContent||"").trim();
+      if(/^161[\s\u00a0]?729$/.test(t)) el.textContent="0";
+      if(/^858[.,]62\s*GB$/i.test(t)) el.textContent="0 B";
+    });
+  }
+
+  document.addEventListener("click", e=>{
+    const b=e.target.closest("button");
+    if(!b) return;
+    const t=(b.textContent||"").trim();
+    if(/full\s*scan|full\s*skann/i.test(t)){
+      resetLiveCountersBeforeFreshScan31421();
+      console.info("[IANS LIVE RESET] Full Scan starter med nullstilte live-tall");
+    }
+  }, true);
+
+  function boot(){
+    createCacheButton31421();
+    markPreviousScan31421();
+    setTimeout(createCacheButton31421,700);
+    setTimeout(markPreviousScan31421,900);
+    setTimeout(createCacheButton31421,1800);
+    setTimeout(markPreviousScan31421,2000);
+    console.info("[IANS] V3.14.2.1 Workspace Cache Fix aktiv · previous scan labeled · cache button visible");
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot);
+  else boot();
+})();
