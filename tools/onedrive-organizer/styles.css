@@ -1275,3 +1275,16 @@ body.ians-v30 #v288MidPulse .v288-pulse-line i{position:relative!important;left:
   .v3311-org-scope{grid-template-columns:1fr}
   .v3311-org-limit{justify-self:start}
 }
+
+/* IANS V3.31.2 · Safe Organization Execution */
+.v3312-org-scope{grid-template-columns:minmax(220px,1fr) auto minmax(220px,1fr) auto auto}
+.v3312-org-limit{border-color:rgba(74,222,128,.3);color:#9ef0bd}
+.v3312-org-safety,.v3312-org-verify{margin:12px 0;padding:12px;border:1px solid rgba(94,180,220,.18);border-radius:12px;background:rgba(4,22,34,.48)}
+.v3312-safety-grid{display:grid;grid-template-columns:repeat(4,minmax(110px,1fr));gap:8px;margin-bottom:10px}
+.v3312-safety-grid>div{padding:9px 10px;border:1px solid rgba(94,180,220,.14);border-radius:9px;background:rgba(3,18,29,.6)}
+.v3312-safety-grid span,.v3312-safety-grid strong{display:block}.v3312-safety-grid span{font-size:9px;letter-spacing:.08em;color:#7e9baa}.v3312-safety-grid strong{margin-top:3px;font-size:13px;overflow-wrap:anywhere}
+.v3312-warning{border:1px solid rgba(250,204,21,.24);border-radius:10px;padding:10px 12px;background:rgba(70,48,5,.18)}.v3312-warning p{margin:4px 0 8px;color:#aab9c0}
+.v3312-leftovers{display:flex;gap:7px;flex-wrap:wrap}.v3312-leftovers span{padding:5px 8px;border:1px solid rgba(250,204,21,.18);border-radius:999px;font-size:10px;color:#e8ca72}
+.v3312-ok{border:1px solid rgba(74,222,128,.22);border-radius:10px;padding:10px 12px;background:rgba(7,60,42,.14)}.v3312-ok strong,.v3312-ok span{display:block}.v3312-ok span{margin-top:3px;color:#8eaaa4}
+.v3312-verify-list{max-height:300px;overflow:auto;margin-top:10px}.v3312-verify-list>div{padding:7px 4px;border-top:1px solid rgba(255,255,255,.06)}.v3312-verify-list strong,.v3312-verify-list span{display:block}.v3312-verify-list span{font-size:11px;color:#8ea6b5}
+@media(max-width:1050px){.v3312-org-scope{grid-template-columns:1fr auto}.v3312-safety-grid{grid-template-columns:repeat(2,minmax(120px,1fr))}}

@@ -387,6 +387,7 @@ let scanRunningV38 = false;
 let selectedScanFolder = {id:null,path:"/"};
 let selectedDownloadFolder = {id:null,path:"/",name:"OneDrive"};
 let selectedOrganizationFolder = {id:null,path:"/"};
+let selectedOrganizationTargetFolder = {id:null,path:"/"};
 let folderBrowserPurpose = "scan";
 let browserStack = [{id:null,path:"/"}];
 
@@ -2304,6 +2305,18 @@ document.getElementById("chooseThisFolderBtn")?.addEventListener("click",()=>{
     if(typeof dlAnalyzeSource==="function") dlAnalyzeSource();
     return;
   }
+  if(folderBrowserPurpose==="organize-target"){
+    selectedOrganizationTargetFolder=chosen;
+    const target=document.getElementById("v3312OrgTargetPath");
+    const rootInput=document.getElementById("v285OrgRoot");
+    if(target) target.textContent=chosen.path;
+    if(rootInput) rootInput.value=chosen.path;
+    const execute=document.getElementById("v285OrgExecute"); if(execute)execute.disabled=true;
+    try{org294=[];renderOrg294();}catch{}
+    folderModal.classList.add("hidden");
+    if(typeof iansToast==="function")iansToast("Målrot valgt",`${chosen.path} · bygg forslag på nytt.`,"success",5000);
+    return;
+  }
   if(folderBrowserPurpose==="organize"){
     selectedOrganizationFolder=chosen;
     const source=document.getElementById("v3311OrgSourcePath");
@@ -3285,10 +3298,12 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
     const cats=["Bilder","Video","Dokumenter","Regneark","Presentasjoner","Lyd","Arkiv / installasjon","Annet"];
     p.innerHTML=`<div class="section-title"><div><span class="eyebrow">ORGANIZATION STUDIO</span><h3>Plan → Preview → Action Mode → Utfør</h3></div><span class="badge safe">INGEN SLETTING</span></div>
     <p class="muted">Velg hvordan IANS skal organisere. Preview bygges først; ingen filer flyttes før Action Mode og eksplisitt godkjenning.</p><div class="v285-org-controls">
-    <div class="v3311-org-scope">
-      <div class="v3311-org-source"><span>Kildemappe for kontrollert test</span><strong id="v3311OrgSourcePath">Ingen valgt</strong><small>Planen kan bare inneholde filer under denne mappen. Hele OneDrive er blokkert.</small></div>
-      <button id="v3311OrgBrowse" class="btn ghost" type="button">Velg testmappe</button>
-      <span class="v3311-org-limit">MAKS 500 FILER</span>
+    <div class="v3311-org-scope v3312-org-scope">
+      <div class="v3311-org-source"><span>Kildemappe</span><strong id="v3311OrgSourcePath">Ingen valgt</strong><small>Kun filer under denne mappen blir med i planen.</small></div>
+      <button id="v3311OrgBrowse" class="btn ghost" type="button">Velg kildemappe</button>
+      <div class="v3311-org-source"><span>Målrot</span><strong id="v3312OrgTargetPath">/_IANS Organisert</strong><small>Velg eksisterende målrot. Understruktur opprettes av planen.</small></div>
+      <button id="v3312OrgTargetBrowse" class="btn ghost" type="button">Velg målrot</button>
+      <span class="v3311-org-limit v3312-org-limit">BATCH 100 · VERIFY ETTERPÅ</span>
     </div>
     <div class="v311-org-grid"><label class="field"><span>Målrot</span><input id="v285OrgRoot" value="/_IANS Organisert"></label>
     <label class="field"><span>Profil</span><select id="v285OrgProfile"><option value="cautious">Forsiktig – bare tydelige ryddeområder</option><option value="balanced">Balansert – valgte filtyper</option><option value="comprehensive">Omfattende – hele valget</option></select></label>
@@ -3296,11 +3311,20 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
     <div class="v311-org-options"><label><input type="checkbox" id="v285OrgPreserve" checked> Bevar meningsfulle prosjekt-/kundemapper</label><label><input type="checkbox" id="v285OrgDevice"> Media: grupper også etter kamera/enhet når metadata finnes</label></div>
     <div class="v285-org-cats">${cats.map(c=>`<label><input type="checkbox" data-v285-org-cat value="${escapeHtml(c)}" ${["Bilder","Video","Dokumenter","Regneark","Presentasjoner"].includes(c)?"checked":""}><span>${escapeHtml(c)}</span></label>`).join("")}</div>
     <div class="actions"><button id="v285OrgBuild" class="btn primary" disabled>Bygg forslag</button><button id="v285OrgExecute" class="btn action-btn" disabled>Utfør plan</button></div></div>
-    <div id="v285OrgStats" class="v285-org-stats"></div><div id="v285OrgPreview" class="v285-org-preview"><div class="empty-state">Kjør kartlegging og trykk «Bygg forslag».</div></div>
+    <div id="v285OrgStats" class="v285-org-stats"></div>
+    <div id="v3312OrgSafety" class="v3312-org-safety"><div class="empty-state">Velg kilde og målrot, og bygg forslag.</div></div>
+    <div id="v285OrgPreview" class="v285-org-preview"><div class="empty-state">Kjør kartlegging og trykk «Bygg forslag».</div></div>
+    <div id="v3312OrgVerify" class="v3312-org-verify hidden"></div>
     <div class="v285-health-note"><strong>Sikker arbeidsflyt:</strong> Read Only → Analyse → Plan → Preview → Backup Check → Action Mode → Execute → Verify → Logg.</div>`;
     E("dashboard").appendChild(p);
     E("v3311OrgBrowse").onclick=async()=>{
       folderBrowserPurpose="organize";
+      browserStack=[{id:null,path:"/"}];
+      folderModal.classList.remove("hidden");
+      await loadFolderBrowserLevel();
+    };
+    E("v3312OrgTargetBrowse").onclick=async()=>{
+      folderBrowserPurpose="organize-target";
       browserStack=[{id:null,path:"/"}];
       folderModal.classList.remove("hidden");
       await loadFolderBrowserLevel();
@@ -4899,7 +4923,9 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   // ---------- Organization Studio Fix ----------
   // V2.8.5 hard-excluded every file under /_IANS Cleanup Review/. That made a scan
   // of the review folder produce a 0-file plan. V2.9.4 deliberately allows review files.
-  const V3311_ORG_MAX_FILES=500;
+  const V3312_ORG_WARN_FILES=2000;
+  const V3312_ORG_BATCH=100;
+  const V3312_ORG_JOB_KEY="ians_v3312_org_job";
   let org294=[];
 
   function cleanRoot(v){
@@ -4924,96 +4950,51 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     if(cat==="Bilder"||cat==="Video") return `${root}/${cat}/${yearOf(f)}/${monthOf(f)}`;
     return `${root}/${cat}/${yearOf(f)}`;
   }
+  function v3312ScopeFiles(){
+    const source=String(selectedOrganizationFolder?.path||"").replace(/\/+$/g,"");
+    if(!source||source==="/")return [];
+    const prefix=source+"/";
+    return (report?.files||[]).filter(f=>{const p=String(f.path||"");return p===source||p.startsWith(prefix)});
+  }
+  function v3312Unplanned(){const planned=new Set(org294.map(x=>String(x.file?.id||"")));return v3312ScopeFiles().filter(f=>!planned.has(String(f.id||"")))}
+  function v3312RenderSafety(){
+    const box=E("v3312OrgSafety");if(!box)return;
+    const unplanned=v3312Unplanned(),byCat=new Map();
+    for(const f of unplanned){const c=String(f.category||"Ukjent"),x=byCat.get(c)||{count:0,bytes:0};x.count++;x.bytes+=Number(f.size)||0;byCat.set(c,x)}
+    box.innerHTML=`<div class="v3312-safety-grid"><div><span>KILDE</span><strong>${esc(selectedOrganizationFolder?.path||"Ingen valgt")}</strong></div><div><span>MÅLROT</span><strong>${esc(cleanRoot(E("v285OrgRoot")?.value))}</strong></div><div><span>I PLAN</span><strong>${fmtN(org294.length)}</strong></div><div><span>IKKE I PLAN</span><strong>${fmtN(unplanned.length)}</strong></div></div>${unplanned.length?`<div class="v3312-warning"><strong>${fmtN(unplanned.length)} filer blir liggende igjen.</strong><p>ZIP/arkiv, lyd, ukjente format eller kategorier som ikke er valgt slettes aldri automatisk.</p><div class="v3312-leftovers">${[...byCat].map(([c,x])=>`<span>${esc(c)} · ${fmtN(x.count)} · ${fmtB(x.bytes)}</span>`).join("")}</div></div>`:`<div class="v3312-ok"><strong>Alle kartlagte filer i kilden er dekket av planen.</strong><span>Endelig kontroll gjøres direkte mot Microsoft Graph etterpå.</span></div>`}`;
+  }
   function renderOrg294(){
-    const stats=E("v285OrgStats"),preview=E("v285OrgPreview"),exec=E("v285OrgExecute");
-    if(!stats||!preview||!exec)return;
-    const conflicts=org294.filter(x=>x.conflict).length;
-    const folders=new Set(org294.map(x=>x.target)).size;
-    const bytes=org294.reduce((s,x)=>s+(+x.file.size||0),0);
+    const stats=E("v285OrgStats"),preview=E("v285OrgPreview"),exec=E("v285OrgExecute");if(!stats||!preview||!exec)return;
+    const conflicts=org294.filter(x=>x.conflict).length,folders=new Set(org294.map(x=>x.target)).size,bytes=org294.reduce((s,x)=>s+(+x.file.size||0),0);
     stats.innerHTML=`<div><span>Filer i plan</span><strong>${fmtN(org294.length)}</strong></div><div><span>Målmapper</span><strong>${fmtN(folders)}</strong></div><div><span>Datamengde</span><strong>${fmtB(bytes)}</strong></div><div><span>Navnekonflikter</span><strong>${fmtN(conflicts)}</strong></div>`;
-    preview.innerHTML=org294.slice(0,100).map(x=>`<div class="${x.conflict?"conflict":""}"><strong>${esc(x.file.name)}</strong><span>${esc(x.file.path)} → ${esc(x.target)}/</span>${x.conflict?'<em>Hoppes over: mulig navnekonflikt</em>':""}</div>`).join("")||'<div class="empty-state">Ingen filer matcher valgte kategorier.</div>';
-    exec.disabled=!org294.some(x=>!x.conflict);
+    preview.innerHTML=org294.slice(0,150).map(x=>`<div class="${x.conflict?"conflict":""}"><strong>${esc(x.file.name)}</strong><span>${esc(x.file.path)} → ${esc(x.target)}/</span>${x.conflict?'<em>Samme navn: begge beholdes. Unikt navn velges ved utføring.</em>':""}</div>`).join("")||'<div class="empty-state">Ingen filer matcher valgte kategorier.</div>';
+    exec.disabled=!org294.length;v3312RenderSafety();
   }
   function buildOrg294(){
-    if(!report?.files?.length){
-      restoreCompleted({silent:true}).then(r=>{ if(r) buildOrg294(); else alert("Ingen scan tilgjengelig. Importer .iansscan eller kjør kartlegging."); });
-      return;
-    }
-    const root=cleanRoot(E("v285OrgRoot")?.value);
-    const source=String(selectedOrganizationFolder?.path||"").replace(/\/+$/g,"");
-    if(!source || source==="/"){
-      org294=[]; renderOrg294();
-      alert("Velg en kontrollert testmappe først. Hele OneDrive er blokkert i V3.31.1.");
-      return;
-    }
-    const sourcePrefix=source+"/";
-    const cats=new Set([...document.querySelectorAll("[data-v285-org-cat]:checked")].map(x=>x.value));
-    const seen=new Set(); org294=[];
-    for(const f of report.files){
-      const p=String(f.path||"");
-      // V3.31.1: source scope is authoritative. Never plan files outside the chosen test folder.
-      if(!(p===source || p.startsWith(sourcePrefix))) continue;
-      // Only skip files already under the destination tree. Do NOT skip Cleanup Review.
-      if(p===root || p.startsWith(root+"/") || !cats.has(f.category)) continue;
-      const target=target294(f,root);
-      const key=`${target.toLowerCase()}|${String(f.name||"").toLowerCase()}`;
-      const conflict=seen.has(key); seen.add(key);
-      org294.push({file:f,target,conflict});
-    }
-    if(org294.length>V3311_ORG_MAX_FILES){
-      const found=org294.length;
-      org294=[]; renderOrg294();
-      alert(`Testmappen gir ${found.toLocaleString("nb-NO")} filer i planen. Maks ${V3311_ORG_MAX_FILES} filer er tillatt i V3.31.1. Velg en mindre mappe.`);
-      return;
-    }
-    renderOrg294();
-    if(typeof iansToast==="function") iansToast("Kontrollert forslag bygget",`${fmtN(org294.length)} filer fra ${source}. Ingen filer er flyttet ennå.`,"success",6500);
+    if(!report?.files?.length){restoreCompleted({silent:true}).then(r=>{if(r)buildOrg294();else alert("Ingen scan tilgjengelig.")});return}
+    const root=cleanRoot(E("v285OrgRoot")?.value),source=String(selectedOrganizationFolder?.path||"").replace(/\/+$/g,"");
+    if(!source||source==="/"){org294=[];renderOrg294();alert("Velg en kontrollert kildemappe først.");return}
+    if(!root||root==="/"){org294=[];renderOrg294();alert("Velg en tydelig målrot. OneDrive-roten kan ikke brukes.");return}
+    if(root===source||root.startsWith(source+"/")){org294=[];renderOrg294();alert("Målroten kan ikke være samme mappe som kilden eller ligge inne i kilden.");return}
+    const prefix=source+"/",cats=new Set([...document.querySelectorAll("[data-v285-org-cat]:checked")].map(x=>x.value)),seen=new Set();org294=[];
+    for(const f of report.files){const p=String(f.path||"");if(!(p===source||p.startsWith(prefix)))continue;if(p===root||p.startsWith(root+"/")||!cats.has(f.category))continue;const target=target294(f,root),key=`${target.toLowerCase()}|${String(f.name||"").toLowerCase()}`,conflict=seen.has(key);seen.add(key);org294.push({file:f,target,conflict})}
+    renderOrg294();if(typeof iansToast==="function")iansToast("Kontrollert forslag bygget",org294.length>V3312_ORG_WARN_FILES?`${fmtN(org294.length)} filer · stor jobb, kontroller preview og restfiler nøye.`:`${fmtN(org294.length)} filer fra ${source}. Ingen filer er flyttet ennå.`,org294.length>V3312_ORG_WARN_FILES?"error":"success",8000)
   }
+  function v3312SplitName(name){const t=String(name||"fil"),i=t.lastIndexOf(".");return i>0?{base:t.slice(0,i),ext:t.slice(i)}:{base:t,ext:""}}
+  function v3312UniqueName(original,names){const low=String(original).toLocaleLowerCase("nb-NO");if(!names.has(low)){names.add(low);return original}const {base,ext}=v3312SplitName(original);let n=2,c;do{c=`${base} (${n++})${ext}`}while(names.has(c.toLocaleLowerCase("nb-NO")));names.add(c.toLocaleLowerCase("nb-NO"));return c}
+  async function v3312TargetNames(folderId){const names=new Set();let url=`/me/drive/items/${encodeURIComponent(folderId)}/children?$select=id,name,file,folder&$top=200`;while(url){const d=await v24Graph(url);for(const x of d?.value||[])names.add(String(x.name||"").toLocaleLowerCase("nb-NO"));url=d?.["@odata.nextLink"]||null}return names}
+  async function v3312EnumerateSource(folderId,path){const files=[],folders=[],queue=[{id:folderId,path}];while(queue.length){const cur=queue.shift();let url=`/me/drive/items/${encodeURIComponent(cur.id)}/children?$select=id,name,size,file,folder&$top=200`;while(url){const d=await v24Graph(url);for(const x of d?.value||[]){const p=cur.path==="/"?`/${x.name}`:`${cur.path}/${x.name}`;if(x.folder){folders.push({id:x.id,path:p});queue.push({id:x.id,path:p})}else if(x.file)files.push({id:x.id,name:x.name,path:p,size:Number(x.size)||0,category:typeof categoryOf==="function"?categoryOf(x.name,x.file?.mimeType||""):"Ukjent"})}url=d?.["@odata.nextLink"]||null}}return{files,folders}}
+  function v3312RenderVerify(r){const box=E("v3312OrgVerify");if(!box)return;box.classList.remove("hidden");const files=r.files||[],folders=r.folders||[],byCat=new Map();for(const f of files){const x=byCat.get(f.category)||{count:0,bytes:0};x.count++;x.bytes+=f.size||0;byCat.set(f.category,x)}box.innerHTML=`<div class="section-title"><div><span class="eyebrow">SOURCE VERIFY · MICROSOFT GRAPH</span><h4>${files.length?"Kilden inneholder fortsatt filer":"Ingen filer igjen i kilden"}</h4></div><span class="badge ${files.length?"":"safe"}">${files.length?"KONTROLL NØDVENDIG":"FIL-TOM"}</span></div><div class="v3312-safety-grid"><div><span>FILER IGJEN</span><strong>${fmtN(files.length)}</strong></div><div><span>MAPPER IGJEN</span><strong>${fmtN(folders.length)}</strong></div></div>${files.length?`<div class="v3312-warning"><strong>Ingen restfiler slettes automatisk.</strong><div class="v3312-leftovers">${[...byCat].map(([c,x])=>`<span>${esc(c)} · ${fmtN(x.count)} · ${fmtB(x.bytes)}</span>`).join("")}</div></div><div class="v3312-verify-list">${files.slice(0,200).map(f=>`<div><strong>${esc(f.name)}</strong><span>${esc(f.path)} · ${fmtB(f.size)}</span></div>`).join("")}</div>`:`<div class="v3312-ok"><strong>Microsoft Graph bekrefter at det ikke ligger filer igjen.</strong><span>Tomme mapper kan ryddes separat senere.</span></div>`}`}
   async function executeOrg294(){
-    const source=String(selectedOrganizationFolder?.path||"").replace(/\/+$/g,"");
-    if(!source || source==="/"){
-      alert("Utfør plan er blokkert: velg en kontrollert testmappe først.");
-      return;
-    }
-    const sourcePrefix=source+"/";
-    if(org294.length>V3311_ORG_MAX_FILES){
-      alert(`Utfør plan er blokkert: planen har ${org294.length.toLocaleString("nb-NO")} filer. Maks ${V3311_ORG_MAX_FILES}.`);
-      return;
-    }
-    if(org294.some(x=>{
-      const path=String(x?.file?.path||"");
-      return !(path===source || path.startsWith(sourcePrefix));
-    })){
-      alert("Utfør plan er blokkert: minst én fil ligger utenfor valgt testmappe.");
-      return;
-    }
-    const safe=org294.filter(x=>!x.conflict);
-    if(!safe.length) return;
-    if(typeof v24Enabled==="undefined" || !v24Enabled){ alert("Aktiver Action Mode først."); return; }
-    const phrase=`FLYTT ${safe.length} FILER`;
-    const ok=prompt(`KONTROLLERT ORGANIZATION TEST\n\nKilde: ${source}\nFiler som flyttes: ${safe.length}\n\nSkriv nøyaktig: ${phrase}`)===phrase;
-    if(!ok)return;
-    let moved=0,failed=0;
-    for(let i=0;i<safe.length;i++){
-      const x=safe[i],f=x.file;
-      try{
-        const id=await v24EnsureFolder(x.target);
-        const old=f.path;
-        await v24Graph(`/me/drive/items/${encodeURIComponent(f.id)}`,{method:"PATCH",body:{parentReference:{id}}});
-        f.parentPath=x.target; f.path=`${x.target}/${f.name}`;
-        if(typeof v24Log==="function")v24Log("Organization Studio",old,true,`Flyttet til ${x.target}`);
-        moved++;
-      }catch(err){
-        if(typeof v24Log==="function")v24Log("Organization Studio",f.path,false,err.message);
-        failed++;
-      }
-      if(i%10===0) await delay(0);
-    }
-    org294=[]; renderOrg294();
-    try{renderReport(report);}catch{}
-    await saveCompleted(report);
-    if(typeof v24RenderLog==="function")v24RenderLog();
-    if(typeof iansToast==="function")iansToast("Organization Studio ferdig",`${fmtN(moved)} flyttet · ${fmtN(failed)} feil.`,failed?"error":"success",9000);
+    const source=String(selectedOrganizationFolder?.path||"").replace(/\/+$/g,""),sourceId=selectedOrganizationFolder?.id||null,root=cleanRoot(E("v285OrgRoot")?.value);
+    if(!source||source==="/"||!sourceId){alert("Utfør plan er blokkert: velg kildemappe først.");return}if(!root||root==="/"||root===source||root.startsWith(source+"/")){alert("Utfør plan er blokkert: velg sikker målrot utenfor kilden.");return}if(!org294.length)return;if(typeof v24Enabled==="undefined"||!v24Enabled){alert("Aktiver Action Mode først.");return}
+    const leftovers=v3312Unplanned(),phrase=`FLYTT ${org294.length} FILER`,extra=org294.length>V3312_ORG_WARN_FILES?`\n\nSTOR JOBB: kjører i batcher på ${V3312_ORG_BATCH}.`:"";
+    if(prompt(`KONTROLLERT ORGANIZATION JOBB\n\nKilde: ${source}\nMålrot: ${root}\nPlan: ${org294.length.toLocaleString("nb-NO")} filer\nIkke i plan: ${leftovers.length.toLocaleString("nb-NO")} filer\n\nNavnekonflikt = BEVAR BEGGE. Ingen overskriving. Ingen sletting.${extra}\n\nSkriv nøyaktig: ${phrase}`)!==phrase)return;
+    const job={version:"3.31.2",createdAt:new Date().toISOString(),source,sourceId,root,total:org294.length,done:0,moved:0,failed:0,renamed:0,items:org294.map(x=>({id:x.file.id,driveId:x.file.driveId||null,name:x.file.name,path:x.file.path,size:x.file.size,target:x.target,status:"pending"}))};localStorage.setItem(V3312_ORG_JOB_KEY,JSON.stringify(job));
+    const cache=new Map(),setStatus=t=>{const b=E("v3312OrgVerify");if(b){b.classList.remove("hidden");b.innerHTML=`<div class="empty-state">${esc(t)}</div>`}};
+    for(let i=0;i<job.items.length;i++){const item=job.items[i];setStatus(`Flytter ${fmtN(i+1)} / ${fmtN(job.total)} · ${esc(item.name)}`);try{const targetId=await v24EnsureFolder(item.target);let names=cache.get(targetId);if(!names){names=await v3312TargetNames(targetId);cache.set(targetId,names)}const finalName=v3312UniqueName(item.name,names);if(finalName!==item.name)job.renamed++;const endpoint=item.driveId?`/drives/${encodeURIComponent(item.driveId)}/items/${encodeURIComponent(item.id)}`:`/me/drive/items/${encodeURIComponent(item.id)}`;await v24Graph(endpoint,{method:"PATCH",body:{parentReference:{id:targetId},name:finalName}});item.status="done";item.finalName=finalName;job.moved++;const f=report?.files?.find(x=>String(x.id)===String(item.id));if(f){f.parentPath=item.target;f.name=finalName;f.path=`${item.target}/${finalName}`};if(typeof v24Log==="function")v24Log("Organization Studio",item.path,true,finalName===item.name?`Flyttet til ${item.target}`:`Flyttet som ${finalName} pga. navnekonflikt`)}catch(err){item.status="failed";item.error=String(err?.message||err);job.failed++;if(typeof v24Log==="function")v24Log("Organization Studio",item.path,false,item.error)}job.done=i+1;if(job.done%V3312_ORG_BATCH===0||job.done===job.total){job.updatedAt=new Date().toISOString();localStorage.setItem(V3312_ORG_JOB_KEY,JSON.stringify(job));await delay(0)}}
+    setStatus("Flytting ferdig · kontrollerer kilden direkte mot Microsoft Graph…");let verify={files:[],folders:[]};try{verify=await v3312EnumerateSource(sourceId,source);job.verifyAt=new Date().toISOString();job.filesRemaining=verify.files.length;job.foldersRemaining=verify.folders.length;localStorage.setItem(V3312_ORG_JOB_KEY,JSON.stringify(job));v3312RenderVerify(verify)}catch(err){job.verifyError=String(err?.message||err);localStorage.setItem(V3312_ORG_JOB_KEY,JSON.stringify(job));setStatus(`Source Verify feilet: ${job.verifyError}`)}
+    org294=[];if(typeof v24RenderLog==="function")v24RenderLog();try{renderV2();renderPhotoPlan();renderCleanupPlan()}catch{};if(typeof iansToast==="function")iansToast("Organization Studio ferdig",`${fmtN(job.moved)} flyttet · ${fmtN(job.renamed)} fikk nytt navn · ${fmtN(job.failed)} feil · ${fmtN(verify.files?.length||0)} filer igjen.`,(job.failed||verify.files?.length)?"error":"success",12000)
   }
 
   document.addEventListener("click",e=>{
@@ -5996,8 +5977,8 @@ window.__iansV313SelfTest=()=>({
     const style = document.createElement("style");
     style.textContent = `
       #${DIAG_ID}{
-        position:fixed;right:18px;bottom:18px;z-index:99999;
-        width:min(360px,calc(100vw - 36px));padding:14px 16px;
+        position:static;z-index:auto;
+        width:100%;max-width:720px;padding:14px 16px;margin:16px 0 0;
         border:1px solid rgba(148,163,184,.28);border-radius:16px;
         background:rgba(10,18,32,.94);backdrop-filter:blur(14px);
         box-shadow:0 18px 50px rgba(0,0,0,.32);color:#e5eefb;
@@ -6028,7 +6009,7 @@ window.__iansV313SelfTest=()=>({
         </div>`).join("")}
       <div class="v314-foot">Ren V3.4-baseline: loginPopup ved innlogging, silent token under lesing.</div>
     `;
-    document.body.appendChild(box);
+    (document.getElementById("setupPanel") || document.getElementById("dashboard") || document.body).appendChild(box);
 
     document.getElementById("iansAuthTestV314")?.addEventListener("click", () => {
       window.IANS_AUTH_V314.selfTest();
