@@ -1,0 +1,12 @@
+/* IANS OneDrive Command V3.23 */
+.ians-v323-type,.ians-v323-hash{display:inline-flex;align-items:center;gap:6px;margin:5px 7px 5px 0;padding:5px 8px;border:1px solid rgba(95,210,255,.24);border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.05em;background:rgba(5,18,32,.72)}
+.ians-v323-type[data-kind="cache"]{border-color:rgba(255,190,70,.35)}
+.ians-v323-hash[data-ok="1"]{border-color:rgba(70,230,160,.42)}
+.ians-v323-hash[data-ok="0"]{border-color:rgba(255,90,105,.45)}
+.ians-v323-verify{float:right;margin:5px 6px;padding:6px 10px;border-radius:8px;border:1px solid rgba(80,190,255,.35);background:#0b2033;color:#dff6ff;font-weight:700;cursor:pointer}
+#ians-v323-bottom-actions{position:sticky;bottom:10px;z-index:2147482000;display:flex;align-items:center;gap:10px;margin:18px 4px 8px;padding:12px 14px;border:1px solid rgba(80,190,255,.35);border-radius:12px;background:rgba(5,16,29,.96);box-shadow:0 12px 36px rgba(0,0,0,.38)}
+#ians-v323-bottom-actions div{margin-right:auto;display:flex;flex-direction:column}#ians-v323-bottom-actions small{opacity:.7;margin-top:2px}
+#ians-v323-bottom-actions button{padding:9px 13px;border-radius:9px;border:1px solid rgba(100,205,255,.32);font-weight:800;cursor:pointer}
+.ians-v323-safe{background:#0b3950;color:#e8fbff}.ians-v323-delete{background:#7a2630;color:white}
+.ians-v323-toast{position:fixed;right:24px;bottom:24px;z-index:2147483647;max-width:520px;padding:13px 16px;border-radius:12px;background:#071725;color:white;border:1px solid rgba(120,210,255,.4);box-shadow:0 18px 50px rgba(0,0,0,.55);opacity:0;transform:translateY(12px);pointer-events:none;transition:.18s}
+.ians-v323-toast.show{opacity:1;transform:none}.ians-v323-toast.ok{border-color:rgba(70,230,160,.55)}.ians-v323-toast.warn{border-color:rgba(255,190,70,.6)}.ians-v323-toast.bad{border-color:rgba(255,80,100,.65)}
