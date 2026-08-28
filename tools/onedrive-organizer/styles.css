@@ -1219,3 +1219,14 @@ body.ians-v30 #v288MidPulse .v288-pulse-line i{position:relative!important;left:
 
 /* IANS V3.13 Clean Scan Engine */
 #iansScanDiagnostics strong{letter-spacing:.015em}
+
+/* IANS V3.31 Runtime Reduction Phase 1
+   One visible scan control surface. app.js-owned elements remain in DOM for compatibility. */
+#dashboard > .account-row .scan-actions {
+  display: none !important;
+}
+
+/* The inline job card is progress/status, not a second command bar. */
+#progressPanel .ians-job-actions {
+  display: none !important;
+}
