@@ -1,0 +1,66 @@
+/* IANS OneDrive Command V3.21.2 · Clean Recovery Shell */
+.ians-v3212-hidden-recovery{display:none!important}
+
+#ians-v321-permanent-export-panel[data-ians-clean-shell="1"]{
+  position:relative;
+  overflow:hidden;
+}
+
+.ians-v3212-badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:20px;
+  padding:2px 7px;
+  margin:0 0 6px 0;
+  border:1px solid rgba(99,218,255,.28);
+  border-radius:999px;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.12em;
+  opacity:.82;
+}
+
+.ians-v3212-session{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:10px;
+  padding:8px 10px;
+  border-radius:9px;
+  border:1px solid rgba(100,200,255,.16);
+  background:rgba(8,19,32,.44);
+}
+
+.ians-v3212-session-copy{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.ians-v3212-session-copy strong{font-size:10px}
+.ians-v3212-session-copy span{font-size:9px;opacity:.72}
+
+.ians-v3212-session-ok{
+  border-color:rgba(80,220,170,.18);
+}
+
+.ians-v3212-session-expired{
+  border-color:rgba(255,190,80,.34);
+  background:rgba(40,28,8,.34);
+}
+
+.ians-v3212-session-action{
+  min-height:28px;
+  padding:5px 9px;
+  border-radius:7px;
+  font-size:9px;
+  white-space:nowrap;
+}
+
+@media(max-width:900px){
+  .ians-v3212-session{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
