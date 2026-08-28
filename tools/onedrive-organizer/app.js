@@ -2521,6 +2521,15 @@ const dupBulkSelectionInfoEl=document.getElementById("dupBulkSelectionInfo");
 const dupQuarantineAllEl=document.getElementById("dupQuarantineAll");
 const dupTrashAllEl=document.getElementById("dupTrashAll");
 const dupMarkAllSuggestedEl=document.getElementById("dupMarkAllSuggested");
+let dupMarkAllReviewEl=document.getElementById("dupMarkAllReview");
+if(!dupMarkAllReviewEl && dupMarkAllSuggestedEl){
+  dupMarkAllReviewEl=document.createElement("button");
+  dupMarkAllReviewEl.id="dupMarkAllReview";
+  dupMarkAllReviewEl.className="btn ghost";
+  dupMarkAllReviewEl.type="button";
+  dupMarkAllReviewEl.textContent="Merk alle grupper til review";
+  dupMarkAllSuggestedEl.insertAdjacentElement("afterend",dupMarkAllReviewEl);
+}
 const dupClearAllEl=document.getElementById("dupClearAll");
 
 let dupBulkGroups=[],dupBulkSelected=new Set(),dupBulkPage=0,dupBulkBuilding=false;
@@ -2610,6 +2619,27 @@ document.addEventListener("click",e=>{
  const clear=e.target.closest("[data-dup-clear-group]");if(clear){dupSetGroupSelection(+clear.dataset.dupClearGroup,false);return}
  const p=e.target.closest("[data-dup-preview]");if(p){previewFile(p.dataset.dupPreview);return}
  const k=e.target.closest("[data-dup-preview-keeper]");if(k){previewFile(k.dataset.dupPreviewKeeper);return}
+});
+dupMarkAllReviewEl?.addEventListener("click",()=>{
+ const groups=Array.isArray(dupBulkGroups)?dupBulkGroups:[];
+ if(!groups.length){iansToast("Bulk review","Ingen duplikatgrupper er bygget ennå.","error",6000);return}
+ const ok=confirm(`Merk ekstrakopier i ALLE ${formatNumber(groups.length)} duplikatgrupper til review?\n\nDette SLETTER ingenting. Én keeper per gruppe forblir umarkert.`);
+ if(!ok)return;
+ let reviewed=0,marked=0,skipped=0;
+ for(const g of groups){
+   if(!g?.keeper?.id||!Array.isArray(g.files)||g.files.length<2){skipped++;continue}
+   reviewed++;
+   for(const f of g.files){
+     if(!f?.id||f.id===g.keeper.id)continue;
+     if(!dupBulkSelected.has(f.id)){dupBulkSelected.add(f.id);marked++}
+   }
+ }
+ document.querySelectorAll(".dup-bulk-check:not(:disabled)").forEach(cb=>{
+   cb.checked=dupBulkSelected.has(cb.dataset.dupId);
+   cb.closest(".dup-file-row")?.classList.toggle("remove-selected",cb.checked);
+ });
+ dupRefreshBulkStats();
+ iansToast("Alle grupper merket til review",`${formatNumber(reviewed)} grupper gjennomgått · ${formatNumber(marked)} nye ekstrakopier merket · ${formatNumber(skipped)} grupper hoppet over. Ingen filer er slettet.`,"success",10000);
 });
 dupMarkAllSuggestedEl?.addEventListener("click",()=>{
  const large=(report?.files?.length||0)>=50000,ids=large?dupVisibleSuggestedIds():dupAllSuggestedIds();
@@ -3303,6 +3333,7 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
       <button id="v3311OrgBrowse" class="btn ghost" type="button">Velg kildemappe</button>
       <div class="v3311-org-source"><span>Målrot</span><strong id="v3312OrgTargetPath">/_IANS Organisert</strong><small>Velg eksisterende målrot. Understruktur opprettes av planen.</small></div>
       <button id="v3312OrgTargetBrowse" class="btn ghost" type="button">Velg målrot</button>
+      <button id="v3313OneDriveMediaMode" class="btn ghost v3313-media-mode" type="button" aria-pressed="false">Bruk OneDrive-struktur for Bilder &amp; Video</button>
       <span class="v3311-org-limit v3312-org-limit">BATCH 100 · VERIFY ETTERPÅ</span>
     </div>
     <div class="v311-org-grid"><label class="field"><span>Målrot</span><input id="v285OrgRoot" value="/_IANS Organisert"></label>
@@ -3329,6 +3360,30 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
       folderModal.classList.remove("hidden");
       await loadFolderBrowserLevel();
     };
+    const mediaModeBtn=E("v3313OneDriveMediaMode");
+    const syncMediaModeBtn=()=>{
+      if(!mediaModeBtn)return;
+      mediaModeBtn.classList.toggle("active",v3313UseOneDriveMediaStructure);
+      mediaModeBtn.setAttribute("aria-pressed",v3313UseOneDriveMediaStructure?"true":"false");
+      mediaModeBtn.textContent=v3313UseOneDriveMediaStructure
+        ?"✓ OneDrive-struktur brukes for Bilder & Video"
+        :"Bruk OneDrive-struktur for Bilder & Video";
+    };
+    if(mediaModeBtn){
+      mediaModeBtn.onclick=()=>{
+        v3313UseOneDriveMediaStructure=!v3313UseOneDriveMediaStructure;
+        localStorage.setItem(V3313_MEDIA_MODE_KEY,v3313UseOneDriveMediaStructure?"1":"0");
+        org294=[];renderOrg294();syncMediaModeBtn();
+        if(typeof iansToast==="function") iansToast(
+          v3313UseOneDriveMediaStructure?"OneDrive media-struktur aktiv":"Standard IANS-struktur aktiv",
+          v3313UseOneDriveMediaStructure
+            ?"Velg f.eks. /Bilder/Kamerabilder som målrot. Bilder og video deler År/Måned."
+            :"Standard IANS-struktur bruker separate Bilder/Video-nivå.",
+          "success",6500
+        );
+      };
+      syncMediaModeBtn();
+    }
     E("v285OrgBuild").onclick=buildPlan;
     E("v285OrgExecute").onclick=executePlan;
   }
@@ -4926,6 +4981,8 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   const V3312_ORG_WARN_FILES=2000;
   const V3312_ORG_BATCH=100;
   const V3312_ORG_JOB_KEY="ians_v3312_org_job";
+  const V3313_MEDIA_MODE_KEY="ians.v3313.useOneDriveMediaStructure";
+  let v3313UseOneDriveMediaStructure=localStorage.getItem(V3313_MEDIA_MODE_KEY)==="1";
   let org294=[];
 
   function cleanRoot(v){
@@ -4947,7 +5004,10 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
   }
   function target294(f,root){
     const cat=String(f.category||"Annet");
-    if(cat==="Bilder"||cat==="Video") return `${root}/${cat}/${yearOf(f)}/${monthOf(f)}`;
+    if(cat==="Bilder"||cat==="Video"){
+      if(v3313UseOneDriveMediaStructure) return `${root}/${yearOf(f)}/${monthOf(f)}`;
+      return `${root}/${cat}/${yearOf(f)}/${monthOf(f)}`;
+    }
     return `${root}/${cat}/${yearOf(f)}`;
   }
   function v3312ScopeFiles(){
@@ -4977,7 +5037,17 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     if(!root||root==="/"){org294=[];renderOrg294();alert("Velg en tydelig målrot. OneDrive-roten kan ikke brukes.");return}
     if(root===source||root.startsWith(source+"/")){org294=[];renderOrg294();alert("Målroten kan ikke være samme mappe som kilden eller ligge inne i kilden.");return}
     const prefix=source+"/",cats=new Set([...document.querySelectorAll("[data-v285-org-cat]:checked")].map(x=>x.value)),seen=new Set();org294=[];
-    for(const f of report.files){const p=String(f.path||"");if(!(p===source||p.startsWith(prefix)))continue;if(p===root||p.startsWith(root+"/")||!cats.has(f.category))continue;const target=target294(f,root),key=`${target.toLowerCase()}|${String(f.name||"").toLowerCase()}`,conflict=seen.has(key);seen.add(key);org294.push({file:f,target,conflict})}
+    for(const f of report.files){
+      const p=String(f.path||"");
+      if(!(p===source||p.startsWith(prefix)))continue;
+      if(p===root||p.startsWith(root+"/")||!cats.has(f.category))continue;
+      if(v3313UseOneDriveMediaStructure && !["Bilder","Video"].includes(String(f.category||"")))continue;
+      const target=target294(f,root);
+      const currentParent=String(f.parentPath||p.slice(0,p.lastIndexOf("/"))||"/").replace(/\/+$/g,"")||"/";
+      if(currentParent===target)continue;
+      const key=`${target.toLowerCase()}|${String(f.name||"").toLowerCase()}`,conflict=seen.has(key);
+      seen.add(key);org294.push({file:f,target,conflict});
+    }
     renderOrg294();if(typeof iansToast==="function")iansToast("Kontrollert forslag bygget",org294.length>V3312_ORG_WARN_FILES?`${fmtN(org294.length)} filer · stor jobb, kontroller preview og restfiler nøye.`:`${fmtN(org294.length)} filer fra ${source}. Ingen filer er flyttet ennå.`,org294.length>V3312_ORG_WARN_FILES?"error":"success",8000)
   }
   function v3312SplitName(name){const t=String(name||"fil"),i=t.lastIndexOf(".");return i>0?{base:t.slice(0,i),ext:t.slice(i)}:{base:t,ext:""}}

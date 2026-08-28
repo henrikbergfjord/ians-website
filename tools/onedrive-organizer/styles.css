@@ -1288,3 +1288,18 @@ body.ians-v30 #v288MidPulse .v288-pulse-line i{position:relative!important;left:
 .v3312-ok{border:1px solid rgba(74,222,128,.22);border-radius:10px;padding:10px 12px;background:rgba(7,60,42,.14)}.v3312-ok strong,.v3312-ok span{display:block}.v3312-ok span{margin-top:3px;color:#8eaaa4}
 .v3312-verify-list{max-height:300px;overflow:auto;margin-top:10px}.v3312-verify-list>div{padding:7px 4px;border-top:1px solid rgba(255,255,255,.06)}.v3312-verify-list strong,.v3312-verify-list span{display:block}.v3312-verify-list span{font-size:11px;color:#8ea6b5}
 @media(max-width:1050px){.v3312-org-scope{grid-template-columns:1fr auto}.v3312-safety-grid{grid-template-columns:repeat(2,minmax(120px,1fr))}}
+
+/* IANS V3.31.3C · OneDrive Media Structure + Bulk Review */
+.v3313-media-mode{
+  white-space:normal;
+  min-width:210px;
+  border-color:rgba(96,165,250,.28)!important;
+}
+.v3313-media-mode.active{
+  border-color:rgba(74,222,128,.5)!important;
+  background:rgba(22,101,52,.18)!important;
+  color:#b7f7cf!important;
+}
+#dupMarkAllReview{
+  border-color:rgba(250,204,21,.35)!important;
+}
