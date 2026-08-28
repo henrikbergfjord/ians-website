@@ -170,41 +170,43 @@ function groups(panel){
   }
 
 
-  console.log("[IANS] OneDrive Command V3.23 Verified Duplicate Safety aktiv");
+  let v326InitTimer=null;
+  let v326PanelObserver=null;
+  let v326ObservedPanel=null;
+
+  function scheduleInit326(delay=120){
+    clearTimeout(v326InitTimer);
+    v326InitTimer=setTimeout(()=>{
+      init();
+      bindPanel326();
+    },delay);
+  }
+
+  function bindPanel326(){
+    const p=duplicatePanel();
+    if(!p) return;
+    if(v326ObservedPanel===p && v326PanelObserver) return;
+    if(v326PanelObserver) v326PanelObserver.disconnect();
+    v326ObservedPanel=p;
+    v326PanelObserver=new MutationObserver(()=>scheduleInit326(180));
+    v326PanelObserver.observe(p,{subtree:true,childList:true});
+  }
+
+  function boot326(){
+    scheduleInit326(0);
+    let tries=0;
+    const probe=setInterval(()=>{
+      tries++;
+      scheduleInit326(0);
+      if(duplicatePanel() || tries>=10) clearInterval(probe);
+    },1000);
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",boot326,{once:true});
+  }else{
+    boot326();
+  }
+
+  console.log("[IANS] OneDrive Command V3.23.2 Scoped Duplicate Safety aktiv");
 })();
-
-// V3.23.1B Observer Surgery — bounded startup only.
-let v3231bTimer=null;
-let v3231bPanelObserver=null;
-
-function v3231bSchedule(delay=180){
-  clearTimeout(v3231bTimer);
-  v3231bTimer=setTimeout(()=>{
-    try{ init(); }catch(err){ console.warn("[IANS V3.23.1B] init guard",err); }
-    if(!v3231bPanelObserver){
-      const panel=duplicatePanel();
-      if(panel){
-        v3231bPanelObserver=new MutationObserver(()=>v3231bSchedule(250));
-        v3231bPanelObserver.observe(panel,{subtree:true,childList:true});
-      }
-    }
-  },delay);
-}
-
-function boot3231b(){
-  v3231bSchedule(0);
-  let tries=0;
-  const probe=setInterval(()=>{
-    tries++;
-    v3231bSchedule(0);
-    if(v3231bPanelObserver || tries>=8) clearInterval(probe);
-  },1500);
-}
-
-if(document.readyState==="loading"){
-  document.addEventListener("DOMContentLoaded",boot3231b,{once:true});
-}else{
-  boot3231b();
-}
-
-console.log("[IANS] OneDrive Command V3.23.1B Observer Surgery aktiv");
