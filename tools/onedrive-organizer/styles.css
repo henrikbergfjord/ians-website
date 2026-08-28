@@ -1230,3 +1230,48 @@ body.ians-v30 #v288MidPulse .v288-pulse-line i{position:relative!important;left:
 #progressPanel .ians-job-actions {
   display: none !important;
 }
+
+/* IANS V3.31.1 · Safe Organization Scope */
+.v3311-org-scope{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto auto;
+  gap:12px;
+  align-items:center;
+  padding:12px 14px;
+  margin:10px 0 14px;
+  border:1px solid rgba(74,222,128,.28);
+  border-radius:12px;
+  background:rgba(7,32,42,.62);
+}
+.v3311-org-source span,
+.v3311-org-source strong,
+.v3311-org-source small{display:block}
+.v3311-org-source span{
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#8fb7c9;
+}
+.v3311-org-source strong{
+  margin-top:3px;
+  color:#dff8ff;
+  overflow-wrap:anywhere;
+}
+.v3311-org-source small{
+  margin-top:3px;
+  color:#7f9eae;
+}
+.v3311-org-limit{
+  white-space:nowrap;
+  padding:6px 9px;
+  border:1px solid rgba(250,204,21,.28);
+  border-radius:999px;
+  color:#f8d66d;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+@media(max-width:850px){
+  .v3311-org-scope{grid-template-columns:1fr}
+  .v3311-org-limit{justify-self:start}
+}
