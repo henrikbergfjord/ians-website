@@ -1,0 +1,5 @@
+/* IANS OneDrive Command V3.21.1 · UI Guard */
+#ians-v321-permanent-export-panel[data-ians-ui-guard="1"]{
+  width:100%;
+  max-width:100%;
+}
