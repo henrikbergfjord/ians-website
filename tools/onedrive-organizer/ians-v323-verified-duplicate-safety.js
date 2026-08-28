@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const VERSION="3.23";
+  const VERSION="3.23.1";
   const MEDIA_EXT=new Set(["mts","m2ts","mov","mp4","m4v","avi","mkv","jpg","jpeg","heic","png","cr2","cr3","nef","arw","dng","raf"]);
   const CACHE_EXT=new Set(["cfa","pek","ims","tmp","cache"]);
   const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -22,13 +22,17 @@
   }
 
   function duplicatePanel(){
-    return $$("section,div").find(e=>{
-      const t=txt(e);
-      return /Ry[d|dd].*duplikat/i.test(t) && /grupper/i.test(t) && e.querySelectorAll("input[type=checkbox]").length;
-    }) || $$("section,div").find(e=>/DUPLICATE REVIEW/i.test(txt(e)));
-  }
+  // V3.23.1: aldri skann hele dokumentets section/div-tre.
+  const known =
+    document.getElementById("dupBulkPanel") ||
+    document.getElementById("v295DupList") ||
+    document.getElementById("v294ReviewCleaner");
+  if(known) return known;
+  const candidates=$$("[data-duplicate-panel], .duplicate-review-panel, .duplicate-panel");
+  return candidates.find(e=>/DUPLICATE REVIEW|duplikat/i.test(txt(e))) || null;
+}
 
-  function groups(panel){
+function groups(panel){
     if(!panel) return [];
     let candidates=$$("[data-duplicate-group], .duplicate-group, .dup-group, article",panel);
     if(!candidates.length){
@@ -164,7 +168,43 @@
     panel.dataset.iansV323="1";
     relabel(panel); addVerifyButtons(panel); addBottomActions(panel);
   }
-  let timer=setInterval(init,1200); setTimeout(()=>clearInterval(timer),30000);
-  new MutationObserver(()=>init()).observe(document.documentElement,{subtree:true,childList:true});
+
+
   console.log("[IANS] OneDrive Command V3.23 Verified Duplicate Safety aktiv");
 })();
+
+// V3.23.1B Observer Surgery — bounded startup only.
+let v3231bTimer=null;
+let v3231bPanelObserver=null;
+
+function v3231bSchedule(delay=180){
+  clearTimeout(v3231bTimer);
+  v3231bTimer=setTimeout(()=>{
+    try{ init(); }catch(err){ console.warn("[IANS V3.23.1B] init guard",err); }
+    if(!v3231bPanelObserver){
+      const panel=duplicatePanel();
+      if(panel){
+        v3231bPanelObserver=new MutationObserver(()=>v3231bSchedule(250));
+        v3231bPanelObserver.observe(panel,{subtree:true,childList:true});
+      }
+    }
+  },delay);
+}
+
+function boot3231b(){
+  v3231bSchedule(0);
+  let tries=0;
+  const probe=setInterval(()=>{
+    tries++;
+    v3231bSchedule(0);
+    if(v3231bPanelObserver || tries>=8) clearInterval(probe);
+  },1500);
+}
+
+if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded",boot3231b,{once:true});
+}else{
+  boot3231b();
+}
+
+console.log("[IANS] OneDrive Command V3.23.1B Observer Surgery aktiv");
