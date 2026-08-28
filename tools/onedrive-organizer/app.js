@@ -1,7 +1,14 @@
-import {
-  PublicClientApplication,
-  InteractionRequiredAuthError
-} from "https://cdn.jsdelivr.net/npm/@azure/msal-browser@5/+esm";
+// IANS V3.27: resilient MSAL loader. A failed static CDN import previously prevented
+// the entire module from executing, leaving the raw FIRST START panel visible.
+let __iansMsalModule;
+try {
+  __iansMsalModule = await import("https://cdn.jsdelivr.net/npm/@azure/msal-browser@5/+esm");
+} catch (primaryError) {
+  console.warn("[IANS V3.27] primary MSAL CDN failed; trying fallback", primaryError);
+  __iansMsalModule = await import("https://esm.sh/@azure/msal-browser@5");
+}
+const { PublicClientApplication, InteractionRequiredAuthError } = __iansMsalModule;
+console.info("[IANS V3.27] MSAL module loaded");
 
 console.info("[IANS] V2.8.4 Web Edition + Download & Verify JavaScript startet");
 const GRAPH = "https://graph.microsoft.com/v1.0";
