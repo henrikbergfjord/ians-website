@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IANS Booking – personvernvennlig timebestilling</title>
+<meta name="description" content="IANS Booking – enkel og personvernvennlig timebestilling for kontroller og service i sameier og borettslag.">
+<meta name="robots" content="noindex,nofollow">
+<link href="assets/styles.css" rel="stylesheet">
+<style>
+:root{--ib-bg:#06111d;--ib-panel:#0b1927;--ib-panel2:#0f2233;--ib-line:rgba(255,255,255,.09);--ib-text:#edf7ff;--ib-muted:#8da5b8;--ib-accent:#6be4ff;--ib-green:#74e6a7;--ib-red:#ff8b96;--ib-amber:#ffd37d}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 50% 0%,#102b42 0,#071521 36%,#040b12 100%);color:var(--ib-text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+a{color:inherit}.ib-shell{width:min(1180px,calc(100% - 28px));margin:0 auto;padding:28px 0 54px}.ib-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}.ib-brand{display:flex;align-items:center;gap:12px;text-decoration:none}.ib-orb{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:900;letter-spacing:.05em;border:1px solid rgba(107,228,255,.35);background:radial-gradient(circle at 34% 28%,#80ecff 0,#278bb4 23%,#0b2940 62%,#06101a 100%);box-shadow:0 0 32px rgba(75,199,255,.16)}.ib-brand strong{display:block;font-size:1rem;letter-spacing:.06em}.ib-brand small{display:block;color:var(--ib-muted);font-size:.7rem;margin-top:2px}.ib-badge{border:1px solid rgba(255,211,125,.3);color:var(--ib-amber);padding:7px 10px;border-radius:999px;font-size:.7rem;font-weight:800;background:rgba(255,211,125,.06)}
+.ib-hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);gap:18px;margin-bottom:18px}.ib-card{border:1px solid var(--ib-line);border-radius:24px;background:linear-gradient(180deg,rgba(16,35,51,.95),rgba(7,20,31,.95));box-shadow:0 26px 70px rgba(0,0,0,.2)}.ib-main{padding:30px}.ib-kicker{color:var(--ib-accent);font-size:.72rem;font-weight:900;letter-spacing:.15em;text-transform:uppercase}.ib-main h1{font-size:clamp(2rem,5vw,4rem);line-height:.98;margin:12px 0 14px;letter-spacing:-.045em}.ib-main p{color:#a7bdcd;max-width:760px;font-size:1.03rem;line-height:1.65;margin:0}.ib-event{padding:24px}.ib-event h2{font-size:1.05rem;margin:0 0 16px}.ib-meta{display:grid;gap:12px}.ib-meta div{display:flex;justify-content:space-between;gap:16px;padding-bottom:11px;border-bottom:1px solid var(--ib-line)}.ib-meta span{color:var(--ib-muted);font-size:.8rem}.ib-meta strong{font-size:.86rem;text-align:right}.ib-progress{margin-top:18px}.ib-progressbar{height:9px;border-radius:999px;background:#04101a;overflow:hidden;border:1px solid var(--ib-line)}.ib-progressbar i{display:block;height:100%;width:34%;background:linear-gradient(90deg,#3c9bc2,#6be4ff)}.ib-progress small{display:block;color:var(--ib-muted);margin-top:8px}
+.ib-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(310px,.75fr);gap:18px}.ib-panel{padding:24px}.ib-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}.ib-head h2{margin:0;font-size:1.08rem}.ib-head p{margin:5px 0 0;color:var(--ib-muted);font-size:.82rem}.ib-legend{display:flex;flex-wrap:wrap;gap:8px;font-size:.7rem;color:var(--ib-muted)}.ib-legend span{display:flex;align-items:center;gap:5px}.ib-dot{width:7px;height:7px;border-radius:50%;display:inline-block}.free{background:var(--ib-green)}.busy{background:#596b78}.closed{background:var(--ib-amber)}
+.ib-slots{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.ib-slot{min-height:46px;border-radius:12px;border:1px solid rgba(116,230,167,.22);background:rgba(116,230,167,.07);color:#c9f8dd;font-weight:800;cursor:pointer;transition:.15s}.ib-slot:hover,.ib-slot:focus-visible{outline:none;transform:translateY(-1px);border-color:rgba(107,228,255,.5);background:rgba(107,228,255,.1)}.ib-slot.is-selected{border-color:var(--ib-accent);background:rgba(107,228,255,.15);color:#fff;box-shadow:0 0 0 2px rgba(107,228,255,.08)}.ib-slot[disabled]{cursor:not-allowed;transform:none;color:#71818d;border-color:rgba(255,255,255,.05);background:rgba(255,255,255,.035);text-decoration:line-through}.ib-slot.is-closed[disabled]{color:#c5a866;background:rgba(255,211,125,.05);text-decoration:none}
+.ib-form{display:grid;gap:13px}.ib-field label{display:block;font-size:.75rem;font-weight:800;color:#aec2d1;margin-bottom:6px}.ib-field input,.ib-field select,.ib-field textarea{width:100%;border:1px solid var(--ib-line);border-radius:12px;background:#071521;color:#eef8ff;padding:12px 13px;font:inherit;font-size:16px}.ib-field textarea{min-height:78px;resize:vertical}.ib-field input:focus,.ib-field select:focus,.ib-field textarea:focus{outline:2px solid rgba(107,228,255,.35);border-color:rgba(107,228,255,.4)}.ib-timebox{padding:12px 14px;border-radius:13px;border:1px solid rgba(107,228,255,.2);background:rgba(107,228,255,.055);display:flex;justify-content:space-between;gap:12px;align-items:center}.ib-timebox span{font-size:.75rem;color:var(--ib-muted)}.ib-timebox strong{font-size:1rem}.ib-check{display:flex;gap:10px;align-items:flex-start;color:#9db2c2;font-size:.77rem;line-height:1.45}.ib-check input{margin-top:3px}.ib-btn{min-height:48px;border:0;border-radius:13px;font-weight:900;cursor:pointer;padding:0 18px;background:linear-gradient(180deg,#85edff,#48b8de);color:#03111b}.ib-btn:disabled{opacity:.45;cursor:not-allowed}.ib-privacy{margin-top:14px;padding:13px 14px;border:1px solid rgba(116,230,167,.16);border-radius:14px;background:rgba(116,230,167,.04);color:#9fb8aa;font-size:.74rem;line-height:1.5}.ib-privacy strong{color:#c8f3d8}.ib-msg{display:none;margin-top:13px;padding:13px 14px;border-radius:14px;font-size:.8rem;line-height:1.5}.ib-msg.show{display:block}.ib-msg.ok{border:1px solid rgba(116,230,167,.25);background:rgba(116,230,167,.07);color:#c8f3d8}.ib-msg.err{border:1px solid rgba(255,139,150,.25);background:rgba(255,139,150,.07);color:#ffd1d6}
+.ib-admin{margin-top:18px;padding:24px}.ib-admin-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.ib-admin h2{margin:0;font-size:1.05rem}.ib-admin p{margin:6px 0 0;color:var(--ib-muted);font-size:.8rem;max-width:720px}.ib-admin-lock{padding:7px 10px;border-radius:999px;border:1px solid rgba(107,228,255,.18);color:#88dff2;font-size:.68rem;font-weight:800}.ib-tablewrap{margin-top:16px;overflow:auto;border:1px solid var(--ib-line);border-radius:14px}.ib-table{width:100%;border-collapse:collapse;min-width:650px}.ib-table th,.ib-table td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--ib-line);font-size:.75rem}.ib-table th{color:#839bae;background:#071521;text-transform:uppercase;letter-spacing:.08em;font-size:.62rem}.ib-table td{color:#b8cbd8}.ib-table tr:last-child td{border-bottom:0}.ib-hidden{filter:blur(5px);user-select:none}.ib-footer{margin-top:20px;text-align:center;color:#6f8494;font-size:.7rem;line-height:1.55}
+@media(max-width:900px){.ib-hero,.ib-grid{grid-template-columns:1fr}.ib-slots{grid-template-columns:repeat(4,minmax(0,1fr))}.ib-event{order:-1}}@media(max-width:560px){.ib-shell{width:min(100% - 18px,1180px);padding-top:16px}.ib-top{align-items:flex-start}.ib-main,.ib-event,.ib-panel,.ib-admin{padding:18px}.ib-slots{grid-template-columns:repeat(3,minmax(0,1fr))}.ib-main h1{font-size:2.35rem}.ib-admin-top{display:block}.ib-admin-lock{display:inline-block;margin-top:10px}}
+</style>
+</head>
+<body>
+<main class="ib-shell" id="iansBooking">
+  <header class="ib-top">
+    <a class="ib-brand" href="/" aria-label="Til IANS forsiden"><span class="ib-orb">I</span><span><strong>IANS BOOKING</strong><small>Privacy-first scheduling</small></span></a>
+    <span class="ib-badge">PILOT · INGEN LAGRING</span>
+  </header>
+
+  <section class="ib-hero">
+    <div class="ib-card ib-main">
+      <div class="ib-kicker">Sameie · kontroll · service</div>
+      <h1>Velg 5 minutter.<br>Slipp å vente hele dagen.</h1>
+      <p>Beboeren ser bare hvilke tider som er ledige eller opptatt. Navn, leilighetsnummer og kontaktinformasjon vises aldri til andre beboere.</p>
+    </div>
+    <aside class="ib-card ib-event" aria-label="Arrangementinformasjon">
+      <h2>Sprinklerkontroll</h2>
+      <div class="ib-meta">
+        <div><span>Dato</span><strong>Tirsdag 15. september</strong></div>
+        <div><span>Tid</span><strong>09:00–16:00</strong></div>
+        <div><span>Varighet</span><strong>5 minutter</strong></div>
+        <div><span>Sted</span><strong>Straumsfjellet Panorama</strong></div>
+      </div>
+      <div class="ib-progress"><div class="ib-progressbar"><i id="progressFill"></i></div><small id="progressText">17 av 50 tider booket</small></div>
+    </aside>
+  </section>
+
+  <section class="ib-grid">
+    <div class="ib-card ib-panel">
+      <div class="ib-head"><div><h2>1. Velg tidspunkt</h2><p>Opptatte tider viser aldri hvem som har bestilt.</p></div><div class="ib-legend"><span><i class="ib-dot free"></i>Ledig</span><span><i class="ib-dot busy"></i>Opptatt</span><span><i class="ib-dot closed"></i>Pause</span></div></div>
+      <div class="ib-slots" id="slotGrid" aria-label="Ledige tidspunkt"></div>
+    </div>
+
+    <div class="ib-card ib-panel">
+      <div class="ib-head"><div><h2>2. Bekreft besøket</h2><p>Kun minimum nødvendig informasjon.</p></div></div>
+      <form class="ib-form" id="bookingForm" novalidate>
+        <div class="ib-timebox"><span>Valgt tid</span><strong id="selectedTime">Ingen valgt</strong></div>
+        <div class="ib-field"><label for="unit">Leilighet</label><input id="unit" name="unit" autocomplete="off" placeholder="f.eks. H0304" maxlength="12" required></div>
+        <div class="ib-field"><label for="name">Navn</label><input id="name" name="name" autocomplete="name" placeholder="Navn på den som åpner" maxlength="80" required></div>
+        <div class="ib-field"><label for="contact">E-post eller telefon</label><input id="contact" name="contact" autocomplete="email" placeholder="For bookingbekreftelse" maxlength="120" required></div>
+        <div class="ib-field"><label for="note">Kort merknad <span style="font-weight:500;color:#6f8798">(valgfritt)</span></label><textarea id="note" name="note" maxlength="180" placeholder="Kun praktisk informasjon som er nødvendig for besøket"></textarea></div>
+        <label class="ib-check"><input type="checkbox" id="privacyCheck" required><span>Jeg forstår at opplysningene bare skal brukes til å planlegge og gjennomføre dette besøket.</span></label>
+        <button class="ib-btn" id="bookBtn" type="submit">Book tidspunkt</button>
+      </form>
+      <div class="ib-msg" id="message" role="status" aria-live="polite"></div>
+      <div class="ib-privacy"><strong>Personvern:</strong> Denne pilotvisningen lagrer ingen personopplysninger. Ved produksjonssetting skal data lagres server-side, skjermes fra offentlig API og slettes automatisk etter avtalt frist.</div>
+    </div>
+  </section>
+
+  <section class="ib-card ib-admin">
+    <div class="ib-admin-top"><div><h2>Administrator · eksempelvisning</h2><p>Dette er kun en visuell demonstrasjon av besøkslisten. I produksjon skal siden kreve innlogging og bare være tilgjengelig for autoriserte personer.</p></div><span class="ib-admin-lock">🔒 INNLOGGING PÅKREVD I PRODUKSJON</span></div>
+    <div class="ib-tablewrap"><table class="ib-table"><thead><tr><th>Tid</th><th>Leilighet</th><th>Navn</th><th>Kontakt</th><th>Status</th></tr></thead><tbody><tr><td>09:10</td><td class="ib-hidden">H0204</td><td class="ib-hidden">Eksempelnavn</td><td class="ib-hidden">90000000</td><td>Bekreftet</td></tr><tr><td>09:25</td><td class="ib-hidden">H0312</td><td class="ib-hidden">Eksempelnavn</td><td class="ib-hidden">navn@example.no</td><td>Bekreftet</td></tr><tr><td>10:05</td><td class="ib-hidden">H0418</td><td class="ib-hidden">Eksempelnavn</td><td class="ib-hidden">90000000</td><td>Bekreftet</td></tr></tbody></table></div>
+  </section>
+
+  <footer class="ib-footer">IANS Booking Pilot · GDPR-by-design · offentlig visning viser kun ledig/opptatt · ingen persondata lagres i denne pilotversjonen</footer>
+</main>
+<script>
+(function(){
+  const root=document.getElementById('iansBooking');
+  if(!root || root.dataset.ready==='1') return;
+  root.dataset.ready='1';
+  const grid=document.getElementById('slotGrid');
+  const selected=document.getElementById('selectedTime');
+  const form=document.getElementById('bookingForm');
+  const msg=document.getElementById('message');
+  const fill=document.getElementById('progressFill');
+  const progressText=document.getElementById('progressText');
+  let selectedSlot=null;
+  const busy=new Set(['09:10','09:25','09:40','10:05','10:25','10:50','11:20','11:45','12:20','12:40','13:10','13:30','14:05','14:35','15:00','15:25','15:45']);
+  const pauses=new Set(['12:00','12:05','12:10','12:15','13:55']);
+  const slots=[];
+  for(let m=9*60;m<16*60;m+=5){const h=String(Math.floor(m/60)).padStart(2,'0');const mm=String(m%60).padStart(2,'0');slots.push(h+':'+mm)}
+  function render(){
+    grid.innerHTML='';
+    slots.forEach(t=>{
+      const b=document.createElement('button');b.type='button';b.className='ib-slot';b.textContent=t;b.dataset.time=t;
+      if(busy.has(t)){b.disabled=true;b.setAttribute('aria-label',t+' opptatt')}
+      else if(pauses.has(t)){b.disabled=true;b.classList.add('is-closed');b.textContent=t+' · pause';b.setAttribute('aria-label',t+' pause')}
+      else {b.setAttribute('aria-label',t+' ledig');b.addEventListener('click',()=>choose(t,b))}
+      if(t===selectedSlot)b.classList.add('is-selected');grid.appendChild(b);
+    });
+    const booked=busy.size;fill.style.width=Math.min(100,(booked/50)*100)+'%';progressText.textContent=booked+' av 50 tider booket';
+  }
+  function choose(t){selectedSlot=t;selected.textContent=t+'–'+nextFive(t);msg.className='ib-msg';render();document.getElementById('unit').focus()}
+  function nextFive(t){let [h,m]=t.split(':').map(Number);m+=5;if(m>=60){h++;m-=60}return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')}
+  function show(text,type){msg.textContent=text;msg.className='ib-msg show '+type}
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!selectedSlot){show('Velg først et ledig tidspunkt.','err');return}
+    if(!form.checkValidity()){show('Fyll inn leilighet, navn, kontaktinformasjon og bekreft personvernteksten.','err');form.reportValidity();return}
+    busy.add(selectedSlot);const bookedTime=selectedSlot;selectedSlot=null;selected.textContent='Ingen valgt';render();form.reset();show('Pilotbooking registrert for '+bookedTime+'. Ingen personopplysninger er lagret, og bookingen forsvinner ved ny innlasting av siden.','ok');
+  });
+  render();
+})();
+</script>
+</body>
+</html>
