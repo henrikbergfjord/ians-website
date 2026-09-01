@@ -1,9 +1,11 @@
 const { TableClient } = require('@azure/data-tables');
+const crypto = require('crypto');
 
 const TABLE = 'IansBooking';
 const PARTITION = 'sprinkler2028';
 const WINDOWS = ['08:00–10:00','10:00–12:00','12:00–14:00','14:00–16:00'];
 const CAPACITY = 24;
+const FALLBACK_ADMIN_HASH = '14a33ff207ae4416deb502f56950b4ca6eed48276b8242925911bbea879c53d0';
 
 function json(status, body) {
   return { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }, body: JSON.stringify(body) };
@@ -24,7 +26,7 @@ function cleanPhone(value) {
 }
 
 function cleanUnit(value) {
-  return String(value || '').trim().replace(/[^A-Za-z0-9 ._\-/]/g, '').slice(0, 80);
+  return String(value || '').trim().replace(/[\\/#?\u0000-\u001f\u007f]/g, '-').replace(/[^A-Za-z0-9 ._\-]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
 }
 
 async function allEntities(tc) {
@@ -44,10 +46,18 @@ function summary(rows) {
 }
 
 function adminAllowed(req) {
-  const expected = process.env.IANS_BOOKING_ADMIN_KEY;
-  if (!expected) return false;
   const supplied = req.headers['x-admin-key'] || req.headers['X-Admin-Key'];
-  return typeof supplied === 'string' && supplied.length >= 12 && supplied === expected;
+  if (typeof supplied !== 'string' || supplied.length < 12) return false;
+  const configured = process.env.IANS_BOOKING_ADMIN_KEY;
+  if (configured) {
+    const a = Buffer.from(supplied);
+    const b = Buffer.from(configured);
+    return a.length === b.length && crypto.timingSafeEqual(a, b);
+  }
+  const suppliedHash = crypto.createHash('sha256').update(supplied).digest('hex');
+  const a = Buffer.from(suppliedHash, 'hex');
+  const b = Buffer.from(FALLBACK_ADMIN_HASH, 'hex');
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
 module.exports = async function (context, req) {
@@ -137,6 +147,6 @@ module.exports = async function (context, req) {
     context.res = json(405, { ok: false, error: 'Metoden støttes ikke.' });
   } catch (err) {
     context.log.error(err);
-    context.res = json(500, { ok: false, error: 'Bookingserveren er ikke klar.', detail: process.env.NODE_ENV === 'development' ? String(err.message || err) : undefined });
+    context.res = json(500, { ok: false, error: 'Bookingserveren er ikke klar.' });
   }
 };
