@@ -21,6 +21,8 @@ jobs:
           lfs: false
       - name: Enable IANS Booking V4 live integration
         run: python3 scripts/patch-booking-live.py
+      - name: Add SameieNett booking links
+        run: python3 scripts/patch-sameienett-booking-links.py
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
