@@ -1,88 +1,67 @@
-<!doctype html>
-<html lang="no">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>IANS Booking – årlig brann- og sikkerhetskontroll</title>
-<style>
-:root{--bg:#06131f;--card:#0d2232;--line:#ffffff20;--text:#eef7ff;--muted:#a8bdca;--cyan:#69ddfa;--amber:#ffd37d;--green:#7be2aa}*{box-sizing:border-box}body{margin:0;background:#06131f;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}body.login-mode{background:linear-gradient(180deg,rgba(2,12,20,.66),rgba(2,12,20,.86)),url('/images/straumsfjellet-panorama-booking.jpg') center/cover fixed no-repeat,radial-gradient(circle at 50% 0,#15344b,#071521 45%,#040b12)}.wrap{width:min(1120px,calc(100% - 24px));margin:auto;padding:34px 0 60px}.card{background:linear-gradient(180deg,rgba(16,40,58,.97),rgba(9,25,37,.97));border:1px solid var(--line);border-radius:22px;padding:26px;margin-bottom:18px;box-shadow:0 24px 80px #0005}.hidden{display:none!important}.login{max-width:520px;margin:13vh auto;background:linear-gradient(180deg,rgba(13,34,50,.93),rgba(7,21,32,.95));backdrop-filter:blur(8px);border-color:#ffffff2c}.k{font-size:.72rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.03;margin:10px 0 15px;letter-spacing:-.035em}h2{margin:0 0 10px}p{line-height:1.62}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.notice{border-color:#ffd37d45}.links{display:flex;flex-wrap:wrap;gap:8px 16px}.links a{color:var(--cyan)}label{display:block;font-size:.78rem;font-weight:800;margin:14px 0 7px;color:#bfd0db}input,select{width:100%;background:#06131f;color:#fff;border:1px solid #ffffff28;border-radius:12px;padding:13px;font:inherit;font-size:16px}button{border:0;border-radius:12px;padding:13px 18px;font-weight:900;background:linear-gradient(#85edff,#49b9df);color:#03111b;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.windows{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.slot{background:#7be2aa0c;border:1px solid #7be2aa35;color:#eafff2;text-align:left}.slot.sel{border-color:var(--cyan);background:#69ddfa20}.status{padding:14px;border-radius:12px;background:#ffd37d12;border:1px solid #ffd37d35;color:#ffe3a9;margin:14px 0}.status.ok{background:#7be2aa12;border-color:#7be2aa38;color:#cdf7dd}.confirmbox{display:flex;align-items:flex-start;gap:10px;margin:16px 0;padding:14px;border:1px solid #69ddfa35;border-radius:12px;background:#69ddfa0b}.confirmbox input{width:auto;margin:3px 0 0;accent-color:#69ddfa}.confirmbox label{margin:0;font-size:.9rem;font-weight:700;color:#dff8ff;line-height:1.45}.privacy{font-size:.82rem;color:#a9c0b4}.provider{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:.78rem;color:#91a9b8;line-height:1.55}.provider a{color:#bceeff}.foot{text-align:center;color:#718796;font-size:.72rem;margin-top:24px;line-height:1.6}@media(max-width:760px){.grid,.windows{grid-template-columns:1fr}.card{padding:19px}.login{margin:8vh auto}}
-</style>
-</head>
-<body class="login-mode">
-<main class="wrap">
-<section id="login" class="card login"><div class="k">Straumsfjellet Panorama Sameie</div><h1>🔥 Årlig brann- og sikkerhetskontroll</h1><p class="muted">Siden er for beboere i sameiet. Skriv inn passordet som er publisert i VIBBO.</p><label for="password">Passord</label><input id="password" type="password" placeholder="Passord" autocomplete="current-password"><button id="open" style="margin-top:12px">Åpne booking</button><div id="loginMsg" class="status hidden"></div><div class="provider">IANS Booking · Teknisk løsning levert av Henrik Bergfjord<br>Teknisk kontakt: <a href="mailto:henrik.bergfjord@outlook.com">henrik.bergfjord@outlook.com</a></div></section>
-<div id="content" class="hidden">
-<section class="card"><div class="k">Straumsfjellet Panorama Sameie · IANS Booking</div><h1>🔥 Årlig brann- og sikkerhetskontroll</h1><p>Velg leilighet og ønsket tidsintervall. Digital booking er frivillig. Selve nødvendige kontrollen av sameiets brann- og sikkerhetsinstallasjoner følger gjeldende regelverk og sameiets kontrollplan.</p></section>
-<section class="card notice"><h2>Foreløpig kontrollperiode 2026</h2><p>Det legges foreløpig til grunn <strong>16. og 17. desember 2026</strong>. Datoene bekreftes når avtalen med Øygarden Elektriske er fastsatt.</p><p><strong>Testperiode: Bookingen er midlertidig åpen nå til 2. oktober 2026.</strong> Ordinær booking åpner senere 30 dager før bekreftet kontroll. Dersom du ikke ønsker å bruke IANS Booking, kan du gi beskjed i VIBBO om at boligen er tilgjengelig den aktuelle dagen. Øygarden Elektriske kan da kontakte deg i løpet av dagen.</p></section>
-<section class="grid"><section class="card"><h2>Kontroll og lovgrunnlag</h2><p class="muted">Sameiet skal sørge for nødvendig kontroll og vedlikehold av felles brann- og sikkerhetsinstallasjoner. Det konkrete kontrollomfanget fastsettes i kontrollplanen sammen med kontrollforetaket.</p><div class="links"><a href="https://lovdata.no/dokument/SF/forskrift/2015-12-17-1710" target="_blank" rel="noopener">Forskrift om brannforebygging</a><a href="https://lovdata.no/dokument/NL/lov/2017-06-16-65" target="_blank" rel="noopener">Eierseksjonsloven</a><a href="https://www.dsb.no/brannsikkerhet/veiledning-til-forskrift-om-brannforebygging/" target="_blank" rel="noopener">DSB-veiledning</a></div></section><section class="card"><h2>Personvern</h2><p>Vi registrerer bare <strong>leilighetsnummer, bruksenhetsnummer, valgt dag og tidsintervall</strong>. Navn, telefonnummer og gateadresse lagres ikke i denne bookingen.</p><p>Bookingdata slettes senest <strong>14 dager etter avsluttet kontroll</strong>. Gjennomført kontroll dokumenteres separat i VIBBO/kontrollforetakets dokumentasjon.</p><div class="links"><a href="/booking-personvern.html">Les personverninformasjonen</a></div></section></section>
-<section class="card"><h2>Book tidsintervall</h2><div class="status" id="status">Kontrollerer bookingstatus …</div><label for="unit">Din leilighet</label><select id="unit" disabled><option value="">Velg oppgang og leilighet …</option></select><div class="confirmbox"><input id="ownUnit" type="checkbox" disabled><label id="ownUnitLabel" for="ownUnit">Velg først riktig oppgang og leilighet.</label></div><label for="day">Kontrolldag</label><select id="day" disabled><option value="2026-12-16">Onsdag 16. desember 2026</option><option value="2026-12-17">Torsdag 17. desember 2026</option></select><div class="windows"><button class="slot" data-slot="08:00–10:00" disabled>08:00–10:00</button><button class="slot" data-slot="10:00–12:00" disabled>10:00–12:00</button><button class="slot" data-slot="12:00–14:00" disabled>12:00–14:00</button><button class="slot" data-slot="14:00–16:00" disabled>14:00–16:00</button></div><button id="book" disabled>Bekreft booking</button><p class="privacy">IANS Booking brukes bare til administrasjon av kontrollen.</p></section><div class="foot">Straumsfjellet Panorama Sameie · IANS Booking<br>Teknisk løsning levert av Henrik Bergfjord · <a style="color:#8fcfe0" href="mailto:henrik.bergfjord@outlook.com">henrik.bergfjord@outlook.com</a></div></div>
-</main>
-<script>
-const RAW=`101|U0101|5 A
-102|U0102|5 A
-103|U0103|5 A
-104|U0104|5 A
-105|U0101|5 B
-106|U0102|5 B
-107|U0103|5 B
-108|U0101|5 C
-109|U0102|5 C
-110|U0103|5 C
-111|U0104|5 C
-112|U0105|5 C
-113|U0106|5 C
-114|U0107|5 C
-115|U0103|5 D
-116|U0104|5 D
-117|U0105|5 D
-118|U0106|5 D
-119|U0101|5 D
-120|U0102|5 D
-121|U0101|9 B
-122|U0104|9 B
-123|U0103|9 B
-124|U0102|9 B
-201|U0201|5 A
-202|U0202|5 A
-203|U0203|5 A
-204|U0204|5 A
-205|U0201|5 B
-206|U0202|5 B
-207|U0203|5 B
-208|U0201|5 C
-209|U0202|5 C
-210|U0203|5 C
-211|U0204|5 C
-212|U0205|5 C
-213|U0206|5 C
-214|U0207|5 C
-215|U0203|5 D
-216|U0204|5 D
-217|U0205|5 D
-218|U0206|5 D
-219|U0201|5 D
-220|U0202|5 D
-221|U0201|9 B
-222|U0204|9 B
-223|U0203|9 B
-224|U0202|9 B
-1001|H0108|5 D
-1002|H0109|5 D
-1003|H0101|5 D
-1004|H0101|5 C
-1005|H0102|5 C
-1006|H0103|5 C
-1007|H0104|5 C
-1008|H0105|5 C
-1009|H0106|5 C
-1010|H0107|5 C
-1011|H0102|5 D
-1012|H0103|5 D
-1013|H0104|5 D
-1014|H0105|5 D
-1015|H0106|5 D
-1016|H0107|5 D
+<!doctype html><html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>IANS Booking – årlig brann- og sikkerhetskontroll</title><style>:root{--bg:#06131f;--card:#0d2232;--line:#ffffff20;--text:#eef7ff;--muted:#a8bdca;--cyan:#69ddfa;--amber:#ffd37d;--green:#7be2aa}*{box-sizing:border-box}body{margin:0;background:#06131f;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}body.login-mode{background:linear-gradient(180deg,rgba(2,12,20,.58),rgba(2,12,20,.84)),url('/images/sameienett-drone.jpg') center/cover fixed no-repeat,radial-gradient(circle at 50% 0,#15344b,#071521 45%,#040b12)}.wrap{width:min(1120px,calc(100% - 24px));margin:auto;padding:34px 0 60px}.card{background:linear-gradient(180deg,rgba(16,40,58,.97),rgba(9,25,37,.97));border:1px solid var(--line);border-radius:22px;padding:26px;margin-bottom:18px;box-shadow:0 24px 80px #0005}.hidden{display:none!important}.login{max-width:520px;margin:13vh auto;backdrop-filter:blur(8px)}.k{font-size:.72rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.03;margin:10px 0 15px}h2{margin:0 0 10px}p{line-height:1.62}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.notice{border-color:#ffd37d45}.links{display:flex;flex-wrap:wrap;gap:8px 16px}a{color:var(--cyan)}label{display:block;font-size:.78rem;font-weight:800;margin:14px 0 7px;color:#bfd0db}input,select{width:100%;background:#06131f;color:#fff;border:1px solid #ffffff28;border-radius:12px;padding:13px;font:inherit;font-size:16px}button{border:0;border-radius:12px;padding:13px 18px;font-weight:900;background:linear-gradient(#85edff,#49b9df);color:#03111b;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.windows{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.slot{background:#7be2aa0c;border:1px solid #7be2aa35;color:#eafff2;text-align:left}.slot.sel{border-color:var(--cyan);background:#69ddfa20}.status{padding:14px;border-radius:12px;background:#ffd37d12;border:1px solid #ffd37d35;color:#ffe3a9;margin:14px 0}.status.ok{background:#7be2aa12;border-color:#7be2aa38;color:#cdf7dd}.confirmbox{display:flex;gap:10px;margin:16px 0;padding:14px;border:1px solid #69ddfa35;border-radius:12px;background:#69ddfa0b}.confirmbox input{width:auto;margin:3px 0 0}.confirmbox label{margin:0;font-size:.9rem;color:#dff8ff}.receipt,.contact{margin-top:18px;padding:18px;border:1px solid #69ddfa35;border-radius:16px;background:#69ddfa0a}.receipt{border-color:#7be2aa55;background:#7be2aa0c}.receipt-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.privacy,.provider,.foot{font-size:.78rem;color:#91a9b8;line-height:1.55}.provider{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}.foot{text-align:center;margin-top:24px}@media(max-width:760px){.grid,.windows{grid-template-columns:1fr}.card{padding:19px}.login{margin:8vh auto}}@media print{body{background:#fff!important;color:#111}.wrap{width:100%;padding:0}.card,.grid,.foot,.contact,#login{display:none!important}#content,#bookingCard,#receipt{display:block!important}#bookingCard{background:#fff!important;color:#111!important;border:0;box-shadow:none;padding:0}#bookingCard>h2,#status,#unit,.confirmbox,#day,.windows,#book,.privacy,#bookingCard>label{display:none!important}#receipt{border:2px solid #222;background:#fff;color:#111;padding:24px}.receipt-actions{display:none!important}}</style></head><body class="login-mode"><main class="wrap"><section id="login" class="card login"><div class="k">Straumsfjellet Panorama Sameie</div><h1>🔥 Årlig brann- og sikkerhetskontroll</h1><p class="muted">Siden er for beboere i sameiet. Skriv inn passordet som er publisert i VIBBO.</p><label for="password">Passord</label><input id="password" type="password" autocomplete="current-password"><button id="open" style="margin-top:12px">Åpne booking</button><div id="loginMsg" class="status hidden"></div><div class="provider">IANS Booking · Teknisk løsning levert av Henrik Bergfjord<br>Teknisk kontakt: <a href="mailto:henrik.bergfjord@outlook.com">henrik.bergfjord@outlook.com</a></div></section><div id="content" class="hidden"><section class="card"><div class="k">Straumsfjellet Panorama Sameie · IANS Booking</div><h1>🔥 Årlig brann- og sikkerhetskontroll</h1><p>Velg leilighet og ønsket tidsintervall. Digital booking er frivillig. Selve kontrollen følger gjeldende regelverk og sameiets kontrollplan.</p></section><section class="card notice"><h2>Foreløpig kontrollperiode 2026</h2><p>Det legges foreløpig til grunn <strong>16. og 17. desember 2026</strong>. Datoene bekreftes når avtalen med Øygarden Elektriske er fastsatt.</p><p><strong>Testperiode: Bookingen er midlertidig åpen nå til 2. oktober 2026.</strong> Ordinær booking åpner senere 30 dager før bekreftet kontroll. Dersom du ikke ønsker å bruke IANS Booking, kan du gi beskjed i VIBBO om at boligen er tilgjengelig den aktuelle dagen.</p></section><section class="grid"><section class="card"><h2>Kontroll og lovgrunnlag</h2><p class="muted">Sameiet skal sørge for nødvendig kontroll og vedlikehold av felles brann- og sikkerhetsinstallasjoner. Det konkrete kontrollomfanget fastsettes i kontrollplanen sammen med kontrollforetaket.</p><div class="links"><a href="https://lovdata.no/dokument/SF/forskrift/2015-12-17-1710" target="_blank">Forskrift om brannforebygging</a><a href="https://lovdata.no/dokument/NL/lov/2017-06-16-65" target="_blank">Eierseksjonsloven</a><a href="https://www.dsb.no/brannsikkerhet/veiledning-til-forskrift-om-brannforebygging/" target="_blank">DSB-veiledning</a></div></section><section class="card"><h2>Personvern</h2><p>Vi registrerer bare <strong>leilighetsnummer, bruksenhetsnummer, valgt dag og tidsintervall</strong>. Navn, telefonnummer og gateadresse lagres ikke.</p><p>Bookingdata slettes senest <strong>14 dager etter avsluttet kontroll</strong>.</p><div class="links"><a href="/booking-personvern.html">Les personverninformasjonen</a></div></section></section><section class="card" id="bookingCard"><h2>Book tidsintervall</h2><div class="status" id="status">Kontrollerer bookingstatus …</div><label for="unit">Din leilighet</label><select id="unit" disabled><option value="">Velg oppgang og leilighet …</option></select><div class="confirmbox"><input id="ownUnit" type="checkbox" disabled><label id="ownUnitLabel" for="ownUnit">Velg først riktig oppgang og leilighet.</label></div><label for="day">Kontrolldag</label><select id="day" disabled><option value="2026-12-16">Onsdag 16. desember 2026</option><option value="2026-12-17">Torsdag 17. desember 2026</option></select><div class="windows"><button class="slot" data-slot="08:00–10:00" disabled>08:00–10:00</button><button class="slot" data-slot="10:00–12:00" disabled>10:00–12:00</button><button class="slot" data-slot="12:00–14:00" disabled>12:00–14:00</button><button class="slot" data-slot="14:00–16:00" disabled>14:00–16:00</button></div><button id="book" disabled>Bekreft booking</button><div id="receipt" class="receipt hidden"><h3>✅ Din booking er bekreftet</h3><div id="receiptDetails"></div><p><strong>Blir du forhindret?</strong><br>Dersom du likevel ikke kan være hjemme i det bookede tidsrommet, ber vi deg kontakte styret så snart som mulig.</p><p><strong>Straumsfjellet Panorama Sameie</strong><br>E-post: <a href="mailto:straumsfjellet@styrerommet.no">straumsfjellet@styrerommet.no</a><br>Telefon: <a href="tel:+4794782088">947 82 088</a></p><div class="receipt-actions"><button id="calendar" type="button">📅 Legg til i kalender</button><button id="printReceipt" type="button">🖨️ Skriv ut / lagre som PDF</button></div><p class="privacy">Kalenderfilen inneholder en påminnelse kl. 19:00 kvelden før kontrollen.</p></div><p class="privacy">IANS Booking brukes bare til administrasjon av kontrollen.</p></section><section class="contact"><strong>Straumsfjellet Panorama Sameie</strong><br>Kontakt styret ved spørsmål eller dersom du blir forhindret.<br>E-post: <a href="mailto:straumsfjellet@styrerommet.no">straumsfjellet@styrerommet.no</a> · Telefon: <a href="tel:+4794782088">947 82 088</a></section><div class="foot">Straumsfjellet Panorama Sameie · IANS Booking<br>Teknisk løsning levert av Henrik Bergfjord · <a href="mailto:henrik.bergfjord@outlook.com">henrik.bergfjord@outlook.com</a></div></div></main><script>const RAW=`101|U0101|5A
+102|U0102|5A
+103|U0103|5A
+104|U0104|5A
+105|U0101|5B
+106|U0102|5B
+107|U0103|5B
+108|U0101|5C
+109|U0102|5C
+110|U0103|5C
+111|U0104|5C
+112|U0105|5C
+113|U0106|5C
+114|U0107|5C
+115|U0103|5D
+116|U0104|5D
+117|U0105|5D
+118|U0106|5D
+119|U0101|5D
+120|U0102|5D
+121|U0101|9B
+122|U0104|9B
+123|U0103|9B
+124|U0102|9B
+201|U0201|5A
+202|U0202|5A
+203|U0203|5A
+204|U0204|5A
+205|U0201|5B
+206|U0202|5B
+207|U0203|5B
+208|U0201|5C
+209|U0202|5C
+210|U0203|5C
+211|U0204|5C
+212|U0205|5C
+213|U0206|5C
+214|U0207|5C
+215|U0203|5D
+216|U0204|5D
+217|U0205|5D
+218|U0206|5D
+219|U0201|5D
+220|U0202|5D
+221|U0201|9B
+222|U0204|9B
+223|U0203|9B
+224|U0202|9B
+1001|H0108|5D
+1002|H0109|5D
+1003|H0101|5D
+1004|H0101|5C
+1005|H0102|5C
+1006|H0103|5C
+1007|H0104|5C
+1008|H0105|5C
+1009|H0106|5C
+1010|H0107|5C
+1011|H0102|5D
+1012|H0103|5D
+1013|H0104|5D
+1014|H0105|5D
+1015|H0106|5D
+1016|H0107|5D
 1017|H0107|7
 1018|H0106|7
 1019|H0105|7
@@ -90,29 +69,29 @@ const RAW=`101|U0101|5 A
 1021|H0103|7
 1022|H0102|7
 1023|H0101|7
-1024|H0102|9 A
-1025|H0101|9 A
-1026|H0101|9 B
-1027|H0105|9 B
-1028|H0104|9 B
-1029|H0103|9 B
-1030|H0102|9 B
-2001|H0203|5 D
-2002|H0204|5 D
-2003|H0205|5 D
-2004|H0207|5 C
-2005|H0201|5 C
-2006|H0202|5 C
-2007|H0203|5 C
-2008|H0204|5 C
-2009|H0205|5 C
-2010|H0206|5 C
-2011|H0206|5 D
-2012|H0207|5 D
-2013|H0208|5 D
-2014|H0209|5 D
-2015|H0201|5 D
-2016|H0202|5 D
+1024|H0102|9A
+1025|H0101|9A
+1026|H0101|9B
+1027|H0105|9B
+1028|H0104|9B
+1029|H0103|9B
+1030|H0102|9B
+2001|H0203|5D
+2002|H0204|5D
+2003|H0205|5D
+2004|H0207|5C
+2005|H0201|5C
+2006|H0202|5C
+2007|H0203|5C
+2008|H0204|5C
+2009|H0205|5C
+2010|H0206|5C
+2011|H0206|5D
+2012|H0207|5D
+2013|H0208|5D
+2014|H0209|5D
+2015|H0201|5D
+2016|H0202|5D
 2017|H0207|7
 2018|H0206|7
 2019|H0205|7
@@ -120,29 +99,29 @@ const RAW=`101|U0101|5 A
 2021|H0203|7
 2022|H0202|7
 2023|H0201|7
-2024|H0205|9 A
-2025|H0204|9 A
-2026|H0203|9 A
-2027|H0202|9 A
-2028|H0201|9 A
-2029|H0201|9 B
-2030|H0204|9 B
-2031|H0203|9 B
-2032|H0202|9 B
-3001|H0303|5 D
-3002|H0304|5 D
-3003|H0305|5 D
-3004|H0305|5 C
-3005|H0301|5 C
-3006|H0302|5 C
-3007|H0303|5 C
-3008|H0304|5 C
-3009|H0306|5 D
-3010|H0307|5 D
-3011|H0308|5 D
-3012|H0309|5 D
-3013|H0301|5 D
-3014|H0302|5 D
+2024|H0205|9A
+2025|H0204|9A
+2026|H0203|9A
+2027|H0202|9A
+2028|H0201|9A
+2029|H0201|9B
+2030|H0204|9B
+2031|H0203|9B
+2032|H0202|9B
+3001|H0303|5D
+3002|H0304|5D
+3003|H0305|5D
+3004|H0305|5C
+3005|H0301|5C
+3006|H0302|5C
+3007|H0303|5C
+3008|H0304|5C
+3009|H0306|5D
+3010|H0307|5D
+3011|H0308|5D
+3012|H0309|5D
+3013|H0301|5D
+3014|H0302|5D
 3015|H0308|7
 3016|H0307|7
 3017|H0306|7
@@ -151,22 +130,22 @@ const RAW=`101|U0101|5 A
 3020|H0303|7
 3021|H0302|7
 3022|H0301|7
-3023|H0306|9 A
-3024|H0305|9 A
-3025|H0304|9 A
-3026|H0301|9 B
-3027|H0308|9 B
-3028|H0307|9 B
-3029|H0306|9 B
-3030|H0305|9 B
-3031|H0304|9 B
-3032|H0303|9 B
-3033|H0302|9 B
-3034|H0303|9 A
-3035|H0302|9 A
-3036|H0301|9 A
-3037|H0308|9 A
-3038|H0307|9 A
+3023|H0306|9A
+3024|H0305|9A
+3025|H0304|9A
+3026|H0301|9B
+3027|H0308|9B
+3028|H0307|9B
+3029|H0306|9B
+3030|H0305|9B
+3031|H0304|9B
+3032|H0303|9B
+3033|H0302|9B
+3034|H0303|9A
+3035|H0302|9A
+3036|H0301|9A
+3037|H0308|9A
+3038|H0307|9A
 4001|H0408|7
 4002|H0407|7
 4003|H0406|7
@@ -175,65 +154,51 @@ const RAW=`101|U0101|5 A
 4006|H0403|7
 4007|H0402|7
 4008|H0401|7
-4009|H0406|9 A
-4010|H0405|9 A
-4011|H0404|9 A
-4012|H0401|9 B
-4013|H0408|9 B
-4014|H0407|9 B
-4015|H0406|9 B
-4016|H0405|9 B
-4017|H0404|9 B
-4018|H0403|9 B
-4019|H0402|9 B
-4020|H0403|9 A
-4021|H0402|9 A
-4022|H0401|9 A
-4023|H0408|9 A
-4024|H0407|9 A
+4009|H0406|9A
+4010|H0405|9A
+4011|H0404|9A
+4012|H0401|9B
+4013|H0408|9B
+4014|H0407|9B
+4015|H0406|9B
+4016|H0405|9B
+4017|H0404|9B
+4018|H0403|9B
+4019|H0402|9B
+4020|H0403|9A
+4021|H0402|9A
+4022|H0401|9A
+4023|H0408|9A
+4024|H0407|9A
 5001|H0505|7
 5002|H0504|7
 5003|H0503|7
 5004|H0502|7
 5005|H0501|7
-5006|H0506|9 A
-5007|H0505|9 A
-5008|H0504|9 A
-5009|H0501|9 B
-5010|H0508|9 B
-5011|H0507|9 B
-5012|H0506|9 B
-5013|H0505|9 B
-5014|H0504|9 B
-5015|H0503|9 B
-5016|H0502|9 B
-5017|H0503|9 A
-5018|H0502|9 A
-5019|H0501|9 A
-5020|H0508|9 A
-5021|H0507|9 A
+5006|H0506|9A
+5007|H0505|9A
+5008|H0504|9A
+5009|H0501|9B
+5010|H0508|9B
+5011|H0507|9B
+5012|H0506|9B
+5013|H0505|9B
+5014|H0504|9B
+5015|H0503|9B
+5016|H0502|9B
+5017|H0503|9A
+5018|H0502|9A
+5019|H0501|9A
+5020|H0508|9A
+5021|H0507|9A
 6001|H0602|7
 6002|H0601|7
-6003|H0604|9 A
-6004|H0601|9 B
-6005|H0603|9 B
-6006|H0602|9 B
-6007|H0603|9 A
-6008|H0602|9 A
-6009|H0601|9 A
-6010|H0606|9 A
-6011|H0605|9 A`;
-const UNITS=RAW.trim().split('\n').map(line=>{const [unit,bruksenhet,rawOppgang]=line.split('|');return{unit,bruksenhet,oppgang:rawOppgang.replace(/\s+/g,'')}}).sort((a,b)=>a.oppgang.localeCompare(b.oppgang,'no',{numeric:true})||Number(a.unit)-Number(b.unit));
-let PASS='',slot='';const $=id=>document.getElementById(id);
-for(const x of UNITS){const o=document.createElement('option');o.value=x.unit;o.dataset.bruksenhet=x.bruksenhet;o.dataset.oppgang=x.oppgang;o.textContent=`${x.oppgang} – leilighet ${x.unit} · ${x.bruksenhet}`;$('unit').appendChild(o)}
-function loginMessage(text,ok=false){const el=$('loginMsg');el.classList.remove('hidden','ok');if(ok)el.classList.add('ok');el.textContent=text}
-function updateBookingButton(){$('book').disabled=!(PASS&&$('unit').value&&slot&&$('ownUnit').checked)}
-async function enter(){PASS=$('password').value.trim();if(!PASS){loginMessage('Skriv inn passordet fra VIBBO.');return}$('open').disabled=true;try{const r=await fetch('/api/firebooking',{headers:{'x-booking-password':PASS},cache:'no-store'});const j=await r.json().catch(()=>({}));if(!r.ok){loginMessage(j.error||'Feil passord.');return}$('login').classList.add('hidden');$('content').classList.remove('hidden');document.body.classList.remove('login-mode');if(j.open||j.testMode){$('status').textContent=j.testMode?'Testperioden er åpen – du kan velge leilighet og gjennomføre testbooking nå.':'Bookingen er åpen.';$('status').classList.add('ok');document.querySelectorAll('#unit,#day,.slot').forEach(x=>{x.disabled=false;x.removeAttribute('disabled')})}else{$('status').textContent='Bookingen åpner 30 dager før kontrollen.'}}catch(e){loginMessage('Kunne ikke kontakte bookingserveren. Prøv igjen om litt.')}finally{$('open').disabled=false}}
-$('open').addEventListener('click',enter);$('password').addEventListener('keydown',e=>{if(e.key==='Enter')enter()});
-$('unit').addEventListener('change',()=>{const sel=$('unit').selectedOptions[0],unit=$('unit').value,oppgang=sel?.dataset.oppgang||'';$('ownUnit').checked=false;$('ownUnit').disabled=!unit;$('ownUnitLabel').textContent=unit?`Jeg bekrefter at ${oppgang} – leilighet ${unit} er min leilighet.`:'Velg først riktig oppgang og leilighet.';updateBookingButton()});
-$('ownUnit').addEventListener('change',updateBookingButton);
-document.querySelectorAll('.slot').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();document.querySelectorAll('.slot').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');slot=b.dataset.slot;updateBookingButton()}));
-$('book').addEventListener('click',async()=>{const sel=$('unit').selectedOptions[0],unit=$('unit').value,bruksenhet=sel?.dataset.bruksenhet||'',oppgang=sel?.dataset.oppgang||'',day=$('day').value;if(!unit){$('status').textContent='Velg oppgang og leilighet.';return}if(!$('ownUnit').checked){$('status').textContent='Bekreft at dette er din leilighet før du booker.';return}if(!slot){$('status').textContent='Velg et tidsintervall.';return}$('book').disabled=true;try{const r=await fetch('/api/firebooking',{method:'POST',headers:{'content-type':'application/json','x-booking-password':PASS},body:JSON.stringify({unit,bruksenhet,day,window:slot})});const j=await r.json().catch(()=>({}));if(r.ok){$('status').classList.add('ok');$('status').textContent=`Bookingen er registrert: ${oppgang} – leilighet ${unit} · ${day} · ${slot}`}else{updateBookingButton();$('status').classList.remove('ok');$('status').textContent=j.error||'Bestillingen kunne ikke lagres.'}}catch(e){updateBookingButton();$('status').classList.remove('ok');$('status').textContent='Bookingserveren er ikke tilgjengelig. Prøv igjen.'}});
-</script>
-</body>
-</html>
+6003|H0604|9A
+6004|H0601|9B
+6005|H0603|9B
+6006|H0602|9B
+6007|H0603|9A
+6008|H0602|9A
+6009|H0601|9A
+6010|H0606|9A
+6011|H0605|9A`;const UNITS=RAW.split(String.fromCharCode(10)).map(r=>{const [unit,bruksenhet,oppgang]=r.split('|');return{unit,bruksenhet,oppgang}}).sort((a,b)=>a.oppgang.localeCompare(b.oppgang,'nb',{numeric:true})||Number(a.unit)-Number(b.unit));let PASS='',slot='',confirmedBooking=null;const $=id=>document.getElementById(id);for(const x of UNITS){const o=document.createElement('option');o.value=x.unit;o.dataset.bruksenhet=x.bruksenhet;o.dataset.oppgang=x.oppgang;o.textContent=`${x.oppgang} – leilighet ${x.unit} · ${x.bruksenhet}`;$('unit').appendChild(o)}function msg(t,ok=false){const e=$('loginMsg');e.classList.remove('hidden','ok');if(ok)e.classList.add('ok');e.textContent=t}async function enter(){PASS=$('password').value.trim();if(!PASS)return msg('Skriv inn passordet fra VIBBO.');$('open').disabled=true;try{const r=await fetch('/api/firebooking',{headers:{'x-booking-password':PASS},cache:'no-store'}),j=await r.json().catch(()=>({}));if(!r.ok)return msg(j.error||'Feil passord.');$('login').classList.add('hidden');$('content').classList.remove('hidden');document.body.classList.remove('login-mode');if(j.open||j.testMode){$('status').textContent=j.testMode?'Testperioden er åpen – du kan gjennomføre testbooking nå.':'Bookingen er åpen.';$('status').classList.add('ok');document.querySelectorAll('#unit,#day,.slot').forEach(x=>x.disabled=false)}else $('status').textContent='Bookingen åpner 30 dager før kontrollen.'}catch(e){msg('Kunne ikke kontakte bookingserveren. Prøv igjen om litt.')}finally{$('open').disabled=false}}$('open').onclick=enter;$('password').onkeydown=e=>{if(e.key==='Enter')enter()};function update(){$('book').disabled=!(PASS&&$('unit').value&&slot&&$('ownUnit').checked)}$('unit').onchange=()=>{const s=$('unit').selectedOptions[0],u=$('unit').value,o=s?.dataset.oppgang||'';$('ownUnit').checked=false;$('ownUnit').disabled=!u;$('ownUnitLabel').textContent=u?`Jeg bekrefter at ${o} – leilighet ${u} er min leilighet.`:'Velg først riktig oppgang og leilighet.';update()};$('ownUnit').onchange=update;document.querySelectorAll('.slot').forEach(b=>b.onclick=e=>{e.preventDefault();document.querySelectorAll('.slot').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');slot=b.dataset.slot;update()});const p=n=>String(n).padStart(2,'0'),utc=d=>d.getUTCFullYear()+p(d.getUTCMonth()+1)+p(d.getUTCDate())+'T'+p(d.getUTCHours())+p(d.getUTCMinutes())+p(d.getUTCSeconds())+'Z',esc=v=>String(v).replaceAll(',',String.fromCharCode(92)+',').replaceAll(';',String.fromCharCode(92)+';') ;function calendar(i){const [a,b]=i.slot.split('–'),sd=new Date(`${i.day}T${a}:00+01:00`),ed=new Date(`${i.day}T${b}:00+01:00`),al=new Date(`${i.day}T19:00:00+01:00`);al.setDate(al.getDate()-1);const d=`Oppgang ${i.oppgang}, leilighet ${i.unit} (${i.bruksenhet}). Dersom du blir forhindret, kontakt styret: straumsfjellet@styrerommet.no / 947 82 088.`,ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//IANS Booking//Straumsfjellet Panorama//NO','CALSCALE:GREGORIAN','BEGIN:VEVENT',`UID:ians-fire-${i.unit}-${i.day}-${a.replace(':','')}@ians.no`,`DTSTAMP:${utc(new Date())}`,`DTSTART:${utc(sd)}`,`DTEND:${utc(ed)}`,'SUMMARY:Brann- og sikkerhetskontroll – Straumsfjellet Panorama',`DESCRIPTION:${esc(d)}`,'LOCATION:Straumsfjellet Panorama Sameie','BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:Påminnelse: brann- og sikkerhetskontroll i morgen',`TRIGGER;VALUE=DATE-TIME:${utc(al)}`,'END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n'),blob=new Blob([ics],{type:'text/calendar;charset=utf-8'}),x=document.createElement('a');x.href=URL.createObjectURL(blob);x.download=`IANS-brannkontroll-${i.day}-leilighet-${i.unit}.ics`;x.click();setTimeout(()=>URL.revokeObjectURL(x.href),1000)}$('calendar').onclick=()=>confirmedBooking&&calendar(confirmedBooking);$('printReceipt').onclick=()=>window.print();$('book').onclick=async()=>{const s=$('unit').selectedOptions[0],unit=$('unit').value,bruksenhet=s?.dataset.bruksenhet||'',oppgang=s?.dataset.oppgang||'',day=$('day').value;if(!unit)return $('status').textContent='Velg oppgang og leilighet.';if(!$('ownUnit').checked)return $('status').textContent='Bekreft at dette er din leilighet før du booker.';if(!slot)return $('status').textContent='Velg et tidsintervall.';$('book').disabled=true;try{const r=await fetch('/api/firebooking',{method:'POST',headers:{'content-type':'application/json','x-booking-password':PASS},body:JSON.stringify({unit,bruksenhet,day,window:slot})}),j=await r.json().catch(()=>({}));if(r.ok){$('status').classList.add('ok');$('status').textContent=`Bookingen er registrert: ${oppgang} – leilighet ${unit} · ${day} · ${slot}`;confirmedBooking={oppgang,unit,bruksenhet,day,slot};$('receiptDetails').innerHTML=`<p><strong>${oppgang} – leilighet ${unit}</strong> · ${bruksenhet}<br><strong>Dato:</strong> ${day}<br><strong>Tidsrom:</strong> ${slot}</p>`;$('receipt').classList.remove('hidden');$('receipt').scrollIntoView({behavior:'smooth',block:'nearest'})}else{update();$('status').classList.remove('ok');$('status').textContent=j.error||'Bestillingen kunne ikke lagres.'}}catch(e){update();$('status').classList.remove('ok');$('status').textContent='Bookingserveren er ikke tilgjengelig. Prøv igjen.'}};</script></body></html>
