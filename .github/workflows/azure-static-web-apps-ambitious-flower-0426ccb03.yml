@@ -23,8 +23,10 @@ jobs:
         run: python3 scripts/patch-booking-live.py
       - name: Add SameieNett booking links
         run: python3 scripts/patch-sameienett-booking-links.py
-      - name: Add home booking links
+      - name: Repair home navigation and portal controls
         run: python3 scripts/patch-home-booking-links.py
+      - name: Repair technical hub anchors
+        run: python3 scripts/patch-technical-hub.py
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
