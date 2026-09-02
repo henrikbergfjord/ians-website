@@ -5,7 +5,6 @@ const TABLE = 'IansBooking';
 const PARTITION = 'sprinkler2028';
 const WINDOWS = ['08:00–10:00','10:00–12:00','12:00–14:00','14:00–16:00'];
 const CAPACITY = 24;
-const FALLBACK_ADMIN_HASH = '14a33ff207ae4416deb502f56950b4ca6eed48276b8242925911bbea879c53d0';
 
 function json(status, body) {
   return { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }, body: JSON.stringify(body) };
@@ -30,14 +29,9 @@ function summary(rows) {
 }
 function adminAllowed(req) {
   const supplied = req.headers['x-admin-key'] || req.headers['X-Admin-Key'];
-  if (typeof supplied !== 'string' || supplied.length < 12) return false;
   const configured = process.env.IANS_BOOKING_ADMIN_KEY;
-  if (configured) {
-    const a = Buffer.from(supplied), b = Buffer.from(configured);
-    return a.length === b.length && crypto.timingSafeEqual(a, b);
-  }
-  const suppliedHash = crypto.createHash('sha256').update(supplied).digest('hex');
-  const a = Buffer.from(suppliedHash, 'hex'), b = Buffer.from(FALLBACK_ADMIN_HASH, 'hex');
+  if (typeof supplied !== 'string' || supplied.length < 12 || !configured) return false;
+  const a = Buffer.from(supplied), b = Buffer.from(configured);
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
