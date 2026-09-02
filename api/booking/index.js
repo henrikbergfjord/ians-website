@@ -62,6 +62,19 @@ function adminAllowed(req) {
 
 module.exports = async function (context, req) {
   try {
+    if (req.method === 'GET' && String(req.query.health || '') === '1') {
+      const hasDedicatedStorage = !!process.env.IANS_BOOKING_STORAGE;
+      const hasHostStorage = !!process.env.AzureWebJobsStorage;
+      context.res = json(200, {
+        ok: true,
+        service: 'IANS Booking API',
+        functionRuntime: process.env.FUNCTIONS_WORKER_RUNTIME || 'node',
+        storageConfigured: hasDedicatedStorage || hasHostStorage,
+        storageSource: hasDedicatedStorage ? 'IANS_BOOKING_STORAGE' : (hasHostStorage ? 'AzureWebJobsStorage' : 'none')
+      });
+      return;
+    }
+
     const tc = client();
     await tc.createTable().catch(err => {
       if (err.statusCode !== 409) throw err;
