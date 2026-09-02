@@ -36,7 +36,7 @@ function applySummary(data){
   }
 }
 async function refresh(){
-  try{const r=await fetch(API,{cache:'no-store'});const j=await r.json();if(r.ok)applySummary(j)}catch(_){/* keep page usable; booking click will show server error */}
+  try{const r=await fetch(API,{cache:'no-store'});const j=await r.json();if(r.ok)applySummary(j)}catch(_){/* booking click shows server error */}
 }
 
 book.addEventListener('click',async e=>{
@@ -56,8 +56,8 @@ book.addEventListener('click',async e=>{
 },true);
 
 const privacy=document.querySelector('.privacy');
-if(privacy)privacy.textContent='Telefonnummeret brukes bare for gjennomføring av kontrollen og er kun tilgjengelig for styrets låste administrasjon. Opplysningene lagres sikkert på serversiden.';
+if(privacy)privacy.innerHTML='Telefonnummeret brukes bare for gjennomføring av kontrollen og er kun tilgjengelig i styrets låste administrasjon. Opplysningene slettes etter kontroll og praktisk etterarbeid, normalt senest etter 30 dager. <a href="/booking-personvern.html">Les om personvern og dine rettigheter.</a>';
 const foot=document.querySelector('.foot');
-if(foot)foot.textContent='IANS Booking V4 · sentral booking · automatisk kapasitet · låst administrasjon';
+if(foot)foot.textContent='IANS Booking V5 · sentral booking · personvern · låst administrasjon';
 refresh();setInterval(refresh,15000);
 })();
