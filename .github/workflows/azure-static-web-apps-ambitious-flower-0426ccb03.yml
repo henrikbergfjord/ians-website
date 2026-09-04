@@ -25,6 +25,8 @@ jobs:
         run: python3 scripts/patch-sameienett-booking-links.py
       - name: Repair home navigation and portal controls
         run: python3 scripts/patch-home-booking-links.py
+      - name: Point Axion Grid links to Azure
+        run: python3 scripts/patch-axion-grid-links.py
       - name: Add shared technical contact footer
         run: python3 scripts/patch-contact-footer.py
       - name: Build And Deploy
