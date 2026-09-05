@@ -1,5 +1,11 @@
 {
   "globalHeaders": {
     "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload"
-  }
+  },
+  "routes": [
+    {
+      "route": "/api/academy-kids/*",
+      "allowedRoles": ["authenticated"]
+    }
+  ]
 }
