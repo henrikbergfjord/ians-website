@@ -4,17 +4,17 @@ module.exports = async function (context, req) {
   const health = {ok:true, aiConfigured:!!key, model, service:'IANS Dinner Planner AI', runtime:'v6.1'};
 
   if (req.method === 'GET') {
-    context.res = {status:200, headers:{'Cache-Control':'no-store','Content-Type':'application/json'}, jsonBody:health};
+    context.res = {status:200, headers:{'Cache-Control':'no-store','Content-Type':'application/json'}, body:health};
     return;
   }
   if (req.method !== 'POST') {
-    context.res = {status:405, headers:{'Cache-Control':'no-store'}, jsonBody:{error:'Method not allowed'}};
+    context.res = {status:405, headers:{'Cache-Control':'no-store'}, body:{error:'Method not allowed'}};
     return;
   }
 
   const b = req.body || {};
   if (b.diagnostic === true) {
-    context.res = {status:200, headers:{'Cache-Control':'no-store','Content-Type':'application/json'}, jsonBody:health};
+    context.res = {status:200, headers:{'Cache-Control':'no-store','Content-Type':'application/json'}, body:health};
     return;
   }
 
@@ -47,11 +47,11 @@ module.exports = async function (context, req) {
     let data; try{data=JSON.parse(txt)}catch{context.log.error('Dinner Planner invalid JSON',txt.slice(0,1000));return sendFallback(context,prefs,image,{code:'invalid_ai_json',message:'AI returnerte tekst som ikke kunne valideres som plan.'},'AI svarte i ugyldig format. IANS viser reserveplan.')}
     const valid=normalizePlan(data,prefs); if(!valid.ok)return sendFallback(context,prefs,image,{code:'invalid_ai_plan',message:valid.reason},'AI-planen manglet nødvendige felter. IANS viser reserveplan.');
     data.aiAvailable=true; data.diagnostic={code:'ok',model};
-    context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},jsonBody:data};
+    context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},body:data};
   } catch(e){context.log.error('Dinner Planner exception',e);return sendFallback(context,prefs,image,{code:'exception',message:String(e.message||e)},'AI-tjenesten kunne ikke nås. IANS viser reserveplan.')}
 };
 
-function sendFallback(context,prefs,image,diagnostic,note){const data=fallbackPlan(prefs,image);data.aiAvailable=false;data.diagnostic=diagnostic;data.notes.unshift(note);context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},jsonBody:data}}
+function sendFallback(context,prefs,image,diagnostic,note){const data=fallbackPlan(prefs,image);data.aiAvailable=false;data.diagnostic=diagnostic;data.notes.unshift(note);context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},body:data}}
 function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
 function extractOutputText(body){if(typeof body.output_text==='string')return body.output_text;let s='';for(const item of body.output||[])for(const c of item.content||[])if(c.type==='output_text'&&c.text)s+=c.text;return s}
 function normalizePlan(data,p){if(!data||!Array.isArray(data.meals)||!data.meals.length)return{ok:false,reason:'Mangler meals'};if(data.meals.length<p.days)return{ok:false,reason:`For få middager: ${data.meals.length}/${p.days}`};for(const m of data.meals.slice(0,p.days))if(!m.name||!Array.isArray(m.ingredients)||m.ingredients.length<2||!Array.isArray(m.steps)||m.steps.length<2)return{ok:false,reason:`Ufullstendig oppskrift: ${m.name||'ukjent'}`};data.meals=data.meals.slice(0,p.days);for(const k of ['shopping','extras','notes','detected','savingTips','cookingTips','budgetTips'])if(!Array.isArray(data[k]))data[k]=[];return{ok:true}}

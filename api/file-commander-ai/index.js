@@ -4,17 +4,17 @@ module.exports=async function(context,req){
   const health={ok:true,service:'IANS File Commander AI',runtime:'v2.1',aiConfigured:!!key,model};
 
   if(req.method==='GET'){
-    context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},jsonBody:health};
+    context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},body:health};
     return;
   }
   if(req.method!=='POST'){
-    context.res={status:405,headers:{'Cache-Control':'no-store'},jsonBody:{error:'Method not allowed'}};
+    context.res={status:405,headers:{'Cache-Control':'no-store'},body:{error:'Method not allowed'}};
     return;
   }
 
   const b=req.body||{};
   if(b.diagnostic===true){
-    context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},jsonBody:health};
+    context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},body:health};
     return;
   }
 
@@ -29,7 +29,7 @@ module.exports=async function(context,req){
   }));
 
   if(!inventory.length){
-    context.res={status:200,headers:{'Cache-Control':'no-store'},jsonBody:{analysis:'SITUASJON\nIngen katalogmetadata ble mottatt.\n\nANBEFALT PLAN\nÅpne minst én mappe i File Commander og kjør analysen på nytt.',itemsReceived:0,aiAvailable:false,diagnostic:{code:'empty_inventory'}}};
+    context.res={status:200,headers:{'Cache-Control':'no-store'},body:{analysis:'SITUASJON\nIngen katalogmetadata ble mottatt.\n\nANBEFALT PLAN\nÅpne minst én mappe i File Commander og kjør analysen på nytt.',itemsReceived:0,aiAvailable:false,diagnostic:{code:'empty_inventory'}}};
     return;
   }
 
@@ -55,7 +55,7 @@ module.exports=async function(context,req){
     for(const item of body.output||[])for(const c of item.content||[])if(c.type==='output_text'&&c.text)parts.push(c.text);
     const analysis=parts.join('\n').trim();
     if(!analysis)return sendFallback(context,inventory,q,{code:'empty_ai_response',message:'AI returnerte ikke tekst.'});
-    context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},jsonBody:{analysis,itemsReceived:inventory.length,aiAvailable:true,diagnostic:{code:'ok',model}}};
+    context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},body:{analysis,itemsReceived:inventory.length,aiAvailable:true,diagnostic:{code:'ok',model}}};
   }catch(e){
     context.log.error('File Commander AI exception',e);
     return sendFallback(context,inventory,q,{code:'exception',message:String(e.message||e)});
@@ -83,5 +83,5 @@ function sendFallback(context,inventory,question,diagnostic){
   if(possibleDupes.length)out+='\nMulige navnelikheter som bør undersøkes:\n'+possibleDupes.map(a=>'• '+a.map(x=>x.name).join(' / ')).join('\n')+'\n';
   out+='\nANBEFALT PLAN\n1. Start med de største filene hvis målet er å frigjøre plass.\n2. Samle filer med samme tema eller filtype i tydelige mapper dersom strukturen er uoversiktlig.\n3. Bruk Duplikater/SHA-256 før eventuell sletting av filer som ser like ut.\n4. Kjør AI-analysen på nytt når OpenAI-nøkkelen er konfigurert for en mer språklig og kontekstuell vurdering.';
   out+='\n\nSIKKERHET FØR UTFØRING\nIngen filer er lest eller endret. Analysen bruker bare metadata. Ingen sletting bør gjøres på grunnlag av filnavn alene; verifiser duplikater med hash først.';
-  context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},jsonBody:{analysis:out,itemsReceived:inventory.length,aiAvailable:false,mode:'local-metadata-fallback',diagnostic}};
+  context.res={status:200,headers:{'Cache-Control':'no-store','Content-Type':'application/json'},body:{analysis:out,itemsReceived:inventory.length,aiAvailable:false,mode:'local-metadata-fallback',diagnostic}};
 }
