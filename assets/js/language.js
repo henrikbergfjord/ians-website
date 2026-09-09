@@ -52,11 +52,21 @@ function switcher(){
  sh.querySelectorAll("[data-l]").forEach(b=>b.onclick=e=>{e.stopPropagation();const l=b.dataset.l;localStorage.setItem(KEY,l);location.assign(pageTarget(l))});
  document.addEventListener("pointerdown",e=>{if(!e.composedPath().includes(host))menu.hidden=true},true);
 }
+function loadAcademyFooter(){
+ if(!location.pathname.toLowerCase().startsWith('/academy/'))return;
+ if(document.querySelector('script[data-academy-owner-footer]'))return;
+ const script=document.createElement('script');
+ script.src='/assets/academy-owner-footer.js';
+ script.defer=true;
+ script.dataset.academyOwnerFooter='true';
+ document.body.appendChild(script);
+}
 document.addEventListener("click",e=>{
  const a=e.target.closest?.("a[href]"); if(!a)return;
  const raw=a.getAttribute("href")||"";if(raw.startsWith("#")||raw.startsWith("mailto:")||raw.startsWith("tel:")||a.hasAttribute("download"))return;
  let u;try{u=new URL(a.href,location.href)}catch{return}if(u.origin!==location.origin)return;
  const dest=pageTarget(active,u);if(dest!==u.pathname+u.search+u.hash){e.preventDefault();e.stopImmediatePropagation();location.assign(dest)}
 },true);
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",switcher);else switcher();
+function init(){switcher();loadAcademyFooter();}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
