@@ -1,27 +1,404 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="no">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Academy | Henrik Bergfjord</title>
-  <link rel="stylesheet" href="../assets/styles.css">
-  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <link rel="stylesheet" href="/assets/css/language.css">
-  <link rel="stylesheet" href="../assets/css/ians-next.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Henrik Academy – privat og tilgangsstyrt læringsportal for kraftsystem, prosjektplanlegging og teknisk fagutvikling.">
+  <title>Henrik Academy | ians.no</title>
+
+  <style>
+    :root{
+      --bg:#030b15;
+      --panel:#081725;
+      --panel2:#0b1d2d;
+      --line:#16354d;
+      --text:#f5f8fb;
+      --muted:#9bacbc;
+      --blue:#218cff;
+      --cyan:#13d9ff;
+      --green:#28d99a;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 75% 15%,rgba(33,140,255,.16),transparent 28%),
+        radial-gradient(circle at 20% 75%,rgba(19,217,255,.08),transparent 30%),
+        linear-gradient(180deg,#020911,#06121e 60%,#030a12);
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .topbar{
+      height:72px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      background:rgba(3,11,21,.7);
+      backdrop-filter:blur(14px);
+      display:flex;
+      align-items:center;
+    }
+
+    .nav,.wrap{
+      width:min(1160px,calc(100% - 32px));
+      margin:auto;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .brand{
+      font-weight:850;
+      letter-spacing:-.02em;
+      font-size:1.05rem;
+    }
+
+    .back{
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    .wrap{
+      padding:72px 0 50px;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:28px;
+      align-items:stretch;
+    }
+
+    .hero-main,.side-card,.feature{
+      border:1px solid var(--line);
+      background:linear-gradient(145deg,rgba(11,29,45,.92),rgba(5,18,30,.9));
+      border-radius:26px;
+    }
+
+    .hero-main{
+      padding:54px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-main:after{
+      content:"";
+      position:absolute;
+      width:360px;
+      height:360px;
+      right:-140px;
+      top:-150px;
+      border-radius:50%;
+      border:1px solid rgba(19,217,255,.17);
+      box-shadow:
+        0 0 0 55px rgba(33,140,255,.035),
+        0 0 0 110px rgba(19,217,255,.025);
+    }
+
+    .kicker{
+      display:inline-block;
+      color:var(--cyan);
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.16em;
+      margin-bottom:20px;
+    }
+
+    h1{
+      font-size:clamp(3rem,7vw,6.2rem);
+      letter-spacing:-.065em;
+      line-height:.92;
+      margin:0 0 24px;
+      max-width:760px;
+    }
+
+    h1 span{
+      color:var(--cyan);
+    }
+
+    .lead{
+      color:#c7d3de;
+      font-size:1.13rem;
+      line-height:1.7;
+      max-width:720px;
+      margin:0;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:32px;
+      position:relative;
+      z-index:2;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:50px;
+      padding:0 20px;
+      border-radius:13px;
+      border:1px solid rgba(255,255,255,.14);
+      font-weight:750;
+      background:rgba(255,255,255,.035);
+    }
+
+    .btn.primary{
+      border-color:transparent;
+      background:linear-gradient(135deg,var(--blue),#0874dc);
+      box-shadow:0 12px 32px rgba(33,140,255,.2);
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .side-card{
+      padding:34px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .lock{
+      width:58px;
+      height:58px;
+      border-radius:17px;
+      display:grid;
+      place-items:center;
+      background:rgba(40,217,154,.1);
+      border:1px solid rgba(40,217,154,.25);
+      font-size:1.7rem;
+    }
+
+    .side-card h2{
+      margin:26px 0 12px;
+      font-size:1.55rem;
+    }
+
+    .side-card p{
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .status{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      color:#bdeedc;
+      font-size:.9rem;
+      margin-top:22px;
+    }
+
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--green);
+      box-shadow:0 0 14px var(--green);
+    }
+
+    .section{
+      margin-top:28px;
+    }
+
+    .section h2{
+      margin:0 0 8px;
+      font-size:1.8rem;
+    }
+
+    .section-intro{
+      color:var(--muted);
+      margin:0 0 20px;
+    }
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+
+    .feature{
+      padding:25px;
+    }
+
+    .feature .icon{
+      font-size:1.5rem;
+      margin-bottom:16px;
+    }
+
+    .feature h3{
+      margin:0 0 9px;
+      font-size:1.05rem;
+    }
+
+    .feature p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:.94rem;
+    }
+
+    .license{
+      margin-top:28px;
+      padding:24px 28px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.025);
+      color:var(--muted);
+      line-height:1.65;
+      font-size:.92rem;
+    }
+
+    .license strong{
+      color:var(--text);
+    }
+
+    footer{
+      width:min(1160px,calc(100% - 32px));
+      margin:0 auto;
+      padding:32px 0 42px;
+      color:#718496;
+      font-size:.85rem;
+    }
+
+    @media(max-width:850px){
+      .hero{grid-template-columns:1fr}
+      .features{grid-template-columns:1fr}
+      .hero-main{padding:34px 25px}
+      .side-card{padding:27px}
+      .wrap{padding-top:38px}
+    }
+  </style>
 </head>
+
 <body>
-<header class="topbar"><div class="container nav"><a class="brand" href="/academy/"><span class="brand-mark"></span><span>Academy</span></a><nav class="nav-links"><a href="/">Portal</a><a class="active" href="index.html">Kapitler</a><a href="quiz.html">Quiz</a><a href="minenotater.html">Mine notater</a><a href="ordliste.html">Ordliste</a></nav></div></header>
-<main class="container">
-<section class="page-header"><div class="card hero-panel academy-hero"><div class="academy-hero-content"><span class="kicker">Statnett Academy</span><h1>Kapitler</h1><p>En personlig læringsportal om kraftsystemet, Statnetts samfunnsoppdrag, transmisjonsnettet og planleggerrollen.</p><div class="hero-actions"><a class="button primary" href="planner-program.html">Start Planner-programmet</a></div></div></div></section>
-<section class="section"><div class="section-head"><div><h2>Læringsinnhold</h2><p class="muted">Start med kapittel 1 og bygg kunnskapen steg for steg.</p></div></div><div class="academy-grid">
-<a class="card academy-card available" href="planner-program.html"><div class="academy-card-header"><span class="chapter-number">Plannerprogram</span><span class="badge ok">Ny</span></div><div class="chapter-icon">🎯</div><h2>15 dager til Statnett</h2><p>Én målrettet økt hver ukedag frem til oppstart 1. oktober. Praktisk trening i planstruktur, kritisk linje, milepæler, utkoblinger, HMS, rapportering og Planner-caser.</p><span class="card-link">Start programmet →</span></a>
-<a class="card academy-card available" href="kapittel1.html"><div class="academy-card-header"><span class="chapter-number">Kapittel 1</span><span class="badge ok">Tilgjengelig</span></div><div class="chapter-icon">⚡</div><h2>Kraftsystemet</h2><p>Hvordan strøm produseres, transporteres og leveres til sluttkunden. Dette er grunnmuren for resten av Academy.</p><span class="card-link">Åpne kapittel →</span></a>
-<a class="card academy-card available" href="kapittel2.html"><div class="academy-card-header"><span class="chapter-number">Kapittel 2</span><span class="badge ok">Tilgjengelig</span></div><div class="chapter-icon">🏭</div><h2>Statnett og samfunnsoppdraget</h2><p>Hva Statnett gjør, hvordan transmisjonsnettet utvikles, og hvorfor systemansvaret er kritisk for hele Norge.</p><span class="card-link">Åpne kapittel →</span></a>
-<a class="card academy-card available" href="kapittel3.html"><div class="academy-card-header"><span class="chapter-number">Kapittel 3</span><span class="badge ok">Tilgjengelig</span></div><div class="chapter-icon">🗼</div><h2>420 kV-nettet</h2><p>Hvorfor Statnett oppgraderer fra 300 til 420 kV, hvordan ledningsnettet bygges og hvordan kapasiteten økes.</p><span class="card-link">Åpne kapittel →</span></a>
-<a class="card academy-card available" href="kapittel4.html"><div class="academy-card-header"><span class="chapter-number">Kapittel 4</span><span class="badge ok">Tilgjengelig</span></div><div class="chapter-icon">🔌</div><h2>Transformatorstasjoner</h2><p>Transformatorer, bryterfelt, samleskinner, GIS, AIS, kontrollbygg og de viktigste komponentene i en stasjon.</p><span class="card-link">Åpne kapittel →</span></a>
-<a class="card academy-card available" href="kapittel5.html"><div class="academy-card-header"><span class="chapter-number">Kapittel 5</span><span class="badge ok">Tilgjengelig</span></div><div class="chapter-icon">📅</div><h2>Planleggerrollen</h2><p>Fremdriftsplanlegging, milepæler, avhengigheter, kritisk linje, utkoblinger og koordinering av leveranser.</p><span class="card-link">Åpne kapittel →</span></a>
-<a class="card academy-card available" href="ordliste.html"><div class="academy-card-header"><span class="chapter-number">Oppslagsverk</span><span class="badge ok">Tilgjengelig</span></div><div class="chapter-icon">📖</div><h2>Ordliste</h2><p>Et søkbart oppslagsverk med sentrale begreper innen kraftsystem, stasjoner, kontrollanlegg og prosjektgjennomføring.</p><span class="card-link">Åpne ordliste →</span></a>
-</div></section></main>
-<footer class="footer"><div class="container">Personlig læringsportal – Henrik Bergfjord</div></footer>
-<script src="../assets/academy-lock.js"></script><script src="/assets/js/language.js" defer></script><div class="ians-next-badge">IANS Next · Master</div>
-</body></html>
+
+<header class="topbar">
+  <nav class="nav">
+    <a class="brand" href="/">ians.no</a>
+    <a class="back" href="/">← Tilbake til ians.no</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+
+    <article class="hero-main">
+      <span class="kicker">IANS.NO · LEARNING PLATFORM</span>
+
+      <h1>Henrik <span>Academy</span></h1>
+
+      <p class="lead">
+        En privat læringsportal for faglig utvikling innen kraftsystem,
+        prosjektplanlegging, teknisk infrastruktur og praktisk prosjektarbeid.
+        Academy kombinerer strukturert læring med praktiske case,
+        oppslagsverk, quiz og egne arbeidsnotater.
+      </p>
+
+      <div class="actions">
+        <a class="btn primary"
+           href="https://lively-flower-0d94c1c10.5.azurestaticapps.net/">
+          Logg inn til Academy →
+        </a>
+
+        <a class="btn"
+           href="mailto:henrik.bergfjord@outlook.com?subject=Foresp%C3%B8rsel%20om%20tilgang%20til%20Henrik%20Academy">
+          Be om tilgang
+        </a>
+      </div>
+    </article>
+
+    <aside class="side-card">
+      <div>
+        <div class="lock">🔐</div>
+
+        <h2>Privat og tilgangsstyrt</h2>
+
+        <p>
+          Academy er ikke en offentlig læringsportal. Innlogging krever
+          en godkjent Microsoft-konto og tilgang tildeles individuelt.
+        </p>
+
+        <p>
+          Har du allerede fått tilgang, kan du logge inn direkte.
+          Andre kan sende en forespørsel om tilgang.
+        </p>
+      </div>
+
+      <div class="status">
+        <span class="dot"></span>
+        Microsoft Entra ID · tilgangsstyrt
+      </div>
+    </aside>
+
+  </section>
+
+
+  <section class="section">
+
+    <h2>Hva finnes i Academy?</h2>
+    <p class="section-intro">
+      Innholdet utvikles som en praktisk læringsplattform – fra teori til anvendelse.
+    </p>
+
+    <div class="features">
+
+      <article class="feature">
+        <div class="icon">⚡</div>
+        <h3>Kraftsystem og transmisjonsnett</h3>
+        <p>
+          Strukturert fagstoff om kraftsystemet, transformatorstasjoner,
+          transmisjonsnett og sentrale tekniske begreper.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="icon">📅</div>
+        <h3>Planlegging og prosjektstyring</h3>
+        <p>
+          Fremdriftsplaner, milepæler, avhengigheter, kritisk linje,
+          risiko, rapportering og praktiske prosjektcase.
+        </p>
+      </article>
+
+      <article class="feature">
+        <div class="icon">🧠</div>
+        <h3>Aktiv læring</h3>
+        <p>
+          Quiz, oppslagsverk, egne notater, progresjon og målrettede
+          læringsprogrammer som gjør stoffet praktisk anvendbart.
+        </p>
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <section class="license">
+    <strong>Tilgang og bruk.</strong>
+    Henrik Academy er privat og tilgangsstyrt. Innhold, struktur, tekster,
+    illustrasjoner og øvrig materiale kan ikke kopieres, distribueres,
+    republiseres eller gjøres tilgjengelig for andre uten uttrykkelig tillatelse.
+    Tilgang er personlig og kan tilbakekalles.
+  </section>
+
+</main>
+
+<footer>
+  © 2026 Henrik Bergfjord · Henrik Academy · ians.no
+</footer>
+
+</body>
+</html>
