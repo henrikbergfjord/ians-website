@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Be om tilgang til Henrik Academy.">
+<title>Be om tilgang | Henrik Academy</title>
+
+<style>
+:root{
+  --bg:#030b15;
+  --panel:#081725;
+  --panel2:#0b1d2d;
+  --line:#16354d;
+  --text:#f5f8fb;
+  --muted:#9bacbc;
+  --blue:#218cff;
+  --cyan:#13d9ff;
+  --green:#28d99a;
+  --red:#ff6b6b;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 75% 10%,rgba(33,140,255,.16),transparent 30%),
+    linear-gradient(180deg,#020911,#06121e 65%,#030a12);
+}
+
+a{color:inherit;text-decoration:none}
+
+.topbar{
+  height:72px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;
+  align-items:center;
+  background:rgba(3,11,21,.7);
+  backdrop-filter:blur(14px);
+}
+
+.nav,.wrap{
+  width:min(900px,calc(100% - 32px));
+  margin:auto;
+}
+
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{font-weight:850}
+.back{color:var(--muted);font-size:.92rem}
+
+.wrap{padding:60px 0}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:26px;
+  background:linear-gradient(145deg,rgba(11,29,45,.95),rgba(5,18,30,.93));
+  overflow:hidden;
+}
+
+.head{
+  padding:42px 44px 30px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.kicker{
+  color:var(--cyan);
+  font-size:.73rem;
+  font-weight:900;
+  letter-spacing:.15em;
+}
+
+h1{
+  margin:12px 0 15px;
+  font-size:clamp(2.2rem,6vw,4rem);
+  letter-spacing:-.045em;
+}
+
+.intro{
+  color:#c7d3de;
+  line-height:1.7;
+  max-width:700px;
+}
+
+.form-wrap{padding:38px 44px 44px}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.field{margin-bottom:20px}
+
+label{
+  display:block;
+  font-size:.9rem;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+input,textarea{
+  width:100%;
+  border:1px solid #23435c;
+  background:#06131f;
+  color:var(--text);
+  border-radius:12px;
+  padding:14px 15px;
+  font:inherit;
+  outline:none;
+}
+
+input:focus,textarea:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 0 3px rgba(19,217,255,.08);
+}
+
+textarea{
+  resize:vertical;
+  min-height:150px;
+}
+
+.help{
+  color:var(--muted);
+  font-size:.82rem;
+  line-height:1.5;
+  margin-top:7px;
+}
+
+.check{
+  display:flex;
+  gap:11px;
+  align-items:flex-start;
+  color:#b6c5d2;
+  font-size:.88rem;
+  line-height:1.55;
+  margin:8px 0 24px;
+}
+
+.check input{
+  width:auto;
+  margin-top:4px;
+}
+
+button{
+  width:100%;
+  border:0;
+  border-radius:13px;
+  min-height:54px;
+  background:linear-gradient(135deg,var(--blue),#0874dc);
+  color:white;
+  font-size:1rem;
+  font-weight:800;
+  cursor:pointer;
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+
+.status{
+  display:none;
+  margin-top:20px;
+  padding:16px;
+  border-radius:12px;
+  line-height:1.55;
+}
+
+.status.ok{
+  display:block;
+  border:1px solid rgba(40,217,154,.3);
+  background:rgba(40,217,154,.08);
+  color:#c8f7e5;
+}
+
+.status.error{
+  display:block;
+  border:1px solid rgba(255,107,107,.3);
+  background:rgba(255,107,107,.08);
+  color:#ffd1d1;
+}
+
+.honeypot{
+  position:absolute;
+  left:-10000px;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+
+footer{
+  text-align:center;
+  color:#718496;
+  padding:26px;
+  font-size:.84rem;
+}
+
+@media(max-width:700px){
+  .grid{grid-template-columns:1fr;gap:0}
+  .head,.form-wrap{padding-left:24px;padding-right:24px}
+  .wrap{padding-top:35px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a class="brand" href="/academy/">Henrik Academy</a>
+    <a class="back" href="/academy/">← Tilbake</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+
+  <div class="head">
+    <div class="kicker">TILGANGSFORESPØRSEL</div>
+    <h1>Be om tilgang</h1>
+
+    <p class="intro">
+      Henrik Academy er en privat og tilgangsstyrt læringsportal.
+      Send inn litt informasjon om hvem du er og hvorfor du ønsker tilgang.
+      Forespørselen vurderes individuelt før eventuell tilgang blir opprettet.
+    </p>
+  </div>
+
+  <div class="form-wrap">
+
+    <form id="accessForm">
+
+      <div class="grid">
+
+        <div class="field">
+          <label for="name">Navn *</label>
+          <input id="name" name="name" autocomplete="name" required maxlength="120">
+        </div>
+
+        <div class="field">
+          <label for="email">Microsoft-konto / e-post *</label>
+          <input id="email" name="email" type="email" autocomplete="email" required maxlength="254">
+          <div class="help">
+            Bruk helst e-postadressen du senere skal logge inn med.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="field">
+        <label for="company">Virksomhet / organisasjon</label>
+        <input id="company" name="company" autocomplete="organization" maxlength="160">
+      </div>
+
+      <div class="field">
+        <label for="message">Hvorfor ønsker du tilgang? *</label>
+        <textarea id="message" name="message" required minlength="10" maxlength="5000"
+          placeholder="Fortell kort hva du ønsker å bruke Henrik Academy til."></textarea>
+      </div>
+
+      <div class="honeypot" aria-hidden="true">
+        <label for="website">Nettside</label>
+        <input id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <label class="check">
+        <input id="accept" type="checkbox" required>
+        <span>
+          Jeg forstår at Henrik Academy er privat og tilgangsstyrt,
+          at tilgang er personlig, og at innhold ikke skal kopieres
+          eller deles videre uten tillatelse.
+        </span>
+      </label>
+
+      <button id="submitBtn" type="submit">
+        Send tilgangsforespørsel
+      </button>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    </form>
+
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  © 2026 Henrik Bergfjord · Henrik Academy · ians.no
+</footer>
+
+<script>
+const form = document.getElementById('accessForm');
+const statusBox = document.getElementById('status');
+const button = document.getElementById('submitBtn');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  statusBox.className = 'status';
+  statusBox.textContent = '';
+  button.disabled = true;
+  button.textContent = 'Sender forespørsel …';
+
+  const data = new FormData(form);
+
+  const payload = {
+    name: data.get('name'),
+    email: data.get('email'),
+    company: data.get('company'),
+    message: data.get('message'),
+    website: data.get('website'),
+    type: 'privat',
+    subject: 'Tilgang til Henrik Academy',
+    source: '/academy/be-om-tilgang.html'
+  };
+
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.ok) {
+      throw new Error(result.error || 'Kunne ikke sende forespørselen.');
+    }
+
+    form.reset();
+
+    statusBox.className = 'status ok';
+    statusBox.innerHTML =
+      '<strong>Forespørselen er mottatt.</strong><br>' +
+      'Takk. Tilgangsforespørselen blir vurdert før eventuell tilgang opprettes.';
+
+  } catch (err) {
+
+    statusBox.className = 'status error';
+    statusBox.textContent =
+      err.message || 'Noe gikk galt. Prøv igjen senere.';
+
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Send tilgangsforespørsel';
+  }
+});
+</script>
+
+</body>
+</html>
