@@ -15,22 +15,22 @@ function clean(v, max) { return String(v || '').trim().slice(0, max); }
 function json(status, body) { return { status, headers: { 'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store' }, body }; }
 function escapeHtml(value) { return String(value || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
 
-async function sendAcademyNotification(data, context, kind) {
+async function sendIansNotification(data, context, options) {
   const connectionString = process.env.COMMUNICATION_SERVICES_CONNECTION_STRING;
   const sender = process.env.ACADEMY_EMAIL_SENDER;
   const recipient = process.env.ACADEMY_EMAIL_RECIPIENT;
   if (!connectionString || !sender || !recipient) {
-    context.log.warn('Academy email notification skipped: email environment variables are missing.');
+    context.log.warn('IANS email notification skipped: email environment variables are missing.');
     return false;
   }
   const client = new EmailClient(connectionString);
-  const isAccess = kind === 'access';
-  const heading = isAccess ? 'Ny tilgangsforespørsel – Henrik Academy' : 'Ny kontaktmelding – Henrik Academy';
-  const plainText = [heading,'',`Navn: ${data.name}`,`E-post: ${data.email}`,`Virksomhet / organisasjon: ${data.company || 'Ikke oppgitt'}`,'',isAccess ? 'Begrunnelse:' : 'Melding:',data.message,'',`Tidspunkt: ${data.createdAt}`,`Kilde: ${data.source || ''}`].join('\n');
-  const html = `<h2>${escapeHtml(heading)}</h2><p><strong>Navn:</strong> ${escapeHtml(data.name)}<br><strong>E-post:</strong> ${escapeHtml(data.email)}<br><strong>Virksomhet / organisasjon:</strong> ${escapeHtml(data.company || 'Ikke oppgitt')}</p><p><strong>${isAccess ? 'Begrunnelse' : 'Melding'}:</strong></p><p>${escapeHtml(data.message).replace(/\n/g,'<br>')}</p><hr><p style="color:#666;font-size:12px">Tidspunkt: ${escapeHtml(data.createdAt)}<br>Kilde: ${escapeHtml(data.source || '')}</p>`;
-  const poller = await client.beginSend({ senderAddress: sender, content: { subject: `${isAccess ? 'Ny tilgangsforespørsel' : 'Ny Academy-melding'} – ${data.name}`, plainText, html }, recipients: { to: [{ address: recipient, displayName:'Henrik Bergfjord' }] } });
+  const heading = options.heading;
+  const label = options.label || 'Melding';
+  const plainText = [heading,'',`Navn: ${data.name}`,`E-post: ${data.email}`,`Virksomhet / organisasjon: ${data.company || 'Ikke oppgitt'}`,'',`${label}:`,data.message,'',`Tidspunkt: ${data.createdAt}`,`Kilde: ${data.source || ''}`].join('\n');
+  const html = `<h2>${escapeHtml(heading)}</h2><p><strong>Navn:</strong> ${escapeHtml(data.name)}<br><strong>E-post:</strong> ${escapeHtml(data.email)}<br><strong>Virksomhet / organisasjon:</strong> ${escapeHtml(data.company || 'Ikke oppgitt')}</p><p><strong>${escapeHtml(label)}:</strong></p><p>${escapeHtml(data.message).replace(/\n/g,'<br>')}</p><hr><p style="color:#666;font-size:12px">Tidspunkt: ${escapeHtml(data.createdAt)}<br>Kilde: ${escapeHtml(data.source || '')}</p>`;
+  const poller = await client.beginSend({ senderAddress: sender, content: { subject: `${options.subjectPrefix} – ${data.name}`, plainText, html }, recipients: { to: [{ address: recipient, displayName:'Henrik Bergfjord' }] } });
   const result = await poller.pollUntilDone();
-  context.log(`Academy email notification status: ${result.status || 'unknown'}`);
+  context.log(`IANS email notification status: ${result.status || 'unknown'}`);
   return true;
 }
 
@@ -50,12 +50,22 @@ module.exports = async function (context, req) {
 
     const isAcademyRequest = subject === 'Tilgang til Henrik Academy' || source === '/academy/be-om-tilgang.html';
     const isAcademyContact = source === '/academy/kontakt.html';
-    if (isAcademyRequest || isAcademyContact) {
-      try { await sendAcademyNotification(entity, context, isAcademyRequest ? 'access' : 'contact'); }
-      catch (emailError) { context.log.error('Academy message was stored, but email notification failed:', emailError); }
+    const isAxionRequest = subject === 'Tilgang til Axion Grid' || source === '/axion-grid/be-om-tilgang.html';
+
+    try {
+      if (isAcademyRequest) await sendIansNotification(entity, context, { heading:'Ny tilgangsforespørsel – Henrik Academy', subjectPrefix:'Ny tilgangsforespørsel – Henrik Academy', label:'Begrunnelse' });
+      else if (isAcademyContact) await sendIansNotification(entity, context, { heading:'Ny kontaktmelding – Henrik Academy', subjectPrefix:'Ny Academy-melding', label:'Melding' });
+      else if (isAxionRequest) await sendIansNotification(entity, context, { heading:'Ny tilgangsforespørsel – Axion Grid', subjectPrefix:'Ny Axion Grid-forespørsel', label:'Begrunnelse' });
+    } catch (emailError) {
+      context.log.error('Message was stored, but email notification failed:', emailError);
     }
 
-    context.res = json(201,{ok:true,message:isAcademyRequest?'Tilgangsforespørselen er mottatt.':isAcademyContact?'Takk. Meldingen er sendt til Henrik Academy.':'Takk. Henvendelsen er mottatt av IANS.'});
+    const responseMessage = isAcademyRequest || isAxionRequest
+      ? 'Tilgangsforespørselen er mottatt.'
+      : isAcademyContact
+        ? 'Takk. Meldingen er sendt til Henrik Academy.'
+        : 'Takk. Henvendelsen er mottatt av IANS.';
+    context.res = json(201,{ok:true,message:responseMessage});
   } catch (e) {
     context.log.error(e);
     context.res = json(500,{ok:false,error:'Kunne ikke sende henvendelsen akkurat nå.'});
