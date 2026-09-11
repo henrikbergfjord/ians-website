@@ -4,72 +4,31 @@
   },
   "routes": [
     {
+      "route": "/axion-grid/admin/*",
+      "allowedRoles": ["AxionAdmin", "AxionOwner"]
+    },
+    {
+      "route": "/axion-grid/customer/*",
+      "allowedRoles": ["AxionCustomer", "AxionAdmin", "AxionOwner"]
+    },
+    {
       "route": "/axion-grid/app/*",
-      "allowedRoles": [
-        "AxionUser",
-        "AxionAdmin"
-      ]
+      "allowedRoles": ["AxionUser", "AxionCustomer", "AxionAdmin", "AxionOwner"]
     },
     {
       "route": "/api/academy-kids/*",
-      "allowedRoles": [
-        "authenticated"
-      ]
+      "allowedRoles": ["authenticated"]
     },
-    {
-      "route": "/academy/planner-program.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/kapittel1.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/kapittel2.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/kapittel3.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/kapittel4.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/kapittel5.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/quiz.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/minenotater.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/ordliste.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/vedtak-og-kilder.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/academy.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    }
+    {"route":"/academy/planner-program.html","redirect":"/academy/","statusCode":301},
+    {"route":"/academy/kapittel1.html","redirect":"/academy/","statusCode":301},
+    {"route":"/academy/kapittel2.html","redirect":"/academy/","statusCode":301},
+    {"route":"/academy/kapittel3.html","redirect":"/academy/","statusCode":301},
+    {"route":"/academy/kapittel4.html","redirect":"/academy/","statusCode":301},
+    {"route":"/academy/kapittel5.html","redirect":"/academy/","statusCode":301},
+    {"route":"/academy/quiz.html","redirect":"/academy/","statusCode":301},
+    {"route":"/academy/minenotater.html","redirect":"/academy/","statusCode":301},
+    {"route":"/academy/ordliste.html","redirect":"/academy/","statusCode":301},
+    {"route":"/academy/vedtak-og-kilder.html","redirect":"/academy/","statusCode":301},
+    {"route":"/academy/academy.html","redirect":"/academy/","statusCode":301}
   ]
 }
