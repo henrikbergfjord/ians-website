@@ -4,6 +4,14 @@
   },
   "routes": [
     {
+      "route": "/admin/*",
+      "allowedRoles": ["IansAdmin", "AxionAdmin", "AxionOwner"]
+    },
+    {
+      "route": "/api/azure-cost",
+      "allowedRoles": ["IansAdmin", "AxionAdmin", "AxionOwner"]
+    },
+    {
       "route": "/axion-grid/admin/*",
       "allowedRoles": ["AxionAdmin", "AxionOwner"]
     },
