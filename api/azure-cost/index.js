@@ -28,9 +28,10 @@ function readPrincipal(req) {
   }
 }
 
-function isAdmin(principal) {
+function isIansAdmin(principal) {
   const roles = (principal?.userRoles || []).map(r => String(r).toLowerCase());
-  return roles.includes('iansadmin') || roles.includes('axionadmin') || roles.includes('axionowner');
+  const user = String(principal?.userDetails || '').trim().toLowerCase();
+  return roles.includes('iansadmin') || user === 'henrik.bergfjord@outlook.com';
 }
 
 async function getToken(tenantId, clientId, clientSecret) {
@@ -98,7 +99,7 @@ module.exports = async function (context, req) {
   try {
     const principal = readPrincipal(req);
     if (!principal) return context.res = json(401, { error: 'Microsoft sign-in required.' });
-    if (!isAdmin(principal)) return context.res = json(403, { error: 'Administrator role required.' });
+    if (!isIansAdmin(principal)) return context.res = json(403, { error: 'IANS administrator access required.' });
 
     const tenantId = process.env.AZURE_TENANT_ID;
     const clientId = process.env.AZURE_CLIENT_ID;
@@ -111,7 +112,6 @@ module.exports = async function (context, req) {
     const token = await getToken(tenantId, clientId, clientSecret);
     const aggregation = { totalCost: { name: 'PreTaxCost', function: 'Sum' } };
 
-    // Mandatory foundation: the same simple MonthToDate query already verified against Azure.
     const mtdProps = await costQuery(token, subscriptionId, {
       type: 'Usage', timeframe: 'MonthToDate',
       dataset: { granularity: 'None', aggregation }
