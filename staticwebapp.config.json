@@ -4,6 +4,13 @@
   },
   "routes": [
     {
+      "route": "/axion-grid/app/*",
+      "allowedRoles": [
+        "AxionUser",
+        "AxionAdmin"
+      ]
+    },
+    {
       "route": "/api/academy-kids/*",
       "allowedRoles": [
         "authenticated"
