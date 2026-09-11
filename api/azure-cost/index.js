@@ -17,24 +17,13 @@ function safeEqual(a, b) {
   return aa.length === bb.length && crypto.timingSafeEqual(aa, bb);
 }
 
-function isoDate(d) {
-  return d.toISOString().slice(0, 10);
+function num(v) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
 }
 
-function isoDateTime(d) {
-  return d.toISOString();
-}
-
-function startOfUtcMonth(d) {
-  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
-}
-
-function addUtcMonths(d, n) {
-  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + n, 1));
-}
-
-function daysInUtcMonth(d) {
-  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate();
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function getToken(tenantId, clientId, clientSecret) {
@@ -55,7 +44,7 @@ async function getToken(tenantId, clientId, clientSecret) {
   return data.access_token;
 }
 
-async function costQuery(token, subscriptionId, payload) {
+async function costQuery(token, subscriptionId, payload, attempt = 0) {
   const scope = `/subscriptions/${subscriptionId}`;
   const url = `https://management.azure.com${scope}/providers/Microsoft.CostManagement/query?api-version=2026-06-01`;
   const r = await fetch(url, {
@@ -66,12 +55,25 @@ async function costQuery(token, subscriptionId, payload) {
     },
     body: JSON.stringify(payload)
   });
+
+  if (r.status === 204) return { columns: [], rows: [] };
+
   const data = await r.json().catch(() => ({}));
+
+  if (r.status === 429 && attempt < 2) {
+    const retryAfter = Math.max(1, Math.min(8, Number(r.headers.get('retry-after')) || (attempt + 1) * 2));
+    await sleep(retryAfter * 1000);
+    return costQuery(token, subscriptionId, payload, attempt + 1);
+  }
+
   if (!r.ok) {
     const msg = data?.error?.message || data?.error?.code || `Azure Cost Management returned ${r.status}`;
-    throw new Error(msg);
+    const error = new Error(msg);
+    error.status = r.status;
+    throw error;
   }
-  return data?.properties || {};
+
+  return data?.properties || { columns: [], rows: [] };
 }
 
 function rowsAsObjects(properties) {
@@ -79,9 +81,22 @@ function rowsAsObjects(properties) {
   return (properties.rows || []).map(row => Object.fromEntries(names.map((name, i) => [name, row[i]])));
 }
 
-function num(v) {
-  const n = Number(v);
-  return Number.isFinite(n) ? n : 0;
+function totalFrom(properties) {
+  const rows = rowsAsObjects(properties);
+  const first = rows[0] || {};
+  return {
+    cost: num(first.PreTaxCost ?? first.Cost ?? first.totalCost ?? (properties.rows?.[0]?.[0])),
+    currency: String(first.Currency ?? properties.rows?.[0]?.[1] ?? 'NOK')
+  };
+}
+
+async function optionalQuery(context, label, fn, fallback) {
+  try {
+    return await fn();
+  } catch (err) {
+    context.log.warn(`azure-cost optional query failed: ${label}: ${err.message}`);
+    return fallback;
+  }
 }
 
 module.exports = async function (context, req) {
@@ -101,79 +116,91 @@ module.exports = async function (context, req) {
       });
     }
 
-    const now = new Date();
-    const thisStart = startOfUtcMonth(now);
-    const nextStart = addUtcMonths(thisStart, 1);
-    const prevStart = addUtcMonths(thisStart, -1);
-    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-    const queryTo = new Date(Math.min(Date.now(), nextStart.getTime() - 1000));
-
     const token = await getToken(tenantId, clientId, clientSecret);
-    const baseAggregation = { totalCost: { name: 'PreTaxCost', function: 'Sum' } };
+    const aggregation = { totalCost: { name: 'PreTaxCost', function: 'Sum' } };
 
-    const dailyProps = await costQuery(token, subscriptionId, {
+    // This is deliberately the same simple MonthToDate query verified directly against Azure.
+    const mtdProps = await costQuery(token, subscriptionId, {
       type: 'Usage',
-      timeframe: 'Custom',
-      timePeriod: { from: isoDateTime(prevStart), to: isoDateTime(queryTo) },
-      dataset: { granularity: 'Daily', aggregation: baseAggregation }
-    });
-
-    const serviceProps = await costQuery(token, subscriptionId, {
-      type: 'Usage',
-      timeframe: 'Custom',
-      timePeriod: { from: isoDateTime(thisStart), to: isoDateTime(queryTo) },
+      timeframe: 'MonthToDate',
       dataset: {
         granularity: 'None',
-        aggregation: baseAggregation,
-        grouping: [{ type: 'Dimension', name: 'ServiceName' }]
+        aggregation
       }
     });
+    const mtd = totalFrom(mtdProps);
 
-    const dailyRows = rowsAsObjects(dailyProps).map(r => {
+    const previousProps = await optionalQuery(context, 'previous-month', () => costQuery(token, subscriptionId, {
+      type: 'Usage',
+      timeframe: 'TheLastMonth',
+      dataset: {
+        granularity: 'None',
+        aggregation
+      }
+    }), { columns: [], rows: [] });
+    const previous = totalFrom(previousProps);
+
+    const dailyProps = await optionalQuery(context, 'daily', () => costQuery(token, subscriptionId, {
+      type: 'Usage',
+      timeframe: 'MonthToDate',
+      dataset: {
+        granularity: 'Daily',
+        aggregation
+      }
+    }), { columns: [], rows: [] });
+
+    const serviceProps = await optionalQuery(context, 'services', () => costQuery(token, subscriptionId, {
+      type: 'Usage',
+      timeframe: 'MonthToDate',
+      dataset: {
+        granularity: 'None',
+        aggregation,
+        grouping: [{ type: 'Dimension', name: 'ServiceName' }]
+      }
+    }), { columns: [], rows: [] });
+
+    const daily = rowsAsObjects(dailyProps).map(r => {
       const rawDate = String(r.UsageDate ?? r.Date ?? '');
       const date = /^\d{8}$/.test(rawDate)
-        ? `${rawDate.slice(0,4)}-${rawDate.slice(4,6)}-${rawDate.slice(6,8)}`
-        : rawDate.slice(0,10);
+        ? `${rawDate.slice(0, 4)}-${rawDate.slice(4, 6)}-${rawDate.slice(6, 8)}`
+        : rawDate.slice(0, 10);
       return {
         date,
         cost: num(r.PreTaxCost ?? r.Cost ?? r.totalCost),
-        currency: r.Currency || ''
+        currency: r.Currency || mtd.currency
       };
     }).filter(x => x.date);
-
-    const thisPrefix = isoDate(thisStart).slice(0, 7);
-    const prevPrefix = isoDate(prevStart).slice(0, 7);
-    const currentDaily = dailyRows.filter(x => x.date.startsWith(thisPrefix));
-    const previousDaily = dailyRows.filter(x => x.date.startsWith(prevPrefix));
-    const monthToDate = currentDaily.reduce((s, x) => s + x.cost, 0);
-    const previousMonth = previousDaily.reduce((s, x) => s + x.cost, 0);
-
-    const elapsedDays = Math.max(1, today.getUTCDate());
-    const projected = monthToDate / elapsedDays * daysInUtcMonth(now);
-    const currency = currentDaily.find(x => x.currency)?.currency || previousDaily.find(x => x.currency)?.currency || 'NOK';
-    const budget = num(process.env.AZURE_COST_BUDGET || 0);
 
     const services = rowsAsObjects(serviceProps).map(r => ({
       name: String(r.ServiceName || r.Service || 'Other'),
       cost: num(r.PreTaxCost ?? r.Cost ?? r.totalCost),
-      currency: r.Currency || currency
+      currency: r.Currency || mtd.currency
     })).sort((a, b) => b.cost - a.cost);
+
+    const now = new Date();
+    const elapsedDays = Math.max(1, now.getUTCDate());
+    const daysInMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0)).getUTCDate();
+    const projected = mtd.cost / elapsedDays * daysInMonth;
+    const budget = num(process.env.AZURE_COST_BUDGET || 0);
 
     context.res = json(200, {
       generatedAt: new Date().toISOString(),
       subscription: { idSuffix: subscriptionId.slice(-6) },
-      currency,
-      monthToDate,
+      currency: mtd.currency || previous.currency || 'NOK',
+      monthToDate: mtd.cost,
       projectedMonthEnd: projected,
-      previousMonth,
+      previousMonth: previous.cost,
       budget: budget > 0 ? budget : null,
-      budgetUsedPercent: budget > 0 ? (monthToDate / budget) * 100 : null,
-      daily: currentDaily,
+      budgetUsedPercent: budget > 0 ? (mtd.cost / budget) * 100 : null,
+      daily,
       services,
       note: 'Azure Cost Management data can be delayed compared with real-time resource usage.'
     });
   } catch (err) {
     context.log.error('azure-cost', err);
-    context.res = json(502, { error: 'Could not retrieve Azure cost data.' });
+    context.res = json(502, {
+      error: 'Could not retrieve Azure cost data.',
+      detail: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
   }
 };
