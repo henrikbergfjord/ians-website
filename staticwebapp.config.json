@@ -9,10 +9,6 @@
     },
     {
       "route": "/axion-grid/customer/*",
-      "allowedRoles": ["AxionCustomer", "AxionAdmin", "AxionOwner"]
-    },
-    {
-      "route": "/axion-grid/app/*",
       "allowedRoles": ["AxionUser", "AxionCustomer", "AxionAdmin", "AxionOwner"]
     },
     {
