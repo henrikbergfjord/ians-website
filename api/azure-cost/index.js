@@ -21,6 +21,10 @@ function isoDate(d) {
   return d.toISOString().slice(0, 10);
 }
 
+function isoDateTime(d) {
+  return d.toISOString();
+}
+
 function startOfUtcMonth(d) {
   return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
 }
@@ -110,14 +114,14 @@ module.exports = async function (context, req) {
     const dailyProps = await costQuery(token, subscriptionId, {
       type: 'Usage',
       timeframe: 'Custom',
-      timePeriod: { from: isoDate(prevStart), to: isoDate(queryTo) },
+      timePeriod: { from: isoDateTime(prevStart), to: isoDateTime(queryTo) },
       dataset: { granularity: 'Daily', aggregation: baseAggregation }
     });
 
     const serviceProps = await costQuery(token, subscriptionId, {
       type: 'Usage',
       timeframe: 'Custom',
-      timePeriod: { from: isoDate(thisStart), to: isoDate(queryTo) },
+      timePeriod: { from: isoDateTime(thisStart), to: isoDateTime(queryTo) },
       dataset: {
         granularity: 'None',
         aggregation: baseAggregation,
