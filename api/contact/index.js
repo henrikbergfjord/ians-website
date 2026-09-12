@@ -44,7 +44,7 @@ async function sendIansNotification(data, context, options) {
     const poller = await client.beginSend({ senderAddress: sender, content: { subject: `${options.subjectPrefix} – ${data.name}`, plainText, html }, recipients: { to: [{ address: recipient, displayName:'Henrik Bergfjord' }] } });
     const result = await poller.pollUntilDone();
     context.log(`IANS email notification status: ${result.status || 'unknown'}`);
-    return true;
+    return result.status === 'Succeeded';
   } catch (e) {
     context.log.error('IANS email notification failed:', e);
     return false;

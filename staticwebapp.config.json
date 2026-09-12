@@ -4,35 +4,126 @@
   },
   "routes": [
     {
+      "route": "/axion-grid/admin",
+      "redirect": "/axion-grid/admin/",
+      "statusCode": 302
+    },
+    {
+      "route": "/axion-grid/customer",
+      "redirect": "/axion-grid/customer/",
+      "statusCode": 302
+    },
+    {
+      "route": "/api/axion-advisor",
+      "allowedRoles": [
+        "AxionReader",
+        "axionreader",
+        "AxionUser",
+        "axionuser",
+        "AxionCustomer",
+        "axioncustomer",
+        "AxionAdmin",
+        "axionadmin",
+        "AxionOwner",
+        "axionowner"
+      ]
+    },
+    {
       "route": "/admin/*",
-      "allowedRoles": ["authenticated"]
+      "allowedRoles": [
+        "authenticated"
+      ]
     },
     {
       "route": "/api/azure-cost",
-      "allowedRoles": ["authenticated"]
+      "allowedRoles": [
+        "authenticated"
+      ]
     },
     {
       "route": "/axion-grid/admin/*",
-      "allowedRoles": ["AxionAdmin", "AxionOwner"]
+      "allowedRoles": [
+        "AxionAdmin",
+        "axionadmin",
+        "AxionOwner",
+        "axionowner"
+      ]
     },
     {
       "route": "/axion-grid/customer/*",
-      "allowedRoles": ["AxionUser", "AxionCustomer", "AxionAdmin", "AxionOwner"]
+      "allowedRoles": [
+        "AxionReader",
+        "axionreader",
+        "AxionUser",
+        "axionuser",
+        "AxionCustomer",
+        "axioncustomer",
+        "AxionAdmin",
+        "axionadmin",
+        "AxionOwner",
+        "axionowner"
+      ]
     },
     {
       "route": "/api/academy-kids/*",
-      "allowedRoles": ["authenticated"]
+      "allowedRoles": [
+        "authenticated"
+      ]
     },
-    {"route":"/academy/planner-program.html","redirect":"/academy/","statusCode":301},
-    {"route":"/academy/kapittel1.html","redirect":"/academy/","statusCode":301},
-    {"route":"/academy/kapittel2.html","redirect":"/academy/","statusCode":301},
-    {"route":"/academy/kapittel3.html","redirect":"/academy/","statusCode":301},
-    {"route":"/academy/kapittel4.html","redirect":"/academy/","statusCode":301},
-    {"route":"/academy/kapittel5.html","redirect":"/academy/","statusCode":301},
-    {"route":"/academy/quiz.html","redirect":"/academy/","statusCode":301},
-    {"route":"/academy/minenotater.html","redirect":"/academy/","statusCode":301},
-    {"route":"/academy/ordliste.html","redirect":"/academy/","statusCode":301},
-    {"route":"/academy/vedtak-og-kilder.html","redirect":"/academy/","statusCode":301},
-    {"route":"/academy/academy.html","redirect":"/academy/","statusCode":301}
+    {
+      "route": "/academy/planner-program.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel1.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel2.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel3.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel4.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel5.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/quiz.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/minenotater.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/ordliste.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/vedtak-og-kilder.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/academy.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    }
   ]
 }

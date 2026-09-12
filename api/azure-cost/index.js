@@ -29,7 +29,7 @@ function readPrincipal(req) {
 }
 
 function isIansAdmin(principal) {
-  const roles = (principal?.userRoles || []).map(r => String(r).toLowerCase());
+  const roles = (Array.isArray(principal?.userRoles) ? principal.userRoles : []).map(r => String(r).toLowerCase());
   const user = String(principal?.userDetails || '').trim().toLowerCase();
   return roles.includes('iansadmin') || user === 'henrik.bergfjord@outlook.com';
 }
@@ -52,7 +52,7 @@ async function getToken(tenantId, clientId, clientSecret) {
 }
 
 async function costQuery(token, subscriptionId, payload, attempt = 0) {
-  const url = `https://management.azure.com/subscriptions/${subscriptionId}/providers/Microsoft.CostManagement/query?api-version=2026-06-01`;
+  const url = `https://management.azure.com/subscriptions/${subscriptionId}/providers/Microsoft.CostManagement/query?api-version=2025-03-01`;
   const r = await fetch(url, {
     method: 'POST',
     headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
@@ -79,6 +79,7 @@ function rowsAsObjects(properties) {
 }
 
 function totalFrom(properties) {
+  if (properties.unavailable) return { cost: null, currency: null };
   const rows = rowsAsObjects(properties);
   const first = rows[0] || {};
   return {
@@ -91,7 +92,7 @@ async function optionalQuery(context, label, fn, fallback) {
   try { return await fn(); }
   catch (err) {
     context.log.warn(`azure-cost optional query failed: ${label}: ${err.message}`);
-    return fallback;
+    return { ...fallback, unavailable: true };
   }
 }
 
@@ -140,7 +141,7 @@ module.exports = async function (context, req) {
         ? `${rawDate.slice(0,4)}-${rawDate.slice(4,6)}-${rawDate.slice(6,8)}`
         : rawDate.slice(0,10);
       return { date, cost: num(r.PreTaxCost ?? r.Cost ?? r.totalCost), currency: r.Currency || mtd.currency };
-    }).filter(x => x.date);
+    }).filter(x => x.date).sort((a, b) => a.date.localeCompare(b.date));
 
     const services = rowsAsObjects(serviceProps).map(r => ({
       name: String(r.ServiceName || r.Service || 'Other'),
@@ -162,6 +163,11 @@ module.exports = async function (context, req) {
       monthToDate: mtd.cost,
       projectedMonthEnd: projected,
       previousMonth: previous.cost,
+      warnings: [
+        previousProps.unavailable && 'Forrige måneds kostnad kunne ikke hentes.',
+        dailyProps.unavailable && 'Daglige kostnader kunne ikke hentes.',
+        serviceProps.unavailable && 'Kostnader per tjeneste kunne ikke hentes.'
+      ].filter(Boolean),
       budget: budget > 0 ? budget : null,
       budgetUsedPercent: budget > 0 ? (mtd.cost / budget) * 100 : null,
       daily,
