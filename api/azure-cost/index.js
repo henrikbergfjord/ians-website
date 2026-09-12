@@ -14,6 +14,13 @@ function num(v) {
   return Number.isFinite(n) ? n : 0;
 }
 
+function optionalAmount(name) {
+  const raw = process.env[name];
+  if (raw === undefined || raw === null || String(raw).trim() === '') return null;
+  const n = Number(String(raw).replace(',', '.'));
+  return Number.isFinite(n) ? n : null;
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -96,6 +103,23 @@ async function optionalQuery(context, label, fn, fallback) {
   }
 }
 
+async function resourceGroupQuery(context, token, subscriptionId, aggregation) {
+  const names = ['ResourceGroupName', 'ResourceGroup'];
+  let lastError;
+  for (const name of names) {
+    try {
+      return await costQuery(token, subscriptionId, {
+        type: 'Usage', timeframe: 'MonthToDate',
+        dataset: { granularity: 'None', aggregation, grouping: [{ type: 'Dimension', name }] }
+      });
+    } catch (err) {
+      lastError = err;
+      context.log.warn(`azure-cost resource-group grouping ${name} failed: ${err.message}`);
+    }
+  }
+  throw lastError || new Error('Resource group cost query failed');
+}
+
 module.exports = async function (context, req) {
   try {
     const principal = readPrincipal(req);
@@ -135,6 +159,8 @@ module.exports = async function (context, req) {
       dataset: { granularity: 'None', aggregation, grouping: [{ type: 'Dimension', name: 'ServiceName' }] }
     }), { columns: [], rows: [] });
 
+    const groupProps = await optionalQuery(context, 'resource-groups', () => resourceGroupQuery(context, token, subscriptionId, aggregation), { columns: [], rows: [] });
+
     const daily = rowsAsObjects(dailyProps).map(r => {
       const rawDate = String(r.UsageDate ?? r.Date ?? '');
       const date = /^\d{8}$/.test(rawDate)
@@ -149,11 +175,29 @@ module.exports = async function (context, req) {
       currency: r.Currency || mtd.currency
     })).sort((a,b) => b.cost - a.cost);
 
+    const resourceGroups = rowsAsObjects(groupProps).map(r => ({
+      name: String(r.ResourceGroupName || r.ResourceGroup || r.ResourceGroupName_s || 'Other'),
+      cost: num(r.PreTaxCost ?? r.Cost ?? r.totalCost),
+      currency: r.Currency || mtd.currency
+    })).filter(x => x.name && x.name !== 'Other').sort((a,b) => b.cost - a.cost);
+
     const now = new Date();
     const elapsedDays = Math.max(1, now.getUTCDate());
     const daysInMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0)).getUTCDate();
     const projected = mtd.cost / elapsedDays * daysInMonth;
     const budget = num(process.env.AZURE_COST_BUDGET || 0);
+
+    const externalCosts = [
+      { key:'openai', name:'OpenAI API', category:'AI', amount:optionalAmount('IANS_COST_OPENAI_MONTHLY'), source:'manual' },
+      { key:'microsoft', name:'Microsoft 365 / Entra ID', category:'Microsoft', amount:optionalAmount('IANS_COST_MICROSOFT_MONTHLY'), source:'manual' },
+      { key:'github', name:'GitHub', category:'Development', amount:optionalAmount('IANS_COST_GITHUB_MONTHLY'), source:'manual' },
+      { key:'domains', name:'Domener / DNS', category:'Web', amount:optionalAmount('IANS_COST_DOMAINS_MONTHLY'), source:'manual' },
+      { key:'other', name:'Andre faste tjenester', category:'Other', amount:optionalAmount('IANS_COST_OTHER_MONTHLY'), source:'manual' }
+    ].map(x => ({ ...x, configured:x.amount !== null, currency:'NOK' }));
+
+    const externalConfiguredTotal = externalCosts.reduce((sum, x) => sum + (x.amount ?? 0), 0);
+    const knownMonthTotal = (mtd.cost ?? 0) + externalConfiguredTotal;
+    const projectedKnownMonthTotal = (projected ?? 0) + externalConfiguredTotal;
 
     context.res = json(200, {
       generatedAt: new Date().toISOString(),
@@ -163,16 +207,22 @@ module.exports = async function (context, req) {
       monthToDate: mtd.cost,
       projectedMonthEnd: projected,
       previousMonth: previous.cost,
+      knownMonthTotal,
+      projectedKnownMonthTotal,
+      externalConfiguredTotal,
+      externalCosts,
       warnings: [
         previousProps.unavailable && 'Forrige måneds kostnad kunne ikke hentes.',
         dailyProps.unavailable && 'Daglige kostnader kunne ikke hentes.',
-        serviceProps.unavailable && 'Kostnader per tjeneste kunne ikke hentes.'
+        serviceProps.unavailable && 'Kostnader per tjeneste kunne ikke hentes.',
+        groupProps.unavailable && 'Kostnader per Azure-ressursgruppe kunne ikke hentes.'
       ].filter(Boolean),
       budget: budget > 0 ? budget : null,
       budgetUsedPercent: budget > 0 ? (mtd.cost / budget) * 100 : null,
       daily,
       services,
-      note: 'Azure Cost Management data can be delayed compared with real-time resource usage.'
+      resourceGroups,
+      note: 'Azure is actual usage. External monthly costs are included only when configured and are marked as manual/fixed amounts.'
     });
   } catch (err) {
     context.log.error('azure-cost', err);
