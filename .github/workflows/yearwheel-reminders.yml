@@ -1,0 +1,23 @@
+name: IANS Year Wheel Reminders
+
+on:
+  schedule:
+    - cron: '15 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run reminder check
+        env:
+          YEARWHEEL_NOTIFY_KEY: ${{ secrets.YEARWHEEL_NOTIFY_KEY }}
+        run: |
+          if [ -z "$YEARWHEEL_NOTIFY_KEY" ]; then
+            echo "YEARWHEEL_NOTIFY_KEY secret is not configured."
+            exit 1
+          fi
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "x-ians-notify-key: $YEARWHEEL_NOTIFY_KEY" \
+            https://www.ians.no/api/yearwheel-notify
