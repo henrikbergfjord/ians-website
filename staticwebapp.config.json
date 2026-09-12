@@ -20,6 +20,10 @@
       "allowedRoles": ["authenticated"]
     },
     {
+      "route": "/api/maintenance-plan",
+      "allowedRoles": ["authenticated"]
+    },
+    {
       "route": "/api/academy-kids/*",
       "allowedRoles": ["authenticated"]
     },
