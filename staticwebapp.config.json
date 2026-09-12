@@ -4,10 +4,20 @@
   },
   "routes": [
     {
+      "route": "/sameie-aarshjul/*",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/yearwheel",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/api/yearwheel-email",
+      "allowedRoles": ["authenticated"]
+    },
+    {
       "route": "/api/academy-kids/*",
-      "allowedRoles": [
-        "authenticated"
-      ]
+      "allowedRoles": ["authenticated"]
     },
     {
       "route": "/academy/planner-program.html",
