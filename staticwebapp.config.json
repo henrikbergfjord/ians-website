@@ -16,6 +16,10 @@
       "allowedRoles": ["authenticated"]
     },
     {
+      "route": "/api/yearwheel-calendar",
+      "allowedRoles": ["authenticated"]
+    },
+    {
       "route": "/api/academy-kids/*",
       "allowedRoles": ["authenticated"]
     },
