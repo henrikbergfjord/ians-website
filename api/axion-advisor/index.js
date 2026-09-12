@@ -19,13 +19,13 @@ module.exports = async function (context, req) {
     return;
   }
   if (req.method !== 'POST') {
-    context.res = { status: 405, headers: cors, jsonBody: { error: 'Method not allowed' } };
+    context.res = { status: 405, headers: cors, body: { error: 'Method not allowed' } };
     return;
   }
 
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
-    context.res = { status: 503, headers: cors, jsonBody: { error: 'AI is not configured.' } };
+    context.res = { status: 503, headers: cors, body: { error: 'AI is not configured.' } };
     return;
   }
 
@@ -40,7 +40,7 @@ module.exports = async function (context, req) {
   };
 
   if (!question) {
-    context.res = { status: 400, headers: cors, jsonBody: { error: 'Mangler spørsmål.' } };
+    context.res = { status: 400, headers: cors, body: { error: 'Mangler spørsmål.' } };
     return;
   }
 
@@ -79,14 +79,14 @@ Maks 650 ord.`;
     const data = await r.json();
     if (!r.ok) {
       context.log.error('OpenAI error', r.status, data?.error?.message);
-      context.res = { status: 502, headers: cors, jsonBody: { error: 'AI request failed.' } };
+      context.res = { status: 502, headers: cors, body: { error: 'AI request failed.' } };
       return;
     }
     const answer = extractOutputText(data);
-    context.res = { status: 200, headers: cors, jsonBody: { answer } };
+    context.res = { status: 200, headers: cors, body: { answer } };
   } catch (err) {
     context.log.error(err);
-    context.res = { status: 500, headers: cors, jsonBody: { error: 'AI service unavailable.' } };
+    context.res = { status: 500, headers: cors, body: { error: 'AI service unavailable.' } };
   }
 };
 
