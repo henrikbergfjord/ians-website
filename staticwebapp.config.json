@@ -7,6 +7,7 @@
     { "route": "/brannkontroll-admin.html", "allowedRoles": ["authenticated"] },
     { "route": "/sameie-tilgang-admin.html", "allowedRoles": ["authenticated"] },
     { "route": "/sameie-aarshjul/*", "allowedRoles": ["authenticated"] },
+    { "route": "/api/sameie-registration", "allowedRoles": ["authenticated"] },
     { "route": "/api/yearwheel", "allowedRoles": ["authenticated"] },
     { "route": "/api/yearwheel-email", "allowedRoles": ["authenticated"] },
     { "route": "/api/yearwheel-calendar", "allowedRoles": ["authenticated"] },
