@@ -1,89 +1,19 @@
 const { TableClient } = require('@azure/data-tables');
-const crypto = require('crypto');
+const { hasAccess } = require('../sameie-access/index.js');
 
-const TABLE = 'IansBooking';
-const PARTITION = 'sprinkler2028';
-const WINDOWS = ['08:00–10:00','10:00–12:00','12:00–14:00','14:00–16:00'];
-const CAPACITY = 24;
-
-function json(status, body) {
-  return { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }, body: JSON.stringify(body) };
-}
-function storageConnection() { return process.env.IANS_BOOKING_STORAGE || process.env.AzureWebJobsStorage; }
-function client() {
-  const cs = storageConnection();
-  if (!cs) throw new Error('Mangler lagringstilkobling.');
-  return TableClient.fromConnectionString(cs, TABLE);
-}
-function cleanPhone(value) { return String(value || '').replace(/[^0-9+]/g, '').slice(0, 16); }
-function cleanUnit(value) { return String(value || '').trim().replace(/[\\/#?\u0000-\u001f\u007f]/g, '-').replace(/[^A-Za-z0-9 ._\-]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80); }
-async function allEntities(tc) {
-  const out = [];
-  for await (const e of tc.listEntities({ queryOptions: { filter: `PartitionKey eq '${PARTITION}'` } })) out.push(e);
-  return out;
-}
-function summary(rows) {
-  const counts = Object.fromEntries(WINDOWS.map(w => [w, 0]));
-  for (const r of rows) if (counts[r.window] !== undefined) counts[r.window]++;
-  return { capacity: CAPACITY, totalBooked: rows.length, windows: WINDOWS.map(window => ({ window, booked: counts[window], available: Math.max(0, CAPACITY - counts[window]) })) };
-}
-function adminAllowed(req) {
-  const supplied = req.headers['x-admin-key'] || req.headers['X-Admin-Key'];
-  const configured = process.env.IANS_BOOKING_ADMIN_KEY;
-  if (typeof supplied !== 'string' || supplied.length < 12 || !configured) return false;
-  const a = Buffer.from(supplied), b = Buffer.from(configured);
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
-}
-
-module.exports = async function (context, req) {
-  try {
-    if (req.method === 'GET' && String(req.query.health || '') === '1') {
-      const hasDedicatedStorage = !!process.env.IANS_BOOKING_STORAGE;
-      const hasHostStorage = !!process.env.AzureWebJobsStorage;
-      context.res = json(200, { ok:true, service:'IANS Booking API', functionRuntime:process.env.FUNCTIONS_WORKER_RUNTIME || 'node', storageConfigured:hasDedicatedStorage || hasHostStorage, storageSource:hasDedicatedStorage ? 'IANS_BOOKING_STORAGE' : (hasHostStorage ? 'AzureWebJobsStorage' : 'none') });
-      return;
-    }
-    const tc = client();
-    await tc.createTable().catch(err => { if (err.statusCode !== 409) throw err; });
-
-    if (req.method === 'GET') {
-      const rows = await allEntities(tc);
-      if (String(req.query.admin || '') === '1') {
-        if (!adminAllowed(req)) { context.res = json(401,{ok:false,error:'Ugyldig administratornøkkel.'}); return; }
-        const bookings = rows.map(r => ({ unit:r.rowKey, phone:r.phone || '', window:r.window || '', updatedAt:r.updatedAt || '', createdAt:r.createdAt || '' })).sort((a,b) => a.window.localeCompare(b.window) || a.unit.localeCompare(b.unit,'no',{numeric:true}));
-        context.res = json(200,{ok:true,...summary(rows),bookings}); return;
-      }
-      context.res = json(200,{ok:true,...summary(rows)}); return;
-    }
-
-    if (req.method === 'POST') {
-      const body=req.body || {}, unit=cleanUnit(body.unit), phone=cleanPhone(body.phone), window=String(body.window || '').trim();
-      if (!unit || !phone || !WINDOWS.includes(window)) { context.res=json(400,{ok:false,error:'Velg leilighet, skriv inn telefonnummer og velg et gyldig tidsvindu.'}); return; }
-      if (!/^\+?\d{8,15}$/.test(phone)) { context.res=json(400,{ok:false,error:'Telefonnummeret ser ikke gyldig ut.'}); return; }
-      const rows=await allEntities(tc);
-      const current=rows.find(r=>r.rowKey===unit);
-      if (current) {
-        context.res=json(409,{ok:false,error:'Denne leiligheten er allerede booket. Kontakt styret dersom bestillingen skal endres eller slettes.'});
-        return;
-      }
-      const targetCount=rows.filter(r=>r.window===window).length;
-      if (targetCount>=CAPACITY) { context.res=json(409,{ok:false,error:'Dette tidsvinduet ble nettopp fullt. Velg et annet tidsvindu.',summary:summary(rows)}); return; }
-      const now=new Date().toISOString();
-      await tc.createEntity({partitionKey:PARTITION,rowKey:unit,phone,window,createdAt:now,updatedAt:now});
-      const after=await allEntities(tc);
-      context.res=json(201,{ok:true,updated:false,message:'Leiligheten er booket.',booking:{unit,window},summary:summary(after)}); return;
-    }
-
-    if (req.method === 'DELETE') {
-      if (!adminAllowed(req)) { context.res=json(401,{ok:false,error:'Ugyldig administratornøkkel.'}); return; }
-      const unit=cleanUnit((req.body || {}).unit || req.query.unit);
-      if (!unit) { context.res=json(400,{ok:false,error:'Mangler leilighet.'}); return; }
-      await tc.deleteEntity(PARTITION,unit).catch(err=>{if(err.statusCode!==404)throw err;});
-      context.res=json(200,{ok:true,message:'Bestillingen er slettet.'}); return;
-    }
-    context.res=json(405,{ok:false,error:'Metoden støttes ikke.'});
-  } catch(err) {
-    context.log.error(err);
-    context.res=json(500,{ok:false,error:'Bookingserveren er ikke klar.'});
-  }
-};
+const TABLE='IansBooking',PARTITION='sprinkler2028';
+const WINDOWS=['08:00–10:00','10:00–12:00','12:00–14:00','14:00–16:00'],CAPACITY=24;
+function json(status,body){return{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'},body:JSON.stringify(body)}}
+function storageConnection(){return process.env.IANS_BOOKING_STORAGE||process.env.AzureWebJobsStorage}
+function client(){const cs=storageConnection();if(!cs)throw new Error('Mangler lagringstilkobling.');return TableClient.fromConnectionString(cs,TABLE)}
+function cleanPhone(v){return String(v||'').replace(/[^0-9+]/g,'').slice(0,16)}
+function clean(v,n=254){return String(v||'').trim().slice(0,n)}
+function cleanUnit(v){return clean(v,80).replace(/[\\/#?\u0000-\u001f\u007f]/g,'-').replace(/[^A-Za-z0-9 ._\-]/g,' ').replace(/\s+/g,' ').trim()}
+function principal(req){try{const r=req.headers['x-ms-client-principal'];return r?JSON.parse(Buffer.from(r,'base64').toString('utf8')):null}catch{return null}}
+function emailOf(p){return clean(p&&p.userDetails).toLowerCase()}
+async function adminAllowed(req){const email=emailOf(principal(req));if(!email)return false;const a=await hasAccess(email,'straumsfjellet-panorama','sprinkler');return !!a.approved}
+async function allEntities(tc){const out=[];for await(const e of tc.listEntities({queryOptions:{filter:`PartitionKey eq '${PARTITION}'`}}))out.push(e);return out}
+function summary(rows){const counts=Object.fromEntries(WINDOWS.map(w=>[w,0]));for(const r of rows)if(counts[r.window]!==undefined)counts[r.window]++;return{capacity:CAPACITY,totalBooked:rows.length,windows:WINDOWS.map(window=>({window,booked:counts[window],available:Math.max(0,CAPACITY-counts[window])}))}}
+module.exports=async function(context,req){try{if(req.method==='GET'&&String(req.query.health||'')==='1'){context.res=json(200,{ok:true,service:'IANS Booking API',storageConfigured:!!storageConnection()});return}const tc=client();await tc.createTable().catch(err=>{if(err.statusCode!==409)throw err});if(req.method==='GET'){const rows=await allEntities(tc);if(String(req.query.admin||'')==='1'){if(!await adminAllowed(req)){context.res=json(403,{ok:false,error:'Du har ikke styretilgang til sprinkleradministrasjonen.'});return}const bookings=rows.map(r=>({unit:r.rowKey,address:r.address||'',name:r.name||'',email:r.email||'',phone:r.phone||'',window:r.window||'',updatedAt:r.updatedAt||'',createdAt:r.createdAt||''})).sort((a,b)=>a.window.localeCompare(b.window)||a.unit.localeCompare(b.unit,'no',{numeric:true}));context.res=json(200,{ok:true,...summary(rows),bookings});return}context.res=json(200,{ok:true,...summary(rows)});return}
+if(req.method==='POST'){const b=req.body||{},unit=cleanUnit(b.unit),phone=cleanPhone(b.phone),window=clean(b.window,30),name=clean(b.name,120),email=clean(b.email,254),address=clean(b.address,160);if(!unit||!phone||!WINDOWS.includes(window)){context.res=json(400,{ok:false,error:'Velg leilighet, skriv inn telefonnummer og velg et gyldig tidsvindu.'});return}if(!/^\+?\d{8,15}$/.test(phone)){context.res=json(400,{ok:false,error:'Telefonnummeret ser ikke gyldig ut.'});return}const rows=await allEntities(tc);if(rows.some(r=>r.rowKey===unit)){context.res=json(409,{ok:false,error:'Denne leiligheten er allerede booket. Kontakt styret dersom bestillingen skal endres eller slettes.'});return}if(rows.filter(r=>r.window===window).length>=CAPACITY){context.res=json(409,{ok:false,error:'Dette tidsvinduet ble nettopp fullt. Velg et annet tidsvindu.',summary:summary(rows)});return}const now=new Date().toISOString();await tc.createEntity({partitionKey:PARTITION,rowKey:unit,name,email,address,phone,window,createdAt:now,updatedAt:now});context.res=json(201,{ok:true,message:'Leiligheten er booket.',booking:{unit,window},summary:summary(await allEntities(tc))});return}
+if(req.method==='DELETE'){if(!await adminAllowed(req)){context.res=json(403,{ok:false,error:'Du har ikke styretilgang.'});return}const unit=cleanUnit((req.body||{}).unit||req.query.unit);if(!unit){context.res=json(400,{ok:false,error:'Mangler leilighet.'});return}await tc.deleteEntity(PARTITION,unit).catch(err=>{if(err.statusCode!==404)throw err});context.res=json(200,{ok:true,message:'Bestillingen er slettet.'});return}context.res=json(405,{ok:false,error:'Metoden støttes ikke.'})}catch(err){context.log.error(err);context.res=json(500,{ok:false,error:'Bookingserveren er ikke klar.'})}};
