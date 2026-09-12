@@ -1,0 +1,21 @@
+const { TableClient }=require('@azure/data-tables');
+const TABLE='IansMaintenancePlan';
+const defaults=[
+{id:'water-meters',title:'Nye vannmålere for tappevann og konvektorvarme',year:2029,status:'Planlagt',estimate:1550000,category:'Bygning innvendig',notes:'Full oppgradering av måler/gateway. Forventet årlig besparelse 120 000–150 000 kr. Tilbakebetaling ca. 8–10 år.'},
+{id:'pest-map',title:'Kartlegging skadedyr',year:2027,status:'Planlagt',estimate:20000,category:'Bygning innvendig',notes:'Limfellekartlegging og artsbestemmelse.'},
+{id:'garden-path',title:'Hellelagt hagegang',year:2027,status:'Planlagt',estimate:null,category:'Uteområder',notes:'Estimert kostnad mangler.'},
+{id:'wash-wood',title:'Vasking av treverk utenfor U1 port og langs bygg 7',year:2026,status:'Planlagt',estimate:50000,category:'Bygning utvendig',notes:'Vask og beising av trefasade/trevegg.'},
+{id:'planting',title:'Beplantning',year:2026,status:'Planlagt',estimate:130000,category:'Uteområder',notes:'Tilkjøring av jord i bed og beplantning på tunet.'},
+{id:'volunteer',title:'Dugnadspenger',year:2026,status:'Planlagt',estimate:130000,category:'Uteområder',notes:''},
+{id:'facade-wash',title:'Vask av fasade',year:2026,status:'Planlagt',estimate:50000,category:'Bygning utvendig',notes:'Planlegges etter at veiarbeid er ferdig.'},
+{id:'water-outlet',title:'Uttak vann på sørsiden',year:2026,status:'Planlagt',estimate:15000,category:'Uteområder',notes:'Byggetrinn 3.'},
+{id:'stain-furniture',title:'Beisning av hagemøbler og terrasse',year:2026,status:'Planlagt',estimate:10000,category:'Uteområder',notes:'Bør utføres annethvert år.'},
+{id:'ups-doors',title:'Skifte UPS på elektriske dører',year:2026,status:'Pågår',estimate:30000,category:'Elektro',notes:'UPS-er er begynt å bli defekte.'},
+{id:'waste-locks',title:'Lås på avfallsbeholdere',year:2026,status:'Oppfølging',estimate:null,category:'Uteområder',notes:'Følg opp Øyvar om lås/brikkeordning.'}
+];
+function json(status,body){return{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'},body};}
+function principal(req){try{const raw=req.headers['x-ms-client-principal'];return raw?JSON.parse(Buffer.from(raw,'base64').toString('utf8')):null}catch{return null}}
+function client(){const cs=process.env.IANS_BOOKING_STORAGE||process.env.AzureWebJobsStorage;if(!cs)throw new Error('Storage is not configured');return TableClient.fromConnectionString(cs,TABLE)}
+function clean(v,max){return String(v||'').trim().slice(0,max)}
+module.exports=async function(context,req){try{if(!principal(req))return context.res=json(401,{ok:false,error:'Ikke innlogget.'});const c=client();await c.createTable().catch(()=>{});if(req.method==='GET'){const overrides={};for await(const e of c.listEntities({queryOptions:{filter:"PartitionKey eq 'STRAUMSFJELLET'"}}))overrides[e.rowKey]=e;const items=defaults.map(d=>({...d,...(overrides[d.id]||{}),id:d.id,estimate:(overrides[d.id]?.estimate??d.estimate),actual:(overrides[d.id]?.actual??null)}));const known=items.filter(x=>Number.isFinite(Number(x.estimate))).reduce((s,x)=>s+Number(x.estimate),0);const actual=items.filter(x=>Number.isFinite(Number(x.actual))).reduce((s,x)=>s+Number(x.actual),0);const byYear={};for(const i of items){byYear[i.year]??={estimate:0,unknown:0,count:0};byYear[i.year].count++;if(i.estimate==null)byYear[i.year].unknown++;else byYear[i.year].estimate+=Number(i.estimate)}return context.res=json(200,{ok:true,items,totals:{knownEstimate:known,actual,remaining:Math.max(0,known-actual)},byYear});}
+if(req.method==='PUT'){const b=req.body||{},id=clean(b.id,80);if(!defaults.some(x=>x.id===id))return context.res=json(404,{ok:false,error:'Tiltak finnes ikke.'});const entity={partitionKey:'STRAUMSFJELLET',rowKey:id,status:clean(b.status,40),estimate:b.estimate===''||b.estimate==null?undefined:Number(b.estimate),actual:b.actual===''||b.actual==null?undefined:Number(b.actual),owner:clean(b.owner,160),followUpDate:clean(b.followUpDate,10),updatedAt:new Date().toISOString(),updatedBy:clean(principal(req).userDetails,254)};await c.upsertEntity(entity,'Merge');return context.res=json(200,{ok:true});}context.res=json(405,{ok:false,error:'Metode ikke støttet.'});}catch(e){context.log.error(e);context.res=json(500,{ok:false,error:'Vedlikeholdsplan kunne ikke behandles.'});}};
