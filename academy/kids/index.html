@@ -30,6 +30,13 @@
 <div class="eyebrow">NY HER?</div>
 <h2>👨‍👩‍👧 Før dere starter</h2>
 <p class="muted">Les hva IANS Academy Kids er, hvordan læringen fungerer og hvordan den planlagte familieprofilen ivaretar barn og foreldre.</p>
+<div class="academy-entry">
+  <div>
+    <div class="eyebrow">HAR DU ALLEREDE PROFIL?</div>
+    <strong>Fortsett der du slapp</strong>
+  </div>
+  <button class="btn" type="button" id="openAcademyLogin">Logg inn →</button>
+</div>
 <a class="btn" href="/academy/kids/family/">Familie og foreldre →</a>
 <a class="btn alt" href="/academy/kids/family/foreldre.html">📘 Foreldreinformasjon</a>
 <a class="btn alt" href="/academy/kids/family/personvern.html">🛡️ Personvern</a>
@@ -65,7 +72,7 @@
 
 </div>
 </section>
-</section><section id="login" class="card login"><h2>🚀 Start reisen</h2><p class="muted">Fremgangen lagres bare i denne nettleseren foreløpig. Bruk samme navn og 4-sifrede PIN for å fortsette. På en annen enhet er fremgangen ikke tilgjengelig.</p><input id="name" maxlength="20" placeholder="Navn eller kallenavn" autocomplete="nickname" aria-label="Navn eller kallenavn"><input id="pin" type="password" inputmode="numeric" maxlength="4" placeholder="4-sifret PIN" aria-label="PIN"><button class="btn" id="loginBtn">Start Academy Kids</button><p id="loginMsg" class="muted"></p></section><section id="dash" class="dash"><div class="card profile"><div class="who"><div class="avatar">🧑‍🚀</div><div><div class="eyebrow">DIN REISE</div><h2 id="hello" style="margin:3px 0"></h2><div class="level" id="levelText"></div><div class="xpbar"><span id="xpFill"></span></div></div></div><button class="btn alt" id="logout">Lås profilen</button></div><div id="skills" class="skills"></div><div class="card"><div class="eyebrow">MERKER</div><div id="badges" class="badges" style="margin-top:10px"></div></div><h2 id="worldHeading" tabindex="-1">🗺️ Teknologiverden</h2><p class="muted">Fullfør oppdrag for å åpne nye verdener. Feil svar gir ingen straff – du får vite hvorfor og kan prøve igjen.</p><div id="worlds" class="worlds"></div><section id="mission" class="card mission" tabindex="-1" aria-label="Oppdrag"></section><section class="card parent"><div class="eyebrow">FOR VOKSNE</div><h2>Parent View</h2><p class="muted">Oversikten viser læringsprogresjon, ikke aktivitetsovervåkning. Senere kan vi legge til egen voksenprofil og synk mellom enheter.</p><div id="parentStats"></div></section></section></main><footer class="foot">IANS Academy Kids · Teknologi er noe du kan forstå, vurdere og skape med.</footer><script src="lessons.js"></script><script src="app.js"></script>
+</section><section id="login" class="card login"><h2>🔐 Logg inn på Academy</h2><p class="muted">Fremgangen lagres bare i denne nettleseren foreløpig. Bruk samme navn og 4-sifrede PIN for å fortsette. På en annen enhet er fremgangen ikke tilgjengelig.</p><input id="name" maxlength="20" placeholder="Navn eller kallenavn" autocomplete="nickname" aria-label="Navn eller kallenavn"><input id="pin" type="password" inputmode="numeric" maxlength="4" placeholder="4-sifret PIN" aria-label="PIN"><button class="btn" id="loginBtn">Logg inn</button><p id="loginMsg" class="muted"></p></section><section id="dash" class="dash"><div class="card profile"><div class="who"><div class="avatar">🧑‍🚀</div><div><div class="eyebrow">DIN REISE</div><h2 id="hello" style="margin:3px 0"></h2><div class="level" id="levelText"></div><div class="xpbar"><span id="xpFill"></span></div></div></div><button class="btn alt" id="logout">Lås profilen</button></div><div id="skills" class="skills"></div><div class="card"><div class="eyebrow">MERKER</div><div id="badges" class="badges" style="margin-top:10px"></div></div><h2 id="worldHeading" tabindex="-1">🗺️ Teknologiverden</h2><p class="muted">Fullfør oppdrag for å åpne nye verdener. Feil svar gir ingen straff – du får vite hvorfor og kan prøve igjen.</p><div id="worlds" class="worlds"></div><section id="mission" class="card mission" tabindex="-1" aria-label="Oppdrag"></section><section class="card parent"><div class="eyebrow">FOR VOKSNE</div><h2>Parent View</h2><p class="muted">Oversikten viser læringsprogresjon, ikke aktivitetsovervåkning. Senere kan vi legge til egen voksenprofil og synk mellom enheter.</p><div id="parentStats"></div></section></section></main><footer class="foot">IANS Academy Kids · Teknologi er noe du kan forstå, vurdere og skape med.</footer><script src="lessons.js"></script><script src="app.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded',function(){
  const b=document.getElementById('digitalCourseBtn');
@@ -81,6 +88,52 @@ document.addEventListener('DOMContentLoaded',function(){
      }
    });
  }
+});
+</script>
+
+<style id="ians-login-entry">
+.academy-entry{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.academy-entry strong{
+  display:block;
+  margin-top:4px;
+  font-size:1.08rem;
+}
+#login{
+  scroll-margin-top:24px;
+}
+@media(max-width:600px){
+  .academy-entry{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .academy-entry .btn{
+    width:100%;
+    text-align:center;
+  }
+}
+</style>
+
+<script id="ians-login-entry-script">
+document.addEventListener('DOMContentLoaded',function(){
+  const button=document.getElementById('openAcademyLogin');
+  const login=document.getElementById('login');
+
+  if(button && login){
+    button.addEventListener('click',function(){
+      login.scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(function(){
+        document.getElementById('name')?.focus();
+      },350);
+    });
+  }
 });
 </script>
 </body></html>
