@@ -3,6 +3,8 @@
     "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload"
   },
   "routes": [
+    { "route": "/ians-analytics.html", "allowedRoles": ["authenticated"] },
+    { "route": "/api/analytics-stats", "allowedRoles": ["authenticated"] },
     { "route": "/booking-admin.html", "allowedRoles": ["authenticated"] },
     { "route": "/brannkontroll-admin.html", "allowedRoles": ["authenticated"] },
     { "route": "/sameie-dashboard.html", "allowedRoles": ["authenticated"] },

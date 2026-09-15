@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>IANS Analytics</title>
+<style>
+:root{
+  --bg:#030b15;--panel:#081725;--panel2:#0a1d2d;
+  --line:#15334b;--text:#f5f8fb;--muted:#91a1b2;
+  --blue:#218cff;--cyan:#13d9ff;--green:#42df91;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;
+  background:
+    radial-gradient(circle at 80% 0,#123e6655,transparent 35%),
+    linear-gradient(180deg,#020911,#05101b 58%,#030a12);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif
+}
+a{color:inherit;text-decoration:none}
+.topbar{height:70px;border-bottom:1px solid #102234;display:flex;align-items:center}
+.nav,.wrap{width:min(1380px,calc(100% - 28px));margin:auto}
+.nav{display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:900}
+.back{color:#a9c8da}
+.wrap{padding:42px 0 70px}
+.k{font-size:.7rem;font-weight:900;letter-spacing:.14em;color:var(--cyan)}
+h1{font-size:clamp(2.7rem,6vw,5rem);margin:10px 0 8px}
+.lead{color:var(--muted);margin:0 0 28px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.metric,.panel{
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,#0a1d2d,#07131f);
+  border-radius:18px
+}
+.metric{padding:20px}
+.metric small{display:block;color:var(--muted);font-weight:700}
+.metric strong{display:block;font-size:2.4rem;margin-top:7px}
+.metric.today{border-color:#238cc4}
+.metric.today strong{color:var(--cyan)}
+.content{display:grid;grid-template-columns:.8fr 1.2fr;gap:16px;margin-top:16px}
+.panel{padding:20px;overflow:hidden}
+.panelhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.panel h2{margin:0;font-size:1.15rem}
+.status{font-size:.75rem;color:var(--muted)}
+.row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:12px;align-items:center;
+  padding:12px 0;border-top:1px solid #10283c
+}
+.row:first-child{border-top:0}
+.name{min-width:0}
+.name b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.name small{display:block;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.count{font-weight:900;font-size:1.05rem}
+.bar{height:4px;background:#10283c;border-radius:99px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:99px}
+.empty{padding:28px 0;color:var(--muted);text-align:center}
+.error{color:#ff8f8f}
+.footer{margin-top:24px;color:#647f91;font-size:.75rem;text-align:center}
+@media(max-width:900px){
+  .metrics{grid-template-columns:1fr 1fr}
+  .content{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .metrics{grid-template-columns:1fr 1fr}
+  .metric{padding:15px}
+  .metric strong{font-size:1.9rem}
+  .wrap{padding-top:28px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="nav">
+    <a class="brand" href="/">ians.no</a>
+    <a class="back" href="/teknisk.html">← Teknisk</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="k">IANS CORE · PRIVATE ANALYTICS</div>
+  <h1>IANS Analytics</h1>
+  <p class="lead">Anonyme sidevisninger på IANS-plattformen.</p>
+
+  <section class="metrics">
+    <div class="metric today"><small>I DAG</small><strong id="today">–</strong></div>
+    <div class="metric"><small>SISTE 7 DAGER</small><strong id="days7">–</strong></div>
+    <div class="metric"><small>SISTE 30 DAGER</small><strong id="days30">–</strong></div>
+    <div class="metric"><small>TOTALT</small><strong id="all">–</strong></div>
+  </section>
+
+  <section class="content">
+    <article class="panel">
+      <div class="panelhead">
+        <h2>Områder</h2>
+        <span class="status">30 dager</span>
+      </div>
+      <div id="areas"><div class="empty">Laster …</div></div>
+    </article>
+
+    <article class="panel">
+      <div class="panelhead">
+        <h2>Mest besøkte sider</h2>
+        <span class="status" id="updated">Laster …</span>
+      </div>
+      <div id="pages"><div class="empty">Laster …</div></div>
+    </article>
+  </section>
+
+  <div class="footer">
+    IANS Analytics · First-party · Ingen tracking-cookies · Sidevisninger, ikke unike personer
+  </div>
+</main>
+
+<script>
+const fmt = new Intl.NumberFormat('nb-NO');
+
+function esc(v){
+  return String(v ?? '')
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;');
+}
+
+function renderRows(target, rows, labelKey){
+  const el = document.getElementById(target);
+
+  if(!rows.length){
+    el.innerHTML='<div class="empty">Ingen sidevisninger registrert ennå.</div>';
+    return;
+  }
+
+  const max = Math.max(...rows.map(x => Number(x.days30 || 0)),1);
+
+  el.innerHTML = rows.map(x => {
+    const value = Number(x.days30 || 0);
+    const width = Math.max(2,Math.round(value/max*100));
+
+    return `
+      <div class="row">
+        <div class="name">
+          <b>${esc(x[labelKey])}</b>
+          ${x.path ? `<small>${esc(x.path)}</small>` : ''}
+          <div class="bar"><i style="width:${width}%"></i></div>
+        </div>
+        <div class="count">${fmt.format(value)}</div>
+      </div>`;
+  }).join('');
+}
+
+async function load(){
+  try{
+    const r = await fetch('/api/analytics-stats',{
+      credentials:'same-origin',
+      cache:'no-store'
+    });
+
+    if(!r.ok) throw new Error(`HTTP ${r.status}`);
+
+    const data = await r.json();
+
+    if(!data.ok) throw new Error(data.error || 'Kunne ikke hente analytics');
+
+    document.getElementById('today').textContent=fmt.format(data.totals.today);
+    document.getElementById('days7').textContent=fmt.format(data.totals.days7);
+    document.getElementById('days30').textContent=fmt.format(data.totals.days30);
+    document.getElementById('all').textContent=fmt.format(data.totals.all);
+
+    renderRows('areas',data.areas,'area');
+    renderRows('pages',data.pages.slice(0,30),'path');
+
+    document.getElementById('updated').textContent =
+      'Oppdatert ' +
+      new Date(data.generatedAt).toLocaleString('nb-NO',{
+        dateStyle:'short',
+        timeStyle:'short'
+      });
+
+  }catch(err){
+    const msg='<div class="empty error">Kunne ikke hente Analytics-data.</div>';
+    document.getElementById('areas').innerHTML=msg;
+    document.getElementById('pages').innerHTML=msg;
+    document.getElementById('updated').textContent='Feil';
+    console.error(err);
+  }
+}
+
+load();
+</script>
+</body>
+</html>
