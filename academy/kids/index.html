@@ -241,3 +241,859 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 }
 </style>
+
+<style id="ians-academy-compact-v4">
+
+/* =========================================================
+   IANS Academy Kids · Compact desktop home
+   Behold lesbar tekst – reduser luft, padding og høyder
+   ========================================================= */
+
+@media(min-width:761px){
+
+  .wrap{
+    width:min(1180px,92%) !important;
+    margin:16px auto !important;
+  }
+
+  /* ---------- Før dere starter ---------- */
+
+  main.wrap > section.card:first-child{
+    padding:12px 16px !important;
+    margin:0 0 12px !important;
+    border-radius:15px !important;
+  }
+
+  main.wrap > section.card:first-child h2{
+    margin:2px 0 4px !important;
+    font-size:1.15rem !important;
+  }
+
+  main.wrap > section.card:first-child > p{
+    margin:4px 0 8px !important;
+  }
+
+  .academy-entry{
+    margin:7px 0 !important;
+    padding:7px 0 !important;
+  }
+
+  main.wrap > section.card:first-child .btn{
+    padding:8px 11px !important;
+  }
+
+
+  /* ---------- Hovedintro ---------- */
+
+  .hero h1{
+    font-size:clamp(2.7rem,4.2vw,4rem) !important;
+    line-height:.94 !important;
+    margin:5px 0 8px !important;
+  }
+
+  .hero > p{
+    margin:6px 0 !important;
+    max-width:760px !important;
+  }
+
+  .hero .actions{
+    margin:10px 0 6px !important;
+  }
+
+  .resume-note,
+  .save-status{
+    margin:4px 0 !important;
+    min-height:0 !important;
+  }
+
+
+  /* ---------- Forstå / Vurder / Skap ---------- */
+
+  .philosophy{
+    gap:9px !important;
+    margin:10px 0 14px !important;
+  }
+
+  .mini{
+    padding:9px 12px !important;
+    min-height:0 !important;
+    border-radius:12px !important;
+  }
+
+  .mini .muted{
+    margin-top:2px !important;
+  }
+
+
+  /* ---------- Kursområde ---------- */
+
+  .course-library{
+    margin:14px 0 !important;
+  }
+
+  .course-library > h2{
+    font-size:1.55rem !important;
+    margin:3px 0 !important;
+  }
+
+  .course-library > p{
+    margin:3px 0 9px !important;
+  }
+
+  .course-grid{
+    gap:10px !important;
+  }
+
+  .course-card{
+    position:relative;
+    min-height:0 !important;
+    padding:14px 16px !important;
+    border-radius:16px !important;
+  }
+
+  .course-card .course-icon{
+    font-size:27px !important;
+    margin:0 0 3px !important;
+    line-height:1 !important;
+  }
+
+  .course-card h2{
+    font-size:1.18rem !important;
+    margin:3px 0 5px !important;
+  }
+
+  .course-card p{
+    margin:5px 0 !important;
+    line-height:1.4 !important;
+  }
+
+  .course-card .btn{
+    margin-top:9px !important;
+    padding:9px 13px !important;
+  }
+
+
+  /* ---------- Roblox-figur KUN i Roblox-kortet ---------- */
+
+  .roblox-course{
+    overflow:hidden;
+    padding-right:118px !important;
+  }
+
+  .roblox-course::after{
+    content:"🎮";
+    position:absolute;
+    right:24px;
+    top:50%;
+    transform:translateY(-50%) rotate(-8deg);
+    font-size:68px;
+    line-height:1;
+    opacity:.18;
+    filter:
+      drop-shadow(0 0 15px rgba(54,168,255,.35))
+      drop-shadow(0 0 25px rgba(126,80,255,.22));
+    pointer-events:none;
+  }
+
+
+  /* ---------- Når profil/reise vises ---------- */
+
+  #dash{
+    margin-top:12px !important;
+  }
+
+  #dash .card{
+    padding:13px 16px !important;
+    border-radius:15px !important;
+  }
+
+  .profile{
+    gap:10px !important;
+  }
+
+  .avatar{
+    width:48px !important;
+    height:48px !important;
+    font-size:25px !important;
+  }
+
+  .skills{
+    gap:8px !important;
+    margin:9px 0 !important;
+  }
+
+  .skill{
+    padding:9px 11px !important;
+    border-radius:12px !important;
+  }
+
+  #dash .badges{
+    margin-top:5px !important;
+  }
+
+  #worldHeading{
+    margin:13px 0 3px !important;
+  }
+
+  #worldHeading + p{
+    margin:3px 0 9px !important;
+  }
+
+  .worlds{
+    gap:9px !important;
+  }
+
+  .world{
+    min-height:105px !important;
+    padding:13px !important;
+  }
+
+  .world .icon{
+    font-size:27px !important;
+  }
+
+  .world h3{
+    margin:4px 0 !important;
+  }
+
+}
+
+
+/* Roblox remains a normal course card on mobile */
+@media(max-width:760px){
+
+  .roblox-course{
+    padding-right:70px !important;
+    position:relative;
+    overflow:hidden;
+  }
+
+  .roblox-course::after{
+    content:"🎮";
+    position:absolute;
+    right:17px;
+    top:20px;
+    font-size:40px;
+    opacity:.14;
+    pointer-events:none;
+  }
+
+}
+
+</style>
+
+<style id="ians-academy-login-modal-v1">
+
+/* Login skal ikke være en del av selve forsiden */
+#login{
+  display:none !important;
+}
+
+/* Vis login som modal */
+body.academy-login-open{
+  overflow:hidden;
+}
+
+body.academy-login-open::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:9998;
+  background:rgba(1,8,18,.76);
+  backdrop-filter:blur(7px);
+}
+
+body.academy-login-open #login{
+  display:block !important;
+  position:fixed !important;
+  z-index:9999;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(460px,calc(100% - 32px));
+  margin:0 !important;
+  padding:22px !important;
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.65),
+    0 0 50px rgba(50,165,255,.10);
+}
+
+#academyLoginClose{
+  position:absolute;
+  right:13px;
+  top:13px;
+  width:34px;
+  height:34px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#081726;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}
+
+body.academy-login-open #login h2{
+  margin-top:0;
+  padding-right:40px;
+}
+
+</style>
+
+<script id="ians-academy-login-modal-v1-script">
+(function(){
+
+  function openLogin(){
+    const login=document.getElementById('login');
+    if(!login) return;
+
+    if(!document.getElementById('academyLoginClose')){
+      const close=document.createElement('button');
+      close.type='button';
+      close.id='academyLoginClose';
+      close.setAttribute('aria-label','Lukk innlogging');
+      close.textContent='×';
+      close.addEventListener('click',closeLogin);
+      login.prepend(close);
+    }
+
+    document.body.classList.add('academy-login-open');
+
+    setTimeout(function(){
+      document.getElementById('name')?.focus();
+    },50);
+  }
+
+  function closeLogin(){
+    document.body.classList.remove('academy-login-open');
+  }
+
+  /*
+    Fang klikk på begge eksisterende innloggingsknappene
+    før gammel scroll-logikk rekker å kjøre.
+  */
+  document.addEventListener('click',function(e){
+
+    const trigger=e.target.closest(
+      '#topLoginBtn, #openAcademyLogin'
+    );
+
+    if(trigger){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      openLogin();
+      return;
+    }
+
+    if(
+      document.body.classList.contains('academy-login-open') &&
+      !e.target.closest('#login')
+    ){
+      closeLogin();
+    }
+
+  },true);
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){
+      closeLogin();
+    }
+  });
+
+  window.IANSAcademyOpenLogin=openLogin;
+  window.IANSAcademyCloseLogin=closeLogin;
+
+})();
+</script>
+
+<style id="ians-academy-wide-compact-v1">
+
+/* =========================================================
+   Academy Kids · bruk skjermbredden bedre
+   ========================================================= */
+
+@media(min-width:1100px){
+
+  .wrap{
+    width:min(1420px,88%) !important;
+    max-width:none !important;
+  }
+
+  /* Toppen følger samme visuelle bredde */
+  .top{
+    padding-left:6% !important;
+    padding-right:6% !important;
+  }
+
+  /* Litt mer plass mellom kursene – ikke mer høyde */
+  .course-grid{
+    gap:14px !important;
+  }
+
+  /* Kurskortene kan bruke bredden bedre */
+  .course-card{
+    padding-left:18px !important;
+    padding-right:18px !important;
+  }
+
+  .roblox-course{
+    padding-right:125px !important;
+  }
+
+}
+
+
+/* =========================================================
+   Footer
+   ========================================================= */
+
+.foot{
+  width:min(1420px,88%);
+  margin:18px auto 20px !important;
+  padding-top:12px;
+  border-top:1px solid rgba(74,164,255,.16);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  text-align:left !important;
+}
+
+.ians-tech-owner{
+  color:#8fa8bc;
+  white-space:nowrap;
+}
+
+.ians-tech-owner strong{
+  color:#ccefff;
+  font-weight:800;
+}
+
+@media(max-width:760px){
+  .foot{
+    width:92%;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:5px;
+  }
+
+  .ians-tech-owner{
+    white-space:normal;
+  }
+}
+
+</style>
+
+<script id="ians-academy-footer-v1-script">
+(function(){
+
+  function installFooter(){
+    const footer=document.querySelector('.foot');
+    if(!footer || document.getElementById('iansTechOwner')) return;
+
+    const original=footer.textContent.trim();
+
+    footer.innerHTML=`
+      <span>${original}</span>
+      <span class="ians-tech-owner" id="iansTechOwner">
+        Teknisk ansvarlig: <strong>Henrik Bergfjord</strong>
+      </span>
+    `;
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded',installFooter);
+  }else{
+    installFooter();
+  }
+
+})();
+</script>
+
+<style id="ians-academy-desktop-width-v1">
+
+/* Desktop: behold kompakt høyde, men bruk skjermen bedre */
+@media (min-width:1100px){
+
+  main.wrap{
+    width:min(1040px,76vw) !important;
+    max-width:1040px !important;
+  }
+
+  .course-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:16px !important;
+  }
+
+  .course-card{
+    width:100% !important;
+  }
+
+  .philosophy{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+
+}
+
+/* Litt større skjermer får fortsatt en kontrollert bredde */
+@media (min-width:1500px){
+
+  main.wrap{
+    width:min(1120px,72vw) !important;
+    max-width:1120px !important;
+  }
+
+}
+
+</style>
+
+<style id="ians-academy-world-cards-v1">
+
+/* =========================================================
+   ACADEMY DESKTOP
+   Bruk skjermen bedre uten å gjøre innholdet høyt igjen
+   ========================================================= */
+
+@media (min-width:1100px){
+  main.wrap{
+    width:min(1320px,86vw) !important;
+    max-width:1320px !important;
+  }
+
+  .foot{
+    width:min(1320px,86vw) !important;
+    max-width:1320px !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+  }
+}
+
+
+/* =========================================================
+   DIGITAL WORLD · LÆRINGSSTI
+   ========================================================= */
+
+#academyWorldPath{
+  margin:22px 0 4px;
+}
+
+.academy-world-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:20px;
+  margin-bottom:10px;
+}
+
+.academy-world-head h2{
+  margin:3px 0 0;
+  font-size:1.35rem;
+}
+
+.academy-world-head p{
+  margin:0;
+  max-width:560px;
+  text-align:right;
+  font-size:.86rem;
+}
+
+.academy-world-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+}
+
+.academy-world-card{
+  appearance:none;
+  width:100%;
+  min-height:108px;
+  padding:13px 14px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:linear-gradient(180deg,#0d2035,#091827);
+  color:var(--text);
+  text-align:left;
+  font:inherit;
+  cursor:pointer;
+  position:relative;
+  transition:
+    transform .15s ease,
+    border-color .15s ease,
+    opacity .15s ease;
+}
+
+.academy-world-card:not(:disabled):hover{
+  transform:translateY(-2px);
+  border-color:var(--cyan);
+}
+
+.academy-world-card:disabled{
+  cursor:not-allowed;
+  opacity:.42;
+}
+
+.academy-world-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:7px;
+}
+
+.academy-world-icon{
+  font-size:1.45rem;
+  line-height:1;
+}
+
+.academy-world-number{
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:850;
+}
+
+.academy-world-card h3{
+  font-size:.94rem;
+  line-height:1.15;
+  margin:0 0 5px;
+}
+
+.academy-world-progress{
+  color:var(--muted);
+  font-size:.76rem;
+}
+
+.academy-world-bar{
+  height:5px;
+  background:#06101d;
+  border-radius:99px;
+  overflow:hidden;
+  margin:8px 0 7px;
+}
+
+.academy-world-bar span{
+  display:block;
+  height:100%;
+  background:var(--green);
+}
+
+.academy-world-action{
+  color:var(--cyan);
+  font-size:.75rem;
+  font-weight:850;
+}
+
+.academy-world-card:disabled .academy-world-action{
+  color:var(--muted);
+}
+
+@media(max-width:900px){
+  .academy-world-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .academy-world-head{
+    display:block;
+  }
+
+  .academy-world-head p{
+    text-align:left;
+    margin-top:5px;
+  }
+}
+
+@media(max-width:520px){
+  .academy-world-grid{
+    grid-template-columns:1fr;
+  }
+
+  .academy-world-card{
+    min-height:0;
+  }
+}
+
+</style>
+
+<script id="ians-academy-world-cards-v1-script">
+(function(){
+
+  function installWorldPath(){
+
+    if(document.getElementById('academyWorldPath')) return;
+
+    const courses=document.getElementById('courses');
+    if(!courses || typeof lessons==='undefined') return;
+
+    const section=document.createElement('section');
+    section.id='academyWorldPath';
+
+    section.innerHTML=`
+      <div class="academy-world-head">
+        <div>
+          <div class="eyebrow">DIGITAL WORLD · DIN LÆRINGSSTI</div>
+          <h2>Utforsk verdenene</h2>
+        </div>
+        <p class="muted">
+          Start med den første. Nye deler åpnes etter hvert som du fullfører oppdragene.
+        </p>
+      </div>
+      <div class="academy-world-grid" id="academyWorldGrid"></div>
+    `;
+
+    courses.insertAdjacentElement('afterend',section);
+
+    renderWorldPath();
+  }
+
+
+  function renderWorldPath(){
+
+    const grid=document.getElementById('academyWorldGrid');
+    if(!grid || typeof lessons==='undefined') return;
+
+    const worlds=[...new Set(lessons.map(l=>l.w))];
+
+    let completed=[];
+    let profile=null;
+
+    try{
+      if(typeof p!=='undefined' && p){
+        profile=p;
+        completed=Array.isArray(p.completed) ? p.completed : [];
+      }
+    }catch(e){}
+
+    let firstUnfinishedIndex=0;
+
+    if(profile){
+      const found=lessons.findIndex((_,i)=>!completed.includes(i));
+      firstUnfinishedIndex=found<0 ? lessons.length : found;
+    }
+
+    grid.innerHTML=worlds.map((world,worldIndex)=>{
+
+      const indices=lessons
+        .map((l,i)=>l.w===world ? i : -1)
+        .filter(i=>i>=0);
+
+      const done=indices.filter(i=>completed.includes(i)).length;
+      const target=indices.find(i=>!completed.includes(i)) ?? indices[0];
+
+      /*
+       * Samme prinsipp som eksisterende app:
+       * uten innlogging er bare første del åpen.
+       * med profil åpnes delen som inneholder neste tilgjengelige oppdrag.
+       */
+      const isCompleted=profile && done===indices.length;
+
+      const isAvailable=profile
+        ? (isCompleted || target<=firstUnfinishedIndex)
+        : worldIndex===0;
+
+      const icon=lessons[indices[0]].i;
+
+      let action='🔒 Fullfør delen før';
+      if(isAvailable){
+        if(isCompleted) action='Se delen igjen →';
+        else if(done) action='Fortsett delen →';
+        else action='Start delen →';
+      }
+
+      return `
+        <button
+          type="button"
+          class="academy-world-card"
+          data-target="${target}"
+          ${isAvailable ? '' : 'disabled'}
+        >
+          <div class="academy-world-top">
+            <span class="academy-world-icon">${icon}</span>
+            <span class="academy-world-number">${worldIndex+1} / ${worlds.length}</span>
+          </div>
+
+          <h3>${world}</h3>
+
+          <div class="academy-world-progress">
+            ${profile ? `${done}/${indices.length} oppdrag` : `${indices.length} oppdrag`}
+          </div>
+
+          <div class="academy-world-bar">
+            <span style="width:${profile ? (100*done/indices.length) : 0}%"></span>
+          </div>
+
+          <div class="academy-world-action">${action}</div>
+        </button>
+      `;
+    }).join('');
+
+
+    grid.querySelectorAll('.academy-world-card:not(:disabled)').forEach(card=>{
+      card.addEventListener('click',()=>{
+
+        const target=Number(card.dataset.target);
+
+        /*
+         * Ikke innlogget:
+         * åpne eksisterende login-popup.
+         */
+        if(!profile){
+          if(typeof window.IANSAcademyOpenLogin==='function'){
+            window.IANSAcademyOpenLogin();
+          }else{
+            document.getElementById('topLoginBtn')?.click();
+          }
+          return;
+        }
+
+        /*
+         * Innlogget:
+         * bruk eksisterende Academy-motor.
+         */
+        if(typeof jump==='function'){
+          jump(target);
+        }
+
+      });
+    });
+
+  }
+
+
+  /*
+   * Oppdater læringsstien når appen lagrer/renderes.
+   * MutationObserver gjør at kortene følger eksisterende
+   * progresjon uten å lage et nytt lagringssystem.
+   */
+  function watchAcademy(){
+
+    const dash=document.getElementById('dash');
+
+    if(!dash) return;
+
+    const observer=new MutationObserver(()=>{
+      window.requestAnimationFrame(renderWorldPath);
+    });
+
+    observer.observe(dash,{
+      subtree:true,
+      childList:true,
+      characterData:true
+    });
+
+  }
+
+
+  function start(){
+    installWorldPath();
+    watchAcademy();
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',start);
+  }else{
+    start();
+  }
+
+})();
+</script>
