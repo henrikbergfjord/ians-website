@@ -1238,3 +1238,303 @@ document.addEventListener('DOMContentLoaded',()=>{
   progressCard.appendChild(box);
 });
 </script>
+
+
+<style id="ians-roblox-clean-home-v2">
+
+/* =========================================================
+   IANS Roblox Academy · Clean child-first home
+   ========================================================= */
+
+/* Original hero is duplicated by the game banner */
+main.wrap > .hero{
+  display:none !important;
+}
+
+/* Keep the original progress data available to JS,
+   but do not spend another large card on it */
+main.wrap > section.card:first-of-type{
+  display:none !important;
+}
+
+/* Main game banner becomes the real course start */
+#iansRobloxGameBanner{
+  min-height:0 !important;
+  padding:28px 34px !important;
+  margin:22px auto 14px !important;
+}
+
+#iansRobloxGameBanner h1{
+  font-size:clamp(2rem,4vw,3.25rem) !important;
+  margin:4px 0 8px !important;
+}
+
+#iansRobloxGameBanner p{
+  margin:0 0 14px !important;
+  max-width:720px !important;
+}
+
+/* Primary action */
+.rb-hero-start{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-top:18px;
+  padding:16px 18px;
+  border:1px solid rgba(77,190,255,.38);
+  border-radius:16px;
+  background:
+    linear-gradient(135deg,rgba(18,76,139,.62),rgba(21,35,92,.48));
+  box-shadow:0 14px 36px rgba(0,0,0,.18);
+}
+
+.rb-hero-start-copy{
+  min-width:0;
+}
+
+.rb-hero-start-kicker{
+  color:#63e6ff;
+  font-size:.68rem;
+  font-weight:950;
+  letter-spacing:.11em;
+}
+
+.rb-hero-start-title{
+  margin-top:4px;
+  font-size:1.08rem;
+  font-weight:900;
+}
+
+.rb-hero-start-sub{
+  margin-top:3px;
+  color:var(--muted);
+  font-size:.82rem;
+}
+
+.rb-hero-start-button{
+  flex:0 0 auto;
+  min-width:180px;
+  padding:13px 20px !important;
+  font-size:.92rem !important;
+}
+
+/* Small navigation immediately after hero */
+.rb-quick-nav{
+  width:min(1280px,94%);
+  margin:0 auto 12px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+}
+
+.rb-quick-nav button{
+  min-height:46px;
+  border:1px solid rgba(74,164,255,.25);
+  border-radius:13px;
+  background:rgba(7,27,53,.82);
+  color:#fff;
+  font:inherit;
+  font-size:.82rem;
+  font-weight:850;
+  cursor:pointer;
+}
+
+/* The separate about/chapter cards are now secondary */
+.roblox-about,
+.roblox-chapters{
+  margin:8px 0 !important;
+}
+
+/* Adult information should not compete with Start */
+main.wrap > section.card:last-of-type{
+  margin-top:14px !important;
+}
+
+/* Old injected continue block is superseded */
+#rbContinue{
+  display:none !important;
+}
+
+@media(max-width:700px){
+  #iansRobloxGameBanner{
+    padding:22px 20px !important;
+    margin-top:12px !important;
+  }
+
+  .rb-hero-start{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .rb-hero-start-button{
+    width:100%;
+  }
+
+  .rb-quick-nav{
+    grid-template-columns:1fr;
+  }
+}
+
+</style>
+
+<script id="ians-roblox-clean-home-v2-script">
+(function(){
+
+  function progress(){
+    try{
+      const p=JSON.parse(
+        localStorage.getItem('iansRobloxAcademyV1') || '{"done":[]}'
+      );
+      return Array.isArray(p.done) ? p.done : [];
+    }catch(e){
+      return [];
+    }
+  }
+
+  function nextLessonIndex(){
+    const done=progress();
+
+    /*
+      lessons is a top-level const in academy.js.
+      This script executes in the same classic page environment,
+      so use it directly instead of window.lessons.
+    */
+    const total =
+      typeof lessons !== 'undefined' && Array.isArray(lessons)
+        ? lessons.length
+        : 52;
+
+    let i=0;
+    while(i < total && done.includes(i)) i++;
+
+    return {
+      index:i,
+      total:total,
+      complete:i >= total,
+      done:done.length
+    };
+  }
+
+  function install(){
+
+    const banner=document.getElementById('iansRobloxGameBanner');
+    if(!banner || document.getElementById('rbHeroStart')) return;
+
+    const p=nextLessonIndex();
+
+    const start=document.createElement('div');
+    start.id='rbHeroStart';
+    start.className='rb-hero-start';
+
+    start.innerHTML=`
+      <div class="rb-hero-start-copy">
+        <div class="rb-hero-start-kicker">
+          ${p.complete ? '🏆 ROBLOX MASTER' : p.done ? '▶ FORTSETT KURSET' : '🚀 START KURSET'}
+        </div>
+
+        <div class="rb-hero-start-title">
+          ${
+            p.complete
+              ? 'Alle 52 oppdrag er fullført'
+              : `Oppdrag ${p.index + 1} av ${p.total}`
+          }
+        </div>
+
+        <div class="rb-hero-start-sub">
+          ${
+            p.complete
+              ? 'Se resultatene og kursmappen din.'
+              : p.done
+                ? `${p.done} oppdrag fullført · fortsett akkurat der du slapp`
+                : 'Start første oppdrag i Roblox Smart Player'
+          }
+        </div>
+      </div>
+
+      <button type="button" class="btn rb-hero-start-button">
+        ${
+          p.complete
+            ? '📘 Åpne kursmappen'
+            : p.done
+              ? '▶ Fortsett'
+              : '▶ Start'
+        }
+      </button>
+    `;
+
+    start.querySelector('button').addEventListener('click',function(){
+
+      if(p.complete){
+        if(typeof openCourseFolder === 'function'){
+          openCourseFolder();
+        }
+        return;
+      }
+
+      if(typeof openLesson === 'function'){
+        openLesson(p.index);
+      }
+    });
+
+    banner.appendChild(start);
+
+    const nav=document.createElement('div');
+    nav.className='rb-quick-nav';
+    nav.id='rbQuickNav';
+
+    nav.innerHTML=`
+      <button type="button" data-action="about">
+        📖 Les om Roblox
+      </button>
+
+      <button type="button" data-action="chapters">
+        🗂 Alle kapitler
+      </button>
+
+      <button type="button" data-action="folder">
+        📘 Min kursmappe
+      </button>
+    `;
+
+    banner.insertAdjacentElement('afterend',nav);
+
+    nav.querySelector('[data-action="about"]')
+      .addEventListener('click',function(){
+        const button=document.querySelector('.roblox-about-toggle');
+        if(button) button.click();
+
+        setTimeout(function(){
+          document.querySelector('.roblox-about')
+            ?.scrollIntoView({behavior:'smooth',block:'start'});
+        },50);
+      });
+
+    nav.querySelector('[data-action="chapters"]')
+      .addEventListener('click',function(){
+        if(window.IANSRobloxShowChapters){
+          window.IANSRobloxShowChapters();
+        }else{
+          document.getElementById('chapters')
+            ?.scrollIntoView({behavior:'smooth',block:'start'});
+        }
+      });
+
+    nav.querySelector('[data-action="folder"]')
+      .addEventListener('click',function(){
+        if(typeof openCourseFolder === 'function'){
+          openCourseFolder();
+        }
+      });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded',function(){
+      setTimeout(install,0);
+    });
+  }else{
+    setTimeout(install,0);
+  }
+
+})();
+</script>
