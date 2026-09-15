@@ -73,4 +73,4 @@ heading(en?'BUDGET':'BUDSJETT');line(`${en?'Weekly budget':'Ukesbudsjett'}: ${cu
 const pages=d.getNumberOfPages();for(let i=1;i<=pages;i++){d.setPage(i);d.setDrawColor(210);d.line(M,287,W-M,287);d.setTextColor(120);d.setFontSize(7);d.text('IANS | '+(en?'Dinner Planner':'Middagsplanlegger'),M,292);d.text(`${i} / ${pages}`,W-M,292,{align:'right'})}d.save(en?'IANS-dinner-plan.pdf':'IANS-middagsplan.pdf')}
 renderFavs();checkAI();
 </script>
-</body></html>
+<script src="/assets/js/ians-analytics.js"></script></body></html>

@@ -58,5 +58,5 @@ document.querySelectorAll('.quiz').forEach(q=>{const id=q.closest('.session').da
 const today=new Date();today.setHours(0,0,0,0);let target=sessions.find(s=>new Date(s.dataset.date+'T00:00:00').getTime()===today.getTime());if(!target)target=sessions.find(s=>new Date(s.dataset.date+'T00:00:00')>=today)||sessions[sessions.length-1];target.classList.add('current');document.getElementById('todayTitle').textContent=target.querySelector('h3').textContent;document.getElementById('todayBody').textContent=target.querySelector('p').textContent;document.getElementById('todayLink').href='#'+target.id;updateProgress();
 </script>
 <div class="ians-next-badge">IANS Next · Master</div>
-</body>
+<script src="/assets/js/ians-analytics.js"></script></body>
 </html>
