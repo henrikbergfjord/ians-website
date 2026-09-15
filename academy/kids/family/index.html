@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IANS Academy Kids · Familie</title>
+<style>
+:root{
+ --bg:#06101d;--card:#0c1d31;--line:#214463;--blue:#32a5ff;
+ --cyan:#5ee8ff;--green:#62dfa5;--gold:#ffd166;--text:#f7fbff;--muted:#a9bed0
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:radial-gradient(circle at 20% 0,#153354 0,#06101d 38%,#030914 100%);
+ color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif
+}
+a{color:#c9efff;text-decoration:none}
+.top{
+ padding:16px 5%;display:flex;justify-content:space-between;gap:20px;
+ border-bottom:1px solid var(--line)
+}
+.wrap{width:min(1100px,92%);margin:42px auto}
+.hero{max-width:850px;margin-bottom:32px}
+.eyebrow{color:var(--cyan);font-size:12px;font-weight:900;letter-spacing:.12em}
+h1{font-size:clamp(2.5rem,7vw,5rem);line-height:.98;margin:.18em 0}
+h2{margin-top:0}
+p{line-height:1.6}
+.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{
+ background:linear-gradient(180deg,#0d2035,#091827);
+ border:1px solid var(--line);border-radius:22px;padding:24px
+}
+.btn{
+ display:inline-block;background:var(--blue);color:white;border:0;border-radius:12px;
+ padding:13px 17px;font-weight:850;cursor:pointer;margin:5px 5px 5px 0
+}
+.btn.alt{background:#12314a;border:1px solid #376889}
+.steps{counter-reset:item}
+.step{display:flex;gap:15px;margin:18px 0}
+.num{
+ min-width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+ background:#173d5c;color:var(--cyan);font-weight:900
+}
+.notice{border-color:#665c2e;background:#211f13}
+.good{border-color:#276149;background:#0b2b23}
+footer{text-align:center;color:#7890a4;padding:35px;font-size:13px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="top">
+ <b>IANS · ACADEMY KIDS</b>
+ <a href="/academy/kids/">← Academy Kids</a>
+</header>
+
+<main class="wrap">
+
+<section class="hero">
+ <div class="eyebrow">FOR BARN · FORELDRE · FORESATTE</div>
+ <h1>Velkommen til IANS Academy Kids.</h1>
+ <p class="muted">
+ IANS Academy Kids er laget for å hjelpe barn med å forstå den digitale verden –
+ ikke bare lære hvilke knapper de skal trykke på.
+ </p>
+ <p>
+ Barnet lærer om internett, teknologi, AI, spill, digital dømmekraft,
+ personvern og sikkerhet gjennom forklaringer, oppdrag og samtaler med voksne.
+ </p>
+</section>
+
+<div class="grid">
+
+<section class="card">
+ <div class="eyebrow">NY FAMILIE</div>
+ <h2>👨‍👩‍👧 Opprett familie</h2>
+ <p>
+ Forelder oppretter hovedkontoen og kan deretter opprette en egen barneprofil.
+ Barnet skal kunne bruke et kallenavn og en enkel PIN for å fortsette der det sluttet.
+ </p>
+ <button class="btn" onclick="prototype()">Opprett familie →</button>
+ <p class="muted">Ekte kontoaktivering kommer når sikker backend og e-postbekreftelse er koblet til.</p>
+</section>
+
+<section class="card">
+ <div class="eyebrow">HAR DERE ALLEREDE PROFIL?</div>
+ <h2>🔐 Logg inn</h2>
+ <p>
+ Foreldre får sin egen innlogging. Barn bruker sin barneprofil for å åpne kurs,
+ fremgang, rapporter og eventuelle diplomer.
+ </p>
+ <button class="btn" onclick="prototype()">Forelder</button>
+ <a class="btn alt" href="/academy/kids/">Barn / Academy</a>
+</section>
+
+<section class="card">
+ <div class="eyebrow">FØR DERE STARTER</div>
+ <h2>📘 For foreldre og foresatte</h2>
+ <p>
+ Les hva Academy er, hvorfor det er laget, hvordan voksenoppdragene fungerer
+ og hvilke opplysninger vi ønsker å lagre.
+ </p>
+ <a class="btn" href="foreldre.html">Les foreldreinformasjon →</a>
+</section>
+
+<section class="card">
+ <div class="eyebrow">PERSONVERN</div>
+ <h2>🛡️ Personvern og GDPR</h2>
+ <p>
+ Barn skal ha et særlig sterkt personvern. Derfor skal vi samle inn så lite
+ informasjon som mulig og forklare tydelig hva den brukes til.
+ </p>
+ <a class="btn alt" href="personvern.html">Les om personvern →</a>
+</section>
+
+</div>
+
+<section class="card good" style="margin-top:18px">
+ <div class="eyebrow">SLIK ER DET TENKT Å FUNGERE</div>
+ <h2>Fra forelder til læring</h2>
+
+ <div class="steps">
+  <div class="step"><div class="num">1</div><div><b>Forelder registrerer seg</b><br><span class="muted">E-post bekreftes før familieprofilen aktiveres.</span></div></div>
+  <div class="step"><div class="num">2</div><div><b>Forelder oppretter barnet</b><br><span class="muted">Kallenavn/fornavn og PIN – ikke mer informasjon enn nødvendig.</span></div></div>
+  <div class="step"><div class="num">3</div><div><b>Barnet velger kurs</b><br><span class="muted">Academy Kids eller Roblox Smart Player.</span></div></div>
+  <div class="step"><div class="num">4</div><div><b>Lær → forstå → oppdrag</b><br><span class="muted">Barnet lærer først og blir testet etterpå.</span></div></div>
+  <div class="step"><div class="num">5</div><div><b>Forelder følger læringen</b><br><span class="muted">Rapporter, voksenoppdrag og diplom – ikke skjult overvåkning.</span></div></div>
+ </div>
+</section>
+
+<section class="card notice" style="margin-top:18px">
+ <h2>🧪 Prototype</h2>
+ <p>
+ Familieinnloggingen på denne siden er foreløpig kun en designprototype.
+ Vi aktiverer ikke ekte foreldre- eller barnekontoer før autentisering,
+ database, e-postbekreftelse og nødvendige personvernfunksjoner er på plass.
+ </p>
+</section>
+
+</main>
+
+<footer>
+ IANS Academy Kids · Utviklet av Henrik Bergfjord · Teknisk ansvarlig: Henrik Bergfjord
+</footer>
+
+<script>
+function prototype(){
+ alert(
+  'Familiekonto er ikke aktivert ennå. Dette er en prototype. ' +
+  'Vi kobler på sikker innlogging og e-post før funksjonen åpnes.'
+ );
+}
+</script>
+</body>
+</html>
