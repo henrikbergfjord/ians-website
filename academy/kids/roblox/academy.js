@@ -100,13 +100,8 @@ function nextLesson(){
       window.IANSRobloxFocus.exit?.();
     }
 
-    if(window.IANSRobloxOpenKnowledge){
-      return window.IANSRobloxOpenKnowledge();
-    }
-
-    const knowledge=document.getElementById('knowledge');
-    if(knowledge){
-      knowledge.scrollIntoView({behavior:'smooth',block:'start'});
+    if(typeof openCourseFolder==='function'){
+      return openCourseFolder();
     }
   }
 }
