@@ -26,7 +26,43 @@
  .course-card{min-height:0}
 }
 </style>
-</head><body><header class="top"><div class="brand">IANS · ACADEMY KIDS</div><div><a href="/academy/">Academy</a> · <a href="/teknisk.html">IANS</a></div></header><main class="wrap"><section class="card" style="margin-bottom:20px">
+
+<style id="ians-academy-unified-login">
+.academy-top-actions{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+.academy-login-link{
+  appearance:none;
+  border:1px solid #376889;
+  background:#0b2135;
+  color:#d9f4ff;
+  border-radius:999px;
+  padding:9px 14px;
+  font:inherit;
+  font-size:.86rem;
+  font-weight:850;
+  cursor:pointer;
+}
+.academy-login-link:hover{
+  border-color:#5ee8ff;
+}
+@media(max-width:700px){
+  .academy-top-actions{
+    gap:8px;
+  }
+  .academy-nav-links{
+    display:none;
+  }
+  .academy-login-link{
+    font-size:.76rem;
+    padding:8px 10px;
+  }
+}
+</style>
+
+</head><body><header class="top"><div class="brand">IANS · ACADEMY KIDS</div><div class="academy-top-actions"><button type="button" class="academy-login-link" id="topLoginBtn">🔐 Allerede bruker? Logg inn</button><span class="academy-nav-links"><a href="/academy/">Academy</a> · <a href="/teknisk.html">IANS</a></span></div></header><main class="wrap"><section class="card" style="margin-bottom:20px">
 <div class="eyebrow">NY HER?</div>
 <h2>👨‍👩‍👧 Før dere starter</h2>
 <p class="muted">Les hva IANS Academy Kids er, hvordan læringen fungerer og hvordan den planlagte familieprofilen ivaretar barn og foreldre.</p>
@@ -67,7 +103,7 @@
 <h2>Forstå Roblox – ikke bare spill det</h2>
 <p class="muted">Roblox · Robux · spillpsykologi · scam · chat · personvern · kontosikkerhet</p>
 <p>Lær hvordan Roblox fungerer, hvorfor spill prøver å holde på oppmerksomheten din og hvordan du kjenner igjen svindel og utrygge situasjoner.</p>
-<a class="btn" href="/academy/kids/roblox/">Åpne Roblox Academy →</a>
+<button type="button" class="btn" id="robloxCourseBtn">Åpne Roblox Academy →</button>
 </article>
 
 </div>

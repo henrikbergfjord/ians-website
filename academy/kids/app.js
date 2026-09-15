@@ -62,9 +62,38 @@ function focusSection(id) { $(id).scrollIntoView({block:'start'}); $(id).focus({
 function navigate(where) {
   destination = where;
   if (!p) { $('login').scrollIntoView({block:'start'}); $('pin').focus({preventScroll:true}); return; }
+  if (where === 'roblox') { location.href = '/academy/kids/roblox/'; return; }
   if (where === 'overview') { focusSection('worldHeading'); return; }
   jump(where === 'first' ? 0 : (p.completed.includes(p.current) ? firstUnfinished() : p.current));
 }
+
+const topLoginBtn = $('topLoginBtn');
+const robloxCourseBtn = $('robloxCourseBtn');
+
+function academyLoginFor(target) {
+  destination = target;
+  $('login').scrollIntoView({behavior:'smooth', block:'start'});
+  setTimeout(() => $('pin').focus({preventScroll:true}), 350);
+}
+
+if (topLoginBtn) {
+  topLoginBtn.onclick = () => {
+    destination = 'resume';
+    $('login').scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(() => $('pin').focus({preventScroll:true}), 350);
+  };
+}
+
+if (robloxCourseBtn) {
+  robloxCourseBtn.onclick = () => {
+    if (p) {
+      location.href = '/academy/kids/roblox/';
+      return;
+    }
+    academyLoginFor('roblox');
+  };
+}
+
 $('resumeBtn') && ($('resumeBtn').onclick = () => navigate('resume'));
 $('firstBtn') && ($('firstBtn').onclick = () => navigate('first'));
 $('overviewBtn') && ($('overviewBtn').onclick = () => navigate('overview'));
