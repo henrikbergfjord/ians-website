@@ -157,6 +157,127 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
  .hero{padding-top:65px}
 }
 </style>
+
+<style id="ios27-deep-guide">
+.feature-card{
+  transition:border-color .18s ease,box-shadow .18s ease;
+}
+.feature-card.deep-ready{cursor:pointer}
+.feature-card.deep-ready:hover{
+  border-color:#39799d;
+  box-shadow:0 18px 50px #0003;
+}
+.ios27-actions{
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  margin-top:18px;
+}
+.ios27-more,.ios27-copy{
+  appearance:none;cursor:pointer;border-radius:999px;
+  padding:9px 14px;font-weight:900;font-size:.73rem;
+}
+.ios27-more{
+  background:#62e6ff;color:#031019;border:1px solid #62e6ff;
+}
+.ios27-copy{
+  background:#071622;color:#a9c0d0;border:1px solid #31546d;
+}
+.ios27-more:hover{background:#a5f2ff}
+.ios27-copy:hover{color:#fff;border-color:#5086a8}
+
+.ios27-deep{
+  display:none;
+  grid-column:1/-1;
+  border-top:1px solid #17364c;
+  margin:22px -1px -1px;
+  padding:20px;
+  background:linear-gradient(180deg,#06131e,#071722);
+  border-radius:0 0 22px 22px;
+}
+.feature-card.deep-open .ios27-deep{display:block}
+
+.ios27-deep-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.ios27-box{
+  border:1px solid #1c4058;
+  background:#071a28;
+  border-radius:14px;
+  padding:16px;
+  color:#b7c7d2;
+  line-height:1.6;
+  font-size:.9rem;
+}
+.ios27-box strong{
+  display:block;
+  color:#62e3ff;
+  font-size:.67rem;
+  letter-spacing:.11em;
+  margin-bottom:7px;
+}
+.ios27-box ul{
+  margin:7px 0 0;
+  padding-left:20px;
+}
+.ios27-box li{margin:4px 0}
+.ios27-full{grid-column:1/-1}
+
+.ios27-path{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:11px;
+}
+.ios27-path span{
+  border:1px solid #31546c;
+  background:#0a2131;
+  color:#d5e5ef;
+  padding:6px 9px;
+  border-radius:8px;
+  font-size:.76rem;
+  font-weight:850;
+}
+.ios27-path i{
+  font-style:normal;
+  color:#62e4ff;
+}
+
+.ios27-apple{
+  display:inline-flex;
+  margin-top:13px;
+  background:#f5f8fa;
+  color:#07121a;
+  padding:9px 13px;
+  border-radius:999px;
+  font-size:.75rem;
+  font-weight:950;
+}
+.ios27-apple:hover{background:#fff}
+
+.ios27-eu{
+  margin-top:12px;
+  border:1px solid #8b7130;
+  background:#261f0c;
+  color:#ead99a;
+  border-radius:11px;
+  padding:10px 12px;
+  font-size:.8rem;
+  line-height:1.5;
+}
+.ios27-source{
+  color:#738c9d;
+  font-size:.7rem;
+  margin-top:9px;
+}
+
+@media(max-width:760px){
+  .ios27-deep-grid{grid-template-columns:1fr}
+  .ios27-full{grid-column:auto}
+}
+</style>
+
 </head>
 <body>
 
@@ -190,7 +311,7 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
 <p>These are the areas that make iOS 27 interesting in everyday use. Each visual shows the idea behind the feature rather than an exact Apple interface.</p>
 </section>
 
-<article class="feature">
+<article id="siri-ai" class="feature deep-ready">
 <div class="copy">
 <div class="number">01 · INTELLIGENCE</div>
 <h3>A smarter Siri experience</h3>
@@ -205,9 +326,53 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
 <div class="orb"></div>
 <div class="result">Understanding context…</div>
 </div></div>
+
+<div class="ios27-actions">
+  <button class="ios27-more" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="ios27-copy" type="button">🔗 Copy link</button>
+</div>
+
+<div class="ios27-deep">
+  <div class="ios27-deep-grid">
+
+    <div class="ios27-box">
+      <strong>WHAT'S NEW IN iOS 27</strong>
+      Siri AI is designed to be substantially more conversational and context-aware than traditional Siri. Apple says it can understand personal context, onscreen information and broader requests, and can perform actions across supported experiences.
+    </div>
+
+    <div class="ios27-box">
+      <strong>REAL-WORLD EXAMPLES</strong>
+      <ul><li>Ask a question naturally, then continue with follow-up questions.</li><li>Ask about supported information currently visible on your screen.</li><li>Use Siri to help find information from supported personal content.</li><li>Use supported Siri AI capabilities to perform actions instead of navigating manually.</li></ul>
+    </div>
+
+    <div class="ios27-box">
+      <strong>HOW TO USE IT</strong>
+      <div class="ios27-path"><span>Activate Siri</span><i>→</i><span>Speak naturally</span><i>→</i><span>Ask follow-up</span><i>→</i><span>Take action</span></div>
+    </div>
+
+    <div class="ios27-box">
+      <strong>COMPATIBILITY & AVAILABILITY</strong>
+      Siri AI requires an Apple Intelligence-compatible device and supported language. It starts in English. Important for European users: Apple says Siri AI is not initially available on iPhone or iPad in the EU with iOS 27.
+      <div class="ios27-eu"><b>🇪🇺 EU availability:</b> Apple says Siri AI is not initially available on iPhone or iPad in the European Union with iOS 27. Apple currently gives no launch date for Siri AI on iOS in the EU.</div>
+    </div>
+
+    <div class="ios27-box ios27-full">
+      <strong>IANS TIP</strong>
+      If you are in the EU, distinguish between Siri AI and other Apple Intelligence features. iOS 27 does not mean that every Siri AI feature shown by Apple is currently available on your iPhone.
+      <br>
+      <a class="ios27-apple"
+         href="https://www.apple.com/no/newsroom/2026/06/due-to-dma-siri-ai-delayed-in-eu-for-ios-27-and-ipados-27/"
+         target="_blank"
+         rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="ios27-source">Official Apple documentation · availability and features can change with software updates.</div>
+    </div>
+
+  </div>
+</div>
+
 </article>
 
-<article class="feature reverse">
+<article id="visual-intelligence" class="feature reverse deep-ready">
 <div class="copy">
 <div class="number">02 · CAMERA</div>
 <h3>Visual Intelligence</h3>
@@ -222,9 +387,53 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
 <div class="camera-box">🌿</div>
 <div class="result">Object recognised · More information</div>
 </div></div>
+
+<div class="ios27-actions">
+  <button class="ios27-more" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="ios27-copy" type="button">🔗 Copy link</button>
+</div>
+
+<div class="ios27-deep">
+  <div class="ios27-deep-grid">
+
+    <div class="ios27-box">
+      <strong>WHAT'S NEW IN iOS 27</strong>
+      Visual Intelligence uses the iPhone camera and Apple Intelligence to help you understand things around you. It can work with businesses and places, text, plants and animals, products and other visible objects.
+    </div>
+
+    <div class="ios27-box">
+      <strong>REAL-WORLD EXAMPLES</strong>
+      <ul><li>Point the camera at a business to view useful information.</li><li>Translate, summarise or have visible text read aloud.</li><li>Identify plants and animals.</li><li>Search for visually similar objects or products.</li></ul>
+    </div>
+
+    <div class="ios27-box">
+      <strong>HOW TO USE IT</strong>
+      <div class="ios27-path"><span>Open Visual Intelligence</span><i>→</i><span>Point at subject</span><i>→</i><span>Choose action</span><i>→</i><span>View result</span></div>
+    </div>
+
+    <div class="ios27-box">
+      <strong>COMPATIBILITY & AVAILABILITY</strong>
+      Requires an Apple Intelligence-compatible iPhone. Activation methods vary by model and can include Camera Control, Action Button, Lock Screen or Control Center. Some capabilities vary by language and region.
+
+    </div>
+
+    <div class="ios27-box ios27-full">
+      <strong>IANS TIP</strong>
+      Try it on things where visual context actually helps: signs, menus, plants, products and places. You will quickly learn which actions save you time.
+      <br>
+      <a class="ios27-apple"
+         href="https://support.apple.com/no-no/guide/iphone/iph12eb1545e/ios"
+         target="_blank"
+         rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="ios27-source">Official Apple documentation · availability and features can change with software updates.</div>
+    </div>
+
+  </div>
+</div>
+
 </article>
 
-<article class="feature">
+<article id="photos" class="feature deep-ready">
 <div class="copy">
 <div class="number">03 · PHOTOS</div>
 <h3>More intelligent photo tools</h3>
@@ -239,9 +448,53 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
 <div class="photo"></div>
 <div class="result">✦ Enhance · Reframe · Clean Up</div>
 </div></div>
+
+<div class="ios27-actions">
+  <button class="ios27-more" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="ios27-copy" type="button">🔗 Copy link</button>
+</div>
+
+<div class="ios27-deep">
+  <div class="ios27-deep-grid">
+
+    <div class="ios27-box">
+      <strong>WHAT'S NEW IN iOS 27</strong>
+      iOS 27 expands Apple&#x27;s intelligent photo-editing direction. Supported Apple Intelligence devices can use intelligent editing tools to make more advanced changes while keeping the workflow inside Photos.
+    </div>
+
+    <div class="ios27-box">
+      <strong>REAL-WORLD EXAMPLES</strong>
+      <ul><li>Remove distracting elements from supported photos.</li><li>Improve framing with intelligent editing tools where available.</li><li>Use Apple Intelligence-assisted photo features without moving the image to a separate editor.</li><li>Keep the original photo available while experimenting with edits.</li></ul>
+    </div>
+
+    <div class="ios27-box">
+      <strong>HOW TO USE IT</strong>
+      <div class="ios27-path"><span>Photos</span><i>→</i><span>Open a photo</span><i>→</i><span>Edit</span><i>→</i><span>Choose available intelligent tool</span></div>
+    </div>
+
+    <div class="ios27-box">
+      <strong>COMPATIBILITY & AVAILABILITY</strong>
+      Advanced intelligent editing requires compatible Apple Intelligence hardware. Individual tools can vary by device, language, region and software version, and server-based features may have usage limits.
+
+    </div>
+
+    <div class="ios27-box ios27-full">
+      <strong>IANS TIP</strong>
+      Use AI editing for corrections rather than automatically changing every image. Small distractions and framing problems are often where these tools are most useful.
+      <br>
+      <a class="ios27-apple"
+         href="https://www.apple.com/no/os/ios/"
+         target="_blank"
+         rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="ios27-source">Official Apple documentation · availability and features can change with software updates.</div>
+    </div>
+
+  </div>
+</div>
+
 </article>
 
-<article class="feature reverse">
+<article id="safari" class="feature reverse deep-ready">
 <div class="copy">
 <div class="number">04 · SAFARI</div>
 <h3>A more useful web experience</h3>
@@ -260,9 +513,53 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
 <div class="tab">📚 Reading · 6 tabs</div>
 </div>
 </div></div>
+
+<div class="ios27-actions">
+  <button class="ios27-more" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="ios27-copy" type="button">🔗 Copy link</button>
+</div>
+
+<div class="ios27-deep">
+  <div class="ios27-deep-grid">
+
+    <div class="ios27-box">
+      <strong>WHAT'S NEW IN iOS 27</strong>
+      Safari in iOS 27 adds tools intended to reduce manual browsing work. Apple highlights smarter organisation and the ability for Safari to help monitor supported webpages for changes.
+    </div>
+
+    <div class="ios27-box">
+      <strong>REAL-WORLD EXAMPLES</strong>
+      <ul><li>Keep related tabs organised more intelligently.</li><li>Use supported page-monitoring features for changes such as availability or price.</li><li>Spend less time repeatedly reopening the same page to check whether something changed.</li><li>Combine Safari tools with Reader, Reading List and privacy features already built into iPhone.</li></ul>
+    </div>
+
+    <div class="ios27-box">
+      <strong>HOW TO USE IT</strong>
+      <div class="ios27-path"><span>Open Safari</span><i>→</i><span>Open supported page</span><i>→</i><span>Open page controls</span><i>→</i><span>Choose available feature</span></div>
+    </div>
+
+    <div class="ios27-box">
+      <strong>COMPATIBILITY & AVAILABILITY</strong>
+      Exact Safari options depend on the webpage and iOS version. A feature may not be available for every type of page or website.
+
+    </div>
+
+    <div class="ios27-box ios27-full">
+      <strong>IANS TIP</strong>
+      The most useful web automation is often the simplest one: let Safari watch something you would otherwise check manually several times.
+      <br>
+      <a class="ios27-apple"
+         href="https://www.apple.com/no/os/ios/"
+         target="_blank"
+         rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="ios27-source">Official Apple documentation · availability and features can change with software updates.</div>
+    </div>
+
+  </div>
+</div>
+
 </article>
 
-<article class="feature">
+<article id="family-safety" class="feature deep-ready">
 <div class="copy">
 <div class="number">05 · FAMILY</div>
 <h3>More help for kids and parents</h3>
@@ -277,9 +574,53 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
 <div class="family">👨‍👩‍👦</div>
 <div class="result">✓ Communication safety<br>✓ Permissions<br>✓ Screen time</div>
 </div></div>
+
+<div class="ios27-actions">
+  <button class="ios27-more" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="ios27-copy" type="button">🔗 Copy link</button>
+</div>
+
+<div class="ios27-deep">
+  <div class="ios27-deep-grid">
+
+    <div class="ios27-box">
+      <strong>WHAT'S NEW IN iOS 27</strong>
+      Apple continues expanding family and child-safety controls in iOS 27, including tools around communication, web access, Screen Time and age-appropriate experiences.
+    </div>
+
+    <div class="ios27-box">
+      <strong>REAL-WORLD EXAMPLES</strong>
+      <ul><li>Use Screen Time to create schedules and limits.</li><li>Review communication-safety protections.</li><li>Manage web access and supported requests from children.</li><li>Use Family Sharing to manage supported parental controls from a parent&#x27;s device.</li></ul>
+    </div>
+
+    <div class="ios27-box">
+      <strong>HOW TO USE IT</strong>
+      <div class="ios27-path"><span>Settings</span><i>→</i><span>Family</span><i>→</i><span>Select child</span><i>→</i><span>Review parental controls</span></div>
+    </div>
+
+    <div class="ios27-box">
+      <strong>COMPATIBILITY & AVAILABILITY</strong>
+      Available controls depend on the child&#x27;s account setup, age, Family Sharing configuration, country or region and current software versions.
+
+    </div>
+
+    <div class="ios27-box ios27-full">
+      <strong>IANS TIP</strong>
+      Technical restrictions work best together with conversation. Use parental controls to create boundaries, but also teach children why a warning or restriction exists.
+      <br>
+      <a class="ios27-apple"
+         href="https://www.apple.com/no/families/"
+         target="_blank"
+         rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="ios27-source">Official Apple documentation · availability and features can change with software updates.</div>
+    </div>
+
+  </div>
+</div>
+
 </article>
 
-<article class="feature reverse">
+<article id="performance" class="feature reverse deep-ready">
 <div class="copy">
 <div class="number">06 · PERFORMANCE</div>
 <h3>Faster everyday iPhone use</h3>
@@ -295,6 +636,50 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
 <div class="meter"><i></i></div>
 <div class="result">Faster · Smoother · More efficient</div>
 </div></div>
+
+<div class="ios27-actions">
+  <button class="ios27-more" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="ios27-copy" type="button">🔗 Copy link</button>
+</div>
+
+<div class="ios27-deep">
+  <div class="ios27-deep-grid">
+
+    <div class="ios27-box">
+      <strong>WHAT'S NEW IN iOS 27</strong>
+      Apple says iOS 27 includes significant performance work across everyday iPhone use, including faster app opening and faster loading of new photos on supported devices and workloads.
+    </div>
+
+    <div class="ios27-box">
+      <strong>REAL-WORLD EXAMPLES</strong>
+      <ul><li>Apps can feel quicker to launch.</li><li>New photos can appear faster in supported workflows.</li><li>Transfers and connectivity improvements can reduce waiting in everyday use.</li><li>Performance work benefits ordinary interactions rather than being a single feature you have to enable.</li></ul>
+    </div>
+
+    <div class="ios27-box">
+      <strong>HOW TO USE IT</strong>
+      <div class="ios27-path"><span>Update iPhone</span><i>→</i><span>Restart after update if needed</span><i>→</i><span>Keep free storage</span><i>→</i><span>Use normally</span></div>
+    </div>
+
+    <div class="ios27-box">
+      <strong>COMPATIBILITY & AVAILABILITY</strong>
+      Performance gains vary by iPhone model, battery condition, storage, workload and other factors. Apple&#x27;s headline measurements should not be interpreted as a guaranteed speed increase for every action on every iPhone.
+
+    </div>
+
+    <div class="ios27-box ios27-full">
+      <strong>IANS TIP</strong>
+      Do not judge a major iOS update only during the first hour after installation. Background indexing, Photos processing and other post-update work can temporarily affect battery life and performance.
+      <br>
+      <a class="ios27-apple"
+         href="https://www.apple.com/no/os/ios/"
+         target="_blank"
+         rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="ios27-source">Official Apple documentation · availability and features can change with software updates.</div>
+    </div>
+
+  </div>
+</div>
+
 </article>
 
 <section class="section-head">
@@ -329,6 +714,75 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
 <strong>IANS · Independent technology guide</strong>
 <div class="source">Information should be checked against Apple's current documentation because feature availability can vary by device, region, language and software version.</div>
 </div></footer>
+
+
+<script id="ios27-deep-interaction">
+(function(){
+  const cards=[...document.querySelectorAll('.feature-card.deep-ready')];
+
+  function setOpen(card,open,scroll){
+    card.classList.toggle('deep-open',open);
+    const b=card.querySelector('.ios27-more');
+
+    if(b){
+      b.setAttribute('aria-expanded',String(open));
+      b.textContent=open?'Show less ↑':'Learn more ↓';
+    }
+
+    if(open){
+      history.replaceState(null,'','#'+card.id);
+      if(scroll){
+        setTimeout(()=>{
+          card.scrollIntoView({behavior:'smooth',block:'start'});
+        },30);
+      }
+    }
+  }
+
+  cards.forEach(card=>{
+    const more=card.querySelector('.ios27-more');
+    const copy=card.querySelector('.ios27-copy');
+
+    more?.addEventListener('click',e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(card,!card.classList.contains('deep-open'),true);
+    });
+
+    copy?.addEventListener('click',async e=>{
+      e.preventDefault();
+      e.stopPropagation();
+
+      const url=location.origin+location.pathname+'#'+card.id;
+
+      try{
+        await navigator.clipboard.writeText(url);
+        const old=copy.textContent;
+        copy.textContent='✓ Link copied';
+        setTimeout(()=>copy.textContent=old,1500);
+      }catch{
+        location.hash=card.id;
+      }
+    });
+
+    card.addEventListener('click',e=>{
+      if(e.target.closest('a,button')) return;
+      setOpen(card,!card.classList.contains('deep-open'),true);
+    });
+  });
+
+  function openFromHash(){
+    if(!location.hash) return;
+    const card=document.querySelector(location.hash);
+    if(card?.classList.contains('deep-ready')){
+      setOpen(card,true,false);
+    }
+  }
+
+  openFromHash();
+  window.addEventListener('hashchange',openFromHash);
+})();
+</script>
 
 <script src="/assets/js/ians-analytics.js" defer></script>
 </body>
