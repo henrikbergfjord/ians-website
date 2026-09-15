@@ -9,4 +9,13 @@
   <url><loc>https://www.ians.no/fi/</loc></url>
   <url><loc>https://www.ians.no/is/</loc></url>
   <url><loc>https://www.ians.no/tl/</loc></url>
+  <url>
+    <loc>https://www.ians.no/academy/kids/</loc>
+  </url>
+  <url>
+    <loc>https://www.ians.no/academy/kids/family/</loc>
+  </url>
+  <url>
+    <loc>https://www.ians.no/academy/kids/roblox/</loc>
+  </url>
 </urlset>

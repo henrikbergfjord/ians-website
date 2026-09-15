@@ -1,1 +1,93 @@
-<!doctype html><html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IANS Roblox Academy</title><style>:root{--bg:#07101c;--card:#0d1c2d;--line:#29445e;--blue:#36a8ff;--green:#63dfa6;--gold:#ffd166;--text:#f7fbff;--muted:#adc0d1}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#183958,#07101c 42%,#030811);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif}.top{padding:16px 5%;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.top a{color:#ccefff;text-decoration:none}.wrap{width:min(1100px,92%);margin:32px auto}.hero h1{font-size:clamp(2.5rem,7vw,5rem);margin:.1em 0}.muted{color:var(--muted)}.card{background:linear-gradient(180deg,#10243a,#091725);border:1px solid var(--line);border-radius:22px;padding:22px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.chapter{cursor:pointer;text-align:left;color:var(--text);font:inherit;width:100%;min-height:150px}.chapter.locked{opacity:.45}.btn,.answer{border:0;border-radius:12px;padding:12px 16px;background:var(--blue);color:white;font-weight:850;cursor:pointer}.answer{background:#0a1a2a;border:1px solid #365c7c;text-align:left}.answers{display:grid;gap:9px}.progress{height:8px;background:#06101b;border-radius:99px;overflow:hidden;margin-top:12px}.progress span{display:block;height:100%;background:var(--green)}.adult{border-color:#806b2c;background:#2b2616}.scenario{border-color:#6a497a}.good{color:#bff6dc}.bad{color:#ffd0d0}.stats{display:flex;gap:12px;flex-wrap:wrap}.pill{padding:8px 12px;border:1px solid var(--line);border-radius:999px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}@media(max-width:720px){.grid{grid-template-columns:1fr}}</style></head><body><header class="top"><b>IANS · ROBLOX ACADEMY</b><div><a href="/academy/kids/">← Academy Kids</a></div></header><main class="wrap"><section class="hero"><div>🎮 FORSTÅ · VURDER · SPILL SMART</div><h1>Roblox Smart Player</h1><p class="muted">Et eget Academy om Roblox, Robux, spilldesign, mennesker på nettet, svindel, personvern og trygge valg. Målet er ikke å bli redd for Roblox – målet er å forstå det.</p></section><section class="card"><div class="stats"><span class="pill" id="progressText"></span><span class="pill" id="scoreText"></span><span class="pill" id="adultText"></span></div><div class="progress"><span id="bar"></span></div></section><section id="chapters"><h2>12 kapitler</h2><div class="grid" id="chapterGrid"></div></section><section id="lesson" class="card" hidden></section><section class="card"><h2>👨‍👦 Til voksen</h2><p class="muted">Voksenoppdragene er samtaler, ikke overvåkning. Ian skal kunne forklare med egne ord hvorfor et valg er trygt eller utrygt. Ikke gi ham fasiten før han har tenkt selv.</p><p><b>Viktig regel:</b> Hvis noen ber om hemmelig kontakt, personopplysninger, bilder, passord, penger eller kontakt utenfor Roblox, skal Ian stoppe og hente en voksen.</p></section></main><script src="academy.js"></script></body></html>
+<!doctype html><html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Roblox-kurs for barn | Trygg Roblox, Robux og nettvett | IANS Academy Kids</title><style>:root{--bg:#07101c;--card:#0d1c2d;--line:#29445e;--blue:#36a8ff;--green:#63dfa6;--gold:#ffd166;--text:#f7fbff;--muted:#adc0d1}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#183958,#07101c 42%,#030811);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif}.top{padding:16px 5%;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.top a{color:#ccefff;text-decoration:none}.wrap{width:min(1100px,92%);margin:32px auto}.hero h1{font-size:clamp(2.5rem,7vw,5rem);margin:.1em 0}.muted{color:var(--muted)}.card{background:linear-gradient(180deg,#10243a,#091725);border:1px solid var(--line);border-radius:22px;padding:22px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.chapter{cursor:pointer;text-align:left;color:var(--text);font:inherit;width:100%;min-height:150px}.chapter.locked{opacity:.45}.btn,.answer{border:0;border-radius:12px;padding:12px 16px;background:var(--blue);color:white;font-weight:850;cursor:pointer}.answer{background:#0a1a2a;border:1px solid #365c7c;text-align:left}.answers{display:grid;gap:9px}.progress{height:8px;background:#06101b;border-radius:99px;overflow:hidden;margin-top:12px}.progress span{display:block;height:100%;background:var(--green)}.adult{border-color:#806b2c;background:#2b2616}.scenario{border-color:#6a497a}.good{color:#bff6dc}.bad{color:#ffd0d0}.stats{display:flex;gap:12px;flex-wrap:wrap}.pill{padding:8px 12px;border:1px solid var(--line);border-radius:999px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}@media(max-width:720px){.grid{grid-template-columns:1fr}}</style>
+<meta name="description" content="Gratis Roblox-opplæring for barn og foreldre. Lær om Roblox, Robux, svindel, chat, personvern, kontosikkerhet og trygge valg på nett.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://www.ians.no/academy/kids/roblox/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="IANS Academy Kids">
+<meta property="og:title" content="Roblox-kurs for barn | Roblox Smart Player">
+<meta property="og:description" content="Lær hvordan Roblox og Robux fungerer, hvordan du kjenner igjen svindel og hvordan du spiller tryggere og smartere.">
+<meta property="og:url" content="https://www.ians.no/academy/kids/roblox/">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Roblox Smart Player | IANS Academy Kids">
+<meta name="twitter:description" content="Roblox-opplæring om Robux, sikkerhet, svindel, chat og digital dømmekraft for barn og foreldre.">
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"Course",
+ "name":"Roblox Smart Player",
+ "description":"Roblox-opplæring for barn om Roblox, Robux, spilldesign, svindel, chat, personvern og kontosikkerhet.",
+ "provider":{
+   "@type":"Organization",
+   "name":"IANS Academy Kids",
+   "url":"https://www.ians.no/academy/kids/"
+ },
+ "url":"https://www.ians.no/academy/kids/roblox/",
+ "inLanguage":"nb-NO",
+ "isAccessibleForFree":true
+}
+</script>
+</head><body><header class="top"><b>IANS · ROBLOX ACADEMY</b><div><a href="/academy/kids/">← Academy Kids</a></div></header><main class="wrap"><section class="hero"><div>🎮 FORSTÅ · VURDER · SPILL SMART</div><h1>Roblox Smart Player</h1><p class="muted">Et eget Academy om Roblox, Robux, spilldesign, mennesker på nettet, svindel, personvern og trygge valg. Målet er ikke å bli redd for Roblox – målet er å forstå det.</p></section><section class="card"><div class="stats"><span class="pill" id="progressText"></span><span class="pill" id="scoreText"></span><span class="pill" id="adultText"></span></div><div class="progress"><span id="bar"></span></div></section><section id="chapters"><h2>12 kapitler</h2><div class="grid" id="chapterGrid"></div></section><section id="lesson" class="card" hidden></section><section class="card"><h2>👨‍👦 Til voksen</h2><p class="muted">Voksenoppdragene er samtaler, ikke overvåkning. Ian skal kunne forklare med egne ord hvorfor et valg er trygt eller utrygt. Ikke gi ham fasiten før han har tenkt selv.</p><p><b>Viktig regel:</b> Hvis noen ber om hemmelig kontakt, personopplysninger, bilder, passord, penger eller kontakt utenfor Roblox, skal Ian stoppe og hente en voksen.</p></section></main><script src="academy.js"></script></body></html>
+<style>
+.v2-folder{margin-top:24px}
+.v2-head{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:flex-start;
+}
+.v2-kicker{
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.1em;
+}
+.v2-summary{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin:20px 0 28px;
+}
+.v2-summary div{
+  background:#081726;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:15px;
+}
+.v2-summary strong{
+  display:block;
+  font-size:24px;
+}
+.v2-summary span{
+  color:var(--muted);
+  font-size:13px;
+}
+.competence-row{
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
+}
+.competence-row>div:first-child{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+}
+.competence-row small{color:var(--muted)}
+.v2-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:24px;
+}
+.locked-btn{opacity:.45}
+.v2-success{
+  color:#bff6dc;
+  font-weight:800;
+}
+@media(max-width:720px){
+  .v2-summary{grid-template-columns:repeat(2,1fr)}
+  .v2-head{display:block}
+}
+</style>
+
+<script src="v2.js"></script>
