@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="IANS visual guide to iOS 27: Siri AI, Visual Intelligence, Photos, Safari, family safety, performance and the iPhone features worth knowing.">
+<title>iOS 27 · What's New | IANS</title>
+<style>
+:root{
+  --bg:#03070c;--panel:#09131e;--line:#1b3042;
+  --text:#f7f9fb;--muted:#9aabba;--blue:#2997ff;
+  --cyan:#58e7ff;--green:#55e69d;--purple:#b493ff
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:
+  radial-gradient(circle at 75% 0,#102a49 0,transparent 30%),
+  radial-gradient(circle at 10% 25%,#15152f 0,transparent 26%),
+  linear-gradient(180deg,#02060a,#07101a 55%,#03080d);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+a{color:inherit;text-decoration:none}
+nav{
+  position:sticky;top:0;z-index:20;
+  backdrop-filter:blur(18px);
+  background:#03080ddd;border-bottom:1px solid #152330
+}
+.navin,.wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+.navin{height:64px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:900;letter-spacing:-.03em}
+.back{font-size:.88rem;color:#b8c7d4}
+.hero{padding:95px 0 65px;text-align:center}
+.eyebrow{
+  color:var(--cyan);font-weight:900;font-size:.72rem;
+  letter-spacing:.16em;text-transform:uppercase
+}
+h1{
+  font-size:clamp(3.5rem,10vw,7.5rem);
+  line-height:.9;letter-spacing:-.07em;margin:16px 0 25px
+}
+.hero p{
+  max-width:780px;margin:auto;color:#b5c1cc;
+  font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.6
+}
+.badges{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.badge{
+  border:1px solid #29445c;background:#091725;
+  border-radius:999px;padding:8px 13px;color:#c5d8e8;font-size:.78rem;font-weight:800
+}
+.notice{
+  margin:0 auto 70px;max-width:900px;padding:18px 20px;
+  border:1px solid #68582a;border-radius:16px;background:#221d0d;
+  color:#e9dca4;line-height:1.55
+}
+.section-head{margin:75px 0 28px}
+.section-head span{color:var(--cyan);font-weight:900;font-size:.72rem;letter-spacing:.13em}
+.section-head h2{font-size:clamp(2rem,5vw,3.6rem);letter-spacing:-.045em;margin:8px 0}
+.section-head p{max-width:720px;color:var(--muted);line-height:1.6}
+
+.feature{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:24px;
+  border:1px solid var(--line);background:#07111b;
+  border-radius:28px;padding:28px;margin:20px 0;overflow:hidden
+}
+.feature.reverse .visual{order:2}
+.copy{padding:12px 8px}
+.number{color:#597386;font-weight:900;font-size:.75rem;letter-spacing:.12em}
+.copy h3{font-size:clamp(1.7rem,3vw,2.5rem);margin:10px 0 12px;letter-spacing:-.035em}
+.copy>p{color:#aab9c5;line-height:1.65}
+.info{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px
+}
+.info div{border:1px solid #183246;background:#071725;border-radius:14px;padding:14px}
+.info b{display:block;font-size:.72rem;color:#65dcff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.info small{color:#a7b8c5;line-height:1.45}
+
+.visual{
+  min-height:370px;border:1px solid #203a50;border-radius:23px;
+  background:
+  radial-gradient(circle at 50% 20%,#315d8d66,transparent 38%),
+  linear-gradient(145deg,#0c1e30,#050a10);
+  display:grid;place-items:center;padding:24px;position:relative;overflow:hidden
+}
+.phone{
+  width:205px;height:410px;border:7px solid #303a43;border-radius:42px;
+  background:linear-gradient(160deg,#13243b,#090d16 60%,#1a1630);
+  box-shadow:0 28px 80px #000a;position:relative;padding:38px 15px 15px
+}
+.phone:before{
+  content:"";position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  width:72px;height:20px;border-radius:20px;background:#030405
+}
+.screen-title{font-weight:900;font-size:1.15rem}
+.screen-sub{font-size:.7rem;color:#a8b8c7;margin-top:4px}
+.orb{
+  width:110px;height:110px;border-radius:50%;margin:45px auto 20px;
+  background:conic-gradient(from 90deg,#48dfff,#8e6dff,#ff6fb1,#58e7ff);
+  filter:drop-shadow(0 0 25px #66cfff77)
+}
+.camera-box{
+  margin-top:40px;height:150px;border-radius:18px;
+  background:linear-gradient(145deg,#354d31,#827650);
+  display:grid;place-items:center;font-size:3.4rem
+}
+.result{margin-top:12px;padding:10px;border-radius:12px;background:#ffffff12;font-size:.7rem}
+.photo{
+  height:250px;border-radius:22px;
+  background:linear-gradient(155deg,#4d78a8,#bfa06b 55%,#344d38);
+  position:relative;overflow:hidden
+}
+.photo:after{content:"✦";position:absolute;right:18px;bottom:12px;font-size:2rem}
+.tabs{display:grid;gap:8px;margin-top:38px}
+.tab{padding:11px;border-radius:11px;background:#ffffff12;font-size:.72rem}
+.family{font-size:4.5rem;text-align:center;margin-top:65px}
+.performance{font-size:4rem;text-align:center;margin-top:55px}
+.meter{height:10px;border-radius:10px;background:#ffffff12;margin-top:30px;overflow:hidden}
+.meter i{display:block;width:82%;height:100%;background:linear-gradient(90deg,#2997ff,#55e69d)}
+
+.quick{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px
+}
+.q{
+  border:1px solid var(--line);border-radius:18px;padding:20px;background:#07121d
+}
+.q .emoji{font-size:1.7rem}
+.q h3{margin:12px 0 8px}
+.q p{color:var(--muted);line-height:1.5;font-size:.9rem}
+
+.ios26{
+  margin:75px 0 30px;border:1px solid #243c50;border-radius:25px;
+  padding:28px;background:linear-gradient(135deg,#0c1925,#09111a)
+}
+.ios26 h2{font-size:2rem;margin:0 0 10px}
+.ios26 p{color:var(--muted);line-height:1.6}
+
+.cta{
+  margin:25px 0 80px;padding:35px;border-radius:25px;
+  border:1px solid #245c86;background:linear-gradient(135deg,#09223a,#10142a)
+}
+.cta span{font-size:2rem}
+.cta h2{margin:10px 0}
+.cta p{color:#aabbd0}
+.cta a{
+  display:inline-block;margin-top:8px;background:#f5f8fb;color:#06101a;
+  padding:11px 17px;border-radius:999px;font-weight:900
+}
+footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:.78rem}
+.source{color:#8fa8ba;margin-top:8px}
+
+@media(max-width:800px){
+ .feature{grid-template-columns:1fr}
+ .feature.reverse .visual{order:0}
+ .quick{grid-template-columns:1fr}
+ .info{grid-template-columns:1fr}
+ .hero{padding-top:65px}
+}
+</style>
+</head>
+<body>
+
+<nav><div class="navin">
+<a class="brand" href="/">IANS</a>
+<a class="back" href="/teknisk.html">← Technical</a>
+</div></nav>
+
+<main class="wrap">
+
+<section class="hero">
+<div class="eyebrow">IANS · iPhone Guide</div>
+<h1>iOS 27</h1>
+<p>A visual guide to the biggest iPhone updates — smarter assistance, visual intelligence, Photos, family safety, performance and the details worth knowing.</p>
+<div class="badges">
+<span class="badge">📱 iPhone</span>
+<span class="badge">✨ New features</span>
+<span class="badge">🛡️ Safety</span>
+<span class="badge">👨‍👩‍👧 Family</span>
+<span class="badge">⚡ Performance</span>
+</div>
+</section>
+
+<div class="notice">
+<strong>Availability matters.</strong> Some iOS 27 features depend on device model, language, region and later software updates. AI-related features may not be available in every country at launch. Always check availability on your own device.
+</div>
+
+<section class="section-head">
+<span>THE BIG CHANGES</span>
+<h2>What’s worth knowing</h2>
+<p>These are the areas that make iOS 27 interesting in everyday use. Each visual shows the idea behind the feature rather than an exact Apple interface.</p>
+</section>
+
+<article class="feature">
+<div class="copy">
+<div class="number">01 · INTELLIGENCE</div>
+<h3>A smarter Siri experience</h3>
+<p>Apple continues moving Siri toward more natural conversations and better understanding of context. The goal is an assistant that can understand what you mean without requiring perfectly phrased commands.</p>
+<div class="info">
+<div><b>What you're seeing</b><small>An IANS concept illustration of the new intelligent-assistant experience.</small></div>
+<div><b>Why it matters</b><small>Less time learning commands and more natural interaction with your iPhone.</small></div>
+</div>
+</div>
+<div class="visual"><div class="phone">
+<div class="screen-title">Siri</div><div class="screen-sub">How can I help?</div>
+<div class="orb"></div>
+<div class="result">Understanding context…</div>
+</div></div>
+</article>
+
+<article class="feature reverse">
+<div class="copy">
+<div class="number">02 · CAMERA</div>
+<h3>Visual Intelligence</h3>
+<p>Your camera increasingly becomes a way to understand the world around you. Visual intelligence can help identify what the camera sees and surface useful information or possible actions.</p>
+<div class="info">
+<div><b>What you're seeing</b><small>A camera view analysing an object and presenting contextual information.</small></div>
+<div><b>Why it matters</b><small>The camera becomes more than a way to take pictures — it becomes an input for information.</small></div>
+</div>
+</div>
+<div class="visual"><div class="phone">
+<div class="screen-title">Camera</div><div class="screen-sub">Visual Intelligence</div>
+<div class="camera-box">🌿</div>
+<div class="result">Object recognised · More information</div>
+</div></div>
+</article>
+
+<article class="feature">
+<div class="copy">
+<div class="number">03 · PHOTOS</div>
+<h3>More intelligent photo tools</h3>
+<p>Photos continues to gain smarter editing and organisation tools. AI-assisted features can help clean up an image, improve composition and make it easier to work with your photo library.</p>
+<div class="info">
+<div><b>What you're seeing</b><small>An IANS illustration of intelligent photo editing and reframing.</small></div>
+<div><b>Why it matters</b><small>Useful edits that once required dedicated software become easier directly on iPhone.</small></div>
+</div>
+</div>
+<div class="visual"><div class="phone">
+<div class="screen-title">Photos</div><div class="screen-sub">Smart editing</div>
+<div class="photo"></div>
+<div class="result">✦ Enhance · Reframe · Clean Up</div>
+</div></div>
+</article>
+
+<article class="feature reverse">
+<div class="copy">
+<div class="number">04 · SAFARI</div>
+<h3>A more useful web experience</h3>
+<p>Safari continues to improve how tabs, websites and information are organised. Smarter browsing tools are designed to reduce clutter and help you get back to the pages that matter.</p>
+<div class="info">
+<div><b>What you're seeing</b><small>A simplified concept of Safari grouping related browsing activity.</small></div>
+<div><b>Why it matters</b><small>People with many open tabs can spend less time searching through them.</small></div>
+</div>
+</div>
+<div class="visual"><div class="phone">
+<div class="screen-title">Safari</div><div class="screen-sub">Your browsing</div>
+<div class="tabs">
+<div class="tab">📱 Technology · 8 tabs</div>
+<div class="tab">✈️ Travel · 5 tabs</div>
+<div class="tab">🛍️ Shopping · 4 tabs</div>
+<div class="tab">📚 Reading · 6 tabs</div>
+</div>
+</div></div>
+</article>
+
+<article class="feature">
+<div class="copy">
+<div class="number">05 · FAMILY</div>
+<h3>More help for kids and parents</h3>
+<p>Family and child-safety controls continue to become more useful. The direction is clear: children should be able to explore technology while parents retain practical tools for permissions, communication safety and screen-time boundaries.</p>
+<div class="info">
+<div><b>What you're seeing</b><small>A family-safety concept representing permission and communication controls.</small></div>
+<div><b>Why it matters</b><small>Good parental controls can support learning and independence without simply blocking technology.</small></div>
+</div>
+</div>
+<div class="visual"><div class="phone">
+<div class="screen-title">Family</div><div class="screen-sub">Safety & permissions</div>
+<div class="family">👨‍👩‍👦</div>
+<div class="result">✓ Communication safety<br>✓ Permissions<br>✓ Screen time</div>
+</div></div>
+</article>
+
+<article class="feature reverse">
+<div class="copy">
+<div class="number">06 · PERFORMANCE</div>
+<h3>Faster everyday iPhone use</h3>
+<p>Some of the most valuable operating-system updates are the ones you stop noticing: faster actions, smoother transitions, better resource management and improvements to sharing and media handling.</p>
+<div class="info">
+<div><b>What you're seeing</b><small>An IANS performance illustration rather than a benchmark.</small></div>
+<div><b>Why it matters</b><small>A mature iPhone can feel better even when the biggest improvements happen behind the interface.</small></div>
+</div>
+</div>
+<div class="visual"><div class="phone">
+<div class="screen-title">Performance</div><div class="screen-sub">Optimised for iPhone</div>
+<div class="performance">⚡</div>
+<div class="meter"><i></i></div>
+<div class="result">Faster · Smoother · More efficient</div>
+</div></div>
+</article>
+
+<section class="section-head">
+<span>MORE TO EXPLORE</span>
+<h2>The smaller improvements matter too</h2>
+</section>
+
+<section class="quick">
+<div class="q"><div class="emoji">🎧</div><h3>AirPods</h3><p>Deeper integration and additional controls continue to make AirPods part of the wider iPhone experience.</p></div>
+<div class="q"><div class="emoji">🔐</div><h3>Passwords & security</h3><p>Apple continues strengthening account security, password management and protection against unsafe activity.</p></div>
+<div class="q"><div class="emoji">💬</div><h3>Messages</h3><p>Communication features keep becoming richer while safety tools work increasingly in the background.</p></div>
+<div class="q"><div class="emoji">🏠</div><h3>Home</h3><p>The Apple ecosystem continues linking iPhone more closely with compatible home devices and cameras.</p></div>
+<div class="q"><div class="emoji">♿</div><h3>Accessibility</h3><p>Accessibility improvements remain an important part of Apple's yearly software releases.</p></div>
+<div class="q"><div class="emoji">🪟</div><h3>Interface</h3><p>The visual language introduced in iOS 26 continues to influence how controls, surfaces and content feel in iOS 27.</p></div>
+</section>
+
+<section class="ios26">
+<h2>Already useful from iOS 26</h2>
+<p>Not everything you discover on a newly updated iPhone started with iOS 27. iOS 26 introduced major interface and system changes, including the Liquid Glass design direction and numerous updates across Apple's built-in apps. IANS will keep iOS 26 features clearly separated from features introduced or expanded in iOS 27.</p>
+</section>
+
+<section class="cta">
+<span>💡</span>
+<h2>Next: 50 Smart iPhone Tips & Tricks</h2>
+<p>Hidden shortcuts, camera tricks, privacy controls, Safari features, battery tips and useful settings most people never explore.</p>
+<a href="/iphone-50-tips.html">Coming next →</a>
+</section>
+
+</main>
+
+<footer><div class="wrap">
+<strong>IANS · Independent technology guide</strong>
+<div class="source">Information should be checked against Apple's current documentation because feature availability can vary by device, region, language and software version.</div>
+</div></footer>
+
+<script src="/assets/js/ians-analytics.js" defer></script>
+</body>
+</html>
