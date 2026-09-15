@@ -78,5 +78,36 @@ function render(){const pct=Math.round(100*state.done.length/lessons.length);$('
 function openChapter(c){if(!unlocked(c))return;const idx=chapterIndices(c).find(i=>!state.done.includes(i))??chapterIndices(c)[0];openLesson(idx)}
 function openLesson(i){current=i;if(window.IANSRobloxFocus)window.IANSRobloxFocus.enter();const l=lessons[i],done=state.done.includes(i);$('lesson').hidden=false;$('lesson').className='card '+(l.type==='adult'?'adult':l.type==='scenario'?'scenario':'');$('lesson').innerHTML=`<div><b>${chapters[l.ch][0]} KAPITTEL ${l.ch+1} · OPPDRAG ${chapterIndices(l.ch).indexOf(i)+1}/${chapterIndices(l.ch).length}</b>${l.type==='adult'?'<b> · 👨‍👦 VOKSENOPPDRAG</b>':l.type==='scenario'?'<b> · 🧭 SCENARIO</b>':''}</div><h2>${l.t}</h2><p class="muted" style="line-height:1.65">${l.x}</p><h3>${l.q}</h3><div class="answers">${l.a.map((a,j)=>`<button class="answer" ${done?'disabled':''} onclick="answer(${j})">${a}</button>`).join('')}</div><div id="feedback" style="margin-top:14px">${done?'✅ '+l.why:''}</div><div class="actions"><button class="btn" onclick="window.IANSRobloxShowChapters?IANSRobloxShowChapters():document.getElementById('chapters').scrollIntoView()">Alle kapitler</button>${done?'<button class="btn" onclick="nextLesson()">Neste →</button>':''}</div>`;$('lesson').scrollIntoView({behavior:'smooth',block:'start'})}
 function answer(j){if(current===null||state.done.includes(current))return;const l=lessons[current],f=$('feedback');if(j===l.c){state.done.push(current);if(l.type==='adult')state.adult.push(current);save();render();openLesson(current);if(window.IANSRobloxFocus)window.IANSRobloxFocus.refresh();f.className='good'}else{state.wrong++;save();f.className='bad';f.textContent='Ikke helt. Tenk på hvorfor noen ønsker at du skal velge dette, og prøv igjen.'}}
-function nextLesson(){const l=lessons[current],arr=chapterIndices(l.ch),pos=arr.indexOf(current);if(pos<arr.length-1)return openLesson(arr[pos+1]);render();if(l.ch<chapters.length-1&&unlocked(l.ch+1))openChapter(l.ch+1)}
+function nextLesson(){
+  const l=lessons[current],arr=chapterIndices(l.ch),pos=arr.indexOf(current);
+
+  if(pos<arr.length-1){
+    return openLesson(arr[pos+1]);
+  }
+
+  render();
+
+  if(l.ch<chapters.length-1&&unlocked(l.ch+1)){
+    return openChapter(l.ch+1);
+  }
+
+  // Siste oppdrag i siste kapittel:
+  // behold all progresjon og åpne kursmappen hvor diplomet ligger.
+  if(state.done.length===lessons.length){
+    $('lesson').hidden=true;
+
+    if(window.IANSRobloxFocus){
+      window.IANSRobloxFocus.exit?.();
+    }
+
+    if(window.IANSRobloxOpenKnowledge){
+      return window.IANSRobloxOpenKnowledge();
+    }
+
+    const knowledge=document.getElementById('knowledge');
+    if(knowledge){
+      knowledge.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  }
+}
 render();
