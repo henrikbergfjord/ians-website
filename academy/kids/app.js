@@ -65,9 +65,9 @@ function navigate(where) {
   if (where === 'overview') { focusSection('worldHeading'); return; }
   jump(where === 'first' ? 0 : (p.completed.includes(p.current) ? firstUnfinished() : p.current));
 }
-$('resumeBtn').onclick = () => navigate('resume');
-$('firstBtn').onclick = () => navigate('first');
-$('overviewBtn').onclick = () => navigate('overview');
+$('resumeBtn') && ($('resumeBtn').onclick = () => navigate('resume'));
+$('firstBtn') && ($('firstBtn').onclick = () => navigate('first'));
+$('overviewBtn') && ($('overviewBtn').onclick = () => navigate('overview'));
 $('loginBtn').onclick = () => {
   const name = $('name').value.trim() || 'Explorer';
   const pin = $('pin').value;
@@ -94,7 +94,7 @@ function render() {
     return `<div class="skill"><b>${label}</b> <span class="muted">${p.skills[key] || 0}/${total}</span></div>`;
   }).join('');
   $('badges').innerHTML = p.badges.length ? p.badges.map(x=>`<span class="badge">🏆 ${x}</span>`).join('') : '<span class="muted">Det første merket venter på deg.</span>';
-  $('resumeBtn').textContent = p.completed.length ? 'Fortsett der du slapp →' : 'Start første oppdrag →';
+  $('resumeBtn') && ($('resumeBtn').textContent = p.completed.length ? 'Fortsett der du slapp →' : 'Start første oppdrag →');
   const nextIndex = p.completed.includes(p.current) ? firstUnfinished() : p.current;
   $('resumeNote').textContent = `${p.completed.length}/${lessons.length} oppdrag fullført · ${lessons[nextIndex].t}`;
   const worlds = [...new Set(lessons.map(x=>x.w))];
@@ -134,6 +134,6 @@ const remembered = read(LAST_PROFILE) || decode(read(KEY))?.name;
 if (remembered) {
   $('name').value = remembered;
   $('loginBtn').textContent = 'Fortsett Academy Kids';
-  $('resumeBtn').textContent = 'Fortsett der du slapp →';
+  $('resumeBtn') && ($('resumeBtn').textContent = 'Fortsett der du slapp →');
   $('resumeNote').textContent = 'Velkommen tilbake, ' + remembered + '. Lås opp profilen med PIN-koden din.';
 }
