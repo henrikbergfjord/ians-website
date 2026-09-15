@@ -1,0 +1,2119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="50 ranked iPhone tips and tricks: privacy, camera, battery, Safari, productivity, Photos, safety and hidden iOS features.">
+<title>50 Smart iPhone Tips & Tricks | IANS</title>
+<style>
+:root{--bg:#03070c;--panel:#07121d;--line:#193247;--text:#f7f9fb;--muted:#9babb9;--cyan:#5de4ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 80% 0,#112a4a,transparent 28%),linear-gradient(180deg,#02060a,#07101a 55%,#03080d);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:inherit;text-decoration:none}
+nav{position:sticky;top:0;z-index:20;background:#03080ddd;backdrop-filter:blur(18px);border-bottom:1px solid #142635}
+.nav,.wrap{width:min(1180px,calc(100% - 30px));margin:auto}.nav{height:64px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:900}.nav a:last-child{color:#b7c6d3;font-size:.88rem}
+.hero{padding:90px 0 50px;text-align:center}.k{font-size:.7rem;color:var(--cyan);font-weight:900;letter-spacing:.16em}
+h1{font-size:clamp(3rem,8vw,6.6rem);letter-spacing:-.065em;line-height:.94;margin:15px auto 22px;max-width:1000px}
+.hero p{max-width:760px;margin:auto;color:#adbdc9;font-size:1.12rem;line-height:1.65}
+.heroStats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:25px}.heroStats span{padding:8px 13px;border:1px solid #29455b;border-radius:999px;background:#081725;font-size:.78rem;font-weight:800;color:#c7d8e5}
+.intro{border:1px solid #22425b;border-radius:22px;padding:24px;background:linear-gradient(135deg,#0a1d2d,#0b1320);margin-bottom:35px}.intro b{color:#6ce5ff}.intro p{margin:7px 0 0;color:#a9bac7;line-height:1.6}
+.controls{position:sticky;top:64px;z-index:15;padding:12px 0;background:#050c13ee;backdrop-filter:blur(15px);border-bottom:1px solid #142737;margin-bottom:30px}
+.controlin{width:min(1180px,calc(100% - 30px));margin:auto;display:grid;gap:10px}
+input{width:100%;border:1px solid #29475e;background:#081725;color:white;padding:13px 16px;border-radius:13px;font-size:.95rem;outline:none}
+.filters{display:flex;gap:7px;overflow:auto;padding-bottom:2px}button{border:1px solid #29475e;background:#081725;color:#bcd0de;padding:7px 11px;border-radius:999px;white-space:nowrap;cursor:pointer}button.active{background:#dff8ff;color:#041018;border-color:#dff8ff;font-weight:900}
+.sectionTitle{margin:45px 0 20px}.sectionTitle span{font-size:.7rem;color:#61e1ff;font-weight:900;letter-spacing:.14em}.sectionTitle h2{font-size:clamp(2rem,5vw,3.3rem);letter-spacing:-.04em;margin:8px 0}.sectionTitle p{color:#91a5b4}
+.tips{display:grid;gap:16px}
+.tip{position:relative;display:grid;grid-template-columns:64px 235px 1fr;gap:20px;align-items:stretch;border:1px solid var(--line);background:#07121d;border-radius:22px;padding:18px;overflow:hidden}
+.tip.top{border-color:#285777;background:linear-gradient(135deg,#081a29,#07121d)}.rank{font-size:1.05rem;font-weight:950;color:#6be3ff;padding-top:7px}
+.miniVisual{min-height:220px;border:1px solid #1d3a50;border-radius:18px;background:radial-gradient(circle at 50% 25%,color-mix(in srgb,var(--accent) 25%,transparent),transparent 43%),#06101a;display:grid;place-items:center;padding:15px}
+.phoneMini{width:105px;height:180px;border:4px solid #34424d;border-radius:25px;background:linear-gradient(150deg,#172b3e,#080d15);position:relative;padding:30px 12px 10px;box-shadow:0 15px 35px #0008}
+.island{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:38px;height:10px;border-radius:10px;background:#020304}.vicon{font-size:2.7rem;text-align:center;margin:18px 0}.vline{height:6px;background:#ffffff18;border-radius:10px;margin-top:10px}.vline.short{width:65%}.miniVisual>span{font-size:.66rem;color:#9cb2c2;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.tipbody{padding:5px 5px 5px 0}.meta{display:flex;gap:8px;align-items:center}.meta span,.meta b{font-size:.64rem;font-weight:950;letter-spacing:.09em;border:1px solid #29455a;border-radius:999px;padding:5px 8px}.meta span{color:var(--accent)}.meta b{color:#071019;background:#75e5ff;border-color:#75e5ff}
+.tip h3{font-size:1.55rem;letter-spacing:-.025em;margin:12px 0 8px}.tip p{color:#a9bac6;line-height:1.55;margin:0}
+.how{margin-top:15px;border:1px solid #18384f;background:#061522;border-radius:13px;padding:12px;color:#bdd0dd;line-height:1.5;font-size:.88rem}.how strong{display:block;color:#63dfff;font-size:.65rem;letter-spacing:.1em;margin-bottom:5px}
+.compat{margin-top:9px;color:#7f96a7;font-size:.73rem}
+.empty{display:none;text-align:center;padding:60px;color:#9eb1bf}
+.note{margin:60px 0 25px;border:1px solid #594e27;background:#211d0e;border-radius:18px;padding:18px;color:#dfd29c;line-height:1.55}
+.next{margin:20px 0 75px;padding:28px;border:1px solid #285c80;border-radius:22px;background:linear-gradient(135deg,#0a2237,#10152b)}.next h2{margin:7px 0}.next p{color:#a7bbca}.next a{display:inline-block;margin-top:5px;padding:10px 15px;border-radius:999px;background:#f4f8fb;color:#06111a;font-weight:900}
+footer{border-top:1px solid #142534;padding:28px 0 45px;color:#768b9a;font-size:.78rem}
+@media(max-width:760px){.tip{grid-template-columns:45px 1fr}.miniVisual{grid-column:1/-1;min-height:210px}.tipbody{grid-column:1/-1}.hero{padding-top:65px}}
+</style>
+
+<style id="ians-tip-details">
+.tip{cursor:pointer;transition:.18s ease}
+.tip:hover{border-color:#3b779d;transform:translateY(-1px);box-shadow:0 12px 35px #0003}
+.tip:focus-within{border-color:#5bdfff}
+.tipbody{min-width:0}
+.learnrow{display:flex;align-items:center;gap:10px;margin-top:13px;flex-wrap:wrap}
+.learnmore{
+  appearance:none;border:1px solid #347196;background:#0b2132;color:#72e5ff;
+  border-radius:999px;padding:8px 12px;font-weight:900;font-size:.73rem;
+  cursor:pointer
+}
+.learnmore:hover{background:#103149;color:#fff}
+.copylink{
+  appearance:none;border:1px solid #29485e;background:#07131e;color:#9fb5c5;
+  border-radius:999px;padding:8px 11px;font-weight:800;font-size:.71rem;cursor:pointer
+}
+.copylink:hover{color:#fff;border-color:#477897}
+.details{
+  display:none;grid-column:1/-1;border-top:1px solid #173348;
+  margin-top:4px;padding:22px 8px 5px
+}
+.tip.open .details{display:block}
+.deepgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.deepbox{
+  border:1px solid #193a50;background:#061522;border-radius:15px;padding:16px;
+  color:#aebfcb;line-height:1.6
+}
+.deepbox strong{
+  display:block;color:#65e0ff;font-size:.68rem;letter-spacing:.1em;
+  margin-bottom:7px
+}
+.deepbox.full{grid-column:1/-1}
+.path{
+  display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:9px
+}
+.path span{
+  border:1px solid #28506a;background:#091d2c;border-radius:8px;
+  padding:6px 8px;color:#d0e1ec;font-size:.78rem;font-weight:800
+}
+.path i{font-style:normal;color:#5ddfff}
+.applelink{
+  display:inline-flex;align-items:center;gap:7px;margin-top:14px;
+  border:1px solid #456277;background:#f3f7fa;color:#07121b;
+  padding:9px 13px;border-radius:999px;font-size:.75rem;font-weight:950
+}
+.applelink:hover{background:#fff}
+.detailnote{color:#7890a0;font-size:.72rem;margin-top:12px}
+@media(max-width:760px){
+  .deepgrid{grid-template-columns:1fr}
+  .deepbox.full{grid-column:auto}
+}
+</style>
+
+</head>
+<body>
+<nav><div class="nav"><a class="brand" href="/">IANS</a><a href="/ios-27.html">iOS 27 Guide →</a></div></nav>
+
+<header class="hero wrap">
+<div class="k">IANS · IPHONE FIELD GUIDE</div>
+<h1>50 Smart iPhone Tips & Tricks</h1>
+<p>Ranked by everyday usefulness — not by how well they work as clickbait. Explore privacy, camera, battery, productivity, Safari and genuinely useful iPhone features.</p>
+<div class="heroStats"><span>🏆 Ranked 1–50</span><span>📱 Illustrated</span><span>🔎 Searchable</span><span>🛡️ Privacy included</span></div>
+</header>
+
+<div class="wrap">
+<section class="intro"><b>How we ranked them</b><p>The ranking balances everyday usefulness, how often a feature can help, how easy it is to use and how likely it is that an iPhone owner has overlooked it. Features that depend on a particular model, language, region or Apple Intelligence are labelled.</p></section>
+</div>
+
+<div class="controls"><div class="controlin">
+<input id="search" type="search" placeholder="Search all 50 tips…">
+<div class="filters"><button class="active" data-filter="all">All 50</button><button data-filter="Productivity">Productivity</button><button data-filter="Privacy">Privacy</button><button data-filter="Photos">Photos</button><button data-filter="Camera">Camera</button><button data-filter="Battery">Battery</button><button data-filter="AI">AI</button><button data-filter="Safari">Safari</button><button data-filter="Keyboard">Keyboard</button><button data-filter="Messages">Messages</button><button data-filter="Safety">Safety</button><button data-filter="Security">Security</button><button data-filter="Connectivity">Connectivity</button><button data-filter="Settings">Settings</button><button data-filter="Personalisation">Personalisation</button><button data-filter="Audio">Audio</button><button data-filter="Accessibility">Accessibility</button></div>
+</div></div>
+
+<main class="wrap">
+<div class="sectionTitle"><span>THE COMPLETE RANKING</span><h2>Start with the Top 10</h2><p>Then search or filter the full list to find something useful for your iPhone.</p></div>
+<section class="tips" id="tips">
+<article id="tip-01" class="tip top" data-cat="Productivity" data-search="back tap: turn the back of your iphone into a button double- or triple-tap the back of iphone to trigger an action or shortcut. settings → accessibility → touch → back tap. choose double tap or triple tap, then assign an action. productivity">
+  <div class="rank">#01</div>
+  <div class="miniVisual" style="--accent:#65dcff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">👆</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Productivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#65dcff">Productivity</span><b>TOP 10</b></div>
+    <h3>Back Tap: turn the back of your iPhone into a button</h3>
+    <p>Double- or triple-tap the back of iPhone to trigger an action or Shortcut.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → Accessibility → Touch → Back Tap. Choose Double Tap or Triple Tap, then assign an action.</div>
+    <div class="compat">◎ Most modern iPhones</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="01">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHAT IT REALLY DOES</strong>
+      Back Tap uses sensors inside the iPhone to recognise a deliberate double or triple tap on the back of the device. It can trigger system actions such as a screenshot or accessibility feature — and it can also run one of your Shortcuts.
+    </div>
+    <div class="deepbox">
+      <strong>REAL-WORLD EXAMPLE</strong>
+      Try assigning Screenshot to Double Tap and a useful Shortcut to Triple Tap. That gives you two extra controls without adding anything to the Home Screen.
+    </div>
+    <div class="deepbox full">
+      <strong>STEP BY STEP</strong>
+      Settings → Accessibility → Touch → Back Tap. Choose Double Tap or Triple Tap, then assign an action.
+      <div class="path"><span>Settings</span><i>→</i><span>Accessibility</span><i>→</i><span>Touch</span><i>→</i><span>Back Tap</span></div>
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Triple Tap is often better for important Shortcuts because it is less likely to be triggered accidentally.
+      <br><a class="applelink" href="https://support.apple.com/guide/iphone/iphaa57e7885/ios" target="_blank" rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="detailnote">Apple documentation can change as iOS and hardware are updated.</div>
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-02" class="tip top" data-cat="Privacy" data-search="lock or hide sensitive apps with face id add another layer of privacy when someone else is holding your unlocked iphone. touch and hold a supported app icon, then choose require face id. where supported, you can also hide the app. privacy">
+  <div class="rank">#02</div>
+  <div class="miniVisual" style="--accent:#bd9cff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🔐</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Privacy</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#bd9cff">Privacy</span><b>TOP 10</b></div>
+    <h3>Lock or hide sensitive apps with Face ID</h3>
+    <p>Add another layer of privacy when someone else is holding your unlocked iPhone.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Touch and hold a supported app icon, then choose Require Face ID. Where supported, you can also hide the app.</div>
+    <div class="compat">◎ Supported apps / current iOS</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="02">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHAT IT REALLY DOES</strong>
+      App locking adds another authentication check even after the iPhone itself has been unlocked. It is useful when you temporarily hand your phone to another person but do not want every app immediately accessible.
+    </div>
+    <div class="deepbox">
+      <strong>REAL-WORLD EXAMPLE</strong>
+      Good candidates include apps containing private conversations, personal documents, photos or financial information.
+    </div>
+    <div class="deepbox full">
+      <strong>STEP BY STEP</strong>
+      Touch and hold a supported app icon, then choose Require Face ID. Where supported, you can also hide the app.
+      <div class="path"><span>Touch and hold app</span><i>→</i><span>Require Face ID</span></div>
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Think of this as an extra privacy layer, not a replacement for a strong device passcode and Face ID.
+      <br><a class="applelink" href="https://support.apple.com/guide/iphone/welcome/ios" target="_blank" rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="detailnote">Apple documentation can change as iOS and hardware are updated.</div>
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-03" class="tip top" data-cat="Photos" data-search="copy text straight from a photo with live text phone numbers, addresses, serial numbers and printed text can become selectable text. open a photo containing text, touch and hold the text, then copy, translate, look up or use an available action. photos">
+  <div class="rank">#03</div>
+  <div class="miniVisual" style="--accent:#ff9dc7">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🔤</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Photos</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ff9dc7">Photos</span><b>TOP 10</b></div>
+    <h3>Copy text straight from a photo with Live Text</h3>
+    <p>Phone numbers, addresses, serial numbers and printed text can become selectable text.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open a photo containing text, touch and hold the text, then copy, translate, look up or use an available action.</div>
+    <div class="compat">◎ Live Text compatible iPhones</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="03">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHAT IT REALLY DOES</strong>
+      Live Text recognises text inside supported photos and camera views. Instead of manually typing a phone number, address, serial number or paragraph, you can interact with the detected text directly.
+    </div>
+    <div class="deepbox">
+      <strong>REAL-WORLD EXAMPLE</strong>
+      Photograph a label or document, select its text and copy it into Notes. Depending on the content, iPhone may also offer actions such as calling a number, opening an address or translating text.
+    </div>
+    <div class="deepbox full">
+      <strong>STEP BY STEP</strong>
+      Open a photo containing text, touch and hold the text, then copy, translate, look up or use an available action.
+      <div class="path"><span>Photos</span><i>→</i><span>Open photo</span><i>→</i><span>Touch and hold text</span></div>
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      This is especially useful for long Wi-Fi passwords, serial numbers, printed instructions and information you want to search for.
+      <br><a class="applelink" href="https://support.apple.com/guide/iphone/welcome/ios" target="_blank" rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="detailnote">Apple documentation can change as iOS and hardware are updated.</div>
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-04" class="tip top" data-cat="Productivity" data-search="scan documents without installing a scanner app turn receipts, letters and paperwork into clean digital scans. use the document scanning option in notes or files, position the document in view and capture the pages. productivity">
+  <div class="rank">#04</div>
+  <div class="miniVisual" style="--accent:#65dcff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">📄</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Productivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#65dcff">Productivity</span><b>TOP 10</b></div>
+    <h3>Scan documents without installing a scanner app</h3>
+    <p>Turn receipts, letters and paperwork into clean digital scans.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Use the document scanning option in Notes or Files, position the document in view and capture the pages.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="04">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHAT IT REALLY DOES</strong>
+      Your iPhone can create document-style scans with automatic edge detection and perspective correction, so you often do not need a separate scanner app.
+    </div>
+    <div class="deepbox">
+      <strong>REAL-WORLD EXAMPLE</strong>
+      Use it for receipts, signed documents, letters, school papers and paperwork you need to archive or send.
+    </div>
+    <div class="deepbox full">
+      <strong>STEP BY STEP</strong>
+      Use the document scanning option in Notes or Files, position the document in view and capture the pages.
+      <div class="path"><span>Notes or Files</span><i>→</i><span>Scan Documents</span><i>→</i><span>Position document</span><i>→</i><span>Save</span></div>
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Place the document on a contrasting surface with even lighting. Edge detection normally works much better.
+      <br><a class="applelink" href="https://support.apple.com/guide/iphone/welcome/ios" target="_blank" rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="detailnote">Apple documentation can change as iOS and hardware are updated.</div>
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-05" class="tip top" data-cat="Camera" data-search="master camera control on supported iphones, camera control can provide fast access to camera settings such as zoom and exposure. open camera and use camera control. available controls depend on your iphone model and settings. camera">
+  <div class="rank">#05</div>
+  <div class="miniVisual" style="--accent:#7ce8a9">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">📸</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Camera</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#7ce8a9">Camera</span><b>TOP 10</b></div>
+    <h3>Master Camera Control</h3>
+    <p>On supported iPhones, Camera Control can provide fast access to camera settings such as zoom and exposure.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Camera and use Camera Control. Available controls depend on your iPhone model and settings.</div>
+    <div class="compat">◎ Selected iPhones</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="05">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHAT IT REALLY DOES</strong>
+      Camera Control is more than a shutter button. On supported iPhones it can open Camera, take photos, record video and expose controls including Exposure, Depth, Zoom, Cameras, Styles and Tone. Apple also supports AE/AF Lock.
+    </div>
+    <div class="deepbox">
+      <strong>REAL-WORLD EXAMPLE</strong>
+      Lightly double-press Camera Control to show available controls, slide to the control you want, lightly press to select it and slide again to adjust it.
+    </div>
+    <div class="deepbox full">
+      <strong>STEP BY STEP</strong>
+      Open Camera and use Camera Control. Available controls depend on your iPhone model and settings.
+      <div class="path"><span>Settings</span><i>→</i><span>Camera</span><i>→</i><span>Camera Control</span><i>→</i><span>Customize</span></div>
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Go to Camera Control settings and customise which controls appear. Removing controls you never use makes it much faster.
+      <br><a class="applelink" href="https://support.apple.com/guide/iphone/use-the-camera-control-iph0c397b154/27/ios/27" target="_blank" rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="detailnote">Apple documentation can change as iOS and hardware are updated.</div>
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-06" class="tip top" data-cat="Battery" data-search="protect battery health with a charging limit a lower maximum charge can reduce the time your battery spends at a very high state of charge. open settings → battery → charging and review the charging optimisation or charge-limit options available on your model. battery">
+  <div class="rank">#06</div>
+  <div class="miniVisual" style="--accent:#8bea75">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🔋</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Battery</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#8bea75">Battery</span><b>TOP 10</b></div>
+    <h3>Protect battery health with a charging limit</h3>
+    <p>A lower maximum charge can reduce the time your battery spends at a very high state of charge.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Settings → Battery → Charging and review the charging optimisation or charge-limit options available on your model.</div>
+    <div class="compat">◎ Supported iPhones</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="06">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHAT IT REALLY DOES</strong>
+      Supported iPhones provide charging optimisation controls designed to reduce battery ageing. Depending on the model, you may be able to choose a charge limit instead of always charging to 100%.
+    </div>
+    <div class="deepbox">
+      <strong>REAL-WORLD EXAMPLE</strong>
+      If your iPhone normally spends hours connected to power, a lower limit can reduce the amount of time the battery remains at a very high charge level.
+    </div>
+    <div class="deepbox full">
+      <strong>STEP BY STEP</strong>
+      Open Settings → Battery → Charging and review the charging optimisation or charge-limit options available on your model.
+      <div class="path"><span>Settings</span><i>→</i><span>Battery</span><i>→</i><span>Charging</span></div>
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Do not treat battery percentage as a competition. Choose a setting that still gives you enough battery for your normal day.
+      <br><a class="applelink" href="https://support.apple.com/guide/iphone/welcome/ios" target="_blank" rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="detailnote">Apple documentation can change as iOS and hardware are updated.</div>
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-07" class="tip top" data-cat="AI" data-search="use visual intelligence to understand what you see on compatible devices, visual intelligence can help you learn more about objects, text and places around you. launch visual intelligence using the method supported by your iphone, then point the camera at what you want to explore. ai">
+  <div class="rank">#07</div>
+  <div class="miniVisual" style="--accent:#d6a7ff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">✨</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>AI</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#d6a7ff">AI</span><b>TOP 10</b></div>
+    <h3>Use Visual Intelligence to understand what you see</h3>
+    <p>On compatible devices, visual intelligence can help you learn more about objects, text and places around you.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Launch Visual Intelligence using the method supported by your iPhone, then point the camera at what you want to explore.</div>
+    <div class="compat">◎ Apple Intelligence compatible iPhones · availability varies</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="07">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHAT IT REALLY DOES</strong>
+      Visual Intelligence uses the camera and Apple Intelligence to help interpret objects, places and text around you on compatible devices. Available actions depend on what the camera sees and on regional and language availability.
+    </div>
+    <div class="deepbox">
+      <strong>REAL-WORLD EXAMPLE</strong>
+      You may be able to learn more about a place, work with visible text or find information related to an object in front of you.
+    </div>
+    <div class="deepbox full">
+      <strong>STEP BY STEP</strong>
+      Launch Visual Intelligence using the method supported by your iPhone, then point the camera at what you want to explore.
+      <div class="path"><span>Visual Intelligence</span><i>→</i><span>Point camera</span><i>→</i><span>Choose available action</span></div>
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Treat AI-generated or retrieved information as assistance, not proof. Verify important medical, financial, safety or identity information independently.
+      <br><a class="applelink" href="https://support.apple.com/guide/iphone/use-the-camera-control-iph0c397b154/27/ios/27" target="_blank" rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="detailnote">Apple documentation can change as iOS and hardware are updated.</div>
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-08" class="tip top" data-cat="Safari" data-search="capture an entire webpage, not just the screen a full-page capture is ideal for long webpages and documents. take a screenshot in a supported app, open the preview and choose full page when that option is available. safari">
+  <div class="rank">#08</div>
+  <div class="miniVisual" style="--accent:#62b8ff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🧾</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Safari</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#62b8ff">Safari</span><b>TOP 10</b></div>
+    <h3>Capture an entire webpage, not just the screen</h3>
+    <p>A full-page capture is ideal for long webpages and documents.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Take a screenshot in a supported app, open the preview and choose Full Page when that option is available.</div>
+    <div class="compat">◎ Supported content</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="08">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHAT IT REALLY DOES</strong>
+      Some Apple apps can capture content beyond the visible screen. A full-page screenshot is particularly useful for webpages and long documents.
+    </div>
+    <div class="deepbox">
+      <strong>REAL-WORLD EXAMPLE</strong>
+      Instead of taking five overlapping screenshots of an article, capture the supported page once and use the Full Page option.
+    </div>
+    <div class="deepbox full">
+      <strong>STEP BY STEP</strong>
+      Take a screenshot in a supported app, open the preview and choose Full Page when that option is available.
+      <div class="path"><span>Take screenshot</span><i>→</i><span>Open preview</span><i>→</i><span>Full Page</span></div>
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      The exact save and sharing options depend on the app and current iOS version.
+      <br><a class="applelink" href="https://support.apple.com/guide/iphone/welcome/ios" target="_blank" rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="detailnote">Apple documentation can change as iOS and hardware are updated.</div>
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-09" class="tip top" data-cat="Productivity" data-search="make the action button genuinely useful the action button becomes much more powerful when it launches an action you actually use every day. settings → action button. choose a function or shortcut supported by your model. productivity">
+  <div class="rank">#09</div>
+  <div class="miniVisual" style="--accent:#65dcff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">⚡</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Productivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#65dcff">Productivity</span><b>TOP 10</b></div>
+    <h3>Make the Action Button genuinely useful</h3>
+    <p>The Action Button becomes much more powerful when it launches an action you actually use every day.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → Action Button. Choose a function or Shortcut supported by your model.</div>
+    <div class="compat">◎ iPhones with Action Button</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="09">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHAT IT REALLY DOES</strong>
+      The Action Button can replace a fixed hardware function with something that matches your own routine. Its real power appears when it launches a Shortcut.
+    </div>
+    <div class="deepbox">
+      <strong>REAL-WORLD EXAMPLE</strong>
+      One button could start a favourite Shortcut, open Camera, activate a Focus or perform another supported action.
+    </div>
+    <div class="deepbox full">
+      <strong>STEP BY STEP</strong>
+      Settings → Action Button. Choose a function or Shortcut supported by your model.
+      <div class="path"><span>Settings</span><i>→</i><span>Action Button</span><i>→</i><span>Choose action</span></div>
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Choose something you use frequently. A complicated Shortcut you never need is less useful than a simple action you use every day.
+      <br><a class="applelink" href="https://support.apple.com/no-no/105103" target="_blank" rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="detailnote">Apple documentation can change as iOS and hardware are updated.</div>
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-10" class="tip top" data-cat="Productivity" data-search="build one-tap automations with shortcuts combine several actions into a single command and launch it from multiple places in ios. open shortcuts, create or add a shortcut, then make it accessible from siri, widgets, control center or action button where supported. productivity">
+  <div class="rank">#10</div>
+  <div class="miniVisual" style="--accent:#65dcff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🪄</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Productivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#65dcff">Productivity</span><b>TOP 10</b></div>
+    <h3>Build one-tap automations with Shortcuts</h3>
+    <p>Combine several actions into a single command and launch it from multiple places in iOS.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Shortcuts, create or add a shortcut, then make it accessible from Siri, widgets, Control Center or Action Button where supported.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="10">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHAT IT REALLY DOES</strong>
+      Shortcuts lets you combine actions from iOS and supported apps into reusable workflows. A Shortcut can then be launched from several places, including Siri and other supported controls.
+    </div>
+    <div class="deepbox">
+      <strong>REAL-WORLD EXAMPLE</strong>
+      A single Shortcut might open navigation, send an ETA and start a playlist — or simply perform one repetitive action you otherwise do manually.
+    </div>
+    <div class="deepbox full">
+      <strong>STEP BY STEP</strong>
+      Open Shortcuts, create or add a shortcut, then make it accessible from Siri, widgets, Control Center or Action Button where supported.
+      <div class="path"><span>Shortcuts</span><i>→</i><span>Create Shortcut</span><i>→</i><span>Add actions</span><i>→</i><span>Run</span></div>
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Start with very small Shortcuts. Once those are reliable, combine actions into more advanced workflows.
+      <br><a class="applelink" href="https://support.apple.com/guide/shortcuts/welcome/ios" target="_blank" rel="noopener noreferrer"> Official Apple Guide ↗</a>
+      <div class="detailnote">Apple documentation can change as iOS and hardware are updated.</div>
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-11" class="tip " data-cat="Productivity" data-search="move text, photos and files between apps with drag and drop you can hold content with one finger, switch apps with another and drop it into the destination. touch and hold movable content, keep holding it, switch apps and release it where accepted. productivity">
+  <div class="rank">#11</div>
+  <div class="miniVisual" style="--accent:#65dcff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🤏</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Productivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#65dcff">Productivity</span></div>
+    <h3>Move text, photos and files between apps with drag and drop</h3>
+    <p>You can hold content with one finger, switch apps with another and drop it into the destination.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Touch and hold movable content, keep holding it, switch apps and release it where accepted.</div>
+    <div class="compat">◎ Supported apps</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="11">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      You can hold content with one finger, switch apps with another and drop it into the destination.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Touch and hold movable content, keep holding it, switch apps and release it where accepted.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-12" class="tip " data-cat="Keyboard" data-search="replace typing with text replacement perfect for email addresses, standard replies and phrases you type repeatedly. settings → general → keyboard → text replacement. add a shortcut and the phrase it should expand to. keyboard">
+  <div class="rank">#12</div>
+  <div class="miniVisual" style="--accent:#ffd477">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">⌨️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Keyboard</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ffd477">Keyboard</span></div>
+    <h3>Replace typing with text replacement</h3>
+    <p>Perfect for email addresses, standard replies and phrases you type repeatedly.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → General → Keyboard → Text Replacement. Add a shortcut and the phrase it should expand to.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="12">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Perfect for email addresses, standard replies and phrases you type repeatedly.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Settings → General → Keyboard → Text Replacement. Add a shortcut and the phrase it should expand to.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-13" class="tip " data-cat="Keyboard" data-search="turn the keyboard into a trackpad position the cursor precisely without repeatedly tapping between letters. touch and hold the space bar until the keyboard becomes a trackpad, then slide your finger. keyboard">
+  <div class="rank">#13</div>
+  <div class="miniVisual" style="--accent:#ffd477">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🎯</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Keyboard</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ffd477">Keyboard</span></div>
+    <h3>Turn the keyboard into a trackpad</h3>
+    <p>Position the cursor precisely without repeatedly tapping between letters.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Touch and hold the Space bar until the keyboard becomes a trackpad, then slide your finger.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="13">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Position the cursor precisely without repeatedly tapping between letters.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Touch and hold the Space bar until the keyboard becomes a trackpad, then slide your finger.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-14" class="tip " data-cat="Keyboard" data-search="undo typing with a three-finger gesture quickly undo or redo edits without hunting for a button. use supported three-finger editing gestures in text fields, or use the editing menu. keyboard">
+  <div class="rank">#14</div>
+  <div class="miniVisual" style="--accent:#ffd477">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">↩️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Keyboard</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ffd477">Keyboard</span></div>
+    <h3>Undo typing with a three-finger gesture</h3>
+    <p>Quickly undo or redo edits without hunting for a button.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Use supported three-finger editing gestures in text fields, or use the editing menu.</div>
+    <div class="compat">◎ Supported apps</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="14">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Quickly undo or redo edits without hunting for a button.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Use supported three-finger editing gestures in text fields, or use the editing menu.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-15" class="tip " data-cat="Keyboard" data-search="select text faster with intelligent gestures knowing ios text-selection gestures makes editing long messages much quicker. use taps, touch-and-hold and selection handles to select words or larger blocks of text. keyboard">
+  <div class="rank">#15</div>
+  <div class="miniVisual" style="--accent:#ffd477">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">✍️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Keyboard</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ffd477">Keyboard</span></div>
+    <h3>Select text faster with intelligent gestures</h3>
+    <p>Knowing iOS text-selection gestures makes editing long messages much quicker.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Use taps, touch-and-hold and selection handles to select words or larger blocks of text.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="15">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Knowing iOS text-selection gestures makes editing long messages much quicker.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Use taps, touch-and-hold and selection handles to select words or larger blocks of text.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-16" class="tip " data-cat="Messages" data-search="pin the conversations that matter keep family or important chats at the top instead of searching through the conversation list. in messages, use the available pin control on the conversation you want to keep at the top. messages">
+  <div class="rank">#16</div>
+  <div class="miniVisual" style="--accent:#6fe7b0">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">📌</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Messages</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#6fe7b0">Messages</span></div>
+    <h3>Pin the conversations that matter</h3>
+    <p>Keep family or important chats at the top instead of searching through the conversation list.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>In Messages, use the available pin control on the conversation you want to keep at the top.</div>
+    <div class="compat">◎ Messages</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="16">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Keep family or important chats at the top instead of searching through the conversation list.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      In Messages, use the available pin control on the conversation you want to keep at the top.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-17" class="tip " data-cat="Messages" data-search="edit or unsend an imessage when available correct a mistake shortly after sending instead of adding another confusing message. touch and hold a recently sent imessage and choose an available edit or undo send option within apple&#x27;s permitted time window. messages">
+  <div class="rank">#17</div>
+  <div class="miniVisual" style="--accent:#6fe7b0">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">💬</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Messages</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#6fe7b0">Messages</span></div>
+    <h3>Edit or unsend an iMessage when available</h3>
+    <p>Correct a mistake shortly after sending instead of adding another confusing message.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Touch and hold a recently sent iMessage and choose an available Edit or Undo Send option within Apple&#x27;s permitted time window.</div>
+    <div class="compat">◎ iMessage · limits apply</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="17">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Correct a mistake shortly after sending instead of adding another confusing message.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Touch and hold a recently sent iMessage and choose an available Edit or Undo Send option within Apple&#x27;s permitted time window.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-18" class="tip " data-cat="Messages" data-search="schedule a message for later prepare a message when you remember it and have it sent at a more appropriate time. in a supported messages conversation, open the available message tools and choose send later. messages">
+  <div class="rank">#18</div>
+  <div class="miniVisual" style="--accent:#6fe7b0">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🕒</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Messages</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#6fe7b0">Messages</span></div>
+    <h3>Schedule a message for later</h3>
+    <p>Prepare a message when you remember it and have it sent at a more appropriate time.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>In a supported Messages conversation, open the available message tools and choose Send Later.</div>
+    <div class="compat">◎ Supported iOS / iMessage</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="18">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Prepare a message when you remember it and have it sent at a more appropriate time.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      In a supported Messages conversation, open the available message tools and choose Send Later.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-19" class="tip " data-cat="Privacy" data-search="silence unknown callers reduce interruptions from callers you don&#x27;t recognise. review the unknown-caller and call-screening options available under settings → apps → phone. privacy">
+  <div class="rank">#19</div>
+  <div class="miniVisual" style="--accent:#bd9cff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">☎️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Privacy</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#bd9cff">Privacy</span></div>
+    <h3>Silence unknown callers</h3>
+    <p>Reduce interruptions from callers you don&#x27;t recognise.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Review the unknown-caller and call-screening options available under Settings → Apps → Phone.</div>
+    <div class="compat">◎ Availability varies by iOS/region</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="19">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Reduce interruptions from callers you don&#x27;t recognise.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Review the unknown-caller and call-screening options available under Settings → Apps → Phone.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-20" class="tip " data-cat="Safety" data-search="use emergency sos before you ever need it knowing how your own iphone triggers emergency assistance matters more than learning it during an emergency. open settings → emergency sos and review the options for your device. do not test-call emergency services unnecessarily. safety">
+  <div class="rank">#20</div>
+  <div class="miniVisual" style="--accent:#ff947d">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🆘</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Safety</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ff947d">Safety</span></div>
+    <h3>Use Emergency SOS before you ever need it</h3>
+    <p>Knowing how your own iPhone triggers emergency assistance matters more than learning it during an emergency.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Settings → Emergency SOS and review the options for your device. Do not test-call emergency services unnecessarily.</div>
+    <div class="compat">◎ iPhone · region/carrier features vary</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="20">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Knowing how your own iPhone triggers emergency assistance matters more than learning it during an emergency.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open Settings → Emergency SOS and review the options for your device. Do not test-call emergency services unnecessarily.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-21" class="tip " data-cat="Safety" data-search="set up medical id medical information and emergency contacts can be available from the lock screen when configured to allow it. open health → your profile → medical id and review what you want available in an emergency. safety">
+  <div class="rank">#21</div>
+  <div class="miniVisual" style="--accent:#ff947d">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">❤️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Safety</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ff947d">Safety</span></div>
+    <h3>Set up Medical ID</h3>
+    <p>Medical information and emergency contacts can be available from the Lock Screen when configured to allow it.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Health → your profile → Medical ID and review what you want available in an emergency.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="21">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Medical information and emergency contacts can be available from the Lock Screen when configured to allow it.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open Health → your profile → Medical ID and review what you want available in an emergency.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-22" class="tip " data-cat="Privacy" data-search="share your location temporarily instead of forever give someone your location when useful without leaving permanent sharing enabled. use find my or supported messages location-sharing controls and choose an appropriate duration where offered. privacy">
+  <div class="rank">#22</div>
+  <div class="miniVisual" style="--accent:#bd9cff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">📍</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Privacy</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#bd9cff">Privacy</span></div>
+    <h3>Share your location temporarily instead of forever</h3>
+    <p>Give someone your location when useful without leaving permanent sharing enabled.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Use Find My or supported Messages location-sharing controls and choose an appropriate duration where offered.</div>
+    <div class="compat">◎ Find My / Messages</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="22">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Give someone your location when useful without leaving permanent sharing enabled.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Use Find My or supported Messages location-sharing controls and choose an appropriate duration where offered.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-23" class="tip " data-cat="Privacy" data-search="check which apps are using your location location permission is worth reviewing because many apps do not need permanent access. settings → privacy &amp; security → location services. review apps individually and choose the minimum access you need. privacy">
+  <div class="rank">#23</div>
+  <div class="miniVisual" style="--accent:#bd9cff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🛰️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Privacy</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#bd9cff">Privacy</span></div>
+    <h3>Check which apps are using your location</h3>
+    <p>Location permission is worth reviewing because many apps do not need permanent access.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → Privacy &amp; Security → Location Services. Review apps individually and choose the minimum access you need.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="23">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Location permission is worth reviewing because many apps do not need permanent access.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Settings → Privacy &amp; Security → Location Services. Review apps individually and choose the minimum access you need.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-24" class="tip " data-cat="Privacy" data-search="stop apps tracking you across other companies&#x27; apps and sites app tracking transparency gives you control over cross-company tracking requests. settings → privacy &amp; security → tracking. review which apps are allowed to request or use tracking permission. privacy">
+  <div class="rank">#24</div>
+  <div class="miniVisual" style="--accent:#bd9cff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🛡️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Privacy</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#bd9cff">Privacy</span></div>
+    <h3>Stop apps tracking you across other companies&#x27; apps and sites</h3>
+    <p>App Tracking Transparency gives you control over cross-company tracking requests.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → Privacy &amp; Security → Tracking. Review which apps are allowed to request or use tracking permission.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="24">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      App Tracking Transparency gives you control over cross-company tracking requests.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Settings → Privacy &amp; Security → Tracking. Review which apps are allowed to request or use tracking permission.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-25" class="tip " data-cat="Safety" data-search="use safety check to review personal sharing safety check can help review people, apps and devices that have access to information you share. settings → privacy &amp; security → safety check. read each option carefully before making changes. safety">
+  <div class="rank">#25</div>
+  <div class="miniVisual" style="--accent:#ff947d">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🧯</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Safety</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ff947d">Safety</span></div>
+    <h3>Use Safety Check to review personal sharing</h3>
+    <p>Safety Check can help review people, apps and devices that have access to information you share.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → Privacy &amp; Security → Safety Check. Read each option carefully before making changes.</div>
+    <div class="compat">◎ Supported iOS</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="25">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Safety Check can help review people, apps and devices that have access to information you share.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Settings → Privacy &amp; Security → Safety Check. Read each option carefully before making changes.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-26" class="tip " data-cat="Security" data-search="find compromised or weak passwords password warnings can reveal credentials that should be changed before an account is abused. open the passwords app and review security recommendations or warnings available for your saved credentials. security">
+  <div class="rank">#26</div>
+  <div class="miniVisual" style="--accent:#ffbe73">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🔑</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Security</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ffbe73">Security</span></div>
+    <h3>Find compromised or weak passwords</h3>
+    <p>Password warnings can reveal credentials that should be changed before an account is abused.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open the Passwords app and review security recommendations or warnings available for your saved credentials.</div>
+    <div class="compat">◎ Passwords</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="26">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Password warnings can reveal credentials that should be changed before an account is abused.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open the Passwords app and review security recommendations or warnings available for your saved credentials.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-27" class="tip " data-cat="Security" data-search="use verification codes without a separate authenticator for supported accounts apple&#x27;s password tools can generate verification codes for accounts that support standard two-factor setup. open the account in passwords and configure a verification code using the setup information provided by the service. security">
+  <div class="rank">#27</div>
+  <div class="miniVisual" style="--accent:#ffbe73">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">6️⃣</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Security</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ffbe73">Security</span></div>
+    <h3>Use verification codes without a separate authenticator for supported accounts</h3>
+    <p>Apple&#x27;s password tools can generate verification codes for accounts that support standard two-factor setup.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open the account in Passwords and configure a verification code using the setup information provided by the service.</div>
+    <div class="compat">◎ Supported accounts</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="27">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Apple&#x27;s password tools can generate verification codes for accounts that support standard two-factor setup.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open the account in Passwords and configure a verification code using the setup information provided by the service.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-28" class="tip " data-cat="Connectivity" data-search="share wi-fi passwords without saying them aloud nearby apple devices can securely offer wi-fi password sharing when the required conditions are met. bring the devices near each other with wi-fi and bluetooth enabled and follow the password-sharing prompt when it appears. connectivity">
+  <div class="rank">#28</div>
+  <div class="miniVisual" style="--accent:#78dfff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">📶</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Connectivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#78dfff">Connectivity</span></div>
+    <h3>Share Wi-Fi passwords without saying them aloud</h3>
+    <p>Nearby Apple devices can securely offer Wi-Fi password sharing when the required conditions are met.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Bring the devices near each other with Wi-Fi and Bluetooth enabled and follow the password-sharing prompt when it appears.</div>
+    <div class="compat">◎ Apple devices · requirements apply</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="28">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Nearby Apple devices can securely offer Wi-Fi password sharing when the required conditions are met.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Bring the devices near each other with Wi-Fi and Bluetooth enabled and follow the password-sharing prompt when it appears.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-29" class="tip " data-cat="Connectivity" data-search="create a personal hotspot quickly your iphone can provide internet access to another device when your carrier plan supports it. settings → personal hotspot and configure allow others to join as appropriate. connectivity">
+  <div class="rank">#29</div>
+  <div class="miniVisual" style="--accent:#78dfff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🌐</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Connectivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#78dfff">Connectivity</span></div>
+    <h3>Create a personal hotspot quickly</h3>
+    <p>Your iPhone can provide internet access to another device when your carrier plan supports it.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → Personal Hotspot and configure Allow Others to Join as appropriate.</div>
+    <div class="compat">◎ Carrier support required</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="29">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Your iPhone can provide internet access to another device when your carrier plan supports it.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Settings → Personal Hotspot and configure Allow Others to Join as appropriate.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-30" class="tip " data-cat="Connectivity" data-search="airdrop more intelligently airdrop is often the quickest way to move high-quality photos and files between nearby apple devices. open share → airdrop and select the intended nearby recipient. review airdrop receiving settings when needed. connectivity">
+  <div class="rank">#30</div>
+  <div class="miniVisual" style="--accent:#78dfff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🛫</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Connectivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#78dfff">Connectivity</span></div>
+    <h3>AirDrop more intelligently</h3>
+    <p>AirDrop is often the quickest way to move high-quality photos and files between nearby Apple devices.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Share → AirDrop and select the intended nearby recipient. Review AirDrop receiving settings when needed.</div>
+    <div class="compat">◎ Apple devices</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="30">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      AirDrop is often the quickest way to move high-quality photos and files between nearby Apple devices.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open Share → AirDrop and select the intended nearby recipient. Review AirDrop receiving settings when needed.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-31" class="tip " data-cat="Photos" data-search="search inside photos instead of endlessly scrolling search can find photos using dates, places, people and recognised content, depending on your library and enabled features. open photos → search and describe what you remember about the picture. photos">
+  <div class="rank">#31</div>
+  <div class="miniVisual" style="--accent:#ff9dc7">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🔎</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Photos</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ff9dc7">Photos</span></div>
+    <h3>Search inside Photos instead of endlessly scrolling</h3>
+    <p>Search can find photos using dates, places, people and recognised content, depending on your library and enabled features.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Photos → Search and describe what you remember about the picture.</div>
+    <div class="compat">◎ Photos</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="31">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Search can find photos using dates, places, people and recognised content, depending on your library and enabled features.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open Photos → Search and describe what you remember about the picture.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-32" class="tip " data-cat="Photos" data-search="remove distracting objects with clean up where available compatible apple intelligence devices can remove some unwanted elements from a photo. open a compatible photo&#x27;s editing tools and choose clean up when the feature is available. photos">
+  <div class="rank">#32</div>
+  <div class="miniVisual" style="--accent:#ff9dc7">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🧹</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Photos</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ff9dc7">Photos</span></div>
+    <h3>Remove distracting objects with Clean Up where available</h3>
+    <p>Compatible Apple Intelligence devices can remove some unwanted elements from a photo.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open a compatible photo&#x27;s editing tools and choose Clean Up when the feature is available.</div>
+    <div class="compat">◎ Apple Intelligence · availability varies</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="32">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Compatible Apple Intelligence devices can remove some unwanted elements from a photo.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open a compatible photo&#x27;s editing tools and choose Clean Up when the feature is available.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-33" class="tip " data-cat="Photos" data-search="hide private photos properly hidden photos can be kept away from the normal library view and protected using device authentication. move selected photos to hidden, then review photos settings for hidden album visibility and authentication. photos">
+  <div class="rank">#33</div>
+  <div class="miniVisual" style="--accent:#ff9dc7">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🙈</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Photos</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ff9dc7">Photos</span></div>
+    <h3>Hide private photos properly</h3>
+    <p>Hidden photos can be kept away from the normal library view and protected using device authentication.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Move selected photos to Hidden, then review Photos settings for Hidden Album visibility and authentication.</div>
+    <div class="compat">◎ Photos</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="33">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Hidden photos can be kept away from the normal library view and protected using device authentication.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Move selected photos to Hidden, then review Photos settings for Hidden Album visibility and authentication.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-34" class="tip " data-cat="Photos" data-search="recover recently deleted photos before they disappear deleted photos remain recoverable for a limited period unless permanently removed sooner. photos → utilities → recently deleted, authenticate if requested, then recover the required items. photos">
+  <div class="rank">#34</div>
+  <div class="miniVisual" style="--accent:#ff9dc7">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">♻️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Photos</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ff9dc7">Photos</span></div>
+    <h3>Recover recently deleted photos before they disappear</h3>
+    <p>Deleted photos remain recoverable for a limited period unless permanently removed sooner.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Photos → Utilities → Recently Deleted, authenticate if requested, then recover the required items.</div>
+    <div class="compat">◎ Photos · limited retention</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="34">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Deleted photos remain recoverable for a limited period unless permanently removed sooner.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Photos → Utilities → Recently Deleted, authenticate if requested, then recover the required items.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-35" class="tip " data-cat="Camera" data-search="preserve the camera settings you actually prefer stop camera from resetting selected shooting settings every time you return. settings → camera → preserve settings, then enable the settings you want camera to remember. camera">
+  <div class="rank">#35</div>
+  <div class="miniVisual" style="--accent:#7ce8a9">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🎥</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Camera</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#7ce8a9">Camera</span></div>
+    <h3>Preserve the camera settings you actually prefer</h3>
+    <p>Stop Camera from resetting selected shooting settings every time you return.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → Camera → Preserve Settings, then enable the settings you want Camera to remember.</div>
+    <div class="compat">◎ Options vary by model</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="35">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Stop Camera from resetting selected shooting settings every time you return.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Settings → Camera → Preserve Settings, then enable the settings you want Camera to remember.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-36" class="tip " data-cat="Camera" data-search="use the camera grid and level simple composition aids make straight horizons and balanced framing much easier. settings → camera and enable grid and/or level where available. camera">
+  <div class="rank">#36</div>
+  <div class="miniVisual" style="--accent:#7ce8a9">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">📐</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Camera</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#7ce8a9">Camera</span></div>
+    <h3>Use the camera grid and level</h3>
+    <p>Simple composition aids make straight horizons and balanced framing much easier.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → Camera and enable Grid and/or Level where available.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="36">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Simple composition aids make straight horizons and balanced framing much easier.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Settings → Camera and enable Grid and/or Level where available.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-37" class="tip " data-cat="Camera" data-search="capture text with the camera instead of retyping it live text can turn printed information in front of you into text you can copy or act on. point camera at clear text and use the detected-text control when it appears. camera">
+  <div class="rank">#37</div>
+  <div class="miniVisual" style="--accent:#7ce8a9">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">📝</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Camera</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#7ce8a9">Camera</span></div>
+    <h3>Capture text with the camera instead of retyping it</h3>
+    <p>Live Text can turn printed information in front of you into text you can copy or act on.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Point Camera at clear text and use the detected-text control when it appears.</div>
+    <div class="compat">◎ Live Text compatible iPhones</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="37">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Live Text can turn printed information in front of you into text you can copy or act on.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Point Camera at clear text and use the detected-text control when it appears.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-38" class="tip " data-cat="Camera" data-search="scan a qr code without a separate app the built-in camera recognises standard qr codes. open camera, point it at the qr code and tap the detected link or action. check the destination before opening unfamiliar codes. camera">
+  <div class="rank">#38</div>
+  <div class="miniVisual" style="--accent:#7ce8a9">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">▦</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Camera</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#7ce8a9">Camera</span></div>
+    <h3>Scan a QR code without a separate app</h3>
+    <p>The built-in camera recognises standard QR codes.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Camera, point it at the QR code and tap the detected link or action. Check the destination before opening unfamiliar codes.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="38">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      The built-in camera recognises standard QR codes.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open Camera, point it at the QR code and tap the detected link or action. Check the destination before opening unfamiliar codes.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-39" class="tip " data-cat="Camera" data-search="use burst or rapid capture when timing matters fast sequences increase your chance of catching movement at the right moment. use the burst/rapid-capture method supported by your current camera configuration and iphone model. camera">
+  <div class="rank">#39</div>
+  <div class="miniVisual" style="--accent:#7ce8a9">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🏃</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Camera</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#7ce8a9">Camera</span></div>
+    <h3>Use burst or rapid capture when timing matters</h3>
+    <p>Fast sequences increase your chance of catching movement at the right moment.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Use the burst/rapid-capture method supported by your current Camera configuration and iPhone model.</div>
+    <div class="compat">◎ Camera · method varies</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="39">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Fast sequences increase your chance of catching movement at the right moment.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Use the burst/rapid-capture method supported by your current Camera configuration and iPhone model.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-40" class="tip " data-cat="Camera" data-search="record video without completely changing your shooting flow quicktake and related camera controls can make spontaneous video faster on supported models. from photo mode, use the supported quicktake gesture/control for your device. camera">
+  <div class="rank">#40</div>
+  <div class="miniVisual" style="--accent:#7ce8a9">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🎬</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Camera</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#7ce8a9">Camera</span></div>
+    <h3>Record video without completely changing your shooting flow</h3>
+    <p>QuickTake and related Camera controls can make spontaneous video faster on supported models.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>From Photo mode, use the supported QuickTake gesture/control for your device.</div>
+    <div class="compat">◎ Supported iPhones</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="40">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      QuickTake and related Camera controls can make spontaneous video faster on supported models.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      From Photo mode, use the supported QuickTake gesture/control for your device.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-41" class="tip " data-cat="Settings" data-search="find a setting without knowing where apple put it settings search is often faster than navigating several menus. open settings and use search for terms such as battery, location, keyboard or background refresh. settings">
+  <div class="rank">#41</div>
+  <div class="miniVisual" style="--accent:#b5c4d2">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">⚙️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Settings</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#b5c4d2">Settings</span></div>
+    <h3>Find a setting without knowing where Apple put it</h3>
+    <p>Settings search is often faster than navigating several menus.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Settings and use Search for terms such as battery, location, keyboard or background refresh.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="41">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Settings search is often faster than navigating several menus.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open Settings and use Search for terms such as battery, location, keyboard or background refresh.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-42" class="tip " data-cat="Productivity" data-search="customise control center around your real routine the best control center is the one containing the controls you actually use. open control center and use its editing/customisation controls to add, remove or rearrange supported controls. productivity">
+  <div class="rank">#42</div>
+  <div class="miniVisual" style="--accent:#65dcff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🎛️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Productivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#65dcff">Productivity</span></div>
+    <h3>Customise Control Center around your real routine</h3>
+    <p>The best Control Center is the one containing the controls you actually use.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Control Center and use its editing/customisation controls to add, remove or rearrange supported controls.</div>
+    <div class="compat">◎ Current iOS</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="42">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      The best Control Center is the one containing the controls you actually use.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open Control Center and use its editing/customisation controls to add, remove or rearrange supported controls.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-43" class="tip " data-cat="Productivity" data-search="use focus modes instead of muting everything focus can allow the people and apps you care about while reducing everything else. settings → focus. create or customise a focus and decide which people, apps and screens are allowed. productivity">
+  <div class="rank">#43</div>
+  <div class="miniVisual" style="--accent:#65dcff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🌙</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Productivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#65dcff">Productivity</span></div>
+    <h3>Use Focus modes instead of muting everything</h3>
+    <p>Focus can allow the people and apps you care about while reducing everything else.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → Focus. Create or customise a Focus and decide which people, apps and screens are allowed.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="43">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Focus can allow the people and apps you care about while reducing everything else.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Settings → Focus. Create or customise a Focus and decide which people, apps and screens are allowed.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-44" class="tip " data-cat="Personalisation" data-search="create different lock screens for different situations a work, travel or evening lock screen can surface different widgets and pair with focus modes. touch and hold the lock screen while authenticated, then create/customise available lock screens and focus links. personalisation">
+  <div class="rank">#44</div>
+  <div class="miniVisual" style="--accent:#d3a8ff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🖼️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Personalisation</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#d3a8ff">Personalisation</span></div>
+    <h3>Create different Lock Screens for different situations</h3>
+    <p>A work, travel or evening Lock Screen can surface different widgets and pair with Focus modes.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Touch and hold the Lock Screen while authenticated, then create/customise available Lock Screens and Focus links.</div>
+    <div class="compat">◎ Supported iOS</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="44">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      A work, travel or evening Lock Screen can surface different widgets and pair with Focus modes.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Touch and hold the Lock Screen while authenticated, then create/customise available Lock Screens and Focus links.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-45" class="tip " data-cat="Productivity" data-search="use standby while charging horizontally a charging iphone can become a bedside clock, photo display or information screen on supported versions. place a compatible iphone on its side while charging and configure standby under settings → standby. productivity">
+  <div class="rank">#45</div>
+  <div class="miniVisual" style="--accent:#65dcff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🛏️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Productivity</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#65dcff">Productivity</span></div>
+    <h3>Use StandBy while charging horizontally</h3>
+    <p>A charging iPhone can become a bedside clock, photo display or information screen on supported versions.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Place a compatible iPhone on its side while charging and configure StandBy under Settings → StandBy.</div>
+    <div class="compat">◎ Supported iOS</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="45">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      A charging iPhone can become a bedside clock, photo display or information screen on supported versions.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Place a compatible iPhone on its side while charging and configure StandBy under Settings → StandBy.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-46" class="tip " data-cat="Safari" data-search="make safari reader remove webpage clutter reader can make compatible articles easier to read by reducing navigation and visual distractions. open a compatible safari page and choose reader from safari&#x27;s page controls when available. safari">
+  <div class="rank">#46</div>
+  <div class="miniVisual" style="--accent:#62b8ff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">📖</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Safari</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#62b8ff">Safari</span></div>
+    <h3>Make Safari Reader remove webpage clutter</h3>
+    <p>Reader can make compatible articles easier to read by reducing navigation and visual distractions.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open a compatible Safari page and choose Reader from Safari&#x27;s page controls when available.</div>
+    <div class="compat">◎ Compatible webpages</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="46">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Reader can make compatible articles easier to read by reducing navigation and visual distractions.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open a compatible Safari page and choose Reader from Safari&#x27;s page controls when available.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-47" class="tip " data-cat="Safari" data-search="save a webpage to read later reading list is useful when you find something worth keeping but don&#x27;t want another permanent tab. in safari, use share or page controls to add the page to reading list. safari">
+  <div class="rank">#47</div>
+  <div class="miniVisual" style="--accent:#62b8ff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🔖</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Safari</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#62b8ff">Safari</span></div>
+    <h3>Save a webpage to read later</h3>
+    <p>Reading List is useful when you find something worth keeping but don&#x27;t want another permanent tab.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>In Safari, use Share or page controls to add the page to Reading List.</div>
+    <div class="compat">◎ Safari</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="47">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Reading List is useful when you find something worth keeping but don&#x27;t want another permanent tab.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      In Safari, use Share or page controls to add the page to Reading List.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-48" class="tip " data-cat="Safari" data-search="request the desktop version of a website useful when a mobile site hides a control or presents a simplified interface. open safari&#x27;s page menu and choose request desktop website when available. safari">
+  <div class="rank">#48</div>
+  <div class="miniVisual" style="--accent:#62b8ff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🖥️</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Safari</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#62b8ff">Safari</span></div>
+    <h3>Request the desktop version of a website</h3>
+    <p>Useful when a mobile site hides a control or presents a simplified interface.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Open Safari&#x27;s page menu and choose Request Desktop Website when available.</div>
+    <div class="compat">◎ Safari</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="48">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Useful when a mobile site hides a control or presents a simplified interface.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Open Safari&#x27;s page menu and choose Request Desktop Website when available.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-49" class="tip " data-cat="Audio" data-search="let your iphone identify a song built-in music recognition can identify music playing around you without manually searching lyrics. add/use music recognition from control center or ask siri when available. audio">
+  <div class="rank">#49</div>
+  <div class="miniVisual" style="--accent:#ff9fca">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🎵</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Audio</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#ff9fca">Audio</span></div>
+    <h3>Let your iPhone identify a song</h3>
+    <p>Built-in music recognition can identify music playing around you without manually searching lyrics.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Add/use Music Recognition from Control Center or ask Siri when available.</div>
+    <div class="compat">◎ Music Recognition</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="49">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Built-in music recognition can identify music playing around you without manually searching lyrics.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Add/use Music Recognition from Control Center or ask Siri when available.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article>
+
+<article id="tip-50" class="tip " data-cat="Accessibility" data-search="use background sounds for focus or calm built-in background sounds can mask distracting environmental noise without installing another app. settings → accessibility → audio &amp; visual → background sounds, then choose and adjust the sound. accessibility">
+  <div class="rank">#50</div>
+  <div class="miniVisual" style="--accent:#9edbff">
+    <div class="phoneMini"><div class="island"></div><div class="vicon">🌊</div><div class="vline"></div><div class="vline short"></div></div>
+    <span>Accessibility</span>
+  </div>
+  <div class="tipbody">
+    <div class="meta"><span style="--accent:#9edbff">Accessibility</span></div>
+    <h3>Use background sounds for focus or calm</h3>
+    <p>Built-in background sounds can mask distracting environmental noise without installing another app.</p>
+    <div class="how"><strong>HOW TO DO IT</strong>Settings → Accessibility → Audio &amp; Visual → Background Sounds, then choose and adjust the sound.</div>
+    <div class="compat">◎ iPhone</div>
+  
+<div class="learnrow">
+  <button class="learnmore" type="button" aria-expanded="false">Learn more ↓</button>
+  <button class="copylink" type="button" data-tip="50">🔗 Copy tip link</button>
+</div>
+</div>
+
+<div class="details">
+  <div class="deepgrid">
+    <div class="deepbox">
+      <strong>WHY THIS IS USEFUL</strong>
+      Built-in background sounds can mask distracting environmental noise without installing another app.
+    </div>
+    <div class="deepbox">
+      <strong>TRY IT YOURSELF</strong>
+      Settings → Accessibility → Audio &amp; Visual → Background Sounds, then choose and adjust the sound.
+    </div>
+    <div class="deepbox full">
+      <strong>IANS TIP</strong>
+      Try this feature once while you are not in a hurry. The best iPhone tricks are the ones that become part of your normal routine.
+    </div>
+  </div>
+</div>
+</article></section>
+<div class="empty" id="empty">No tips match your search.</div>
+
+<div class="note"><strong>Compatibility:</strong> iPhone features change over time. Some options depend on your iPhone model, iOS version, carrier, language or region. Apple Intelligence features require compatible hardware and may have additional availability restrictions.</div>
+
+<section class="next"><div>📱</div><h2>Explore iOS 27</h2><p>See the biggest iOS 27 changes in the IANS visual guide.</p><a href="/ios-27.html">Open iOS 27 Guide →</a></section>
+</main>
+
+<footer><div class="wrap"><strong>IANS · Independent technology guide</strong><br>Practical iPhone guidance. Verify critical availability and safety information against Apple's current documentation.</div></footer>
+
+<script>
+const tips=[...document.querySelectorAll('.tip')], search=document.getElementById('search'), empty=document.getElementById('empty');
+let filter='all';
+function apply(){
+ const q=search.value.trim().toLowerCase(); let shown=0;
+ tips.forEach(t=>{const ok=(filter==='all'||t.dataset.cat===filter)&&(!q||t.dataset.search.includes(q));t.style.display=ok?'grid':'none';if(ok)shown++});
+ empty.style.display=shown?'none':'block';
+}
+search.addEventListener('input',apply);
+document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{
+ filter=b.dataset.filter;
+ document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));
+ apply();
+}));
+</script>
+
+<script id="ians-tip-interaction">
+(function(){
+  const cards=[...document.querySelectorAll('.tip')];
+
+  function setOpen(card, open, scroll){
+    card.classList.toggle('open',open);
+    const b=card.querySelector('.learnmore');
+    if(b){
+      b.setAttribute('aria-expanded',String(open));
+      b.textContent=open?'Show less ↑':'Learn more ↓';
+    }
+    if(open && scroll){
+      history.replaceState(null,'','#'+card.id);
+      card.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  }
+
+  cards.forEach(card=>{
+    const more=card.querySelector('.learnmore');
+    const copy=card.querySelector('.copylink');
+
+    more?.addEventListener('click',e=>{
+      e.stopPropagation();
+      setOpen(card,!card.classList.contains('open'),true);
+    });
+
+    copy?.addEventListener('click',async e=>{
+      e.stopPropagation();
+      const url=location.origin+location.pathname+'#'+card.id;
+      try{
+        await navigator.clipboard.writeText(url);
+        const old=copy.textContent;
+        copy.textContent='✓ Link copied';
+        setTimeout(()=>copy.textContent=old,1500);
+      }catch{
+        location.hash=card.id;
+      }
+    });
+
+    card.addEventListener('click',e=>{
+      if(e.target.closest('a,button,input')) return;
+      setOpen(card,!card.classList.contains('open'),true);
+    });
+  });
+
+  function openHash(){
+    if(!location.hash.startsWith('#tip-')) return;
+    const card=document.querySelector(location.hash);
+    if(card) setOpen(card,true,false);
+  }
+
+  openHash();
+  window.addEventListener('hashchange',openHash);
+})();
+</script>
+
+<script src="/assets/js/ians-analytics.js" defer></script>
+</body></html>
