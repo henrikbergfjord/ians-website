@@ -226,3 +226,324 @@
   }
 }
 </style>
+
+<style id="ians-roblox-v22-game-ui">
+
+:root{
+  --rb-bg:#050b1b;
+  --rb-panel:#071a34;
+  --rb-panel-2:#0b2242;
+  --rb-blue:#19b9ff;
+  --rb-blue-2:#2589ff;
+  --rb-purple:#8b4dff;
+  --rb-cyan:#55e7ff;
+  --rb-green:#48df9b;
+  --rb-gold:#ffd447;
+  --rb-text:#f8fbff;
+  --rb-muted:#9fb7d5;
+  --rb-line:#225587;
+}
+
+body{
+  background:
+    radial-gradient(circle at 85% 12%,rgba(86,46,190,.24),transparent 27%),
+    radial-gradient(circle at 18% 8%,rgba(19,134,255,.20),transparent 30%),
+    linear-gradient(145deg,#071733 0%,#050b1b 45%,#0b1030 100%) !important;
+  color:var(--rb-text);
+  min-height:100vh;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.25;
+  background-image:
+    radial-gradient(circle at 15% 25%,#35bfff 0 2px,transparent 3px),
+    radial-gradient(circle at 80% 18%,#9d62ff 0 2px,transparent 3px),
+    radial-gradient(circle at 70% 72%,#35bfff 0 1px,transparent 2px),
+    radial-gradient(circle at 32% 78%,#9d62ff 0 1px,transparent 2px);
+  background-size:310px 280px,390px 340px,250px 260px,430px 370px;
+}
+
+header,
+.top{
+  background:rgba(5,15,39,.86) !important;
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(74,164,255,.22) !important;
+}
+
+main,
+.wrap{
+  width:min(1280px,94%) !important;
+}
+
+.card,
+.chapter,
+.mission,
+.question-card{
+  background:
+    linear-gradient(145deg,rgba(10,34,67,.97),rgba(5,20,42,.97)) !important;
+  border:1px solid rgba(61,151,225,.36) !important;
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.28),
+    inset 0 1px rgba(255,255,255,.025);
+}
+
+.card{
+  border-radius:22px !important;
+}
+
+h1,h2,h3{
+  letter-spacing:-.025em;
+}
+
+h1{
+  text-shadow:0 0 30px rgba(39,156,255,.14);
+}
+
+button,
+.btn{
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    border-color .18s ease;
+}
+
+button:hover,
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+.btn:not(.alt),
+button.primary{
+  background:
+    linear-gradient(135deg,var(--rb-blue-2),var(--rb-blue)) !important;
+  box-shadow:0 10px 28px rgba(18,164,255,.20);
+}
+
+.answer{
+  background:rgba(7,26,53,.94) !important;
+  border:1px solid #285b8c !important;
+  border-radius:15px !important;
+  padding:15px 17px !important;
+}
+
+.answer:hover{
+  border-color:var(--rb-cyan) !important;
+  box-shadow:0 0 0 1px rgba(85,231,255,.15);
+  transform:translateX(3px);
+}
+
+.answer.selected,
+.answer.good,
+.answer.correct{
+  border-color:var(--rb-cyan) !important;
+  background:
+    linear-gradient(90deg,rgba(24,150,255,.22),rgba(7,26,53,.96)) !important;
+  box-shadow:
+    0 0 0 1px rgba(85,231,255,.25),
+    0 0 25px rgba(20,172,255,.10);
+}
+
+.progress,
+.reward-progress{
+  background:#030916 !important;
+  border:1px solid rgba(62,129,196,.16);
+}
+
+.progress span,
+.reward-progress span{
+  background:
+    linear-gradient(90deg,var(--rb-blue-2),var(--rb-cyan)) !important;
+  box-shadow:0 0 18px rgba(40,189,255,.32);
+}
+
+.eyebrow,
+.reward-eyebrow,
+.reward-state{
+  color:var(--rb-cyan) !important;
+}
+
+.level,
+.reward-xp{
+  color:var(--rb-gold) !important;
+}
+
+#iansRewardVault{
+  width:min(1280px,94%) !important;
+}
+
+.reward-vault{
+  border:1px solid rgba(142,83,255,.55) !important;
+  background:
+    radial-gradient(circle at 90% 0,rgba(132,72,255,.24),transparent 34%),
+    linear-gradient(145deg,#091d39,#12142f) !important;
+  box-shadow:
+    0 28px 80px rgba(0,0,0,.32),
+    0 0 45px rgba(111,61,255,.06);
+}
+
+.reward-tip{
+  background:rgba(5,18,39,.72) !important;
+  border-color:rgba(72,131,191,.28) !important;
+}
+
+.reward-tip.unlocked{
+  border-color:rgba(72,223,155,.60) !important;
+  box-shadow:inset 3px 0 var(--rb-green);
+}
+
+.reward-tip.locked{
+  opacity:.58;
+}
+
+#iansRobloxGameBanner{
+  width:min(1280px,94%);
+  margin:24px auto 8px;
+  position:relative;
+  overflow:hidden;
+  padding:clamp(22px,4vw,42px);
+  border:1px solid rgba(63,153,236,.36);
+  border-radius:26px;
+  background:
+    radial-gradient(circle at 88% 10%,rgba(142,74,255,.34),transparent 28%),
+    radial-gradient(circle at 15% 0,rgba(20,167,255,.28),transparent 34%),
+    linear-gradient(135deg,#092348,#11113b);
+  box-shadow:0 28px 80px rgba(0,0,0,.30);
+}
+
+#iansRobloxGameBanner:after{
+  content:"🎮";
+  position:absolute;
+  right:clamp(20px,6vw,70px);
+  top:50%;
+  transform:translateY(-50%) rotate(-8deg);
+  font-size:clamp(4rem,10vw,8rem);
+  opacity:.14;
+}
+
+.rb-v22-kicker{
+  color:var(--rb-cyan);
+  font-size:.75rem;
+  letter-spacing:.16em;
+  font-weight:900;
+}
+
+#iansRobloxGameBanner h1{
+  margin:7px 0 8px;
+  font-size:clamp(2rem,5vw,4.3rem);
+  line-height:.98;
+}
+
+#iansRobloxGameBanner p{
+  max-width:720px;
+  color:var(--rb-muted);
+  font-size:clamp(.95rem,1.5vw,1.08rem);
+  line-height:1.55;
+}
+
+.rb-v22-status{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:20px;
+}
+
+.rb-v22-pill{
+  padding:9px 13px;
+  border-radius:999px;
+  border:1px solid rgba(76,162,234,.30);
+  background:rgba(3,14,33,.55);
+  font-weight:800;
+  font-size:.84rem;
+}
+
+.rb-v22-pill.xp{
+  color:var(--rb-gold);
+}
+
+@media(max-width:760px){
+
+  main,
+  .wrap,
+  #iansRewardVault,
+  #iansRobloxGameBanner{
+    width:min(94%,680px) !important;
+  }
+
+  #iansRobloxGameBanner{
+    padding:22px;
+    border-radius:20px;
+  }
+
+  #iansRobloxGameBanner h1{
+    font-size:clamp(2rem,10vw,3rem);
+  }
+
+  #iansRobloxGameBanner:after{
+    font-size:5rem;
+    right:12px;
+    opacity:.09;
+  }
+
+  .answer:hover{
+    transform:none;
+  }
+
+}
+
+</style>
+
+<script id="ians-roblox-v22-game-ui-script">
+document.addEventListener('DOMContentLoaded',function(){
+
+  if(document.getElementById('iansRobloxGameBanner')) return;
+
+  let progress={done:[]};
+
+  try{
+    progress=JSON.parse(
+      localStorage.getItem('iansRobloxAcademyV1') || '{"done":[]}'
+    );
+  }catch(e){}
+
+  const completed=Array.isArray(progress.done) ? progress.done.length : 0;
+  const xp=completed*25;
+
+  let level='Rookie';
+  let icon='🌱';
+
+  if(xp>=1000){level='Roblox Master';icon='🏆';}
+  else if(xp>=650){level='Security Pro';icon='🛡️';}
+  else if(xp>=350){level='Smart Player';icon='🎮';}
+  else if(xp>=150){level='Explorer';icon='🧭';}
+
+  const banner=document.createElement('section');
+  banner.id='iansRobloxGameBanner';
+
+  banner.innerHTML=`
+    <div class="rb-v22-kicker">IANS ACADEMY KIDS · ROBLOX</div>
+    <h1>Roblox Smart Player</h1>
+    <p>
+      Lær hvordan Roblox fungerer, ta smartere valg,
+      oppdag svindel og bli tryggere både som spiller og digital bruker.
+    </p>
+
+    <div class="rb-v22-status">
+      <div class="rb-v22-pill xp">⭐ ${xp} XP</div>
+      <div class="rb-v22-pill">${icon} ${level}</div>
+      <div class="rb-v22-pill">✅ ${completed} oppdrag</div>
+    </div>
+  `;
+
+  const main=document.querySelector('main');
+
+  if(main){
+    main.parentNode.insertBefore(banner,main);
+  }
+
+});
+</script>
