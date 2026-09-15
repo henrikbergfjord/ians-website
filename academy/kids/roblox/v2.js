@@ -57,12 +57,14 @@ function robloxV2Stats() {
   const passed =
     done === total &&
     adultDone >= adultTotal &&
-    masterPercent >= IANS_ROBLOX_LEVEL.pass;
+    masterDone === masterIds.length;
 
   return {
     total, done, percent,
     competence,
     adultTotal, adultDone,
+    masterDone,
+    masterTotal: masterIds.length,
     masterPercent,
     passed
   };
@@ -129,7 +131,7 @@ function openCourseFolder() {
         <div><strong>${s.done}/${s.total}</strong><span>oppdrag</span></div>
         <div><strong>${s.percent}%</strong><span>gjennomført</span></div>
         <div><strong>${s.adultDone}/${s.adultTotal}</strong><span>voksenoppdrag</span></div>
-        <div><strong>${s.masterPercent}%</strong><span>Master</span></div>
+        <div><strong>${s.masterDone}/${s.masterTotal}</strong><span>Master</span></div>
       </div>
 
       <h3>📊 Kompetanse</h3>
@@ -363,7 +365,7 @@ function printDiploma() {
       </p>
 
       <p>
-        Master: <b>${s.masterPercent}%</b>
+        Roblox Master: <b>${s.masterDone}/${s.masterTotal} fullført</b>
       </p>
 
       <p class="muted">
@@ -496,9 +498,10 @@ setTimeout(installRobloxV2Button, 0);
 const REWARD_LEVELS = [
   {xp:0,    name:'Rookie',       icon:'🌱'},
   {xp:150,  name:'Explorer',     icon:'🧭'},
-  {xp:350,  name:'Smart Player', icon:'🎮'},
-  {xp:650,  name:'Security Pro', icon:'🛡️'},
-  {xp:1000, name:'Roblox Master',icon:'🏆'}
+  {xp:400,  name:'Smart Player', icon:'🎮'},
+  {xp:750,  name:'Security Pro', icon:'🛡️'},
+  {xp:1050, name:'Master Candidate', icon:'⭐'},
+  {xp:1300, name:'Roblox Master',icon:'🏆'}
 ];
 
 
@@ -534,7 +537,7 @@ const SMART_PLAYER_TEMPLATES = [
     desc:'Se et Roblox-spill med skaperøyne og tegn din egen idé til en trygg opplevelse.'
   },
   {
-    xp:1000,
+    xp:1300,
     icon:'🤝',
     title:'Smart Player-familieavtale',
     desc:'Barn og voksen lager noen få tydelige regler sammen for Roblox, Robux og hjelp.'
@@ -573,7 +576,7 @@ const PRO_TIPS = [
     text:'Når du spiller, legg merke til checkpoints, belønninger, lyder og menyer. Noen har designet hvert av disse valgene.'
   },
   {
-    xp:1000,
+    xp:1300,
     icon:'🏗️',
     title:'Roblox Master Secret · Fra spiller til skaper',
     text:'Roblox Studio lar deg bygge egne opplevelser. Det du lærer om spilldesign som spiller kan bli kunnskap du bruker som skaper.'
