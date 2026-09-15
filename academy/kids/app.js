@@ -1,7 +1,26 @@
 const KEY = 'iansAcademyKidsV2'; // Keep the original record available for migration.
 const PROFILE_PREFIX = 'iansAcademyKidsProfile:';
 const LAST_PROFILE = 'iansAcademyKidsLastName';
-const labels = {Internet:'🌐 Internett',Cyber:'🛡️ Cyber',Judgement:'🧠 Dømmekraft',Coding:'🧩 Koding',AI:'🤖 AI',Tech:'⚙️ Teknologi',Future:'🚀 Fremtid',Creator:'🏗️ Skaper'};
+const labels = {
+  Computer:'💻 Datamaskin',
+  Files:'📁 Filer',
+  OS:'🖥️ Operativsystem',
+  Internet:'🌐 Internett',
+  Web:'🌍 Web',
+  Browser:'🔎 Nettleser',
+  Network:'📡 Nettverk',
+  Terminal:'⌨️ Terminal',
+  Cyber:'🛡️ Cyber',
+  Judgement:'🧠 Dømmekraft',
+  WebCode:'🎨 HTML/CSS',
+  Coding:'🧩 Koding',
+  Cloud:'☁️ Sky',
+  Git:'🌿 Git',
+  AI:'🤖 AI',
+  Tech:'⚙️ Teknologi',
+  Future:'🚀 Fremtid',
+  Creator:'🏗️ Skaper'
+};
 const $ = id => document.getElementById(id);
 let p = null;
 let destination = 'resume';
@@ -72,6 +91,11 @@ function fresh(name, pin) {
   };
 }
 function normalize(value) {
+  // Behold et snapshot av den gamle nummerbaserte progresjonen.
+  if (!Array.isArray(value.legacyCompleted) && Array.isArray(value.completed)) {
+    value.legacyCompleted = [...value.completed];
+  }
+
   value.completedIds = completedIds(value);
 
   // Kompatibilitetsfelt for eksisterende kode/data.
@@ -79,9 +103,18 @@ function normalize(value) {
     .map(id => lessons.findIndex(l => l.id === id))
     .filter(i => i >= 0);
 
-  value.current = Number.isInteger(value.current)
-    ? Math.max(0, Math.min(value.current, lessons.length - 1))
-    : 0;
+  // Migrer aktivt oppdrag fra nummer til permanent ID.
+  if (typeof value.currentId === 'string' &&
+      lessons.some(l => l.id === value.currentId)) {
+    value.current = lessons.findIndex(l => l.id === value.currentId);
+  } else {
+    value.current = Number.isInteger(value.current)
+      ? Math.max(0, Math.min(value.current, lessons.length - 1))
+      : 0;
+    value.currentId = lessonId(value.current);
+  }
+
+  value.profileVersion = 3;
 
   value.skills = {};
   value.completed.forEach(i => {
@@ -94,7 +127,12 @@ function normalize(value) {
     [1,'Digital Explorer'],
     [5,'Web Ranger'],
     [10,'AI & Cyber Scout'],
-    [lessons.length,'Future Creator']
+    [25,'Computer Rookie'],
+    [50,'Web Explorer'],
+    [75,'Digital Builder'],
+    [100,'Cyber & Network Scout'],
+    [125,'Junior Developer'],
+    [150,'Tech Master']
   ]
     .filter(([n]) => value.completedIds.length >= n)
     .map(([,name]) => name);
@@ -179,7 +217,7 @@ $('logout').onclick = () => location.reload();
 function render() {
   $('hello').textContent = 'Hei ' + p.name + '! 👋';
   $('levelText').textContent = 'LEVEL ' + (Math.floor(p.xp / 100) + 1) + ' · ' + p.xp + ' XP';
-  $('xpFill').style.width = (p.xp % 100) + '%';
+  $('xpFill').style.width = ((p.xp % 100) || (p.xp ? 100 : 0)) + '%';
   $('skills').innerHTML = Object.entries(labels).map(([key,label])=>{
     const total = lessons.filter(l => l.s === key).length;
     return `<div class="skill"><b>${label}</b> <span class="muted">${p.skills[key] || 0}/${total}</span></div>`;
@@ -201,11 +239,23 @@ function render() {
 }
 function jump(i) {
   if (!p || !Number.isInteger(i) || i < 0 || i >= lessons.length || !unlocked(i)) return;
-  p.current = i; save(); render(); focusSection('mission');
+  p.current = i; p.currentId = lessonId(i); save(); render(); focusSection('mission');
 }
 function mission() {
   const i=p.current, lesson=lessons[i], done=isCompleted(i);
-  $('mission').innerHTML = `<div class="eyebrow">${done?'FULLFØRT':'AKTIVT OPPDRAG'} · ${i+1}/${lessons.length} · ${lesson.i} ${lesson.w}</div><h2>${lesson.t}</h2><p class="lessonText muted">${lesson.x}</p><div class="question">${lesson.q}</div><div class="answers">${lesson.a.map((a,j)=>`<button class="answer" onclick="answer(${j})" ${done?'disabled':''}>${a}</button>`).join('')}</div><div id="result" class="result ${done?'good':''}" role="status">${done?'✅ '+lesson.y:''}</div><nav class="actions" aria-label="Oppdragsnavigasjon">${i>0?`<button class="btn alt" onclick="jump(${i-1})">← Forrige oppdrag</button>`:''}<button class="btn alt" onclick="navigate('overview')">Alle deler</button>${done&&i<lessons.length-1?'<button class="btn" onclick="next()">Neste oppdrag →</button>':''}</nav>`;
+  const lab = lesson.type === 'terminal' && lesson.lab ? `
+    <div class="academy-terminal">
+      <div class="academy-terminal-top">● ● ● &nbsp; IANS TERMINAL LAB</div>
+      <div class="academy-terminal-hint">🎯 ${lesson.lab.hint}</div>
+      <div class="academy-terminal-line">
+        <span>${lesson.lab.prompt}</span>
+        <code>${lesson.lab.command}</code>
+      </div>
+      <pre>${lesson.lab.output}</pre>
+      <div class="academy-terminal-note">Simulering – ingen kommando kjøres på maskinen din.</div>
+    </div>
+  ` : '';
+  $('mission').innerHTML = `${lab}<div class="eyebrow">${done?'FULLFØRT':'AKTIVT OPPDRAG'} · ${i+1}/${lessons.length} · ${lesson.i} ${lesson.w}</div><h2>${lesson.t}</h2><p class="lessonText muted">${lesson.x}</p><div class="question">${lesson.q}</div><div class="answers">${lesson.a.map((a,j)=>`<button class="answer" onclick="answer(${j})" ${done?'disabled':''}>${a}</button>`).join('')}</div><div id="result" class="result ${done?'good':''}" role="status">${done?'✅ '+lesson.y:''}</div><nav class="actions" aria-label="Oppdragsnavigasjon">${i>0?`<button class="btn alt" onclick="jump(${i-1})">← Forrige oppdrag</button>`:''}<button class="btn alt" onclick="navigate('overview')">Alle deler</button>${done&&i<lessons.length-1?'<button class="btn" onclick="next()">Neste oppdrag →</button>':''}</nav>`;
 }
 function answer(j) {
   if (!p || isCompleted(p.current)) return;
