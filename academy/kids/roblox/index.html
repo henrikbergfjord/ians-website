@@ -1538,3 +1538,49 @@ main.wrap > section.card:last-of-type{
 
 })();
 </script>
+
+<style id="ians-roblox-mission-character-v1">
+
+/* Roblox/game character watermark inside mission mode */
+body.rb-focus #lesson{
+  position:relative !important;
+  overflow:hidden !important;
+}
+
+/* Keep lesson content above the character */
+body.rb-focus #lesson > *{
+  position:relative;
+  z-index:2;
+}
+
+body.rb-focus #lesson::after{
+  content:"🎮";
+  position:absolute;
+  z-index:1;
+  top:22px;
+  right:28px;
+
+  font-size:clamp(4.5rem,9vw,7.5rem);
+  line-height:1;
+
+  opacity:.10;
+  transform:rotate(-8deg);
+
+  filter:
+    drop-shadow(0 0 18px rgba(54,168,255,.35))
+    drop-shadow(0 0 34px rgba(112,62,255,.18));
+
+  pointer-events:none;
+  user-select:none;
+}
+
+@media(max-width:700px){
+  body.rb-focus #lesson::after{
+    top:18px;
+    right:16px;
+    font-size:4.8rem;
+    opacity:.075;
+  }
+}
+
+</style>
