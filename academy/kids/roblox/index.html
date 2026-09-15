@@ -1085,3 +1085,156 @@ body.rb-focus .rb-focus-toolbar{
 
 })();
 </script>
+
+<style id="ians-roblox-compact-home-v1">
+/* Compact Roblox home */
+main.wrap > section.card:first-of-type{
+  padding:14px 18px !important;
+  margin:10px 0 !important;
+}
+
+.roblox-about,
+.roblox-chapters{
+  padding:13px 17px !important;
+  margin:10px 0 !important;
+  border-radius:15px !important;
+}
+
+.roblox-about-head,
+.roblox-chapters-head{
+  min-height:48px;
+}
+
+.roblox-about-head h2,
+.roblox-chapters-head h2{
+  font-size:1.08rem !important;
+  margin:2px 0 !important;
+}
+
+.roblox-about-head p,
+.roblox-chapters-head p{
+  font-size:.82rem !important;
+  line-height:1.35;
+}
+
+.roblox-about-kicker{
+  font-size:.62rem !important;
+}
+
+.roblox-about-toggle,
+.chapter-toggle{
+  min-width:145px !important;
+  padding:9px 13px !important;
+  font-size:.76rem !important;
+}
+
+main.wrap > section.card:last-of-type{
+  padding:14px 17px !important;
+  margin:10px 0 !important;
+  border-radius:15px !important;
+}
+
+main.wrap > section.card:last-of-type h2{
+  font-size:1.05rem !important;
+  margin:0 0 6px !important;
+}
+
+main.wrap > section.card:last-of-type p{
+  margin:5px 0 !important;
+  font-size:.82rem !important;
+  line-height:1.45 !important;
+}
+
+.rb-continue{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid rgba(74,164,255,.18);
+}
+
+.rb-continue-copy{
+  min-width:0;
+}
+
+.rb-continue-label{
+  color:#63e6ff;
+  font-size:.65rem;
+  font-weight:900;
+  letter-spacing:.1em;
+}
+
+.rb-continue-title{
+  margin-top:3px;
+  font-weight:850;
+  font-size:.95rem;
+}
+
+.rb-continue-btn{
+  flex:0 0 auto;
+  padding:10px 17px !important;
+}
+
+@media(max-width:700px){
+  .rb-continue{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .rb-continue-btn{
+    width:100%;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  const progressCard=document.querySelector('main.wrap > section.card:first-of-type');
+  if(!progressCard || document.getElementById('rbContinue')) return;
+
+  let saved={done:[]};
+  try{
+    saved=JSON.parse(localStorage.getItem('iansRobloxAcademyV1')||'{"done":[]}');
+  }catch(e){}
+
+  const done=Array.isArray(saved.done) ? saved.done : [];
+  const total=Array.isArray(window.lessons) ? window.lessons.length : 52;
+
+  let next=0;
+  while(next < total && done.includes(next)) next++;
+
+  const complete=next >= total;
+
+  const box=document.createElement('div');
+  box.className='rb-continue';
+  box.id='rbContinue';
+
+  box.innerHTML=`
+    <div class="rb-continue-copy">
+      <div class="rb-continue-label">${complete ? '🏆 KURSET FULLFØRT' : '▶ FORTSETT DER DU SLAPP'}</div>
+      <div class="rb-continue-title">
+        ${complete ? 'Alle oppdrag er fullført' : `Neste: Oppdrag ${next+1} av ${total}`}
+      </div>
+    </div>
+    <button class="btn rb-continue-btn" type="button">
+      ${complete ? '🏆 Se kursmappen' : '▶ Fortsett'}
+    </button>
+  `;
+
+  box.querySelector('button').addEventListener('click',()=>{
+    if(complete){
+      if(typeof openCourseFolder==='function') openCourseFolder();
+      return;
+    }
+
+    if(typeof openLesson==='function'){
+      openLesson(next);
+    }else{
+      window.IANSRobloxShowChapters?.();
+    }
+  });
+
+  progressCard.appendChild(box);
+});
+</script>
