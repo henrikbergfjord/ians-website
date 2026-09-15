@@ -547,3 +547,330 @@ document.addEventListener('DOMContentLoaded',function(){
 
 });
 </script>
+
+<style id="ians-roblox-v23-focus">
+
+/* =========================================================
+   IANS Roblox Academy V2.3 · Focus Mode
+   ========================================================= */
+
+body.rb-focus{
+  overflow-x:hidden;
+}
+
+body.rb-focus #iansRobloxGameBanner,
+body.rb-focus main.wrap > .hero,
+body.rb-focus main.wrap > section.card:first-of-type,
+body.rb-focus #chapters,
+body.rb-focus #iansRewardVault{
+  display:none !important;
+}
+
+/* Hide the original adult information panel only in focus mode */
+body.rb-focus main.wrap > section.card:last-of-type{
+  display:none !important;
+}
+
+body.rb-focus main.wrap{
+  width:min(1180px,94%) !important;
+  margin:24px auto !important;
+}
+
+body.rb-focus #lesson{
+  display:block !important;
+  margin:0 auto !important;
+  min-height:calc(100vh - 110px);
+  padding:clamp(24px,4vw,46px) !important;
+  border-color:rgba(42,167,255,.55) !important;
+  background:
+    radial-gradient(circle at 100% 0,rgba(112,62,255,.15),transparent 32%),
+    linear-gradient(145deg,#0a2345,#06162d) !important;
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.38),
+    0 0 50px rgba(24,157,255,.07);
+}
+
+body.rb-focus #lesson > div:first-child{
+  color:#63e6ff;
+  font-size:.82rem;
+  letter-spacing:.08em;
+  margin-bottom:18px;
+}
+
+body.rb-focus #lesson h2{
+  font-size:clamp(2rem,4.5vw,3.7rem);
+  line-height:1.04;
+  margin:10px 0 18px;
+  max-width:900px;
+}
+
+body.rb-focus #lesson > p{
+  max-width:900px;
+  font-size:clamp(1rem,1.5vw,1.15rem);
+}
+
+body.rb-focus #lesson h3{
+  margin-top:30px;
+  font-size:clamp(1.15rem,2vw,1.45rem);
+}
+
+body.rb-focus .answers{
+  max-width:980px;
+  gap:12px;
+}
+
+body.rb-focus .answer{
+  min-height:58px;
+  font-size:1rem;
+  padding:16px 18px !important;
+}
+
+body.rb-focus #feedback{
+  max-width:980px;
+  padding:14px 0;
+  line-height:1.55;
+  font-weight:700;
+}
+
+.rb-focus-toolbar{
+  display:none;
+}
+
+body.rb-focus .rb-focus-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px;
+  padding:12px 16px;
+  border:1px solid rgba(61,151,225,.32);
+  border-radius:16px;
+  background:rgba(5,19,40,.82);
+  backdrop-filter:blur(14px);
+}
+
+.rb-focus-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.rb-focus-brand strong{
+  display:block;
+}
+
+.rb-focus-small{
+  color:#9fb7d5;
+  font-size:.78rem;
+  margin-top:2px;
+}
+
+.rb-focus-actions{
+  display:flex;
+  gap:8px;
+  flex-shrink:0;
+}
+
+.rb-focus-exit{
+  border:1px solid #35658e;
+  background:#0a2746;
+  color:white;
+  border-radius:11px;
+  padding:10px 14px;
+  font-weight:850;
+  cursor:pointer;
+}
+
+.rb-focus-xp{
+  color:#ffd447;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+/* Compact course overview */
+
+#chapterGrid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+
+#chapterGrid .chapter{
+  min-height:0 !important;
+  margin:0 !important;
+  padding:15px !important;
+  border-radius:16px !important;
+}
+
+#chapterGrid .chapter > div:first-child{
+  font-size:24px !important;
+}
+
+#chapterGrid .chapter h3{
+  font-size:.96rem;
+  margin:6px 0 5px;
+}
+
+#chapterGrid .chapter p{
+  font-size:.78rem;
+  line-height:1.35;
+  margin:0 0 8px;
+}
+
+#chapterGrid .chapter b{
+  font-size:.78rem;
+}
+
+#chapterGrid .chapter .progress{
+  margin-top:7px;
+  height:5px;
+}
+
+@media(max-width:900px){
+  #chapterGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:600px){
+
+  #chapterGrid{
+    grid-template-columns:1fr;
+  }
+
+  #chapterGrid .chapter{
+    padding:14px !important;
+  }
+
+  #chapterGrid .chapter p{
+    display:none;
+  }
+
+  body.rb-focus main.wrap{
+    width:94% !important;
+    margin:12px auto !important;
+  }
+
+  body.rb-focus #lesson{
+    min-height:calc(100vh - 80px);
+    padding:20px !important;
+  }
+
+  body.rb-focus #lesson h2{
+    font-size:2rem;
+  }
+
+  .rb-focus-toolbar{
+    align-items:flex-start !important;
+  }
+
+  .rb-focus-small{
+    display:none;
+  }
+
+  .rb-focus-actions{
+    align-items:center;
+  }
+
+  .rb-focus-exit{
+    padding:9px 11px;
+    font-size:.8rem;
+  }
+
+  .rb-focus-xp{
+    font-size:.8rem;
+  }
+}
+
+</style>
+
+<script id="ians-roblox-v23-focus-script">
+(function(){
+
+  const KEY='iansRobloxAcademyV1';
+
+  function getProgress(){
+    try{
+      return JSON.parse(localStorage.getItem(KEY) || '{"done":[]}');
+    }catch(e){
+      return {done:[]};
+    }
+  }
+
+  function xp(){
+    const p=getProgress();
+    return (Array.isArray(p.done) ? p.done.length : 0) * 25;
+  }
+
+  function toolbar(){
+    let bar=document.getElementById('rbFocusToolbar');
+
+    if(!bar){
+      bar=document.createElement('div');
+      bar.id='rbFocusToolbar';
+      bar.className='rb-focus-toolbar';
+
+      const lesson=document.getElementById('lesson');
+
+      if(lesson && lesson.parentNode){
+        lesson.parentNode.insertBefore(bar,lesson);
+      }
+    }
+
+    bar.innerHTML=`
+      <div class="rb-focus-brand">
+        <div style="font-size:1.6rem">🎮</div>
+        <div>
+          <strong>Roblox Smart Player</strong>
+          <div class="rb-focus-small">Oppdragsmodus · fremgangen lagres automatisk</div>
+        </div>
+      </div>
+
+      <div class="rb-focus-actions">
+        <div class="rb-focus-xp">⭐ ${xp()} XP</div>
+        <button type="button" class="rb-focus-exit" id="rbSaveExit">
+          Lagre og avslutt
+        </button>
+      </div>
+    `;
+
+    document.getElementById('rbSaveExit')?.addEventListener('click',exitFocus);
+  }
+
+  function enterFocus(){
+    document.body.classList.add('rb-focus');
+    toolbar();
+
+    window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    });
+  }
+
+  function exitFocus(){
+    document.body.classList.remove('rb-focus');
+
+    const lesson=document.getElementById('lesson');
+    if(lesson) lesson.hidden=true;
+
+    window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    });
+
+    setTimeout(function(){
+      document.getElementById('chapters')?.scrollIntoView({
+        behavior:'smooth',
+        block:'start'
+      });
+    },100);
+  }
+
+  window.IANSRobloxFocus={
+    enter:enterFocus,
+    exit:exitFocus,
+    refresh:toolbar
+  };
+
+})();
+</script>
