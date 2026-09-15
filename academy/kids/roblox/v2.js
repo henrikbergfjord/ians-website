@@ -375,6 +375,96 @@ function printDiploma() {
   printableWindow('IANS Roblox Smart Player – diplom', body);
 }
 
+
+function smartPlayerTemplateBody(index) {
+  const item = SMART_PLAYER_TEMPLATES[index];
+  if (!item) return '';
+
+  const commonTop = `
+    <div><b>IANS · ACADEMY KIDS</b></div>
+    <h1>${item.icon} ${esc(item.title)}</h1>
+    <p>${esc(item.desc)}</p>
+    <p class="muted">Navn: ______________________________ &nbsp;&nbsp; Dato: _______________</p>
+  `;
+
+  const bodies = [
+    `
+      <h2>STOPP · SJEKK · SPØR</h2>
+      <div class="report-item"><h3>1. Hva lover meldingen eller nettsiden?</h3><p>____________________________________________________________</p></div>
+      <div class="report-item"><h3>2. Ber den om passord, innlogging, penger eller personopplysninger?</h3><p>☐ Ja &nbsp;&nbsp; ☐ Nei</p></div>
+      <div class="report-item"><h3>3. Lover den gratis Robux eller noe som virker for godt til å være sant?</h3><p>☐ Ja &nbsp;&nbsp; ☐ Nei</p></div>
+      <div class="report-item"><h3>4. Kjenner og stoler jeg på avsenderen?</h3><p>☐ Ja &nbsp;&nbsp; ☐ Nei &nbsp;&nbsp; ☐ Vet ikke</p></div>
+      <div class="report-item"><h3>5. Hva gjør jeg nå?</h3><p>☐ Stopper &nbsp; ☐ Lukker lenken &nbsp; ☐ Spør en voksen &nbsp; ☐ Rapporterer</p></div>
+    `,
+    `
+      <h2>Min sikkerhetssjekk</h2>
+      <div class="report-item"><p>☐ Jeg bruker et sterkt passord som andre ikke kjenner.</p></div>
+      <div class="report-item"><p>☐ Jeg deler aldri passord eller innloggingskode i chat.</p></div>
+      <div class="report-item"><p>☐ Jeg vet hvilke personopplysninger jeg ikke skal dele.</p></div>
+      <div class="report-item"><p>☐ Jeg stopper hvis noen vil flytte en hemmelig samtale til en annen app.</p></div>
+      <div class="report-item"><p>☐ Jeg vet hvordan jeg blokkerer og rapporterer.</p></div>
+      <div class="report-item"><p>☐ Jeg vet hvilken voksen jeg kan hente hvis noe føles feil.</p></div>
+      <h2>Min viktigste sikkerhetsregel</h2>
+      <p>____________________________________________________________</p>
+    `,
+    `
+      <h2>Før jeg bruker Robux</h2>
+      <div class="report-item"><h3>Hvor mange Robux har jeg?</h3><p>________________ Robux</p></div>
+      <div class="report-item"><h3>Hva vurderer jeg å kjøpe?</h3><p>____________________________________________________________</p></div>
+      <div class="report-item"><h3>Pris</h3><p>________________ Robux</p></div>
+      <div class="report-item"><h3>Hvor mye har jeg igjen etterpå?</h3><p>________________ Robux</p></div>
+      <div class="report-item"><h3>Er dette et behov eller et ønske?</h3><p>☐ Behov &nbsp;&nbsp; ☐ Ønske &nbsp;&nbsp; ☐ Jeg er usikker</p></div>
+      <div class="report-item"><h3>Jeg har ventet og tenkt før jeg kjøper</h3><p>☐ Ja &nbsp;&nbsp; ☐ Jeg spør en voksen først</p></div>
+    `,
+    `
+      <h2>Min STOPP-plan</h2>
+      <div class="report-item"><h3>1 · STOPP</h3><p>Ikke svar, betal eller klikk videre når noe føles feil.</p></div>
+      <div class="report-item"><h3>2 · TA VARE PÅ DET DU KAN VISE</h3><p>Fortell eller vis en voksen hva som skjedde. Ikke spre ubehagelig innhold videre.</p></div>
+      <div class="report-item"><h3>3 · HENT EN VOKSEN</h3><p>Min trygge voksen er: ______________________________________</p></div>
+      <div class="report-item"><h3>4 · BLOKKER / RAPPORTER</h3><p>☐ Blokker bruker &nbsp;&nbsp; ☐ Rapporter hendelsen &nbsp;&nbsp; ☐ Sikre kontoen ved behov</p></div>
+      <div class="report-item"><h3>Det viktigste jeg skal huske</h3><p>Jeg trenger ikke løse vanskelige ting på nettet alene.</p></div>
+    `,
+    `
+      <h2>Fra spiller til skaper</h2>
+      <div class="report-item"><h3>Spillet jeg undersøker</h3><p>____________________________________________________________</p></div>
+      <div class="report-item"><h3>Hva gjør at jeg vil fortsette å spille?</h3><p>____________________________________________________________</p></div>
+      <div class="report-item"><h3>Hvordan brukes belønninger, lyder eller checkpoints?</h3><p>____________________________________________________________</p></div>
+      <div class="report-item"><h3>Min egen spillidé</h3><p>____________________________________________________________</p><p>____________________________________________________________</p></div>
+      <div class="report-item"><h3>Hvordan gjør jeg spillet trygt og rettferdig?</h3><p>____________________________________________________________</p></div>
+      <div style="height:180px;border:2px dashed #aab7c2;margin-top:18px;padding:12px">✏️ Tegn kartet eller spillideen din her</div>
+    `,
+    `
+      <h2>Vår Smart Player-avtale</h2>
+      <p>Denne avtalen lager vi sammen. Målet er trygghet, tillit og gode valg – ikke overvåkning.</p>
+      <div class="report-item"><h3>1. Når jeg trenger hjelp</h3><p>____________________________________________________________</p></div>
+      <div class="report-item"><h3>2. Våre regler for Robux og kjøp</h3><p>____________________________________________________________</p></div>
+      <div class="report-item"><h3>3. Hva jeg aldri deler med andre</h3><p>____________________________________________________________</p></div>
+      <div class="report-item"><h3>4. Hva vi gjør hvis noen oppfører seg dårlig</h3><p>____________________________________________________________</p></div>
+      <div class="report-item"><h3>5. Når vi snakker sammen om Roblox</h3><p>____________________________________________________________</p></div>
+      <p style="margin-top:45px">Barn: ____________________________ &nbsp;&nbsp; Voksen: ____________________________</p>
+    `
+  ];
+
+  return commonTop + (bodies[index] || '');
+}
+
+function printSmartPlayerTemplate(index) {
+  const item = SMART_PLAYER_TEMPLATES[index];
+  if (!item) return;
+
+  const r = rewardState();
+
+  if (r.xp < item.xp) {
+    alert(`Denne templaten låses opp ved ${item.xp} XP.`);
+    return;
+  }
+
+  printableWindow(
+    `IANS Roblox Academy – ${item.title}`,
+    smartPlayerTemplateBody(index)
+  );
+}
+
 function installRobloxV2Button() {
   if (document.getElementById('courseFolderBtn')) return;
 
@@ -409,6 +499,46 @@ const REWARD_LEVELS = [
   {xp:350,  name:'Smart Player', icon:'🎮'},
   {xp:650,  name:'Security Pro', icon:'🛡️'},
   {xp:1000, name:'Roblox Master',icon:'🏆'}
+];
+
+
+const SMART_PLAYER_TEMPLATES = [
+  {
+    xp:50,
+    icon:'🔎',
+    title:'Scam Detective-sjekk',
+    desc:'Et enkelt ark for å stoppe opp og undersøke mistenkelige tilbud, meldinger og lenker.'
+  },
+  {
+    xp:150,
+    icon:'🔐',
+    title:'Min trygge Roblox-konto',
+    desc:'Sjekkliste for passord, personvern, innlogging og hvem du kan stole på.'
+  },
+  {
+    xp:300,
+    icon:'💰',
+    title:'Mitt Robux-budsjett',
+    desc:'Planlegg Robux før du kjøper og skill mellom det du ønsker og det du faktisk trenger.'
+  },
+  {
+    xp:500,
+    icon:'🆘',
+    title:'Hvis noe skjer på Roblox',
+    desc:'En enkel STOPP-plan for ubehagelige meldinger, svindel, press eller andre problemer.'
+  },
+  {
+    xp:700,
+    icon:'🏗️',
+    title:'Spilldesigner-arket',
+    desc:'Se et Roblox-spill med skaperøyne og tegn din egen idé til en trygg opplevelse.'
+  },
+  {
+    xp:1000,
+    icon:'🤝',
+    title:'Smart Player-familieavtale',
+    desc:'Barn og voksen lager noen få tydelige regler sammen for Roblox, Robux og hjelp.'
+  }
 ];
 
 const PRO_TIPS = [
@@ -533,6 +663,31 @@ function renderRewardVault(){
 
       <div class="reward-grid">
         ${tips}
+      </div>
+
+      <div class="reward-title" style="margin-top:30px">
+        <div>
+          <div class="reward-eyebrow">🧰 SMART PLAYER-VERKTØYKASSE</div>
+          <h2>Templates du kan bruke</h2>
+        </div>
+        <div>${SMART_PLAYER_TEMPLATES.filter(t=>r.xp>=t.xp).length}/${SMART_PLAYER_TEMPLATES.length} åpnet</div>
+      </div>
+
+      <div class="reward-grid">
+        ${SMART_PLAYER_TEMPLATES.map((item,index)=>{
+          const unlocked=r.xp>=item.xp;
+          return `
+            <article class="reward-tip ${unlocked?'unlocked':'locked'}">
+              <div class="reward-tip-icon">${unlocked ? item.icon : '🔒'}</div>
+              <div>
+                <div class="reward-state">${unlocked ? 'KLAR TIL BRUK' : `KREVER ${item.xp} XP`}</div>
+                <h3>${unlocked ? item.title : 'Hemmelig Smart Player-template'}</h3>
+                <p>${unlocked ? item.desc : 'Fortsett kurset for å låse opp denne templaten.'}</p>
+                ${unlocked ? `<button class="btn" onclick="printSmartPlayerTemplate(${index})">🖨️ Åpne / skriv ut</button>` : ''}
+              </div>
+            </article>
+          `;
+        }).join('')}
       </div>
     </section>
   `;
