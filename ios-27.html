@@ -193,7 +193,7 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
   background:linear-gradient(180deg,#06131e,#071722);
   border-radius:0 0 22px 22px;
 }
-.feature-card.deep-open .ios27-deep{display:block}
+.feature.deep-open .ios27-deep{display:block}
 
 .ios27-deep-grid{
   display:grid;
@@ -717,71 +717,66 @@ footer{border-top:1px solid #142433;padding:28px 0 45px;color:#738798;font-size:
 
 
 <script id="ios27-deep-interaction">
-(function(){
-  const cards=[...document.querySelectorAll('.feature.deep-ready')];
+document.addEventListener('click', async function(e) {
+  const more = e.target.closest('.ios27-more');
+  const copy = e.target.closest('.ios27-copy');
 
-  function setOpen(card,open,scroll){
-    card.classList.toggle('deep-open',open);
-    const b=card.querySelector('.ios27-more');
+  if (more) {
+    e.preventDefault();
+    e.stopPropagation();
 
-    if(b){
-      b.setAttribute('aria-expanded',String(open));
-      b.textContent=open?'Show less ↑':'Learn more ↓';
+    const card = more.closest('.feature');
+    if (!card) return;
+
+    const open = !card.classList.contains('deep-open');
+    card.classList.toggle('deep-open', open);
+
+    more.setAttribute('aria-expanded', String(open));
+    more.textContent = open ? 'Show less ↑' : 'Learn more ↓';
+
+    if (card.id) {
+      history.replaceState(null, '', '#' + card.id);
     }
-
-    if(open){
-      history.replaceState(null,'','#'+card.id);
-      if(scroll){
-        setTimeout(()=>{
-          card.scrollIntoView({behavior:'smooth',block:'start'});
-        },30);
-      }
-    }
+    return;
   }
 
-  cards.forEach(card=>{
-    const more=card.querySelector('.ios27-more');
-    const copy=card.querySelector('.ios27-copy');
+  if (copy) {
+    e.preventDefault();
+    e.stopPropagation();
 
-    more?.addEventListener('click',e=>{
-      e.preventDefault();
-      e.stopPropagation();
-      setOpen(card,!card.classList.contains('deep-open'),true);
-    });
+    const card = copy.closest('.feature');
+    if (!card || !card.id) return;
 
-    copy?.addEventListener('click',async e=>{
-      e.preventDefault();
-      e.stopPropagation();
+    const url = location.origin + location.pathname + '#' + card.id;
 
-      const url=location.origin+location.pathname+'#'+card.id;
-
-      try{
-        await navigator.clipboard.writeText(url);
-        const old=copy.textContent;
-        copy.textContent='✓ Link copied';
-        setTimeout(()=>copy.textContent=old,1500);
-      }catch{
-        location.hash=card.id;
-      }
-    });
-
-    card.addEventListener('click',e=>{
-      if(e.target.closest('a,button')) return;
-      setOpen(card,!card.classList.contains('deep-open'),true);
-    });
-  });
-
-  function openFromHash(){
-    if(!location.hash) return;
-    const card=document.querySelector(location.hash);
-    if(card?.classList.contains('deep-ready')){
-      setOpen(card,true,false);
+    try {
+      await navigator.clipboard.writeText(url);
+      const old = copy.textContent;
+      copy.textContent = '✓ Link copied';
+      setTimeout(() => copy.textContent = old, 1500);
+    } catch {
+      location.hash = card.id;
     }
   }
+});
 
-  openFromHash();
-  window.addEventListener('hashchange',openFromHash);
-})();
+function openIOS27Hash() {
+  if (!location.hash) return;
+
+  const card = document.querySelector(location.hash);
+  if (!card || !card.classList.contains('feature')) return;
+
+  card.classList.add('deep-open');
+
+  const more = card.querySelector('.ios27-more');
+  if (more) {
+    more.setAttribute('aria-expanded', 'true');
+    more.textContent = 'Show less ↑';
+  }
+}
+
+openIOS27Hash();
+window.addEventListener('hashchange', openIOS27Hash);
 </script>
 
 <script src="/assets/js/ians-analytics.js" defer></script>
