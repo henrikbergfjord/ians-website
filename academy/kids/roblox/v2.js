@@ -394,3 +394,176 @@ function installRobloxV2Button() {
 
 document.addEventListener('DOMContentLoaded', installRobloxV2Button);
 setTimeout(installRobloxV2Button, 0);
+
+/* =========================================================
+   IANS Roblox Academy V2.1 · Smart Player Reward Vault
+   Rewards are derived from existing progress.
+   No storage migration and no Robux/reward purchase system.
+   ========================================================= */
+
+(function(){
+
+const REWARD_LEVELS = [
+  {xp:0,    name:'Rookie',       icon:'🌱'},
+  {xp:150,  name:'Explorer',     icon:'🧭'},
+  {xp:350,  name:'Smart Player', icon:'🎮'},
+  {xp:650,  name:'Security Pro', icon:'🛡️'},
+  {xp:1000, name:'Roblox Master',icon:'🏆'}
+];
+
+const PRO_TIPS = [
+  {
+    xp:50,
+    icon:'🔎',
+    title:'Pro Tip #1 · Sjekk hvem som laget spillet',
+    text:'Før du bruker tid eller Robux i en opplevelse, se hvem som har laget den og hva du faktisk får.'
+  },
+  {
+    xp:150,
+    icon:'🔐',
+    title:'Pro Tip #2 · Beskytt kontoen',
+    text:'Et sterkt og unikt passord gjør det vanskeligere for andre å komme inn på kontoen din. Del aldri passordet i chat.'
+  },
+  {
+    xp:300,
+    icon:'💰',
+    title:'Pro Tip #3 · Tenk før du bruker Robux',
+    text:'Spill kan bruke tidsbegrensninger og spesialtilbud for å få deg til å kjøpe raskt. Stopp og spør: Trenger jeg egentlig dette?'
+  },
+  {
+    xp:500,
+    icon:'🕵️',
+    title:'Scam Detective · Gratis Robux?',
+    text:'Nettsider, videoer eller meldinger som lover gratis Robux mot passord, innlogging eller mistenkelige lenker er et kraftig faresignal.'
+  },
+  {
+    xp:700,
+    icon:'🧠',
+    title:'Creator Secret · Se spillet med nye øyne',
+    text:'Når du spiller, legg merke til checkpoints, belønninger, lyder og menyer. Noen har designet hvert av disse valgene.'
+  },
+  {
+    xp:1000,
+    icon:'🏗️',
+    title:'Roblox Master Secret · Fra spiller til skaper',
+    text:'Roblox Studio lar deg bygge egne opplevelser. Det du lærer om spilldesign som spiller kan bli kunnskap du bruker som skaper.'
+  }
+];
+
+function rewardState(){
+  let raw={done:[]};
+
+  try{
+    raw=JSON.parse(localStorage.getItem('iansRobloxAcademyV1') || '{"done":[]}');
+  }catch(e){}
+
+  const completed=Array.isArray(raw.done) ? raw.done.length : 0;
+  const xp=completed*25;
+
+  let level=REWARD_LEVELS[0];
+
+  for(const candidate of REWARD_LEVELS){
+    if(xp>=candidate.xp) level=candidate;
+  }
+
+  const next=REWARD_LEVELS.find(item=>item.xp>xp) || null;
+
+  return {completed,xp,level,next};
+}
+
+function renderRewardVault(){
+  const mount=document.getElementById('iansRewardVault');
+  if(!mount) return;
+
+  const r=rewardState();
+
+  let progress=100;
+  if(r.next){
+    const span=r.next.xp-r.level.xp;
+    progress=Math.max(0,Math.min(100,
+      ((r.xp-r.level.xp)/span)*100
+    ));
+  }
+
+  const tips=PRO_TIPS.map(tip=>{
+    const unlocked=r.xp>=tip.xp;
+
+    return `
+      <article class="reward-tip ${unlocked?'unlocked':'locked'}">
+        <div class="reward-tip-icon">${unlocked ? tip.icon : '🔒'}</div>
+        <div>
+          <div class="reward-state">${unlocked ? 'LÅST OPP' : `KREVER ${tip.xp} XP`}</div>
+          <h3>${unlocked ? tip.title : 'Hemmelig Roblox-tips'}</h3>
+          <p>${unlocked ? tip.text : `Fortsett kurset for å låse opp dette tipset.`}</p>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  mount.innerHTML=`
+    <section class="reward-vault">
+      <div class="reward-head">
+        <div>
+          <div class="reward-eyebrow">🏆 MIN ROBLOX-REISE</div>
+          <h2>${r.level.icon} Level · ${r.level.name}</h2>
+          <p>${r.xp} XP · ${r.completed} oppdrag fullført</p>
+        </div>
+        <div class="reward-xp">${r.xp}<small>XP</small></div>
+      </div>
+
+      <div class="reward-progress">
+        <span style="width:${progress}%"></span>
+      </div>
+
+      <div class="reward-next">
+        ${
+          r.next
+          ? `${r.next.xp-r.xp} XP til ${r.next.icon} ${r.next.name}`
+          : '🏆 Høyeste Smart Player-nivå nådd'
+        }
+      </div>
+
+      <div class="reward-title">
+        <div>
+          <div class="reward-eyebrow">🎁 REWARD VAULT</div>
+          <h2>Pro Tips & Creator Secrets</h2>
+        </div>
+        <div>${PRO_TIPS.filter(t=>r.xp>=t.xp).length}/${PRO_TIPS.length} åpnet</div>
+      </div>
+
+      <div class="reward-grid">
+        ${tips}
+      </div>
+    </section>
+  `;
+}
+
+function installRewardVault(){
+  if(document.getElementById('iansRewardVault')){
+    renderRewardVault();
+    return;
+  }
+
+  const host=document.querySelector('main') || document.body;
+  const mount=document.createElement('div');
+  mount.id='iansRewardVault';
+  host.appendChild(mount);
+
+  renderRewardVault();
+}
+
+document.addEventListener('DOMContentLoaded',installRewardVault);
+
+/* Refresh automatically when course progress changes. */
+window.addEventListener('storage',renderRewardVault);
+
+const originalSetItem=localStorage.setItem.bind(localStorage);
+localStorage.setItem=function(key,value){
+  originalSetItem(key,value);
+
+  if(key==='iansRobloxAcademyV1'){
+    setTimeout(renderRewardVault,0);
+  }
+};
+
+})();

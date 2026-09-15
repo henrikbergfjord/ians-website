@@ -91,3 +91,138 @@
 </style>
 
 <script src="v2.js"></script>
+
+<style id="ians-v21-reward-style">
+#iansRewardVault{
+  width:min(1180px,92%);
+  margin:32px auto;
+}
+
+.reward-vault{
+  padding:clamp(20px,3vw,32px);
+  border:1px solid #755f99;
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 90% 0,#34235a55,transparent 35%),
+    linear-gradient(145deg,#101f36,#15162d);
+}
+
+.reward-head,
+.reward-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.reward-head h2,
+.reward-title h2{
+  margin:5px 0;
+}
+
+.reward-head p{
+  margin:5px 0;
+  opacity:.8;
+}
+
+.reward-eyebrow,
+.reward-state{
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.12em;
+  color:#65e9ff;
+}
+
+.reward-xp{
+  font-size:clamp(2rem,4vw,3.4rem);
+  font-weight:950;
+  text-align:right;
+}
+
+.reward-xp small{
+  display:block;
+  font-size:.7rem;
+  letter-spacing:.15em;
+  color:#65e9ff;
+}
+
+.reward-progress{
+  height:11px;
+  background:#070d19;
+  border-radius:999px;
+  overflow:hidden;
+  margin:20px 0 8px;
+}
+
+.reward-progress span{
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg,#32a5ff,#62dfa5);
+  border-radius:inherit;
+}
+
+.reward-next{
+  text-align:right;
+  font-size:.85rem;
+  opacity:.75;
+  margin-bottom:30px;
+}
+
+.reward-title{
+  border-top:1px solid #ffffff18;
+  padding-top:24px;
+  margin-bottom:16px;
+}
+
+.reward-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.reward-tip{
+  display:flex;
+  gap:14px;
+  padding:18px;
+  border-radius:17px;
+  border:1px solid #ffffff18;
+  background:#07142399;
+}
+
+.reward-tip.unlocked{
+  border-color:#3e846d;
+}
+
+.reward-tip.locked{
+  opacity:.62;
+}
+
+.reward-tip-icon{
+  font-size:1.8rem;
+}
+
+.reward-tip h3{
+  margin:4px 0 7px;
+  font-size:1rem;
+}
+
+.reward-tip p{
+  margin:0;
+  line-height:1.45;
+  opacity:.82;
+}
+
+@media(max-width:700px){
+  .reward-grid{
+    grid-template-columns:1fr;
+  }
+
+  .reward-head{
+    align-items:flex-start;
+  }
+
+  .reward-title{
+    align-items:flex-end;
+  }
+}
+</style>
