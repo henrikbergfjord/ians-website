@@ -137,15 +137,57 @@ function openCourseFolder() {
       <h3>📊 Kompetanse</h3>
       <div class="competence-list">${competence}</div>
 
+      ${s.passed ? `
+        <div style="
+          margin:22px 0;
+          padding:22px;
+          border:1px solid rgba(255,209,102,.55);
+          border-radius:18px;
+          background:linear-gradient(135deg,rgba(255,209,102,.12),rgba(54,168,255,.08));
+          text-align:center;
+        ">
+          <div style="font-size:42px">🏆</div>
+          <div style="
+            color:#ffd166;
+            font-weight:950;
+            letter-spacing:.08em;
+            margin-top:5px;
+          ">ROBLOX MASTER</div>
+
+          <h2 style="margin:8px 0 4px">
+            ${esc(iansAcademyStudentName())}
+          </h2>
+
+          <div class="muted">
+            ${s.done}/${s.total} oppdrag ·
+            ${s.adultDone}/${s.adultTotal} voksenoppdrag ·
+            ${s.masterDone}/${s.masterTotal} Master
+          </div>
+
+          <button
+            class="btn"
+            type="button"
+            onclick="printDiploma()"
+            style="
+              margin-top:18px;
+              font-size:1.08rem;
+              padding:14px 22px;
+            ">
+            🏆 Åpne diplom / Lagre som PDF
+          </button>
+        </div>
+      ` : ''}
+
       <div class="v2-actions">
         <button class="btn" onclick="printLearningReport()">
           📄 Læringsrapport / PDF
         </button>
 
-        <button class="btn ${s.passed ? '' : 'locked-btn'}"
-          ${s.passed ? 'onclick="printDiploma()"' : 'disabled'}>
-          🏆 ${s.passed ? 'Åpne diplom' : 'Diplom låst'}
-        </button>
+        ${!s.passed ? `
+          <button class="btn locked-btn" disabled>
+            🏆 Diplom låst
+          </button>
+        ` : ''}
       </div>
 
       ${
@@ -317,6 +359,33 @@ function printLearningReport() {
   printableWindow('IANS Roblox Academy – læringsrapport', body);
 }
 
+
+function iansAcademyStudentName() {
+  try {
+    const last = localStorage.getItem('iansAcademyKidsLastName');
+
+    if (last && last.trim()) {
+      return last.trim();
+    }
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+
+      if (!key || !key.startsWith('iansAcademyKidsProfile:')) continue;
+
+      try {
+        const profile = JSON.parse(localStorage.getItem(key) || '{}');
+
+        if (profile && typeof profile.name === 'string' && profile.name.trim()) {
+          return profile.name.trim();
+        }
+      } catch {}
+    }
+  } catch {}
+
+  return 'Academy Explorer';
+}
+
 function printDiploma() {
   const s = robloxV2Stats();
 
@@ -341,7 +410,7 @@ function printDiploma() {
 
       <p>Diplom for gjennomført kurs</p>
 
-      <div class="recipient">Academy Explorer</div>
+      <div class="recipient">${esc(iansAcademyStudentName())}</div>
 
       <p>
         har gjennomført IANS Roblox Academy og vist kunnskap om
