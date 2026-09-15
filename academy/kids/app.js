@@ -89,7 +89,10 @@ function render() {
   $('hello').textContent = 'Hei ' + p.name + '! 👋';
   $('levelText').textContent = 'LEVEL ' + (Math.floor(p.xp / 100) + 1) + ' · ' + p.xp + ' XP';
   $('xpFill').style.width = (p.xp % 100) + '%';
-  $('skills').innerHTML = Object.entries(labels).map(([key,label])=>`<div class="skill"><b>${label}</b> <span class="muted">${p.skills[key] || 0}/10</span></div>`).join('');
+  $('skills').innerHTML = Object.entries(labels).map(([key,label])=>{
+    const total = lessons.filter(l => l.s === key).length;
+    return `<div class="skill"><b>${label}</b> <span class="muted">${p.skills[key] || 0}/${total}</span></div>`;
+  }).join('');
   $('badges').innerHTML = p.badges.length ? p.badges.map(x=>`<span class="badge">🏆 ${x}</span>`).join('') : '<span class="muted">Det første merket venter på deg.</span>';
   $('resumeBtn').textContent = p.completed.length ? 'Fortsett der du slapp →' : 'Start første oppdrag →';
   const nextIndex = p.completed.includes(p.current) ? firstUnfinished() : p.current;

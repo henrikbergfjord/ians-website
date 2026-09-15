@@ -32,5 +32,5 @@ test('blocked and corrupt storage are reported without overwriting records',()=>
  const data=new Map([['iansAcademyKidsV2','{bad']]);const b=boot(data);b.login();assert.equal(b.run('p'),null);assert.equal(data.get('iansAcademyKidsV2'),'{bad');
 });
 test('final lesson stays valid after a complete journey and reload',()=>{
- const a=boot();a.login();a.run('for(let i=0;i<lessons.length;i++){answer(lessons[p.current].c);next()}');const b=boot(a.data);b.login();assert.equal(b.run('p.completed.length'),15);assert.equal(b.run('p.current'),14);assert.equal(b.run('p.xp'),375);
+ const a=boot();a.login();a.run('for(let i=0;i<lessons.length;i++){answer(lessons[p.current].c);next()}');const b=boot(a.data);b.login();const total=b.run('lessons.length');assert.equal(b.run('p.completed.length'),total);assert.equal(b.run('p.current'),total-1);assert.equal(b.run('p.xp'),total*25);
 });
