@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const source=await readFile(new URL('../assets/ians-home/costs.js',import.meta.url),'utf8');
+const {parseCosts}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+const now=new Date('2026-09-24T12:00:00Z');
+const valid={status:'available',amountNok:25.5,periodStart:'2026-09-01',periodEnd:'2026-09-23',updatedAt:'2026-09-24T09:00:00Z',includes:['IANS og SOGOD hosting'],excludes:['Domener']};
+test('accepts dated scoped totals including genuine zero',()=>{assert.equal(parseCosts(valid,now).amountNok,25.5);assert.equal(parseCosts({...valid,amountNok:0},now).amountNok,0)});
+test('does not turn missing or invalid data into a zero cost',()=>{for(const amountNok of [null,-1,'25.5',Infinity,undefined])assert.equal(parseCosts({...valid,amountNok},now),null);assert.equal(parseCosts({status:'unavailable'},now),null)});
+test('requires honest dates and scope',()=>{for(const patch of [{periodEnd:'2026-08-30'},{periodStart:'2026-02-30'},{updatedAt:'2026-10-01T00:00:00Z'},{updatedAt:'2026-09-24'},{includes:[]},{periodEnd:'2026-09-25'}])assert.equal(parseCosts({...valid,...patch},now),null)});
+test('marks data over 72 hours old',()=>assert.equal(parseCosts({...valid,periodEnd:'2026-09-19',updatedAt:'2026-09-20T09:00:00Z'},now).stale,true));

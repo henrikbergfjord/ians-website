@@ -3,6 +3,10 @@ from pathlib import Path
 p = Path("index.html")
 s = p.read_text(encoding="utf-8")
 
+if 'data-ians-home="v2"' in s:
+    print("Modern IANS homepage manages its own navigation")
+    raise SystemExit(0)
+
 # Keep real IANS destinations direct. Technical is a directory/hub, not a
 # replacement for pages that already exist.
 replacements = {
