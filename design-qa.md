@@ -21,3 +21,7 @@ Status: klar for publisering som førsteutkast.
 
 ## Omfang
 Ny forside og omorganisering av Teknisk. Eksisterende tjenester, API, tilgangskontroll og SOGOD er ikke bygget om.
+
+
+## 2026-09-25 – navigation and responsive repair
+Continuous homepage background; desktop card row measured 22–25% of viewport. Screenshots recorded locally. 112-page static check, 91-page desktop/mobile structural review, seven regression tests and patched-build validation pass. See docs/site-audit-2026-09-25.md for scope and limits.

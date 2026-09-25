@@ -2,3 +2,60 @@
 /* Keep the globe clear of the navigation and separate artwork from mobile copy. */
 @media(min-width:761px){.hero{background-position:center top}.core-title{transform:translate(-10%,-45px)}}
 @media(max-width:760px){.hero{background:#03101b;min-height:0}.hero:before{display:none}.hero-inner{min-height:830px;background:url('/assets/ians-home/fjord-core.png') 66% bottom/auto 380px no-repeat;align-content:space-between}.intro{padding-bottom:25px}.core-title{padding:0 0 42px;text-align:center;transform:none}.core-title strong{text-shadow:0 2px 15px #00101b}.core-title span{text-shadow:0 2px 15px #00101b}}
+
+/* The desktop first screen gives the hero 70% and the cards at most 30%. */
+@media(min-width:1000px) and (min-height:660px){
+ body[data-ians-home="v2"] .hero{height:calc(70svh - 50px);min-height:0}
+ body[data-ians-home="v2"] .header{height:86px;padding-top:16px;padding-bottom:16px}
+ body[data-ians-home="v2"] .hero-inner{height:calc(70svh - 136px);min-height:0;padding-top:12px;padding-bottom:20px}
+ body[data-ians-home="v2"] .intro h1{font-size:clamp(42px,6.6svh,76px);margin-bottom:16px}
+ body[data-ians-home="v2"] .lead{font-size:clamp(14px,1.7svh,18px);line-height:1.5}
+ body[data-ians-home="v2"] .eyebrow{margin-bottom:12px}
+ body[data-ians-home="v2"] .actions{margin-top:18px}
+ body[data-ians-home="v2"] .costbar{height:50px;padding:10px 24px}
+ body[data-ians-home="v2"] .cards{height:30svh;width:100%;padding-top:12px;padding-bottom:12px}
+ body[data-ians-home="v2"] .feature img{position:absolute;inset:0;height:100%;object-fit:cover;opacity:.6}
+ body[data-ians-home="v2"] .feature .copy{position:relative;justify-content:flex-end;padding:16px 20px;background:linear-gradient(180deg,transparent,#03121bdd 42%,#03121b 100%)}
+ body[data-ians-home="v2"] .feature h2{font-size:clamp(19px,2.5svh,25px)}
+ body[data-ians-home="v2"] .feature p{font-size:14px;line-height:1.4;margin-bottom:14px;max-width:30ch}
+ body[data-ians-home="v2"] .feature .link{margin-top:0}
+}
+.tech-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
+.tech-group{scroll-margin-top:25px}.tech-group h3{font-size:16px;margin:20px 0 4px;color:#8bdcf6}
+.tech-group a strong{display:block}.tech-group details{margin-top:18px}.tech-group summary{cursor:pointer;line-height:1.5;color:#aeddf0}
+.tech-group details a{font-size:13px}.tech-jump{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}.tech-jump a{padding:10px 14px;border:1px solid #24445b;border-radius:8px;font-size:14px}
+@media(max-width:1050px){.tech-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.tech-grid{grid-template-columns:1fr}}
+/* One continuous backdrop behind the hero, cost strip, cards and footer. */
+body[data-ians-home="v2"]{min-height:100svh;background:linear-gradient(180deg,#03101b18 30%,#03101b70 75%,#03101bb8),url('/assets/ians-home/fjord-core.png') center top/cover fixed no-repeat}
+body[data-ians-home="v2"] .hero{background:transparent}
+body[data-ians-home="v2"] .hero:before{background:linear-gradient(90deg,#03101b45,transparent 65%)}
+body[data-ians-home="v2"] .costbar{background:#03101ba8;backdrop-filter:blur(8px)}
+body[data-ians-home="v2"] .feature{background:#061725b8;backdrop-filter:blur(6px)}
+body[data-ians-home="v2"] .footer{color:#c3d4e0}
+@media(min-width:1000px) and (min-height:660px){
+ body[data-ians-home="v2"]{--card-row:min(25svh,250px);--footer-row:38px}
+ body[data-ians-home="v2"] .hero{height:calc(100svh - var(--card-row) - 50px - var(--footer-row))}
+ body[data-ians-home="v2"] .hero-inner{height:calc(100svh - var(--card-row) - 136px - var(--footer-row))}
+ body[data-ians-home="v2"] .cards{height:var(--card-row);padding:10px 34px}
+ body[data-ians-home="v2"] .feature .copy{padding:14px 18px}
+ body[data-ians-home="v2"] .feature h2{font-size:clamp(18px,2.3svh,24px);margin-bottom:6px}
+ body[data-ians-home="v2"] .feature p{font-size:13px;margin-bottom:10px}
+ body[data-ians-home="v2"] .feature .link{font-size:12px}
+ body[data-ians-home="v2"] .footer{height:var(--footer-row);padding:9px 34px}
+}
+@media(max-width:999px){
+ body[data-ians-home="v2"] .feature{min-height:180px}
+ body[data-ians-home="v2"] .feature img{position:absolute;inset:0;height:100%;opacity:.55}
+ body[data-ians-home="v2"] .feature .copy{position:relative;min-height:180px;justify-content:flex-end;background:linear-gradient(180deg,#03101b10,#03101be8 62%)}
+ body[data-ians-home="v2"] .feature h2{font-size:20px}
+ body[data-ians-home="v2"] .feature p{margin-bottom:12px}
+ body[data-ians-home="v2"] .feature .link{margin-top:0}
+}
+@media(max-width:760px){
+ body[data-ians-home="v2"]{background-position:65% top;background-image:linear-gradient(180deg,#03101b66,#03101b88),url('/assets/ians-home/fjord-core.png')}
+ body[data-ians-home="v2"] .hero-inner{background:none;min-height:max(660px,calc(100svh - 80px))}
+ body[data-ians-home="v2"] .intro{position:relative;text-shadow:0 2px 12px #03101b}
+ body[data-ians-home="v2"] .eyebrow{line-height:1.6;letter-spacing:1.7px}
+ body[data-ians-home="v2"] .core-title{padding-bottom:30px}
+}
