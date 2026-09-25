@@ -20,9 +20,11 @@
     host.innerHTML=jobs.map((j,i)=>`<label class="kid-job"><input type="checkbox" data-job="${i}"><span>${j[0]}</span><b>${en?j[2]:j[1]}</b><input type="number" min="0" step="5" placeholder="${en?'Reward':'Belønning'}" data-job-price="${i}"></label>`).join('');
   }
   function build(){
+    if(!$('#kidName'))return;
     const en=window.MoneyI18n?.lang()==='en';
-    const name=$('#kidName').value.trim()||(en?'You':'Du');
-    const goal=$('#kidGoal').value.trim()||(en?'your goal':'målet ditt');
+    const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const name=escape($('#kidName').value.trim())||(en?'You':'Du');
+    const goal=escape($('#kidGoal').value.trim())||(en?'your goal':'målet ditt');
     const cost=num($('#kidCost').value), saved=num($('#kidSaved').value), weekly=num($('#kidWeekly').value);
     const remaining=Math.max(0,cost-saved), weeks=weekly>0?Math.ceil(remaining/weekly):0;
     const pct=cost>0?Math.min(100,Math.round(saved/cost*100)):0;

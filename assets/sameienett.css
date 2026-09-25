@@ -727,3 +727,8 @@ body.sameienett-v21::before{
   .sn-v25-node small{display:none}
   .sn-v25-caption{display:none}
 }
+
+/* Decorative glow stays within the viewport. */
+.sn-hero:before{left:0;right:0}.sn-hero>*{min-width:0}
+
+@media(max-width:700px){.sn-page h1,.sn-page h2,.sn-page h3{overflow-wrap:anywhere}.sn-shell>*{min-width:0}.sn-photo-copy{padding:24px}}

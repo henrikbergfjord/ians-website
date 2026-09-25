@@ -106,11 +106,13 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="/assets/css/language.css">
 <link rel="stylesheet" href="assets/css/ians-next.css">
-</head>
+<style>/* Navigation audit: narrow-screen layout. */
+.hero{min-width:0;max-width:100%}.hero h1{font-size:clamp(38px,12vw,90px);overflow-wrap:anywhere}
+</style></head>
 
 <body>
 
-<header>
+<header><nav aria-label="Tilbake"><a href="/teknisk.html#personlig" style="color:inherit">← IANS · Personlige prosjekter</a></nav>
     <div class="hero">
         <h1>MAIMYRA</h1>
 
@@ -161,7 +163,7 @@
     © 2026 Maimyra Project - Henrik Bergfjord
 </footer>
 
-    <script src="/assets/js/language.js" defer></script>
+    <script src="/assets/js/language.js?v=20260925b" defer></script>
 <div class="ians-next-badge">IANS Next · Master</div>
 <script src="/assets/js/ians-analytics.js"></script></body>
 </html>

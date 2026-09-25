@@ -130,3 +130,25 @@ body.money-v4 .hero.hero-v3{
     width:100%!important;
   }
 }
+
+/* Columns must fit the space left beside the sidebar. */
+body.money-v4 .hero.hero-v3{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important;gap:28px!important}
+body.money-v4 .hero.hero-v3>*{min-width:0}
+@media(max-width:1400px){body.money-v4 .hero.hero-v3{grid-template-columns:minmax(0,1fr)!important}}
+
+@media(max-width:760px){
+body.money-v4 .top-info{min-width:0;max-width:100%;flex-wrap:wrap!important;overflow:visible!important}
+body.money-v4 .v4-header{height:auto!important;max-width:100%!important}
+body.money-v4 .hero-chart-grid{grid-template-columns:minmax(0,1fr)!important}
+body.money-v4 .hero-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.money-v4 .chart-card,body.money-v4 .hero-dashboard,body.money-v4 .metric{min-width:0;max-width:100%}
+body.money-v4 canvas{max-width:100%}
+body.money-v4 .hero-copy h1{overflow-wrap:anywhere}
+}
+@media(max-width:760px){
+ body.money-v4 .planner-shell{grid-template-columns:minmax(0,1fr)!important}
+ body.money-v4 .form-column,body.money-v4 .live-panel{min-width:0!important}
+ body.money-v4 .step-nav{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ body.money-v4 .step-nav button{min-width:0}
+ body.money-v4 .form-column input,body.money-v4 .form-column select{min-width:0;max-width:100%}
+}
