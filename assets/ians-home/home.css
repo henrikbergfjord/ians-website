@@ -59,3 +59,13 @@ body[data-ians-home="v2"] .footer{color:#c3d4e0}
  body[data-ians-home="v2"] .eyebrow{line-height:1.6;letter-spacing:1.7px}
  body[data-ians-home="v2"] .core-title{padding-bottom:30px}
 }
+
+/* A short editorial invitation; desktop card proportions remain unchanged. */
+.future-teaser{justify-self:end;width:min(100%,350px);padding:24px;border-left:2px solid #00b7f2;background:linear-gradient(110deg,#03101bed,#03101bb8);border-radius:0 12px 12px 0;backdrop-filter:blur(5px);box-shadow:0 12px 45px #00101b33}
+.future-teaser .eyebrow{font-size:9px;letter-spacing:1.4px;line-height:1.5}
+.future-teaser h2{font-size:clamp(23px,2.2vw,32px);line-height:1.16;margin:0 0 15px;letter-spacing:-.6px}
+.future-teaser p:not(.eyebrow){font-size:15px;line-height:1.6;color:#d8e5ee;margin:0 0 18px}
+.future-teaser a{font-size:14px;font-weight:700;color:#26ceff;line-height:1.5;display:block}
+.future-teaser a:hover{text-decoration:underline}
+@media(min-width:1000px) and (min-height:660px) and (max-height:800px){.future-teaser{padding:18px;width:315px}.future-teaser h2{font-size:24px}.future-teaser p:not(.eyebrow){font-size:14px;margin-bottom:12px}}
+@media(max-width:760px){body[data-ians-home="v2"] .hero-inner{gap:30px;min-height:0;padding-bottom:32px}.future-teaser{justify-self:start;width:100%;max-width:500px;padding:22px}.future-teaser h2{font-size:26px}.intro{padding-bottom:0!important}}
