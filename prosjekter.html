@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#06111d" />
+  <meta name="description" content="IANS Prosjekter – fra idé til noe som virker." />
+  <title>Prosjekter · IANS</title>
+  <style>
+    :root{
+      --bg:#06111d;--panel:#0b1b2a;--panel2:#102638;--text:#f4f8fb;
+      --muted:#a8bac8;--cyan:#20c7e8;--line:rgba(255,255,255,.12);
+      --max:1180px;--radius:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+    a{color:inherit}
+    a:focus-visible,button:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
+    .skip{position:absolute;left:-9999px;top:10px;background:var(--cyan);color:#03111b;padding:10px 14px;z-index:20}
+    .skip:focus{left:10px}
+    .wrap{width:min(var(--max),calc(100% - 36px));margin:auto}
+    .nav{height:68px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+    .brand{font-weight:900;letter-spacing:.28em;text-decoration:none}
+    .navlinks{display:flex;gap:18px;align-items:center}
+    .navlinks a{text-decoration:none;color:var(--muted);font-size:.9rem}
+    .navlinks a:hover{color:var(--text)}
+    .lang button{background:none;border:0;color:var(--muted);font-weight:800;cursor:pointer}
+    .lang button.active{color:var(--cyan)}
+    .hero{padding:92px 0 76px;background:
+      radial-gradient(circle at 78% 18%,rgba(32,199,232,.20),transparent 34%),
+      linear-gradient(180deg,#06111d,#071522)}
+    .ey{color:var(--cyan);font-size:.72rem;font-weight:850;letter-spacing:.18em;text-transform:uppercase}
+    h1,h2{letter-spacing:-.05em;line-height:.98}
+    h1{font-size:clamp(3.3rem,7vw,7rem);margin:.16em 0 .2em;max-width:980px}
+    h2{font-size:clamp(2.2rem,4.7vw,4.4rem);margin:.16em 0 .3em}
+    .lead{font-size:clamp(1.08rem,2vw,1.4rem);color:#c7d5df;max-width:790px}
+    .hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+    .chip{border:1px solid var(--line);background:rgba(11,27,42,.72);padding:8px 11px;border-radius:999px;color:var(--muted);font-size:.82rem}
+    .section{padding:68px 0;border-top:1px solid var(--line)}
+    .intro{color:var(--muted);font-size:1.08rem;max-width:780px}
+    .projects{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:32px}
+    .project{grid-column:span 6;position:relative;overflow:hidden;min-height:390px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,var(--panel),#081622);text-decoration:none}
+    .project.wide{grid-column:span 12;min-height:430px}
+    .visual{height:180px;position:relative;overflow:hidden;background:
+      radial-gradient(circle at 78% 20%,rgba(32,199,232,.25),transparent 34%),
+      linear-gradient(135deg,#0b2234,#07121d)}
+    .wide .visual{height:215px}
+    .visual img{width:100%;height:100%;object-fit:cover;opacity:.68;transition:transform .35s ease,opacity .35s ease}
+    .project:hover .visual img{transform:scale(1.025);opacity:.82}
+    .visual::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 20%,rgba(6,17,29,.88))}
+    .content{padding:24px}
+    .project h3{font-size:clamp(1.55rem,3vw,2.25rem);margin:.25em 0 .3em;letter-spacing:-.035em}
+    .project p{color:var(--muted);max-width:690px;margin:.45em 0}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+    .tag{font-size:.72rem;font-weight:750;border:1px solid var(--line);border-radius:999px;padding:6px 9px;color:#c5d4de}
+    .go{display:inline-flex;gap:8px;align-items:center;color:var(--cyan);font-weight:850;margin-top:5px}
+    .story{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:30px}
+    .step{padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+    .step b{display:block;color:var(--cyan);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+    .step p{margin:0;color:var(--muted);font-size:.92rem}
+    .quote{margin-top:32px;padding:30px;border-radius:18px;background:linear-gradient(135deg,#0c2233,#102d3f);border:1px solid var(--line)}
+    .quote strong{display:block;font-size:clamp(1.7rem,3vw,2.8rem);line-height:1.08;letter-spacing:-.04em;max-width:850px}
+    .quote p{color:var(--muted);max-width:760px}
+    .next{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:stretch}
+    .nextbox{padding:30px;border:1px solid var(--line);border-radius:18px;background:var(--panel)}
+    .nextbox strong{font-size:clamp(2rem,4vw,4rem);line-height:1;color:var(--cyan);display:block}
+    .nextbox p{color:var(--muted)}
+    .btn{display:inline-block;text-decoration:none;font-weight:850;border:1px solid var(--line);padding:11px 16px;border-radius:9px}
+    .btn.primary{background:var(--cyan);color:#03111b;border-color:transparent}
+    .foot{padding:30px 0;color:var(--muted);border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px}
+    [data-en]{display:none}
+    body.en [data-no]{display:none}
+    body.en [data-en]{display:initial}
+    body.en p[data-en],body.en div[data-en],body.en section[data-en]{display:block}
+    @media(max-width:900px){
+      .project,.project.wide{grid-column:span 12}
+      .story{grid-template-columns:repeat(2,1fr)}
+      .next{grid-template-columns:1fr}
+      .navlinks>a{display:none}
+    }
+    @media(max-width:560px){
+      .hero{padding:62px 0 54px}
+      .section{padding:52px 0}
+      .story{grid-template-columns:1fr}
+      .project,.project.wide{min-height:0}
+      .visual,.wide .visual{height:165px}
+      .foot{display:block}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .visual img{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main" data-no>Hopp til innhold</a>
+  <a class="skip" href="#main" data-en>Skip to content</a>
+
+  <header class="wrap nav">
+    <a class="brand" href="/">IANS</a>
+    <nav class="navlinks" aria-label="Hovedmeny">
+      <a href="/plattformen.html">Plattformen</a>
+      <a href="#prosjekter">Prosjekter</a>
+      <a href="#metode">Fra idé til løsning</a>
+      <a href="/teknisk.html">Teknisk</a>
+      <span class="lang"><button id="no" class="active" type="button">NO</button> / <button id="en" type="button">EN</button></span>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <div class="ey">IANS · PROSJEKTER · 2026</div>
+        <h1 data-no>Fra idé til<br>noe som virker.</h1>
+        <h1 data-en>From idea to<br>something that works.</h1>
+        <p class="lead" data-no>
+          Prosjektene utvikles underveis. Noe er i bruk, annet er fortsatt et sted å prøve,
+          lære og forbedre. Felles for dem er at en idé blir gjort konkret.
+        </p>
+        <p class="lead" data-en>
+          The projects evolve along the way. Some are in use, others remain places to test,
+          learn and improve. What they share is turning an idea into something tangible.
+        </p>
+        <div class="hero-meta">
+          <span class="chip">IANS</span><span class="chip">SOGOD</span>
+          <span class="chip">SameieNett</span><span class="chip">Axion Grid</span>
+          <span class="chip">Maimyra</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="prosjekter">
+      <div class="wrap">
+        <div class="ey">BYGGET · TESTET · VIDEREUTVIKLET</div>
+        <h2 data-no>Prosjektene.</h2>
+        <h2 data-en>The projects.</h2>
+        <p class="intro" data-no>
+          Dette er de fem prosjektene som allerede er en del av IANS. Her får de mer plass:
+          hva de er, hvorfor de finnes og hvor de peker videre.
+        </p>
+        <p class="intro" data-en>
+          These are the five projects already part of IANS. Here they get more room:
+          what they are, why they exist and where they lead next.
+        </p>
+
+        <div class="projects">
+          <a class="project wide" href="/">
+            <div class="visual"><img src="/assets/ians-home/fjord-core.png" alt="" loading="eager"></div>
+            <div class="content">
+              <div class="ey">HOVEDPROSJEKT · DIGITALT LABORATORIUM</div>
+              <h3>IANS</h3>
+              <p data-no>Et personlig sted for teknologi og idéer – og rammen rundt de andre prosjektene. Her blir læring, eksperimentering og praktisk utvikling samlet på ett sted.</p>
+              <p data-en>A personal place for technology and ideas – and the framework around the other projects. Learning, experimentation and practical development meet in one place.</p>
+              <div class="meta"><span class="tag">Web</span><span class="tag">KI / AI</span><span class="tag">Azure</span><span class="tag">GitHub</span><span class="tag">Læring</span></div>
+              <span class="go" data-no>Åpne IANS →</span><span class="go" data-en>Open IANS →</span>
+            </div>
+          </a>
+
+          <a class="project" href="https://www.sogod.no/">
+            <div class="visual"><img src="/assets/ians-home/fjord-core.png" alt="" loading="lazy"></div>
+            <div class="content">
+              <div class="ey">TJENESTE · FILIPPINENE</div>
+              <h3>SOGOD</h3>
+              <p data-no>Et eget prosjekt i Filippinene, bygget rundt opphold, opplevelser og lokal hjelp – med web, booking og tjenester som møtes i én løsning.</p>
+              <p data-en>A separate project in the Philippines, built around stays, experiences and local assistance – bringing web, booking and services together.</p>
+              <div class="meta"><span class="tag">Web</span><span class="tag">Booking</span><span class="tag">Tjenester</span></div>
+              <span class="go" data-no>Besøk SOGOD →</span><span class="go" data-en>Visit SOGOD →</span>
+            </div>
+          </a>
+
+          <a class="project" href="/SameieNett.html">
+            <div class="visual"><img src="/assets/ians-home/servers.png" alt="" loading="lazy"></div>
+            <div class="content">
+              <div class="ey">INFRASTRUKTUR · BOLIGSAMEIER</div>
+              <h3>SameieNett</h3>
+              <p data-no>Verktøy for felles drift og oversikt. Prosjektet utforsker hvordan digital infrastruktur og tjenester kan gjøres enklere å forstå og administrere.</p>
+              <p data-en>Tools for shared operations and overview. The project explores how digital infrastructure and services can be easier to understand and manage.</p>
+              <div class="meta"><span class="tag">Nettverk</span><span class="tag">Drift</span><span class="tag">Verktøy</span></div>
+              <span class="go" data-no>Utforsk SameieNett →</span><span class="go" data-en>Explore SameieNett →</span>
+            </div>
+          </a>
+
+          <a class="project" href="https://zealous-pond-02b149c10.7.azurestaticapps.net/">
+            <div class="visual"><img src="/assets/ians-home/servers.png" alt="" loading="lazy"></div>
+            <div class="content">
+              <div class="ey">IT · INFRASTRUKTUR</div>
+              <h3>Axion Grid</h3>
+              <p data-no>Et prosjekt for IT og infrastruktur. Her utforskes hvordan nettverk, tjenester og tekniske leveranser kan settes sammen til en tydelig helhet.</p>
+              <p data-en>A project for IT and infrastructure, exploring how networks, services and technical delivery can be combined into a clear whole.</p>
+              <div class="meta"><span class="tag">IT</span><span class="tag">Infrastruktur</span><span class="tag">Azure</span></div>
+              <span class="go" data-no>Åpne Axion Grid →</span><span class="go" data-en>Open Axion Grid →</span>
+            </div>
+          </a>
+
+          <a class="project" href="/maimyra.html">
+            <div class="visual"><img src="/images/kraftledninger.jpg" alt="" loading="lazy"></div>
+            <div class="content">
+              <div class="ey">HJEM · PERSONLIG PROSJEKT</div>
+              <h3>Maimyra</h3>
+              <p data-no>Et av de personlige prosjektene i IANS – et sted for å samle utvikling, valg og idéer rundt hjemmet og det som bygges videre.</p>
+              <p data-en>One of the personal projects in IANS – a place to collect development, choices and ideas around the home and what comes next.</p>
+              <div class="meta"><span class="tag">Bolig</span><span class="tag">Planlegging</span><span class="tag">Design</span></div>
+              <span class="go" data-no>Se Maimyra →</span><span class="go" data-en>View Maimyra →</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="metode">
+      <div class="wrap">
+        <div class="ey">ARBEIDSMÅTEN</div>
+        <h2 data-no>Idé → bygg → test → lær.</h2>
+        <h2 data-en>Idea → build → test → learn.</h2>
+        <p class="intro" data-no>Prosjektene trenger ikke starte stort. De starter med et behov eller en tanke, får en første fungerende versjon og forbedres gjennom faktisk bruk.</p>
+        <p class="intro" data-en>Projects do not need to start big. They begin with a need or an idea, become a first working version and improve through real use.</p>
+        <div class="story">
+          <div class="step"><b>01 · Idé</b><p data-no>Hva prøver vi å løse eller forstå?</p><p data-en>What are we trying to solve or understand?</p></div>
+          <div class="step"><b>02 · Bygg</b><p data-no>Lag noe konkret som kan prøves.</p><p data-en>Make something tangible that can be tried.</p></div>
+          <div class="step"><b>03 · Test</b><p data-no>Bruk det, finn svakheter og juster.</p><p data-en>Use it, find weaknesses and adjust.</p></div>
+          <div class="step"><b>04 · Lær</b><p data-no>Ta erfaringen med inn i neste versjon.</p><p data-en>Carry the experience into the next version.</p></div>
+        </div>
+        <div class="quote">
+          <strong data-no>Poenget er ikke bare å vise sluttresultatet. IANS skal også vise reisen dit.</strong>
+          <strong data-en>The point is not only to show the final result. IANS should also show the journey there.</strong>
+          <p data-no>Etter hvert kan hvert prosjekt få sin egen historie med skjermbilder, milepæler, teknologi, kostnader og «slik er det bygget».</p>
+          <p data-en>Over time, each project can get its own story with screenshots, milestones, technology, costs and “how it is built”.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap next">
+        <div>
+          <div class="ey">SAMMENHENGEN</div>
+          <h2 data-no>Prosjekter er neste lag i IANS.</h2>
+          <h2 data-en>Projects are the next layer of IANS.</h2>
+          <p class="intro" data-no>Plattformen forklarer teknologirommet. Prosjektene viser hva vi faktisk gjør med det. Neste steg er å åpne hvert prosjekt og dokumentere hvordan det ble bygget.</p>
+          <p class="intro" data-en>The Platform explains the technology space. Projects show what we actually do with it. The next step is opening each project and documenting how it was built.</p>
+          <a class="btn primary" href="/plattformen.html" data-no>Til Plattformen →</a>
+          <a class="btn primary" href="/plattformen.html" data-en>Go to Platform →</a>
+        </div>
+        <div class="nextbox">
+          <div class="ey">NESTE</div>
+          <strong>05 → ∞</strong>
+          <p data-no>Fem prosjekter i dagens oversikt. Flere kan komme til uten at strukturen må bygges på nytt.</p>
+          <p data-en>Five projects in today's overview. More can be added without rebuilding the structure.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <span><strong>IANS</strong> · Idéer. Teknologi. Muligheter.</span>
+    <span data-no>Prosjekter · fra idé til noe som virker.</span>
+    <span data-en>Projects · from idea to something that works.</span>
+  </footer>
+
+  <script>
+    const no=document.getElementById("no"),en=document.getElementById("en");
+    function setLang(l){
+      document.body.classList.toggle("en",l==="en");
+      no.classList.toggle("active",l==="no");
+      en.classList.toggle("active",l==="en");
+      document.documentElement.lang=l==="en"?"en":"nb";
+      localStorage.setItem("ians-projects-lang",l);
+    }
+    no.onclick=()=>setLang("no");
+    en.onclick=()=>setLang("en");
+    setLang(localStorage.getItem("ians-projects-lang")||"no");
+  </script>
+</body>
+</html>
