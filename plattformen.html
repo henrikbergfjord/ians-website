@@ -372,7 +372,53 @@
         }
       }
     </style>
-  </head>
+  
+<style>
+/* IANS-PAGE-HERO-20261003 */
+
+/* Stor visuell inngang til siden */
+body {
+    background-color: #03101b;
+    background-image:
+        linear-gradient(
+            to bottom,
+            rgba(3,16,27,.38) 0%,
+            rgba(3,16,27,.58) 42%,
+            rgba(3,16,27,.92) 78%,
+            #03101b 100%
+        ),
+        url("/assets/plattformen-bg.jpg");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 100% auto;
+    background-attachment: scroll;
+}
+
+/* Litt mer dybde uten å redusere lesbarheten */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(3,16,27,.30),
+            transparent 45%,
+            rgba(3,16,27,.12)
+        );
+    z-index: -1;
+}
+
+@media (max-width: 800px) {
+    body {
+        background-size: auto 720px;
+        background-position: center top;
+    }
+}
+</style>
+
+</head>
   <body>
     <header class="wrap nav">
       <a class="brand" href="/">IANS</a>
