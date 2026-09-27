@@ -787,6 +787,93 @@
           background-position: center top;
         }
       }
+    
+      /* AI-INFRASTRUKTUR · FORDYPNING */
+      .deepdive {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .deepdive::before {
+        content: "";
+        position: absolute;
+        width: 520px;
+        height: 520px;
+        right: -180px;
+        top: -220px;
+        border-radius: 50%;
+        background: rgba(32, 199, 232, 0.07);
+        pointer-events: none;
+      }
+
+      .deepdive .wrap {
+        position: relative;
+      }
+
+      .deepdive-box {
+        display: grid;
+        grid-template-columns: 1.35fr .65fr;
+        gap: 28px;
+        align-items: center;
+        margin-top: 28px;
+        padding: 30px;
+        background: linear-gradient(135deg, #0d2233, #081622);
+        border: 1px solid var(--l);
+        border-radius: 18px;
+      }
+
+      .deepdive-chain {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 18px 0 0;
+      }
+
+      .deepdive-chain span {
+        padding: 8px 11px;
+        border: 1px solid var(--l);
+        border-radius: 999px;
+        background: rgba(255,255,255,.035);
+        color: #d7e3ea;
+        font-size: .82rem;
+        font-weight: 700;
+      }
+
+      .deepdive-chain i {
+        align-self: center;
+        color: var(--c);
+        font-style: normal;
+      }
+
+      .deepdive-action {
+        padding: 24px;
+        border-left: 1px solid var(--l);
+      }
+
+      .deepdive-action strong {
+        display: block;
+        color: var(--c);
+        font-size: 1.15rem;
+        margin-bottom: 8px;
+      }
+
+      .deepdive-action p {
+        color: var(--m);
+        font-size: .9rem;
+      }
+
+      @media (max-width: 760px) {
+        .deepdive-box {
+          grid-template-columns: 1fr;
+          padding: 22px;
+        }
+        .deepdive-action {
+          border-left: 0;
+          border-top: 1px solid var(--l);
+          padding: 22px 0 0;
+        }
+      }
+
     </style>
   </head>
 
@@ -799,6 +886,7 @@
         <a href="#bruk">KI-felt</a>
         <a href="#prosjekter">Prosjekter</a>
         <a href="#kraft">Kraft</a>
+        <a href="#ai-infrastruktur">Infrastruktur</a>
 
         <span class="lang">
           <button id="no" class="active">NO</button> /
@@ -813,7 +901,7 @@
 
       <section class="hero">
         <div class="wrap">
-          <div class="ey">IANS · Plattformen · 26.09.2026</div>
+          <div class="ey">IANS · Plattformen · 27.09.2026</div>
 
           <h1 data-no>Teknologi trenger<br />mer enn kode.</h1>
           <h1 data-en>Technology needs<br />more than code.</h1>
@@ -1520,6 +1608,81 @@
       </section>
 
 
+      <!-- AI-INFRASTRUKTUR · FORDYPNING -->
+
+      <section class="section deepdive" id="ai-infrastruktur">
+        <div class="wrap">
+          <div class="ey">FORDYPNING · AI-INFRASTRUKTUR</div>
+
+          <h2 data-no>KI har også en fysisk pris.</h2>
+          <h2 data-en>AI also has a physical price.</h2>
+
+          <p class="intro" data-no>
+            Veksten stopper ikke ved programvare og strømforbruk. Datasentre
+            konkurrerer også om GPU-er, HBM, DRAM, SSD-er, transformatorer,
+            nettilknytning og annen fysisk kapasitet. Derfor har vi laget en
+            egen dokumentert fordypning om hvordan KI-boomen påvirker både
+            maskinvaremarkedet og kraftsystemet.
+          </p>
+
+          <p class="intro" data-en>
+            Growth does not stop at software and electricity use. Data centres
+            also compete for GPUs, HBM, DRAM, SSDs, transformers, grid
+            connections and other physical capacity. We therefore created a
+            documented deep dive into how the AI boom affects both hardware
+            markets and power systems.
+          </p>
+
+          <div class="deepdive-box">
+            <div>
+              <div class="deepdive-chain">
+                <span>AI</span><i>→</i>
+                <span>Compute</span><i>→</i>
+                <span>GPU / HBM</span><i>→</i>
+                <span>DRAM / SSD</span><i>→</i>
+                <span>Datasenter</span><i>→</i>
+                <span>Kraft / nett</span>
+              </div>
+
+              <p class="source" data-no>
+                Fordypningssiden samler originalkilder fra blant andre IEA,
+                NVE og TrendForce og skiller mellom observerte tall, prognoser
+                og scenarioer.
+              </p>
+
+              <p class="source" data-en>
+                The deep-dive page collects original sources including IEA,
+                NVE and TrendForce and distinguishes observed figures,
+                forecasts and scenarios.
+              </p>
+            </div>
+
+            <div class="deepdive-action">
+              <strong data-no>Maskinvare + energi + nett</strong>
+              <strong data-en>Hardware + energy + grid</strong>
+
+              <p data-no>
+                Se dokumentasjonen bak prispress på minne og lagring,
+                datasentrenes kraftbehov og flaskehalsene som kan oppstå når
+                digital vekst møter fysisk kapasitet.
+              </p>
+
+              <p data-en>
+                Explore the documentation behind memory and storage pricing
+                pressure, data-centre electricity demand and the bottlenecks
+                that can arise when digital growth meets physical capacity.
+              </p>
+
+              <a class="btn primary" href="/ai-infrastruktur.html">
+                <span data-no>Åpne fordypningen →</span>
+                <span data-en>Open deep dive →</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
       <!-- PROSJEKTER -->
 
       <section class="section" id="prosjekter">
@@ -1864,7 +2027,7 @@
     <footer class="foot">
       <div class="wrap">
         <strong>IANS</strong> · Idéer. Teknologi. Muligheter. · AI Status
-        26.09.2026
+        27.09.2026
       </div>
     </footer>
 
