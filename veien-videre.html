@@ -9,16 +9,16 @@ body {
     background-image:
         linear-gradient(
             to bottom,
-            rgba(3,16,27,.38) 0%,
-            rgba(3,16,27,.58) 42%,
-            rgba(3,16,27,.92) 78%,
-            #03101b 100%
+            rgba(3,16,27,.42) 0%,
+            rgba(3,16,27,.60) 38%,
+            rgba(3,16,27,.72) 72%,
+            rgba(3,16,27,.82) 100%
         ),
         url("/assets/veien-videre-bg.jpg");
     background-repeat: no-repeat;
     background-position: center top;
-    background-size: 100% auto;
-    background-attachment: scroll;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 /* Litt mer dybde uten å redusere lesbarheten */
@@ -43,6 +43,30 @@ body::before {
         background-position: center top;
     }
 }
+
+/* IANS continuous scenic background */
+main, .hero, .section, .statement, .foot {
+    background: transparent !important;
+}
+.hero {
+    background: radial-gradient(circle at 78% 25%,rgba(32,199,232,.14),transparent 38%) !important;
+}
+.card {
+    background: linear-gradient(145deg,rgba(11,31,48,.88),rgba(8,22,34,.88));
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+.statement {
+    background: rgba(6,17,29,.30) !important;
+}
+@media (max-width: 800px) {
+    body {
+        background-size: cover;
+        background-position: center top;
+        background-attachment: scroll;
+    }
+}
+
 </style>
 
 </head>
