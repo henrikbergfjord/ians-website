@@ -9,16 +9,16 @@ body {
     background-image:
         linear-gradient(
             to bottom,
-            rgba(3,16,27,.38) 0%,
-            rgba(3,16,27,.58) 42%,
-            rgba(3,16,27,.92) 78%,
-            #03101b 100%
+            rgba(3,16,27,.42) 0%,
+            rgba(3,16,27,.62) 38%,
+            rgba(3,16,27,.74) 72%,
+            rgba(3,16,27,.82) 100%
         ),
         url("/assets/prosjekter-bg.jpg");
     background-repeat: no-repeat;
     background-position: center top;
-    background-size: 100% auto;
-    background-attachment: scroll;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 /* Litt mer dybde uten å redusere lesbarheten */
@@ -43,14 +43,29 @@ body::before {
         background-position: center top;
     }
 }
+
+/* La bakgrunnsbildet være synlig gjennom hele siden */
+main, section, footer { background: transparent; }
+section { position: relative; }
+.card, .phase, .cost {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+@media (max-width: 800px) {
+    body {
+        background-size: cover;
+        background-position: center top;
+        background-attachment: scroll;
+    }
+}
 </style>
 
 </head>
 <body><header class="wrap"><a class="brand" href="/">IANS</a><nav><a href="#prosjekter">Prosjektene</a><a href="#kostnad">Kostnad</a><a href="/plattformen.html">Plattformen</a></nav></header>
-<main><div class="hero"><div class="wrap"><div class="ey">IANS · PROSJEKTER · 2026</div><h1>Vi så et behov.<br>Så bygget vi det.</h1><p>IANS-prosjektene har vokst frem underveis. Noen startet med et problem i hverdagen, andre med spørsmålet: Kan vi lage dette selv? Her viser vi hva prosjektene faktisk er, hvorfor de finnes og hva de kan brukes til.</p><a class="btn" href="#prosjekter">Se hva vi har bygget ↓</a></div></div>
+<main><div class="hero"><div class="wrap"><div class="ey">IANS · PROSJEKTER · 2026</div><h1>Jeg så et behov.<br>Så bygget jeg løsningen.</h1><p>IANS-prosjektene har vokst frem underveis. Jeg har sett behovene, formet idéene og bygget løsningene videre med ChatGPT som utviklingspartner. Her viser jeg hva prosjektene faktisk er, hvorfor de finnes og hva de kan brukes til.</p><a class="btn" href="#prosjekter">Se hva jeg har bygget ↓</a></div></div>
 <section id="prosjekter"><div class="wrap"><div class="ey">PROSJEKTPORTEFØLJEN</div><h2>Behovene kom først.<br>Verktøyene kom etterpå.</h2><p class="intro">Fra filbehandling og privatøkonomi til sameiedrift, læring, booking, mat, administrasjon og analyse. Hvert kort forteller kort hvorfor prosjektet finnes.</p><div class="grid">
 <article class="card"><div class="ey">VERKTØY</div><h3>File Commander</h3><p>En nettbasert filbehandler utviklet for arbeid med lokale filer og mapper. Prosjektet utforsker hvor mye av en tradisjonell File Commander som kan flyttes inn i nettleseren.</p><a href="/tools/file-commander/">Utforsk prosjektet →</a></article>
-<article class="card"><div class="ey">ONEDRIVE · DATA</div><h3>OneDrive Command</h3><p>Vi manglet gode verktøy for svært store OneDrive-arkiver. Derfor bygget vi vårt eget for kartlegging, store filoperasjoner, duplikatkontroll, organisering, recovery, resume, checkpoints og verifisering.</p><a href="/tools/onedrive-organizer/">Utforsk prosjektet →</a></article>
+<article class="card"><div class="ey">ONEDRIVE · DATA</div><h3>OneDrive Command</h3><p>Jeg manglet gode verktøy for svært store OneDrive-arkiver. Derfor bygget jeg mitt eget for kartlegging, store filoperasjoner, duplikatkontroll, organisering, recovery, resume, checkpoints og verifisering.</p><a href="/tools/onedrive-organizer/">Utforsk prosjektet →</a></article>
 <article class="card"><div class="ey">ØKONOMI</div><h3>Money Planner</h3><p>Fra budsjett til et økonomiverktøy med partnerøkonomi, sparing, barnesparing, rapporter, diagrammer og KI-støttet analyse.</p><a href="/tools/money-planner/">Utforsk prosjektet →</a></article>
 <article class="card"><div class="ey">WEB</div><h3>Website Builder</h3><p>Light og Pro utforsker hvordan noen få opplysninger og valg kan bli til forhåndsvisning og eksport av en ferdig nettside.</p><a href="/tools/website-builder-pro/">Utforsk prosjektet →</a></article>
 <article class="card"><div class="ey">PLANLEGGING</div><h3>Kalender</h3><p>Et nettverktøy for datoer, aktiviteter og planlegging – og en byggekloss som senere kan kobles til andre IANS-tjenester.</p><a href="/kalender.html">Utforsk prosjektet →</a></article>
