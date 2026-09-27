@@ -867,6 +867,41 @@
           padding: 22px 22px;
         }
       }
+
+      /* SPRÅKVELGER · NO / EN */
+      .lang-switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        margin-left: auto;
+        margin-right: 22px;
+        padding: 3px;
+        border: 1px solid rgba(32,199,232,.28);
+        border-radius: 9px;
+        background: rgba(3,16,27,.58);
+      }
+      .lang-switch button {
+        appearance: none;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--muted);
+        padding: 6px 9px;
+        font: inherit;
+        font-size: .72rem;
+        font-weight: 900;
+        letter-spacing: .06em;
+        cursor: pointer;
+      }
+      .lang-switch button.active {
+        background: var(--cyan);
+        color: #03111b;
+      }
+      @media(max-width:700px){
+        .lang-switch{margin-right:10px}
+        .lang-switch button{padding:5px 7px}
+      }
+
     </style>
     <script type="application/ld+json">
       {
@@ -892,8 +927,12 @@
   <body>
     <div class="journey-page">
       <header class="jwrap jnav">
-        <a class="brand" href="/">IANS</a
-        ><a class="back" href="/">← Tilbake til forsiden</a>
+        <a class="brand" href="/">IANS</a>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" id="lang-no" class="active" aria-pressed="true">NO</button>
+          <button type="button" id="lang-en" aria-pressed="false">EN</button>
+        </div>
+        <a class="back" href="/">← Tilbake til forsiden</a>
       </header>
       <main>
         <section class="jwrap jhero-v2">
@@ -1445,5 +1484,111 @@
         </p>
       </footer>
     </div>
+
+    <script>
+    (() => {
+      const NO = document.getElementById("lang-no");
+      const EN = document.getElementById("lang-en");
+      const root = document.querySelector(".journey-page");
+      if (!NO || !EN || !root) return;
+
+      const original = new Map();
+      const skip = new Set(["SCRIPT","STYLE","NOSCRIPT","CODE","PRE"]);
+      const textNodes = [];
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let n;
+      while ((n = walker.nextNode())) {
+        if (!n.parentElement || skip.has(n.parentElement.tagName)) continue;
+        if (!n.nodeValue.trim()) continue;
+        original.set(n, n.nodeValue);
+        textNodes.push(n);
+      }
+
+      const phrases = new Map([
+        ["← Tilbake til forsiden","← Back to home"],
+        ["MIN REISE · 2003 → 2026","MY JOURNEY · 2003 → 2026"],
+        ["Fra serverrom","From server rooms"],
+        ["til KI.","to AI."],
+        ["Scroll reisen","Explore the journey"],
+        ["Server","Server"],["fysisk","physical"],["VM","VM"],["virtuelt","virtual"],
+        ["Sky","Cloud"],["tjenester","services"],["Hybrid","Hybrid"],["koblet","connected"],
+        ["KI","AI"],["skape","create"],
+        ["DET BEGYNTE SOM ELEV","IT STARTED AS A STUDENT"],
+        ["DET FØRSTE STORE SKIFTET","THE FIRST MAJOR SHIFT"],
+        ["NÅ MÅTTE DET SKALERE","NOW IT HAD TO SCALE"],
+        ["FRA SERVERROM TIL TJENESTER","FROM SERVER ROOMS TO SERVICES"],
+        ["HYBRID BLIR NORMALEN","HYBRID BECOMES THE NORM"],
+        ["SKYEN KOMMER TILBAKE TIL DATASENTERET","THE CLOUD RETURNS TO THE DATA CENTER"],
+        ["TILBAKE TIL GRUNNMUREN","BACK TO THE FOUNDATION"],
+        ["ET NYTT KAPITTEL","A NEW CHAPTER"],
+        ["OG SÅ KOM KI","AND THEN CAME AI"],
+        ["DERFOR FINNES IANS","WHY IANS EXISTS"],
+        ["Idé","Idea"],["Dialog med KI","Dialogue with AI"],["Bygge & teste","Build & test"],
+        ["Fungerende løsning","Working solution"],["23 år","23 years"],
+        ["Prøve.","Explore."],["Bygge.","Build."],["Lære.","Learn."],["Dele.","Share."],
+        ["Se hva vi har bygget →","See what we have built →"],
+        ["Utforsk teknologiskiftet →","Explore the technology shift →"],
+        ["Veien videre →","What comes next →"],
+        ["Hjem","Home"],["Prosjekter","Projects"],["Teknisk","Technical"]
+      ]);
+
+      // Full-paragraph translations for the key narrative. Remaining Norwegian prose
+      // gets translated through a compact phrase dictionary below, preserving markup.
+      const replacements = [
+        ["Mer enn tjue år med teknologi har lært meg én ting: Det som virker stort og nytt i dag, blir fort grunnmuren vi bygger videre på i morgen. Dette er ikke hele CV-en min. Det er historien om noen av skiftene som formet måten jeg tenker på – og hvorfor IANS finnes.",
+         "More than twenty years in technology have taught me one thing: what seems big and new today quickly becomes the foundation we build on tomorrow. This is not my full CV. It is the story of some of the shifts that shaped how I think – and why IANS exists."],
+        ["Da jeg startet i IT, var infrastrukturen noe du kunne ta på.",
+         "When I started in IT, infrastructure was something you could physically touch."],
+        ["Servere skulle bestilles, bæres inn, monteres, installeres og holdes i live. I dag kan jeg sitte med en idé, diskutere den med KI og bygge noe fungerende på en kveld. Mellom de to ytterpunktene ligger en ganske interessant reise.",
+         "Servers had to be ordered, carried in, mounted, installed and kept alive. Today I can start with an idea, discuss it with AI and build something that works in a single evening. Between those two extremes lies a rather interesting journey."],
+        ["Fra skolebenken til ansvar for skolens IT-drift.","From the classroom to responsibility for the school's IT operations."],
+        ["En feil pekte mot en helt ny måte å bygge IT på.","A fault pointed toward an entirely new way of building IT."],
+        ["Fra noen servere til hel infrastruktur.","From a few servers to complete infrastructure."],
+        ["IT flyttet gradvis ut av rommet.","IT gradually moved out of the room."],
+        ["Skyen erstattet ikke alt. Den koblet seg på alt.","The cloud did not replace everything. It connected to everything."],
+        ["Moderne lokal infrastruktur – styrt som en del av skyen.","Modern local infrastructure – managed as part of the cloud."],
+        ["Hybrid infrastruktur, backup og disaster recovery.","Hybrid infrastructure, backup and disaster recovery."],
+        ["Fra infrastrukturen bak systemene til infrastrukturen bak samfunnet.","From the infrastructure behind systems to the infrastructure behind society."],
+        ["Det største skiftet er kanskje ikke hva teknologien kan gjøre – men hva én person kan skape med den.",
+         "The biggest shift may not be what technology can do – but what one person can create with it."],
+        ["Nå flyttes grensen én gang til.","Now the boundary is moving once again."],
+        ["Et sted der ideer får lov til å bli virkelige.","A place where ideas are allowed to become reality."]
+      ];
+
+      function translateText(txt) {
+        let lead = txt.match(/^\s*/)[0], tail = txt.match(/\s*$/)[0];
+        let core = txt.trim();
+        if (phrases.has(core)) return lead + phrases.get(core) + tail;
+        for (const [a,b] of replacements) if (core === a) return lead+b+tail;
+
+        // Common terms for short labels/tags.
+        const words = [
+          [/\bKunstig intelligens\b/g,"Artificial intelligence"],
+          [/\bPlanlegging\b/g,"Planning"], [/\bKraftsystem\b/g,"Power system"],
+          [/\bInfrastruktur\b/g,"Infrastructure"], [/\bLæring\b/g,"Learning"],
+          [/\bNettverkssegmentering\b/g,"Network segmentation"],
+          [/\bEnergi\b/g,"Energy"], [/\bServerrom\b/g,"Server room"],
+          [/\bNettverk\b/g,"Network"], [/\bKjøling\b/g,"Cooling"],
+          [/\bDriftsplanlegging\b/g,"Operations planning"],
+          [/\bVirtualisering\b/g,"Virtualization"], [/\bStandardisering\b/g,"Standardization"]
+        ];
+        let x=core; for(const [a,b] of words) x=x.replace(a,b);
+        return lead+x+tail;
+      }
+
+      function setLang(lang) {
+        const en = lang === "en";
+        document.documentElement.lang = en ? "en" : "nb";
+        textNodes.forEach(node => node.nodeValue = en ? translateText(original.get(node)) : original.get(node));
+        NO.classList.toggle("active", !en); EN.classList.toggle("active", en);
+        NO.setAttribute("aria-pressed", String(!en)); EN.setAttribute("aria-pressed", String(en));
+        localStorage.setItem("ians-language", lang);
+      }
+      NO.addEventListener("click", () => setLang("no"));
+      EN.addEventListener("click", () => setLang("en"));
+      setLang(localStorage.getItem("ians-language") === "en" ? "en" : "no");
+    })();
+    </script>
+
   </body>
 </html>
