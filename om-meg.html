@@ -63,6 +63,140 @@
 @media(max-width:900px){.ai-hero{grid-template-columns:1fr}.ai-visual{min-height:220px}.then-now{grid-template-columns:1fr}.time-bridge{min-height:70px}.time-bridge b{transform:rotate(90deg)}.ians-finale{padding:34px}.ians-orb{position:relative;right:auto;top:auto;transform:none;margin:28px 0 0;width:90px;height:90px}.ians-orb span{font-size:2.7rem}}
 @media(max-width:620px){.ai-flow{grid-template-columns:1fr}.ai-arrow{transform:rotate(90deg);padding:7px}.ai-node{min-height:96px}.ai-finale{padding-top:60px}}
 
+
+/* HERO V2 · 27.09.2026 */
+.journey-page{
+  background:
+    radial-gradient(circle at 78% 10%,rgba(32,199,232,.13),transparent 27%),
+    linear-gradient(90deg,rgba(3,16,27,.84) 0%,rgba(3,16,27,.60) 43%,rgba(3,16,27,.22) 72%,rgba(3,16,27,.48) 100%),
+    linear-gradient(180deg,rgba(3,16,27,.18),#03101b 38%),
+    url('/assets/plattformen-bg.jpg') center top/100% auto no-repeat;
+}
+.jhero-v2{
+  min-height:560px;
+  padding:92px 0 105px;
+  display:grid;
+  grid-template-columns:minmax(0,.94fr) minmax(430px,1.06fr);
+  gap:72px;
+  align-items:center;
+}
+.jhero-copy{max-width:820px}
+.jhero-v2 h1{
+  font-size:clamp(4rem,7vw,7.3rem);
+  line-height:.88;
+  letter-spacing:-.065em;
+  margin:.16em 0 .24em;
+  text-shadow:0 10px 42px rgba(0,0,0,.34)
+}
+.jhero-v2 h1 span{
+  color:var(--cyan);
+  text-shadow:0 0 28px rgba(32,199,232,.24)
+}
+.jhero-v2 .lead{
+  max-width:760px;
+  font-size:clamp(1.08rem,1.55vw,1.34rem);
+  line-height:1.62;
+  color:#d8e5ec
+}
+.jhero-journey{
+  position:relative;
+  min-height:280px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:36px 14px;
+}
+.jhero-journey:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 52% 50%,rgba(32,199,232,.11),transparent 54%);
+  filter:blur(3px);
+  pointer-events:none
+}
+.jhero-years{
+  display:flex;
+  justify-content:space-between;
+  color:var(--cyan);
+  font-weight:900;
+  font-size:.78rem;
+  letter-spacing:.14em;
+  position:relative;
+  z-index:2;
+  margin:0 3px 15px
+}
+.jhero-track{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  position:relative;
+  align-items:start;
+  z-index:2
+}
+.jhero-track:before{
+  content:"";
+  position:absolute;
+  left:9%;
+  right:9%;
+  top:23px;
+  height:2px;
+  background:linear-gradient(90deg,rgba(32,199,232,.35),var(--cyan),rgba(32,199,232,.35));
+  box-shadow:0 0 15px rgba(32,199,232,.3)
+}
+.jhero-step{text-align:center;position:relative;color:#c9dce6}
+.jhero-dot{
+  width:46px;height:46px;margin:0 auto 13px;border-radius:50%;
+  display:grid;place-items:center;
+  border:1px solid rgba(32,199,232,.48);
+  background:rgba(4,20,32,.86);
+  box-shadow:0 0 24px rgba(32,199,232,.11);
+  font-size:1.15rem
+}
+.jhero-step strong{
+  display:block;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase
+}
+.jhero-step small{
+  display:block;margin-top:4px;color:#7795a7;font-size:.67rem
+}
+.jhero-scroll{
+  display:inline-flex;align-items:center;gap:9px;margin-top:28px;
+  color:#b9d4df;text-decoration:none;font-size:.76rem;font-weight:850;
+  letter-spacing:.12em;text-transform:uppercase
+}
+.jhero-scroll span{
+  width:30px;height:30px;border:1px solid rgba(32,199,232,.3);
+  border-radius:50%;display:grid;place-items:center;color:var(--cyan)
+}
+.opening-bridge{
+  position:relative;
+  z-index:5;
+  margin-top:-58px;
+  margin-bottom:68px
+}
+.opening-bridge .opening{
+  max-width:920px;
+  margin:0;
+  padding:28px 32px;
+  background:linear-gradient(135deg,rgba(8,31,46,.92),rgba(5,22,34,.88));
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.14);
+  border-left:4px solid var(--cyan);
+  box-shadow:0 20px 60px rgba(0,0,0,.22);
+  border-radius:0 18px 18px 0
+}
+@media(max-width:980px){
+  .jhero-v2{grid-template-columns:1fr;gap:30px;padding-top:70px;min-height:auto}
+  .jhero-journey{min-height:210px;padding-top:8px}
+  .opening-bridge{margin-top:-28px}
+}
+@media(max-width:620px){
+  .jhero-v2{padding:55px 0 78px}
+  .jhero-v2 h1{font-size:clamp(3.5rem,17vw,5.4rem)}
+  .jhero-journey{display:none}
+  .opening-bridge{margin-top:-34px;margin-bottom:52px}
+  .opening-bridge .opening{padding:22px 22px}
+}
+
 </style>
 <script type="application/ld+json">
 {
@@ -81,10 +215,29 @@
 <div class="journey-page">
 <header class="jwrap jnav"><a class="brand" href="/">IANS</a><a class="back" href="/">← Tilbake til forsiden</a></header>
 <main>
-<section class="jwrap jhero"><p class="ey">MIN REISE · 2004 → 2026</p><h1>Fra serverrom<br>til <span>KI.</span></h1><p class="lead">Mer enn tjue år med teknologi har lært meg én ting: Det som virker stort og nytt i dag, blir fort grunnmuren vi bygger videre på i morgen. Dette er ikke hele CV-en min. Det er historien om noen av skiftene som formet måten jeg tenker på – og hvorfor IANS finnes.</p></section>
-<section class="jwrap"><div class="opening"><strong>Da jeg startet i IT, var infrastrukturen noe du kunne ta på.</strong> Servere skulle bestilles, bæres inn, monteres, installeres og holdes i live. I dag kan jeg sitte med en idé, diskutere den med KI og bygge noe fungerende på en kveld. Mellom de to ytterpunktene ligger en ganske interessant reise.</div></section>
-<section class="jwrap timeline">
-<div class="era"><div class="year">2004</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2004-serverrom.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2004-serverrom.jpg" alt="Illustrasjon til Første jobb – rett inn i serverrommet." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">ALT VAR FYSISK</p><h2>Første jobb – rett inn i serverrommet.</h2><p>Etter datateknikk ved Bergen Tekniske Fagskole gikk jeg rett inn i drift. Servere, arbeidsstasjoner, nettverk, fiber og IP-telefoni var ikke abstrakte skytjenester – de sto i rommet ved siden av. Et av de første prosjektene var å modernisere skolens miljø, migrere bort fra eldre Windows NT og rulle ut nye maskiner.</p><p>Det var en god skole i noe som fortsatt gjelder: Teknologi må fungere for menneskene som faktisk skal bruke den.</p><div class="tech"><span>Windows NT</span><span>Windows 2000/2003</span><span>Norton Ghost</span><span>Nettverk</span><span>Serverdrift</span></div></div></div></article></div>
+<section class="jwrap jhero-v2">
+  <div class="jhero-copy">
+    <p class="ey">MIN REISE · 2003 → 2026</p>
+    <h1>Fra serverrom<br>til <span>KI.</span></h1>
+    <p class="lead">Mer enn tjue år med teknologi har lært meg én ting: Det som virker stort og nytt i dag, blir fort grunnmuren vi bygger videre på i morgen. Dette er ikke hele CV-en min. Det er historien om noen av skiftene som formet måten jeg tenker på – og hvorfor IANS finnes.</p>
+    <a class="jhero-scroll" href="#reisen"><span>↓</span> Scroll reisen</a>
+  </div>
+  <div class="jhero-journey" aria-label="Teknologireisen fra 2004 til 2026">
+    <div class="jhero-years"><span>2003</span><span>2026</span></div>
+    <div class="jhero-track">
+      <div class="jhero-step"><div class="jhero-dot">▣</div><strong>Server</strong><small>fysisk</small></div>
+      <div class="jhero-step"><div class="jhero-dot">◇</div><strong>VM</strong><small>virtuelt</small></div>
+      <div class="jhero-step"><div class="jhero-dot">☁</div><strong>Sky</strong><small>tjenester</small></div>
+      <div class="jhero-step"><div class="jhero-dot">∞</div><strong>Hybrid</strong><small>koblet</small></div>
+      <div class="jhero-step"><div class="jhero-dot">✦</div><strong>KI</strong><small>skape</small></div>
+    </div>
+  </div>
+</section>
+<section class="jwrap opening-bridge">
+  <div class="opening"><strong>Da jeg startet i IT, var infrastrukturen noe du kunne ta på.</strong> Servere skulle bestilles, bæres inn, monteres, installeres og holdes i live. I dag kan jeg sitte med en idé, diskutere den med KI og bygge noe fungerende på en kveld. Mellom de to ytterpunktene ligger en ganske interessant reise.</div>
+</section>
+<section class="jwrap timeline" id="reisen">
+<div class="era"><div class="year">2003–04</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2004-serverrom.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2004-serverrom.jpg" alt="Illustrasjon av IT-miljøet ved starten av teknologireisen, med CRT-skjermer, arbeidsstasjoner og servere." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">DET BEGYNTE SOM ELEV</p><h2>Fra skolebenken til ansvar for skolens IT-drift.</h2><p>Mens jeg var elev ved Bergen Tekniske Fagskole begynte jeg å drifte skolens IT-miljø på de to studiestedene i Strandgaten 193 og Margaretastredet. Det ga meg tidlig praktisk ansvar for servere, arbeidsstasjoner, nettverk og den daglige infrastrukturen – før jeg egentlig var ferdig med utdanningen.</p><p>Et av de første moderniseringsprosjektene startet med noe så konkret som strømforbruk. Klasserommene hadde fortsatt CRT-skjermer, og ved å bruke produsentenes oppgitte effektdata kunne vi regne på hva PC-er og skjermer faktisk kostet i drift. De første LCD-skjermene vi så på brukte rundt 45 watt, og regnestykket viste at utskiftingen av et helt klasserom kunne betale seg på under to år.</p><p>Det ble en tidlig erfaring med noe som har fulgt meg videre: Teknologi handler ikke bare om hva som er nyere eller raskere. Når energibruk, kostnad og praktisk effekt kan måles, blir teknologivalg også et økonomisk regnestykke.</p><div class="tech"><span>BTF</span><span>IT-drift</span><span>CRT → LCD</span><span>Energiforbruk</span><span>TCO</span><span>Serverdrift</span></div></div></div></article></div>
 <div class="era"><div class="year">2005</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2005-virtualisering.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2005-virtualisering.jpg" alt="Illustrasjon til En feil pekte mot en helt ny måte å bygge IT på." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">DET FØRSTE STORE SKIFTET</p><h2>En feil pekte mot en helt ny måte å bygge IT på.</h2><p>Hos itslearning møtte jeg et sikkerhetsproblem knyttet til DCOM i den eksisterende serverinfrastrukturen. I stedet for bare å reparere problemet anbefalte jeg å virtualisere de interne serverne med VMware.</p><p>Det avgjørende var ikke bare å få færre fysiske bokser. Vi kunne ta et kontrollert utgangspunkt før oppgraderinger og patching, standardisere miljøene og komme raskere tilbake dersom noe gikk galt. Plutselig var en server ikke nødvendigvis en maskin.</p><div class="tech"><span>VMware</span><span>Active Directory</span><span>Fil/print</span><span>SAN</span><span>Virtualisering</span></div></div></div></article></div>
 <div class="era"><div class="year">2006</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2006-infrastruktur.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2006-infrastruktur.jpg" alt="Illustrasjon til Fra noen servere til hel infrastruktur." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">NÅ MÅTTE DET SKALERE</p><h2>Fra noen servere til hel infrastruktur.</h2><p>itslearning vokste, og infrastrukturen måtte vokse med selskapet. Jeg arbeidet med design av nettverk, serverrom, kjøling, lagring og samband – og med planleggingen av en fysisk flytting der også e-postsystemet skulle over med svært begrenset nedetid.</p><p>Her ble det tydelig at IT ikke bare handler om serveren. Strøm, kjøling, nettverk, leverandører, risiko, mennesker og tidspunkt må virke sammen.</p><div class="tech"><span>Serverrom</span><span>Nettverk</span><span>Kjøling</span><span>On-prem e-post</span><span>Driftsplanlegging</span></div></div></div></article></div>
 <div class="era"><div class="year">2011–20</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2011-2020-datasenter-sky.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2011-2020-datasenter-sky.jpg" alt="Illustrasjon til IT flyttet gradvis ut av rommet." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">FRA SERVERROM TIL TJENESTER</p><h2>IT flyttet gradvis ut av rommet.</h2><p>De neste årene ble reisen en blanding av migreringer, virtualisering, terminalservere, datasentre og etter hvert skytjenester. Office 365 kom tidlig inn i bildet. E-post ble flyttet fra Domino til Exchange. Kundemiljøer ble flyttet til datasenter. VMware var blitt hverdagsverktøy.</p><p>Teknologien endret seg, men arbeidet handlet stadig mer om overgangen mellom gammelt og nytt – uten at virksomheten kunne stoppe mens vi gjorde det.</p><div class="tech"><span>Office 365</span><span>Exchange</span><span>VMware</span><span>RDS</span><span>Active Directory</span><span>Datasenter</span></div></div></div></article></div>
@@ -117,11 +270,11 @@
 
   <div class="then-now">
     <article class="epoch">
-      <span class="year-big">2004</span>
-      <p class="path">🖥️ Serverrom → installere → drifte → vedlikeholde</p>
-      <p class="question">«Hvordan kan vi installere og drifte dette raskere og sikrere?»</p>
+      <span class="year-big">2003</span>
+      <p class="path">🖥️ Måle → beregne → modernisere → drifte</p>
+      <p class="question">«Hva bruker teknologien – og lønner det seg å gjøre dette på en bedre måte?»</p>
     </article>
-    <div class="time-bridge"><span>22 år</span><b>→</b></div>
+    <div class="time-bridge"><span>23 år</span><b>→</b></div>
     <article class="epoch">
       <span class="year-big">2026</span>
       <p class="path">💡 Idé → dialog med KI → bygge → teste → publisere</p>
