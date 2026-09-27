@@ -34,6 +34,35 @@
 .story.featured .story-media{min-height:0}
 .story.featured .story-media img{min-height:0;max-height:none}
 @media(max-width:850px){.story-grid{grid-template-columns:1fr}.story-media,.story.featured .story-media{width:100%;aspect-ratio:16/9;min-height:0}.story-media img,.story.featured .story-media img{min-height:0;max-height:none;object-position:center}}
+
+/* FINALE · KI + IANS · 27.09.2026 */
+.ai-finale{position:relative;overflow:hidden;padding:84px 0 88px;border-top:1px solid var(--line)}
+.ai-hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);gap:56px;align-items:center}
+.ai-copy h2{font-size:clamp(3rem,6vw,5.6rem);line-height:.94;letter-spacing:-.055em;margin:.14em 0 .28em}
+.ai-copy .big{max-width:760px;font-size:1.16rem;color:#d0dde5}
+.ai-visual{min-height:310px;display:flex;align-items:center;justify-content:center;position:relative}
+.ai-flow{width:100%;display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr 34px 1fr;align-items:center}
+.ai-node{min-height:118px;border:1px solid rgba(32,199,232,.28);background:linear-gradient(145deg,rgba(11,34,52,.94),rgba(6,22,34,.92));border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;box-shadow:0 0 35px rgba(32,199,232,.055)}
+.ai-node .ico{font-size:2.15rem;line-height:1;margin-bottom:10px}
+.ai-node strong{font-size:.88rem}.ai-arrow{text-align:center;color:var(--cyan);font-size:1.5rem;font-weight:900}
+.ai-visual:before{content:"";position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(32,199,232,.13),transparent 67%);filter:blur(2px);pointer-events:none}
+.then-now{display:grid;grid-template-columns:1fr 90px 1fr;align-items:stretch;gap:16px;margin:48px 0 58px}
+.epoch{position:relative;padding:28px 30px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(11,34,52,.94),rgba(6,22,34,.9))}
+.epoch .year-big{display:block;color:var(--cyan);font-size:2rem;font-weight:900;margin-bottom:14px}
+.epoch .path{color:#dce8ee;font-weight:750;font-size:1.03rem;margin:0 0 15px}
+.epoch .question{color:var(--muted);margin:0}
+.time-bridge{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--cyan);font-weight:900;text-align:center}
+.time-bridge span{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.time-bridge b{font-size:2rem;line-height:1}
+.ians-finale{position:relative;overflow:hidden;margin-top:12px;padding:42px 210px 42px 42px;border-radius:22px;background:radial-gradient(circle at 88% 45%,rgba(32,199,232,.18),transparent 23%),linear-gradient(135deg,rgba(8,49,67,.98),rgba(6,24,37,.96));border:1px solid rgba(32,199,232,.36)}
+.ians-finale h3{font-size:clamp(2rem,4vw,3.15rem);line-height:1.02;letter-spacing:-.04em;margin:.15em 0 .35em}
+.ians-finale .mantra{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 6px}
+.ians-finale .mantra span{border:1px solid rgba(32,199,232,.3);background:rgba(32,199,232,.08);border-radius:999px;padding:6px 11px;color:#dff9ff;font-size:.82rem;font-weight:800}
+.ians-orb{position:absolute;right:44px;top:50%;transform:translateY(-50%);width:126px;height:126px;border-radius:50%;border:1px solid rgba(32,199,232,.36);display:grid;place-items:center;background:radial-gradient(circle,rgba(32,199,232,.2),rgba(4,19,30,.9) 66%);box-shadow:0 0 55px rgba(32,199,232,.16)}
+.ians-orb span{font-size:3.5rem;filter:drop-shadow(0 0 14px rgba(32,199,232,.45))}
+@media(max-width:900px){.ai-hero{grid-template-columns:1fr}.ai-visual{min-height:220px}.then-now{grid-template-columns:1fr}.time-bridge{min-height:70px}.time-bridge b{transform:rotate(90deg)}.ians-finale{padding:34px}.ians-orb{position:relative;right:auto;top:auto;transform:none;margin:28px 0 0;width:90px;height:90px}.ians-orb span{font-size:2.7rem}}
+@media(max-width:620px){.ai-flow{grid-template-columns:1fr}.ai-arrow{transform:rotate(90deg);padding:7px}.ai-node{min-height:96px}.ai-finale{padding-top:60px}}
+
 </style>
 <script type="application/ld+json">
 {
@@ -64,8 +93,58 @@
 <div class="era"><div class="year">2026</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2026-energi-kraftnett.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2026-energi-kraftnett.jpg" alt="Illustrasjon av hybrid infrastruktur, backup og disaster recovery." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">TILBAKE TIL GRUNNMUREN</p><h2>Hybrid infrastruktur, backup og disaster recovery.</h2><p>Det siste året i konsulentrollen førte meg også tilbake til selve infrastrukturen: virtualisering, backup, gjenoppretting, nettverk og beredskap. Jeg arbeidet med en hybrid løsning der produksjon, lokal backup, offsite-kopi og disaster recovery måtte ses som én sammenhengende kjede.</p><p>En eksisterende VMware-plattform ble brukt som midlertidig DR-mål, samtidig som veien videre ble planlagt mot en moderne Hyper-V-basert løsning. Parallelt arbeidet jeg med nettverkssegmentering og tydeligere skille mellom produksjon, klienter, infrastruktur og andre soner.</p><p class="learning"><strong>Faglig påfyll i 2026:</strong> AZ-104 · AZ-800 · AZ-801 – Azure-administrasjon og hybride Windows Server-miljøer.</p><div class="tech"><span>Hyper-V</span><span>VMware</span><span>Disaster Recovery</span><span>Backup</span><span>Azure</span><span>Nettverkssegmentering</span></div></div></div></article></div>
 <div class="era"><div class="year">2026 →</div><article class="story featured"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2026-kraftsystem-planlegging.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2026-kraftsystem-planlegging.jpg" alt="Illustrasjon av kraftsystem, transmisjonsnett og planlegging." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">ET NYTT KAPITTEL</p><h2>Fra infrastrukturen bak systemene til infrastrukturen bak samfunnet.</h2><p>1. oktober 2026 begynner jeg som Planner i Statnett. Etter mange år med IT-infrastruktur, sky og løsninger rundt energimarkedet går reisen nærmere selve kraftsystemet.</p><p>Det føles ikke som å forlate teknologien. Snarere som å følge den helt ned til grunnmuren: Datakraft trenger energi. Energi trenger nett. Og kapasitet må planlegges før den kan brukes.</p><div class="tech"><span>Planlegging</span><span>Kraftsystem</span><span>Infrastruktur</span><span>Læring</span></div></div></div></article></div>
 </section>
-<section class="jwrap"><div class="turn"><blockquote>«Det mest interessante er kanskje ikke hvor mye teknologien har forandret seg – men hvor mye mer én person kan få til med den.»</blockquote><p>Fra Ghost-images og fysiske servere til skyplattformer, automatisering og KI-assistert utvikling.</p></div></section>
-<section class="jwrap now"><p class="ey">OG SÅ KOM KI</p><h2>Nå flyttes grensen<br>én gang til.</h2><p class="big">Jeg har sett fysiske servere bli virtuelle. Serverrom bli datasentre. Datasentre bli sky. Manuelle installasjoner bli automatisering. Men KI oppleves annerledes: teknologien kan nå være med i selve tanke- og skapelsesprosessen.</p><div class="contrast"><article><b>2004</b><p>«Hvordan kan vi installere og drifte dette raskere og sikrere?»</p></article><article><b>2026</b><p>«Kan jeg beskrive ideen, diskutere den med KI – og bygge løsningen selv?»</p></article></div><div class="ians-box"><p class="ey">DERFOR FINNES IANS</p><h3>Et sted for å prøve, bygge og lære.</h3><p>IANS er mitt personlige laboratorium. Her kan en idé bli til kode, en nettside, et verktøy, en analyse eller et helt lite prosjekt. ChatGPT er en del av arbeidsmåten – ikke fordi KI gjør alt, men fordi avstanden mellom spørsmål, læring og praktisk utprøving har blitt dramatisk kortere.</p><p>Jeg vet ikke nøyaktig hvor dette ender. Det er nettopp derfor det er interessant å utforske.</p><div class="actions"><a class="button primary" href="/prosjekter.html">Se hva vi har bygget →</a><a class="button" href="/plattformen.html">Utforsk teknologiskiftet →</a><a class="button" href="/veien-videre.html">Veien videre →</a></div></div><p class="note">Dette er en personlig fortelling basert på min yrkesreise og utvalgte prosjekter. Den er bevisst skrevet som historie, ikke som en fullstendig CV. IANS er et personlig prosjekt og er uavhengig av nåværende og tidligere arbeidsgivere.</p></section>
+<section class="jwrap"><div class="turn"><blockquote>Det største skiftet er kanskje ikke hva teknologien kan gjøre – men hva én person kan skape med den.</blockquote><p>Fra fysiske servere og virtualisering til hybrid infrastruktur, kraftsystemer og KI-assistert utvikling.</p></div></section>
+
+<section class="jwrap ai-finale">
+  <div class="ai-hero">
+    <div class="ai-copy">
+      <p class="ey">OG SÅ KOM KI</p>
+      <h2>Nå flyttes grensen<br>én gang til.</h2>
+      <p class="big">Jeg har sett fysiske servere bli virtuelle. Serverrom bli datasentre. Datasentre bli sky. Manuelle installasjoner bli automatisering. Men KI oppleves annerledes: teknologien kan nå være med i selve tanke- og skapelsesprosessen.</p>
+    </div>
+    <div class="ai-visual" aria-label="Fra idé via KI og kode til fungerende løsning">
+      <div class="ai-flow">
+        <div class="ai-node"><div class="ico">💡</div><strong>Idé</strong></div>
+        <div class="ai-arrow">→</div>
+        <div class="ai-node"><div class="ico">🧠</div><strong>Dialog med KI</strong></div>
+        <div class="ai-arrow">→</div>
+        <div class="ai-node"><div class="ico">⌨️</div><strong>Bygge &amp; teste</strong></div>
+        <div class="ai-arrow">→</div>
+        <div class="ai-node"><div class="ico">🚀</div><strong>Fungerende løsning</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="then-now">
+    <article class="epoch">
+      <span class="year-big">2004</span>
+      <p class="path">🖥️ Serverrom → installere → drifte → vedlikeholde</p>
+      <p class="question">«Hvordan kan vi installere og drifte dette raskere og sikrere?»</p>
+    </article>
+    <div class="time-bridge"><span>22 år</span><b>→</b></div>
+    <article class="epoch">
+      <span class="year-big">2026</span>
+      <p class="path">💡 Idé → dialog med KI → bygge → teste → publisere</p>
+      <p class="question">«Kan jeg beskrive ideen, diskutere den med KI – og bygge løsningen selv?»</p>
+    </article>
+  </div>
+
+  <div class="ians-finale">
+    <p class="ey">DERFOR FINNES IANS</p>
+    <h3>Et sted der ideer får lov til å bli virkelige.</h3>
+    <p>IANS er mitt personlige laboratorium. Her kan en idé bli til kode, en nettside, et verktøy, en analyse eller et helt lite prosjekt. ChatGPT er en del av arbeidsmåten – ikke fordi KI gjør alt, men fordi avstanden fra idé til læring, utprøving og fungerende løsning har blitt dramatisk kortere.</p>
+    <div class="mantra"><span>Prøve.</span><span>Bygge.</span><span>Lære.</span><span>Dele.</span></div>
+    <p>Jeg vet ikke nøyaktig hvor dette ender. Det er nettopp derfor det er interessant å utforske.</p>
+    <div class="actions">
+      <a class="button primary" href="/prosjekter.html">Se hva vi har bygget →</a>
+      <a class="button" href="/plattformen.html">Utforsk teknologiskiftet →</a>
+      <a class="button" href="/veien-videre.html">Veien videre →</a>
+    </div>
+    <div class="ians-orb" aria-hidden="true"><span>🤖</span></div>
+  </div>
+
+  <p class="note">Dette er en personlig fortelling basert på min yrkesreise og utvalgte prosjekter. Den er bevisst skrevet som historie, ikke som en fullstendig CV. IANS er et personlig prosjekt og er uavhengig av nåværende og tidligere arbeidsgivere.</p>
+</section>
 </main>
 <footer class="jwrap jfoot"><p>IANS · Et personlig prosjekt av Henrik Bergfjord</p><p><a href="/">Hjem</a> · <a href="/prosjekter.html">Prosjekter</a> · <a href="/teknisk.html">Teknisk</a></p></footer>
 </div>
