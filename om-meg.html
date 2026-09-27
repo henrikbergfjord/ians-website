@@ -1,304 +1,1449 @@
 <!doctype html>
 <html lang="nb">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#03101b">
-<meta name="description" content="Henrik Bergfjord – min reise fra serverrom, virtualisering og sky til energisystemer, KI og IANS. En personlig teknologihistorie fra 2003 til 2026.">
-<meta name="author" content="Henrik Bergfjord">
-<meta name="robots" content="index,follow,max-image-preview:large">
-<link rel="canonical" href="https://www.ians.no/om-meg.html">
-<meta property="og:type" content="profile">
-<meta property="og:locale" content="nb_NO">
-<meta property="og:site_name" content="IANS">
-<meta property="og:title" content="Henrik Bergfjord · Min reise · IANS">
-<meta property="og:description" content="Fra fysiske serverrom og virtualisering til sky, energisystemer og KI – historien bak Henrik Bergfjord og IANS.">
-<meta property="og:url" content="https://www.ians.no/om-meg.html">
-<meta property="profile:first_name" content="Henrik">
-<meta property="profile:last_name" content="Bergfjord">
-<meta name="twitter:card" content="summary_large_image">
-<title>Henrik Bergfjord · Min reise · IANS</title>
-<link rel="stylesheet" href="/assets/ians-home/home.css?v=20260926a">
-<script src="/assets/js/ians-analytics.js" defer></script>
-<style>
-:root{--bg:#03101b;--panel:#081a29;--panel2:#0b2234;--text:#f4f8fb;--muted:#a9bdcb;--cyan:#20c7e8;--line:rgba(255,255,255,.13);--max:1420px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#03101b;color:var(--text);font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}.journey-page{min-height:100vh;background:radial-gradient(circle at 75% 8%,rgba(32,199,232,.14),transparent 28%),linear-gradient(180deg,rgba(3,16,27,.55),#03101b 36%),url('/assets/plattformen-bg.jpg') center top/100% auto no-repeat}.jwrap{width:min(var(--max),calc(100% - 40px));margin:auto}.jnav{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.jnav .brand{font-weight:900;letter-spacing:.28em;text-decoration:none}.back{color:var(--muted);text-decoration:none;font-weight:700}.back:hover{color:var(--cyan)}.jhero{padding:110px 0 95px;max-width:900px}.ey{color:var(--cyan);font-size:.75rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase}.jhero h1{font-size:clamp(3.2rem,8vw,7rem);line-height:.92;letter-spacing:-.06em;margin:.18em 0}.jhero h1 span{color:var(--cyan)}.jhero .lead{max-width:780px;font-size:clamp(1.12rem,2vw,1.42rem);color:#d4e0e8}.opening{max-width:780px;margin:0 0 70px;padding:28px 30px;background:rgba(8,26,41,.82);border:1px solid var(--line);border-left:4px solid var(--cyan);border-radius:0 16px 16px 0;font-size:1.08rem}.timeline{position:relative;padding:10px 0 70px}.timeline:before{content:"";position:absolute;left:119px;top:0;bottom:0;width:2px;background:linear-gradient(var(--cyan),rgba(32,199,232,.12))}.era{display:grid;grid-template-columns:90px 1fr;gap:58px;position:relative;margin:0 0 26px}.era:before{content:"";position:absolute;left:111px;top:34px;width:18px;height:18px;border-radius:50%;background:var(--cyan);border:4px solid #dffaff;box-shadow:0 0 24px rgba(32,199,232,.45)}.year{padding-top:28px;text-align:right;color:var(--cyan);font-weight:900;font-size:1.05rem}.story{background:linear-gradient(145deg,rgba(11,34,52,.96),rgba(6,22,34,.94));border:1px solid var(--line);border-radius:18px;padding:22px 28px}.story h2{margin:0 0 8px;font-size:clamp(1.45rem,3vw,2.25rem);letter-spacing:-.035em}.story p{color:#c4d3dd;margin:.65em 0}.story .tech{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}.story .tech span{font-size:.76rem;color:#cfe8ef;border:1px solid rgba(32,199,232,.25);background:rgba(32,199,232,.07);border-radius:999px;padding:5px 9px}.turn{margin:40px 0 80px;padding:44px;background:linear-gradient(135deg,#0b2a3d,#071927);border:1px solid rgba(32,199,232,.3);border-radius:22px}.turn blockquote{margin:0;font-size:clamp(1.5rem,3.5vw,2.7rem);font-weight:800;line-height:1.18;letter-spacing:-.035em}.turn p{color:var(--muted);margin-bottom:0}.now{padding:85px 0;border-top:1px solid var(--line)}.now h2{font-size:clamp(2.7rem,6vw,5.5rem);line-height:.95;letter-spacing:-.055em;margin:.15em 0}.now .big{max-width:850px;font-size:1.2rem;color:#d0dde5}.contrast{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:38px 0}.contrast article{padding:28px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}.contrast b{display:block;color:var(--cyan);font-size:2rem}.ians-box{margin-top:45px;padding:38px;border-radius:20px;background:linear-gradient(135deg,rgba(32,199,232,.13),rgba(8,26,41,.92));border:1px solid rgba(32,199,232,.28)}.ians-box h3{font-size:2rem;margin:0 0 10px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.button{display:inline-block;padding:12px 18px;border:1px solid var(--line);border-radius:9px;text-decoration:none;font-weight:800}.button.primary{background:var(--cyan);color:#03111b;border-color:var(--cyan)}.note{color:var(--muted);font-size:.82rem;margin-top:26px}.jfoot{border-top:1px solid var(--line);padding:30px 0 45px;color:var(--muted);display:flex;justify-content:space-between;gap:20px}.jfoot a{color:inherit}@media(max-width:700px){.journey-page{background-size:auto 650px}.jhero{padding:70px 0 65px}.timeline:before{left:8px}.era{grid-template-columns:1fr;gap:6px;padding-left:34px}.era:before{left:0;top:34px}.year{text-align:left;padding-top:18px}.story{padding:22px}.turn{padding:28px}.contrast{grid-template-columns:1fr}.jfoot{display:block}.jnav .back{font-size:.85rem}}
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#03101b" />
+    <meta
+      name="description"
+      content="Henrik Bergfjord – min reise fra serverrom, virtualisering og sky til energisystemer, KI og IANS. En personlig teknologihistorie fra 2003 til 2026."
+    />
+    <meta name="author" content="Henrik Bergfjord" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://www.ians.no/om-meg.html" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="nb_NO" />
+    <meta property="og:site_name" content="IANS" />
+    <meta property="og:title" content="Henrik Bergfjord · Min reise · IANS" />
+    <meta
+      property="og:description"
+      content="Fra fysiske serverrom og virtualisering til sky, energisystemer og KI – historien bak Henrik Bergfjord og IANS."
+    />
+    <meta property="og:url" content="https://www.ians.no/om-meg.html" />
+    <meta property="profile:first_name" content="Henrik" />
+    <meta property="profile:last_name" content="Bergfjord" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Henrik Bergfjord · Min reise · IANS</title>
+    <link rel="stylesheet" href="/assets/ians-home/home.css?v=20260926a" />
+    <script src="/assets/js/ians-analytics.js" defer></script>
+    <style>
+      :root {
+        --bg: #03101b;
+        --panel: #081a29;
+        --panel2: #0b2234;
+        --text: #f4f8fb;
+        --muted: #a9bdcb;
+        --cyan: #20c7e8;
+        --line: rgba(255, 255, 255, 0.13);
+        --max: 1420px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: #03101b;
+        color: var(--text);
+        font:
+          16px/1.65 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+      }
+      .journey-page {
+        min-height: 100vh;
+        background:
+          radial-gradient(
+            circle at 75% 8%,
+            rgba(32, 199, 232, 0.14),
+            transparent 28%
+          ),
+          linear-gradient(180deg, rgba(3, 16, 27, 0.55), #03101b 36%),
+          url("/assets/plattformen-bg.jpg") center top/100% auto no-repeat;
+      }
+      .jwrap {
+        width: min(var(--max), calc(100% - 40px));
+        margin: auto;
+      }
+      .jnav {
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+      }
+      .jnav .brand {
+        font-weight: 900;
+        letter-spacing: 0.28em;
+        text-decoration: none;
+      }
+      .back {
+        color: var(--muted);
+        text-decoration: none;
+        font-weight: 700;
+      }
+      .back:hover {
+        color: var(--cyan);
+      }
+      .jhero {
+        padding: 110px 0 95px;
+        max-width: 900px;
+      }
+      .ey {
+        color: var(--cyan);
+        font-size: 0.75rem;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .jhero h1 {
+        font-size: clamp(3.2rem, 8vw, 7rem);
+        line-height: 0.92;
+        letter-spacing: -0.06em;
+        margin: 0.18em 0;
+      }
+      .jhero h1 span {
+        color: var(--cyan);
+      }
+      .jhero .lead {
+        max-width: 780px;
+        font-size: clamp(1.12rem, 2vw, 1.42rem);
+        color: #d4e0e8;
+      }
+      .opening {
+        max-width: 780px;
+        margin: 0 0 70px;
+        padding: 28px 30px;
+        background: rgba(8, 26, 41, 0.82);
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--cyan);
+        border-radius: 0 16px 16px 0;
+        font-size: 1.08rem;
+      }
+      .timeline {
+        position: relative;
+        padding: 10px 0 70px;
+      }
+      .timeline:before {
+        content: "";
+        position: absolute;
+        left: 119px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(var(--cyan), rgba(32, 199, 232, 0.12));
+      }
+      .era {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 58px;
+        position: relative;
+        margin: 0 0 26px;
+      }
+      .era:before {
+        content: "";
+        position: absolute;
+        left: 111px;
+        top: 34px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--cyan);
+        border: 4px solid #dffaff;
+        box-shadow: 0 0 24px rgba(32, 199, 232, 0.45);
+      }
+      .year {
+        padding-top: 28px;
+        text-align: right;
+        color: var(--cyan);
+        font-weight: 900;
+        font-size: 1.05rem;
+      }
+      .story {
+        background: linear-gradient(
+          145deg,
+          rgba(11, 34, 52, 0.96),
+          rgba(6, 22, 34, 0.94)
+        );
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 28px;
+      }
+      .story h2 {
+        margin: 0 0 8px;
+        font-size: clamp(1.45rem, 3vw, 2.25rem);
+        letter-spacing: -0.035em;
+      }
+      .story p {
+        color: #c4d3dd;
+        margin: 0.65em 0;
+      }
+      .story .tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 18px;
+      }
+      .story .tech span {
+        font-size: 0.76rem;
+        color: #cfe8ef;
+        border: 1px solid rgba(32, 199, 232, 0.25);
+        background: rgba(32, 199, 232, 0.07);
+        border-radius: 999px;
+        padding: 5px 9px;
+      }
+      .turn {
+        margin: 40px 0 80px;
+        padding: 44px;
+        background: linear-gradient(135deg, #0b2a3d, #071927);
+        border: 1px solid rgba(32, 199, 232, 0.3);
+        border-radius: 22px;
+      }
+      .turn blockquote {
+        margin: 0;
+        font-size: clamp(1.5rem, 3.5vw, 2.7rem);
+        font-weight: 800;
+        line-height: 1.18;
+        letter-spacing: -0.035em;
+      }
+      .turn p {
+        color: var(--muted);
+        margin-bottom: 0;
+      }
+      .now {
+        padding: 85px 0;
+        border-top: 1px solid var(--line);
+      }
+      .now h2 {
+        font-size: clamp(2.7rem, 6vw, 5.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.055em;
+        margin: 0.15em 0;
+      }
+      .now .big {
+        max-width: 850px;
+        font-size: 1.2rem;
+        color: #d0dde5;
+      }
+      .contrast {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin: 38px 0;
+      }
+      .contrast article {
+        padding: 28px;
+        border-radius: 16px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+      }
+      .contrast b {
+        display: block;
+        color: var(--cyan);
+        font-size: 2rem;
+      }
+      .ians-box {
+        margin-top: 45px;
+        padding: 38px;
+        border-radius: 20px;
+        background: linear-gradient(
+          135deg,
+          rgba(32, 199, 232, 0.13),
+          rgba(8, 26, 41, 0.92)
+        );
+        border: 1px solid rgba(32, 199, 232, 0.28);
+      }
+      .ians-box h3 {
+        font-size: 2rem;
+        margin: 0 0 10px;
+      }
+      .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 18px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        text-decoration: none;
+        font-weight: 800;
+      }
+      .button.primary {
+        background: var(--cyan);
+        color: #03111b;
+        border-color: var(--cyan);
+      }
+      .note {
+        color: var(--muted);
+        font-size: 0.82rem;
+        margin-top: 26px;
+      }
+      .jfoot {
+        border-top: 1px solid var(--line);
+        padding: 30px 0 45px;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .jfoot a {
+        color: inherit;
+      }
+      @media (max-width: 700px) {
+        .journey-page {
+          background-size: auto 650px;
+        }
+        .jhero {
+          padding: 70px 0 65px;
+        }
+        .timeline:before {
+          left: 8px;
+        }
+        .era {
+          grid-template-columns: 1fr;
+          gap: 6px;
+          padding-left: 34px;
+        }
+        .era:before {
+          left: 0;
+          top: 34px;
+        }
+        .year {
+          text-align: left;
+          padding-top: 18px;
+        }
+        .story {
+          padding: 22px;
+        }
+        .turn {
+          padding: 28px;
+        }
+        .contrast {
+          grid-template-columns: 1fr;
+        }
+        .jfoot {
+          display: block;
+        }
+        .jnav .back {
+          font-size: 0.85rem;
+        }
+      }
 
-/* REISEBILDER · 27.09.2026 */
-.story-grid{display:grid;grid-template-columns:minmax(360px,40%) 1fr;gap:30px;align-items:center}
-.story-media{width:100%;aspect-ratio:16/9;min-height:0;border-radius:13px;overflow:hidden;border:1px solid rgba(32,199,232,.18);background:#061522;display:flex;align-items:center;justify-content:center;padding:6px}
-.story-media a{display:flex;width:100%;height:100%;align-items:center;justify-content:center;cursor:zoom-in}
-.story-media img{width:100%;height:100%;min-height:0;max-height:none;display:block;object-fit:contain;object-position:center;border-radius:8px;transition:transform .2s ease,filter .2s ease}
-.story-media a:hover img{transform:scale(1.015);filter:brightness(1.06)}
-.story-copy{min-width:0}.story .learning{margin-top:14px;padding:10px 13px;border-left:3px solid var(--cyan);background:rgba(32,199,232,.055);border-radius:0 8px 8px 0;font-size:.9rem}
-.story.featured{border-color:rgba(32,199,232,.55);box-shadow:0 0 38px rgba(32,199,232,.08)}
-.story.featured .story-media{min-height:0}
-.story.featured .story-media img{min-height:0;max-height:none}
-@media(max-width:850px){.story-grid{grid-template-columns:1fr}.story-media,.story.featured .story-media{width:100%;aspect-ratio:16/9;min-height:0}.story-media img,.story.featured .story-media img{min-height:0;max-height:none;object-position:center}}
+      /* REISEBILDER · 27.09.2026 */
+      .story-grid {
+        display: grid;
+        grid-template-columns: minmax(360px, 40%) 1fr;
+        gap: 30px;
+        align-items: center;
+      }
+      .story-media {
+        width: 100%;
+        aspect-ratio: 16/9;
+        min-height: 0;
+        border-radius: 13px;
+        overflow: hidden;
+        border: 1px solid rgba(32, 199, 232, 0.18);
+        background: #061522;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+      }
+      .story-media a {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-in;
+      }
+      .story-media img {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        max-height: none;
+        display: block;
+        object-fit: contain;
+        object-position: center;
+        border-radius: 8px;
+        transition:
+          transform 0.2s ease,
+          filter 0.2s ease;
+      }
+      .story-media a:hover img {
+        transform: scale(1.015);
+        filter: brightness(1.06);
+      }
+      .story-copy {
+        min-width: 0;
+      }
+      .story .learning {
+        margin-top: 14px;
+        padding: 10px 13px;
+        border-left: 3px solid var(--cyan);
+        background: rgba(32, 199, 232, 0.055);
+        border-radius: 0 8px 8px 0;
+        font-size: 0.9rem;
+      }
+      .story.featured {
+        border-color: rgba(32, 199, 232, 0.55);
+        box-shadow: 0 0 38px rgba(32, 199, 232, 0.08);
+      }
+      .story.featured .story-media {
+        min-height: 0;
+      }
+      .story.featured .story-media img {
+        min-height: 0;
+        max-height: none;
+      }
+      @media (max-width: 850px) {
+        .story-grid {
+          grid-template-columns: 1fr;
+        }
+        .story-media,
+        .story.featured .story-media {
+          width: 100%;
+          aspect-ratio: 16/9;
+          min-height: 0;
+        }
+        .story-media img,
+        .story.featured .story-media img {
+          min-height: 0;
+          max-height: none;
+          object-position: center;
+        }
+      }
 
-/* FINALE · KI + IANS · 27.09.2026 */
-.ai-finale{position:relative;overflow:hidden;padding:84px 0 88px;border-top:1px solid var(--line)}
-.ai-hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(360px,.92fr);gap:56px;align-items:center}
-.ai-copy h2{font-size:clamp(3rem,6vw,5.6rem);line-height:.94;letter-spacing:-.055em;margin:.14em 0 .28em}
-.ai-copy .big{max-width:760px;font-size:1.16rem;color:#d0dde5}
-.ai-visual{min-height:310px;display:flex;align-items:center;justify-content:center;position:relative}
-.ai-flow{width:100%;display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr 34px 1fr;align-items:center}
-.ai-node{min-height:118px;border:1px solid rgba(32,199,232,.28);background:linear-gradient(145deg,rgba(11,34,52,.94),rgba(6,22,34,.92));border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;box-shadow:0 0 35px rgba(32,199,232,.055)}
-.ai-node .ico{font-size:2.15rem;line-height:1;margin-bottom:10px}
-.ai-node strong{font-size:.88rem}.ai-arrow{text-align:center;color:var(--cyan);font-size:1.5rem;font-weight:900}
-.ai-visual:before{content:"";position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(32,199,232,.13),transparent 67%);filter:blur(2px);pointer-events:none}
-.then-now{display:grid;grid-template-columns:1fr 90px 1fr;align-items:stretch;gap:16px;margin:48px 0 58px}
-.epoch{position:relative;padding:28px 30px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,rgba(11,34,52,.94),rgba(6,22,34,.9))}
-.epoch .year-big{display:block;color:var(--cyan);font-size:2rem;font-weight:900;margin-bottom:14px}
-.epoch .path{color:#dce8ee;font-weight:750;font-size:1.03rem;margin:0 0 15px}
-.epoch .question{color:var(--muted);margin:0}
-.time-bridge{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--cyan);font-weight:900;text-align:center}
-.time-bridge span{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
-.time-bridge b{font-size:2rem;line-height:1}
-.ians-finale{position:relative;overflow:hidden;margin-top:12px;padding:42px 210px 42px 42px;border-radius:22px;background:radial-gradient(circle at 88% 45%,rgba(32,199,232,.18),transparent 23%),linear-gradient(135deg,rgba(8,49,67,.98),rgba(6,24,37,.96));border:1px solid rgba(32,199,232,.36)}
-.ians-finale h3{font-size:clamp(2rem,4vw,3.15rem);line-height:1.02;letter-spacing:-.04em;margin:.15em 0 .35em}
-.ians-finale .mantra{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 6px}
-.ians-finale .mantra span{border:1px solid rgba(32,199,232,.3);background:rgba(32,199,232,.08);border-radius:999px;padding:6px 11px;color:#dff9ff;font-size:.82rem;font-weight:800}
-.ians-orb{position:absolute;right:44px;top:50%;transform:translateY(-50%);width:126px;height:126px;border-radius:50%;border:1px solid rgba(32,199,232,.36);display:grid;place-items:center;background:radial-gradient(circle,rgba(32,199,232,.2),rgba(4,19,30,.9) 66%);box-shadow:0 0 55px rgba(32,199,232,.16)}
-.ians-orb span{font-size:3.5rem;filter:drop-shadow(0 0 14px rgba(32,199,232,.45))}
-@media(max-width:900px){.ai-hero{grid-template-columns:1fr}.ai-visual{min-height:220px}.then-now{grid-template-columns:1fr}.time-bridge{min-height:70px}.time-bridge b{transform:rotate(90deg)}.ians-finale{padding:34px}.ians-orb{position:relative;right:auto;top:auto;transform:none;margin:28px 0 0;width:90px;height:90px}.ians-orb span{font-size:2.7rem}}
-@media(max-width:620px){.ai-flow{grid-template-columns:1fr}.ai-arrow{transform:rotate(90deg);padding:7px}.ai-node{min-height:96px}.ai-finale{padding-top:60px}}
+      /* FINALE · KI + IANS · 27.09.2026 */
+      .ai-finale {
+        position: relative;
+        overflow: hidden;
+        padding: 84px 0 88px;
+        border-top: 1px solid var(--line);
+      }
+      .ai-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+        gap: 56px;
+        align-items: center;
+      }
+      .ai-copy h2 {
+        font-size: clamp(3rem, 6vw, 5.6rem);
+        line-height: 0.94;
+        letter-spacing: -0.055em;
+        margin: 0.14em 0 0.28em;
+      }
+      .ai-copy .big {
+        max-width: 760px;
+        font-size: 1.16rem;
+        color: #d0dde5;
+      }
+      .ai-visual {
+        min-height: 310px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .ai-flow {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 34px 1fr 34px 1fr 34px 1fr;
+        align-items: center;
+      }
+      .ai-node {
+        min-height: 118px;
+        border: 1px solid rgba(32, 199, 232, 0.28);
+        background: linear-gradient(
+          145deg,
+          rgba(11, 34, 52, 0.94),
+          rgba(6, 22, 34, 0.92)
+        );
+        border-radius: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 16px;
+        box-shadow: 0 0 35px rgba(32, 199, 232, 0.055);
+      }
+      .ai-node .ico {
+        font-size: 2.15rem;
+        line-height: 1;
+        margin-bottom: 10px;
+      }
+      .ai-node strong {
+        font-size: 0.88rem;
+      }
+      .ai-arrow {
+        text-align: center;
+        color: var(--cyan);
+        font-size: 1.5rem;
+        font-weight: 900;
+      }
+      .ai-visual:before {
+        content: "";
+        position: absolute;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(32, 199, 232, 0.13),
+          transparent 67%
+        );
+        filter: blur(2px);
+        pointer-events: none;
+      }
+      .then-now {
+        display: grid;
+        grid-template-columns: 1fr 90px 1fr;
+        align-items: stretch;
+        gap: 16px;
+        margin: 48px 0 58px;
+      }
+      .epoch {
+        position: relative;
+        padding: 28px 30px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: linear-gradient(
+          145deg,
+          rgba(11, 34, 52, 0.94),
+          rgba(6, 22, 34, 0.9)
+        );
+      }
+      .epoch .year-big {
+        display: block;
+        color: var(--cyan);
+        font-size: 2rem;
+        font-weight: 900;
+        margin-bottom: 14px;
+      }
+      .epoch .path {
+        color: #dce8ee;
+        font-weight: 750;
+        font-size: 1.03rem;
+        margin: 0 0 15px;
+      }
+      .epoch .question {
+        color: var(--muted);
+        margin: 0;
+      }
+      .time-bridge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--cyan);
+        font-weight: 900;
+        text-align: center;
+      }
+      .time-bridge span {
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .time-bridge b {
+        font-size: 2rem;
+        line-height: 1;
+      }
+      .ians-finale {
+        position: relative;
+        overflow: hidden;
+        margin-top: 12px;
+        padding: 42px 210px 42px 42px;
+        border-radius: 22px;
+        background:
+          radial-gradient(
+            circle at 88% 45%,
+            rgba(32, 199, 232, 0.18),
+            transparent 23%
+          ),
+          linear-gradient(135deg, rgba(8, 49, 67, 0.98), rgba(6, 24, 37, 0.96));
+        border: 1px solid rgba(32, 199, 232, 0.36);
+      }
+      .ians-finale h3 {
+        font-size: clamp(2rem, 4vw, 3.15rem);
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+        margin: 0.15em 0 0.35em;
+      }
+      .ians-finale .mantra {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 20px 0 6px;
+      }
+      .ians-finale .mantra span {
+        border: 1px solid rgba(32, 199, 232, 0.3);
+        background: rgba(32, 199, 232, 0.08);
+        border-radius: 999px;
+        padding: 6px 11px;
+        color: #dff9ff;
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+      .ians-orb {
+        position: absolute;
+        right: 44px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 126px;
+        height: 126px;
+        border-radius: 50%;
+        border: 1px solid rgba(32, 199, 232, 0.36);
+        display: grid;
+        place-items: center;
+        background: radial-gradient(
+          circle,
+          rgba(32, 199, 232, 0.2),
+          rgba(4, 19, 30, 0.9) 66%
+        );
+        box-shadow: 0 0 55px rgba(32, 199, 232, 0.16);
+      }
+      .ians-orb span {
+        font-size: 3.5rem;
+        filter: drop-shadow(0 0 14px rgba(32, 199, 232, 0.45));
+      }
+      @media (max-width: 900px) {
+        .ai-hero {
+          grid-template-columns: 1fr;
+        }
+        .ai-visual {
+          min-height: 220px;
+        }
+        .then-now {
+          grid-template-columns: 1fr;
+        }
+        .time-bridge {
+          min-height: 70px;
+        }
+        .time-bridge b {
+          transform: rotate(90deg);
+        }
+        .ians-finale {
+          padding: 34px;
+        }
+        .ians-orb {
+          position: relative;
+          right: auto;
+          top: auto;
+          transform: none;
+          margin: 28px 0 0;
+          width: 90px;
+          height: 90px;
+        }
+        .ians-orb span {
+          font-size: 2.7rem;
+        }
+      }
+      @media (max-width: 620px) {
+        .ai-flow {
+          grid-template-columns: 1fr;
+        }
+        .ai-arrow {
+          transform: rotate(90deg);
+          padding: 7px;
+        }
+        .ai-node {
+          min-height: 96px;
+        }
+        .ai-finale {
+          padding-top: 60px;
+        }
+      }
 
+      /* HERO V2 · 27.09.2026 */
+      .journey-page {
+        background:
+          radial-gradient(
+            circle at 78% 10%,
+            rgba(32, 199, 232, 0.13),
+            transparent 27%
+          ),
+          linear-gradient(
+            90deg,
+            rgba(3, 16, 27, 0.84) 0%,
+            rgba(3, 16, 27, 0.6) 43%,
+            rgba(3, 16, 27, 0.22) 72%,
+            rgba(3, 16, 27, 0.48) 100%
+          ),
+          linear-gradient(180deg, rgba(3, 16, 27, 0.18), #03101b 38%),
+          url("/assets/plattformen-bg.jpg") center top/100% auto no-repeat;
+      }
+      .jhero-v2 {
+        min-height: 560px;
+        padding: 92px 0 105px;
+        display: grid;
+        grid-template-columns: minmax(0, 0.94fr) minmax(430px, 1.06fr);
+        gap: 72px;
+        align-items: center;
+      }
+      .jhero-copy {
+        max-width: 820px;
+      }
+      .jhero-v2 h1 {
+        font-size: clamp(4rem, 7vw, 7.3rem);
+        line-height: 0.88;
+        letter-spacing: -0.065em;
+        margin: 0.16em 0 0.24em;
+        text-shadow: 0 10px 42px rgba(0, 0, 0, 0.34);
+      }
+      .jhero-v2 h1 span {
+        color: var(--cyan);
+        text-shadow: 0 0 28px rgba(32, 199, 232, 0.24);
+      }
+      .jhero-v2 .lead {
+        max-width: 760px;
+        font-size: clamp(1.08rem, 1.55vw, 1.34rem);
+        line-height: 1.62;
+        color: #d8e5ec;
+      }
+      .jhero-journey {
+        position: relative;
+        min-height: 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 36px 14px;
+      }
+      .jhero-journey:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 52% 50%,
+          rgba(32, 199, 232, 0.11),
+          transparent 54%
+        );
+        filter: blur(3px);
+        pointer-events: none;
+      }
+      .jhero-years {
+        display: flex;
+        justify-content: space-between;
+        color: var(--cyan);
+        font-weight: 900;
+        font-size: 0.78rem;
+        letter-spacing: 0.14em;
+        position: relative;
+        z-index: 2;
+        margin: 0 3px 15px;
+      }
+      .jhero-track {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        position: relative;
+        align-items: start;
+        z-index: 2;
+      }
+      .jhero-track:before {
+        content: "";
+        position: absolute;
+        left: 9%;
+        right: 9%;
+        top: 23px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          rgba(32, 199, 232, 0.35),
+          var(--cyan),
+          rgba(32, 199, 232, 0.35)
+        );
+        box-shadow: 0 0 15px rgba(32, 199, 232, 0.3);
+      }
+      .jhero-step {
+        text-align: center;
+        position: relative;
+        color: #c9dce6;
+      }
+      .jhero-dot {
+        width: 46px;
+        height: 46px;
+        margin: 0 auto 13px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(32, 199, 232, 0.48);
+        background: rgba(4, 20, 32, 0.86);
+        box-shadow: 0 0 24px rgba(32, 199, 232, 0.11);
+        font-size: 1.15rem;
+      }
+      .jhero-step strong {
+        display: block;
+        font-size: 0.76rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .jhero-step small {
+        display: block;
+        margin-top: 4px;
+        color: #7795a7;
+        font-size: 0.67rem;
+      }
+      .jhero-scroll {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 28px;
+        color: #b9d4df;
+        text-decoration: none;
+        font-size: 0.76rem;
+        font-weight: 850;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .jhero-scroll span {
+        width: 30px;
+        height: 30px;
+        border: 1px solid rgba(32, 199, 232, 0.3);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: var(--cyan);
+      }
+      .opening-bridge {
+        position: relative;
+        z-index: 5;
+        margin-top: -58px;
+        margin-bottom: 68px;
+      }
+      .opening-bridge .opening {
+        max-width: 920px;
+        margin: 0;
+        padding: 28px 32px;
+        background: linear-gradient(
+          135deg,
+          rgba(8, 31, 46, 0.92),
+          rgba(5, 22, 34, 0.88)
+        );
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-left: 4px solid var(--cyan);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+        border-radius: 0 18px 18px 0;
+      }
+      @media (max-width: 980px) {
+        .jhero-v2 {
+          grid-template-columns: 1fr;
+          gap: 30px;
+          padding-top: 70px;
+          min-height: auto;
+        }
+        .jhero-journey {
+          min-height: 210px;
+          padding-top: 8px;
+        }
+        .opening-bridge {
+          margin-top: -28px;
+        }
+      }
+      @media (max-width: 620px) {
+        .jhero-v2 {
+          padding: 55px 0 78px;
+        }
+        .jhero-v2 h1 {
+          font-size: clamp(3.5rem, 17vw, 5.4rem);
+        }
+        .jhero-journey {
+          display: none;
+        }
+        .opening-bridge {
+          margin-top: -34px;
+          margin-bottom: 52px;
+        }
+        .opening-bridge .opening {
+          padding: 22px 22px;
+        }
+      }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://www.ians.no/om-meg.html#henrik-bergfjord",
+        "name": "Henrik Bergfjord",
+        "url": "https://www.ians.no/om-meg.html",
+        "mainEntityOfPage": "https://www.ians.no/om-meg.html",
+        "description": "Henrik Bergfjord – teknolog, infrastruktur- og skybakgrunn, med interesse for KI, energi, læring og praktisk utvikling.",
+        "knowsAbout": [
+          "IT-infrastruktur",
+          "Virtualisering",
+          "Microsoft Azure",
+          "Microsoft 365",
+          "Kunstig intelligens",
+          "Energisystemer",
+          "Kraftsystem"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="journey-page">
+      <header class="jwrap jnav">
+        <a class="brand" href="/">IANS</a
+        ><a class="back" href="/">← Tilbake til forsiden</a>
+      </header>
+      <main>
+        <section class="jwrap jhero-v2">
+          <div class="jhero-copy">
+            <p class="ey">MIN REISE · 2003 → 2026</p>
+            <h1>Fra serverrom<br />til <span>KI.</span></h1>
+            <p class="lead">
+              Mer enn tjue år med teknologi har lært meg én ting: Det som virker
+              stort og nytt i dag, blir fort grunnmuren vi bygger videre på i
+              morgen. Dette er ikke hele CV-en min. Det er historien om noen av
+              skiftene som formet måten jeg tenker på – og hvorfor IANS finnes.
+            </p>
+            <a class="jhero-scroll" href="#reisen"
+              ><span>↓</span> Scroll reisen</a
+            >
+          </div>
+          <div
+            class="jhero-journey"
+            aria-label="Teknologireisen fra 2003 til 2026"
+          >
+            <div class="jhero-years"><span>2003</span><span>2026</span></div>
+            <div class="jhero-track">
+              <div class="jhero-step">
+                <div class="jhero-dot">▣</div>
+                <strong>Server</strong><small>fysisk</small>
+              </div>
+              <div class="jhero-step">
+                <div class="jhero-dot">◇</div>
+                <strong>VM</strong><small>virtuelt</small>
+              </div>
+              <div class="jhero-step">
+                <div class="jhero-dot">☁</div>
+                <strong>Sky</strong><small>tjenester</small>
+              </div>
+              <div class="jhero-step">
+                <div class="jhero-dot">∞</div>
+                <strong>Hybrid</strong><small>koblet</small>
+              </div>
+              <div class="jhero-step">
+                <div class="jhero-dot">✦</div>
+                <strong>KI</strong><small>skape</small>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="jwrap opening-bridge">
+          <div class="opening">
+            <strong
+              >Da jeg startet i IT, var infrastrukturen noe du kunne ta
+              på.</strong
+            >
+            Servere skulle bestilles, bæres inn, monteres, installeres og holdes
+            i live. I dag kan jeg sitte med en idé, diskutere den med KI og
+            bygge noe fungerende på en kveld. Mellom de to ytterpunktene ligger
+            en ganske interessant reise.
+          </div>
+        </section>
+        <section class="jwrap timeline" id="reisen">
+          <div class="era">
+            <div class="year">2003–04</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2004-serverrom.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2004-serverrom.jpg"
+                      alt="Illustrasjon av IT-miljøet ved starten av teknologireisen, med CRT-skjermer, arbeidsstasjoner og servere."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">DET BEGYNTE SOM ELEV</p>
+                  <h2>Fra skolebenken til ansvar for skolens IT-drift.</h2>
+                  <p>
+                    Mens jeg var elev ved Bergen Tekniske Fagskole i 2003–04
+                    begynte jeg å drifte skolens IT-miljø på de to studiestedene
+                    i Strandgaten 193 og Margaretastredet. Det ga meg tidlig
+                    praktisk ansvar for servere, arbeidsstasjoner, nettverk og
+                    den daglige infrastrukturen – før jeg egentlig var ferdig
+                    med utdanningen.
+                  </p>
+                  <p>
+                    Et av de første moderniseringsprosjektene startet med
+                    strømforbruket. Klasserommene hadde fortsatt CRT-skjermer og
+                    lange brukstider – enkelte dager var lokalene i bruk helt
+                    frem mot kl. 22. På BKK.no fant jeg en energiberegning der
+                    vi kunne sammenligne strømforbruket til eksisterende utstyr
+                    med nye LCD-skjermer, som jeg husker lå rundt 45 watt.
+                  </p>
+                  <p>
+                    Regnestykket viste en overraskende stor forskjell. Jeg
+                    husker ikke lenger alle forutsetningene vi la inn i kalkylen
+                    – blant annet om vi regnet med faktisk brukstid eller
+                    kontinuerlig drift. Det er tross alt mer enn tjue år siden.
+                    <strong
+                      >Men jeg husker resultatet: beregningen viste en
+                      tilbakebetalingstid på under to år, og skolen valgte å
+                      kjøpe inn komplette klassesett.</strong
+                    >
+                  </p>
+                  <p>
+                    Da utstyret kom, måtte det også settes effektivt i drift.
+                    Sammen med Norton Ghost brukte jeg imaging til å «tanke opp»
+                    hele klasserom med standardiserte installasjoner, fremfor å
+                    installere hver enkelt PC fra bunnen av.
+                  </p>
+                  <p>
+                    Det ble en tidlig erfaring med to prinsipper som har fulgt
+                    meg videre:
+                    <strong
+                      >Mål før du bestemmer deg – og standardiser det som kan
+                      standardiseres.</strong
+                    >
+                  </p>
+                  <div class="tech">
+                    <span>BTF</span><span>CRT → LCD</span
+                    ><span>Energiøkonomi</span><span>Imaging</span
+                    ><span>Standardisering</span><span>IT-drift</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2005</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2005-virtualisering.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2005-virtualisering.jpg"
+                      alt="Illustrasjon til En feil pekte mot en helt ny måte å bygge IT på."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">DET FØRSTE STORE SKIFTET</p>
+                  <h2>En feil pekte mot en helt ny måte å bygge IT på.</h2>
+                  <p>
+                    Hos itslearning møtte jeg et sikkerhetsproblem knyttet til
+                    DCOM i den eksisterende serverinfrastrukturen. I stedet for
+                    bare å reparere problemet anbefalte jeg å virtualisere de
+                    interne serverne med VMware.
+                  </p>
+                  <p>
+                    Det avgjørende var ikke bare å få færre fysiske bokser. Vi
+                    kunne ta et kontrollert utgangspunkt før oppgraderinger og
+                    patching, standardisere miljøene og komme raskere tilbake
+                    dersom noe gikk galt. Plutselig var en server ikke
+                    nødvendigvis en maskin.
+                  </p>
+                  <div class="tech">
+                    <span>VMware</span><span>Active Directory</span
+                    ><span>Fil/print</span><span>SAN</span
+                    ><span>Virtualisering</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2006</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2006-infrastruktur.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2006-infrastruktur.jpg"
+                      alt="Illustrasjon til Fra noen servere til hel infrastruktur."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">NÅ MÅTTE DET SKALERE</p>
+                  <h2>Fra noen servere til hel infrastruktur.</h2>
+                  <p>
+                    itslearning vokste, og infrastrukturen måtte vokse med
+                    selskapet. Jeg arbeidet med design av nettverk, serverrom,
+                    kjøling, lagring og samband – og med planleggingen av en
+                    fysisk flytting der også e-postsystemet skulle over med
+                    svært begrenset nedetid.
+                  </p>
+                  <p>
+                    Her ble det tydelig at IT ikke bare handler om serveren.
+                    Strøm, kjøling, nettverk, leverandører, risiko, mennesker og
+                    tidspunkt må virke sammen.
+                  </p>
+                  <div class="tech">
+                    <span>Serverrom</span><span>Nettverk</span
+                    ><span>Kjøling</span><span>On-prem e-post</span
+                    ><span>Driftsplanlegging</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2011–20</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2011-2020-datasenter-sky.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2011-2020-datasenter-sky.jpg"
+                      alt="Illustrasjon til IT flyttet gradvis ut av rommet."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">FRA SERVERROM TIL TJENESTER</p>
+                  <h2>IT flyttet gradvis ut av rommet.</h2>
+                  <p>
+                    De neste årene ble reisen en blanding av migreringer,
+                    virtualisering, terminalservere, datasentre og etter hvert
+                    skytjenester. Office 365 kom tidlig inn i bildet. E-post ble
+                    flyttet fra Domino til Exchange. Kundemiljøer ble flyttet
+                    til datasenter. VMware var blitt hverdagsverktøy.
+                  </p>
+                  <p>
+                    Teknologien endret seg, men arbeidet handlet stadig mer om
+                    overgangen mellom gammelt og nytt – uten at virksomheten
+                    kunne stoppe mens vi gjorde det.
+                  </p>
+                  <div class="tech">
+                    <span>Office 365</span><span>Exchange</span
+                    ><span>VMware</span><span>RDS</span
+                    ><span>Active Directory</span><span>Datasenter</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2020–25</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2020-2026-hybrid-cloud.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2020-2026-hybrid-cloud.jpg"
+                      alt="Illustrasjon til Skyen erstattet ikke alt. Den koblet seg på alt."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">HYBRID BLIR NORMALEN</p>
+                  <h2>Skyen erstattet ikke alt. Den koblet seg på alt.</h2>
+                  <p>
+                    Arbeidet ble stadig mer hybrid: on-prem, Azure, Microsoft
+                    365, identitet, MFA, Conditional Access, sikkerhet og
+                    automasjon. Nye tjenester måtte spille sammen med
+                    eksisterende systemer – ofte i miljøer der stabilitet og
+                    sikkerhet var viktigere enn å bruke det nyeste for enhver
+                    pris.
+                  </p>
+                  <p>
+                    I denne perioden arbeidet jeg også med virksomhetskritiske
+                    løsninger rundt fysisk handel i kraftmarkedet. Det gjorde
+                    koblingen mellom digital infrastruktur, sikker drift og den
+                    fysiske energiverdenen tydeligere.
+                  </p>
+                  <div class="tech">
+                    <span>Azure</span><span>Microsoft 365</span><span>MFA</span
+                    ><span>Conditional Access</span
+                    ><span>Hybrid infrastruktur</span><span>Energi</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2026</div>
+            <article class="story featured">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2026-azure-local.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2026-azure-local.jpg"
+                      alt="Illustrasjon av moderne Azure Local-infrastruktur med tre noder, redundant nettverk og Azure-integrasjon"
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">SKYEN KOMMER TILBAKE TIL DATASENTERET</p>
+                  <h2>
+                    Moderne lokal infrastruktur – styrt som en del av skyen.
+                  </h2>
+                  <p>
+                    I et av mine siste prosjekter arbeidet jeg med design og
+                    workshopgrunnlag for en Azure Local-løsning: lokal compute,
+                    lagring og nettverk kombinert med styring, sikkerhet og
+                    tjenester gjennom Azure.
+                  </p>
+                  <p>
+                    Det interessante er hvordan reisen på mange måter binder seg
+                    sammen. Fra fysiske servere, via virtualisering og offentlig
+                    sky, til en moderne hybrid plattform der lokal infrastruktur
+                    igjen står sentralt – men nå med skyens styringsmodell rundt
+                    seg.
+                  </p>
+                  <div class="tech">
+                    <span>Azure Local</span><span>Azure Arc</span
+                    ><span>Hyper-V</span><span>Cluster</span><span>MLAG</span
+                    ><span>SMB Direct</span><span>Hybrid infrastruktur</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2026</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2026-energi-kraftnett.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2026-energi-kraftnett.jpg"
+                      alt="Illustrasjon av hybrid infrastruktur, backup og disaster recovery."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">TILBAKE TIL GRUNNMUREN</p>
+                  <h2>Hybrid infrastruktur, backup og disaster recovery.</h2>
+                  <p>
+                    Det siste året i konsulentrollen førte meg også tilbake til
+                    selve infrastrukturen: virtualisering, backup,
+                    gjenoppretting, nettverk og beredskap. Jeg arbeidet med en
+                    hybrid løsning der produksjon, lokal backup, offsite-kopi og
+                    disaster recovery måtte ses som én sammenhengende kjede.
+                  </p>
+                  <p>
+                    En eksisterende VMware-plattform ble brukt som midlertidig
+                    DR-mål, samtidig som veien videre ble planlagt mot en
+                    moderne Hyper-V-basert løsning. Parallelt arbeidet jeg med
+                    nettverkssegmentering og tydeligere skille mellom
+                    produksjon, klienter, infrastruktur og andre soner.
+                  </p>
+                  <p class="learning">
+                    <strong>Faglig påfyll i 2026:</strong> AZ-104 · AZ-800 ·
+                    AZ-801 – Azure-administrasjon og hybride Windows
+                    Server-miljøer.
+                  </p>
+                  <div class="tech">
+                    <span>Hyper-V</span><span>VMware</span
+                    ><span>Disaster Recovery</span><span>Backup</span
+                    ><span>Azure</span><span>Nettverkssegmentering</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2026 →</div>
+            <article class="story featured">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2026-kraftsystem-planlegging.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2026-kraftsystem-planlegging.jpg"
+                      alt="Illustrasjon av kraftsystem, transmisjonsnett og planlegging."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">ET NYTT KAPITTEL</p>
+                  <h2>
+                    Fra infrastrukturen bak systemene til infrastrukturen bak
+                    samfunnet.
+                  </h2>
+                  <p>
+                    1. oktober 2026 begynner jeg som Planner i Statnett. Etter
+                    mange år med IT-infrastruktur, sky og løsninger rundt
+                    energimarkedet går reisen nærmere selve kraftsystemet.
+                  </p>
+                  <p>
+                    Det føles ikke som å forlate teknologien. Snarere som å
+                    følge den helt ned til grunnmuren: Datakraft trenger energi.
+                    Energi trenger nett. Og kapasitet må planlegges før den kan
+                    brukes.
+                  </p>
+                  <div class="tech">
+                    <span>Planlegging</span><span>Kraftsystem</span
+                    ><span>Infrastruktur</span><span>Læring</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section class="jwrap">
+          <div class="turn">
+            <blockquote>
+              Det største skiftet er kanskje ikke hva teknologien kan gjøre –
+              men hva én person kan skape med den.
+            </blockquote>
+            <p>
+              Fra fysiske servere og virtualisering til hybrid infrastruktur,
+              kraftsystemer og KI-assistert utvikling.
+            </p>
+          </div>
+        </section>
 
-/* HERO V2 · 27.09.2026 */
-.journey-page{
-  background:
-    radial-gradient(circle at 78% 10%,rgba(32,199,232,.13),transparent 27%),
-    linear-gradient(90deg,rgba(3,16,27,.84) 0%,rgba(3,16,27,.60) 43%,rgba(3,16,27,.22) 72%,rgba(3,16,27,.48) 100%),
-    linear-gradient(180deg,rgba(3,16,27,.18),#03101b 38%),
-    url('/assets/plattformen-bg.jpg') center top/100% auto no-repeat;
-}
-.jhero-v2{
-  min-height:560px;
-  padding:92px 0 105px;
-  display:grid;
-  grid-template-columns:minmax(0,.94fr) minmax(430px,1.06fr);
-  gap:72px;
-  align-items:center;
-}
-.jhero-copy{max-width:820px}
-.jhero-v2 h1{
-  font-size:clamp(4rem,7vw,7.3rem);
-  line-height:.88;
-  letter-spacing:-.065em;
-  margin:.16em 0 .24em;
-  text-shadow:0 10px 42px rgba(0,0,0,.34)
-}
-.jhero-v2 h1 span{
-  color:var(--cyan);
-  text-shadow:0 0 28px rgba(32,199,232,.24)
-}
-.jhero-v2 .lead{
-  max-width:760px;
-  font-size:clamp(1.08rem,1.55vw,1.34rem);
-  line-height:1.62;
-  color:#d8e5ec
-}
-.jhero-journey{
-  position:relative;
-  min-height:280px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  padding:36px 14px;
-}
-.jhero-journey:before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle at 52% 50%,rgba(32,199,232,.11),transparent 54%);
-  filter:blur(3px);
-  pointer-events:none
-}
-.jhero-years{
-  display:flex;
-  justify-content:space-between;
-  color:var(--cyan);
-  font-weight:900;
-  font-size:.78rem;
-  letter-spacing:.14em;
-  position:relative;
-  z-index:2;
-  margin:0 3px 15px
-}
-.jhero-track{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  position:relative;
-  align-items:start;
-  z-index:2
-}
-.jhero-track:before{
-  content:"";
-  position:absolute;
-  left:9%;
-  right:9%;
-  top:23px;
-  height:2px;
-  background:linear-gradient(90deg,rgba(32,199,232,.35),var(--cyan),rgba(32,199,232,.35));
-  box-shadow:0 0 15px rgba(32,199,232,.3)
-}
-.jhero-step{text-align:center;position:relative;color:#c9dce6}
-.jhero-dot{
-  width:46px;height:46px;margin:0 auto 13px;border-radius:50%;
-  display:grid;place-items:center;
-  border:1px solid rgba(32,199,232,.48);
-  background:rgba(4,20,32,.86);
-  box-shadow:0 0 24px rgba(32,199,232,.11);
-  font-size:1.15rem
-}
-.jhero-step strong{
-  display:block;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase
-}
-.jhero-step small{
-  display:block;margin-top:4px;color:#7795a7;font-size:.67rem
-}
-.jhero-scroll{
-  display:inline-flex;align-items:center;gap:9px;margin-top:28px;
-  color:#b9d4df;text-decoration:none;font-size:.76rem;font-weight:850;
-  letter-spacing:.12em;text-transform:uppercase
-}
-.jhero-scroll span{
-  width:30px;height:30px;border:1px solid rgba(32,199,232,.3);
-  border-radius:50%;display:grid;place-items:center;color:var(--cyan)
-}
-.opening-bridge{
-  position:relative;
-  z-index:5;
-  margin-top:-58px;
-  margin-bottom:68px
-}
-.opening-bridge .opening{
-  max-width:920px;
-  margin:0;
-  padding:28px 32px;
-  background:linear-gradient(135deg,rgba(8,31,46,.92),rgba(5,22,34,.88));
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.14);
-  border-left:4px solid var(--cyan);
-  box-shadow:0 20px 60px rgba(0,0,0,.22);
-  border-radius:0 18px 18px 0
-}
-@media(max-width:980px){
-  .jhero-v2{grid-template-columns:1fr;gap:30px;padding-top:70px;min-height:auto}
-  .jhero-journey{min-height:210px;padding-top:8px}
-  .opening-bridge{margin-top:-28px}
-}
-@media(max-width:620px){
-  .jhero-v2{padding:55px 0 78px}
-  .jhero-v2 h1{font-size:clamp(3.5rem,17vw,5.4rem)}
-  .jhero-journey{display:none}
-  .opening-bridge{margin-top:-34px;margin-bottom:52px}
-  .opening-bridge .opening{padding:22px 22px}
-}
+        <section class="jwrap ai-finale">
+          <div class="ai-hero">
+            <div class="ai-copy">
+              <p class="ey">OG SÅ KOM KI</p>
+              <h2>Nå flyttes grensen<br />én gang til.</h2>
+              <p class="big">
+                Jeg har sett fysiske servere bli virtuelle. Serverrom bli
+                datasentre. Datasentre bli sky. Manuelle installasjoner bli
+                automatisering. Men KI oppleves annerledes: teknologien kan nå
+                være med i selve tanke- og skapelsesprosessen.
+              </p>
+            </div>
+            <div
+              class="ai-visual"
+              aria-label="Fra idé via KI og kode til fungerende løsning"
+            >
+              <div class="ai-flow">
+                <div class="ai-node">
+                  <div class="ico">💡</div>
+                  <strong>Idé</strong>
+                </div>
+                <div class="ai-arrow">→</div>
+                <div class="ai-node">
+                  <div class="ico">🧠</div>
+                  <strong>Dialog med KI</strong>
+                </div>
+                <div class="ai-arrow">→</div>
+                <div class="ai-node">
+                  <div class="ico">⌨️</div>
+                  <strong>Bygge &amp; teste</strong>
+                </div>
+                <div class="ai-arrow">→</div>
+                <div class="ai-node">
+                  <div class="ico">🚀</div>
+                  <strong>Fungerende løsning</strong>
+                </div>
+              </div>
+            </div>
+          </div>
 
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": "https://www.ians.no/om-meg.html#henrik-bergfjord",
-  "name": "Henrik Bergfjord",
-  "url": "https://www.ians.no/om-meg.html",
-  "mainEntityOfPage": "https://www.ians.no/om-meg.html",
-  "description": "Henrik Bergfjord – teknolog, infrastruktur- og skybakgrunn, med interesse for KI, energi, læring og praktisk utvikling.",
-  "knowsAbout": ["IT-infrastruktur","Virtualisering","Microsoft Azure","Microsoft 365","Kunstig intelligens","Energisystemer","Kraftsystem"]
-}
-</script>
-</head>
-<body>
-<div class="journey-page">
-<header class="jwrap jnav"><a class="brand" href="/">IANS</a><a class="back" href="/">← Tilbake til forsiden</a></header>
-<main>
-<section class="jwrap jhero-v2">
-  <div class="jhero-copy">
-    <p class="ey">MIN REISE · 2003 → 2026</p>
-    <h1>Fra serverrom<br>til <span>KI.</span></h1>
-    <p class="lead">Mer enn tjue år med teknologi har lært meg én ting: Det som virker stort og nytt i dag, blir fort grunnmuren vi bygger videre på i morgen. Dette er ikke hele CV-en min. Det er historien om noen av skiftene som formet måten jeg tenker på – og hvorfor IANS finnes.</p>
-    <a class="jhero-scroll" href="#reisen"><span>↓</span> Scroll reisen</a>
-  </div>
-  <div class="jhero-journey" aria-label="Teknologireisen fra 2003 til 2026">
-    <div class="jhero-years"><span>2003</span><span>2026</span></div>
-    <div class="jhero-track">
-      <div class="jhero-step"><div class="jhero-dot">▣</div><strong>Server</strong><small>fysisk</small></div>
-      <div class="jhero-step"><div class="jhero-dot">◇</div><strong>VM</strong><small>virtuelt</small></div>
-      <div class="jhero-step"><div class="jhero-dot">☁</div><strong>Sky</strong><small>tjenester</small></div>
-      <div class="jhero-step"><div class="jhero-dot">∞</div><strong>Hybrid</strong><small>koblet</small></div>
-      <div class="jhero-step"><div class="jhero-dot">✦</div><strong>KI</strong><small>skape</small></div>
+          <div class="then-now">
+            <article class="epoch">
+              <span class="year-big">2003</span>
+              <p class="path">🖥️ Måle → beregne → modernisere → drifte</p>
+              <p class="question">
+                «Hva bruker teknologien – og lønner det seg å gjøre dette på en
+                bedre måte?»
+              </p>
+            </article>
+            <div class="time-bridge"><span>23 år</span><b>→</b></div>
+            <article class="epoch">
+              <span class="year-big">2026</span>
+              <p class="path">
+                💡 Idé → dialog med KI → bygge → teste → publisere
+              </p>
+              <p class="question">
+                «Kan jeg beskrive ideen, diskutere den med KI – og bygge
+                løsningen selv?»
+              </p>
+            </article>
+          </div>
+
+          <div class="ians-finale">
+            <p class="ey">DERFOR FINNES IANS</p>
+            <h3>Et sted der ideer får lov til å bli virkelige.</h3>
+            <p>
+              IANS er mitt personlige laboratorium. Her kan en idé bli til kode,
+              en nettside, et verktøy, en analyse eller et helt lite prosjekt.
+              ChatGPT er en del av arbeidsmåten – ikke fordi KI gjør alt, men
+              fordi avstanden fra idé til læring, utprøving og fungerende
+              løsning har blitt dramatisk kortere.
+            </p>
+            <div class="mantra">
+              <span>Prøve.</span><span>Bygge.</span><span>Lære.</span
+              ><span>Dele.</span>
+            </div>
+            <p>
+              Jeg vet ikke nøyaktig hvor dette ender. Det er nettopp derfor det
+              er interessant å utforske.
+            </p>
+            <div class="actions">
+              <a class="button primary" href="/prosjekter.html"
+                >Se hva vi har bygget →</a
+              >
+              <a class="button" href="/plattformen.html"
+                >Utforsk teknologiskiftet →</a
+              >
+              <a class="button" href="/veien-videre.html">Veien videre →</a>
+            </div>
+            <div class="ians-orb" aria-hidden="true"><span>🤖</span></div>
+          </div>
+
+          <p class="note">
+            Dette er en personlig fortelling basert på min yrkesreise og
+            utvalgte prosjekter. Den er bevisst skrevet som historie, ikke som
+            en fullstendig CV. IANS er et personlig prosjekt og er uavhengig av
+            nåværende og tidligere arbeidsgivere.
+          </p>
+        </section>
+      </main>
+      <footer class="jwrap jfoot">
+        <p>IANS · Et personlig prosjekt av Henrik Bergfjord</p>
+        <p>
+          <a href="/">Hjem</a> · <a href="/prosjekter.html">Prosjekter</a> ·
+          <a href="/teknisk.html">Teknisk</a>
+        </p>
+      </footer>
     </div>
-  </div>
-</section>
-<section class="jwrap opening-bridge">
-  <div class="opening"><strong>Da jeg startet i IT, var infrastrukturen noe du kunne ta på.</strong> Servere skulle bestilles, bæres inn, monteres, installeres og holdes i live. I dag kan jeg sitte med en idé, diskutere den med KI og bygge noe fungerende på en kveld. Mellom de to ytterpunktene ligger en ganske interessant reise.</div>
-</section>
-<section class="jwrap timeline" id="reisen">
-<div class="era"><div class="year">2003–04</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2004-serverrom.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2004-serverrom.jpg" alt="Illustrasjon av IT-miljøet ved starten av teknologireisen, med CRT-skjermer, arbeidsstasjoner og servere." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">DET BEGYNTE SOM ELEV</p><h2>Fra skolebenken til ansvar for skolens IT-drift.</h2><p>Mens jeg var elev ved Bergen Tekniske Fagskole i 2003–04 begynte jeg å drifte skolens IT-miljø på de to studiestedene i Strandgaten 193 og Margaretastredet. Det ga meg tidlig praktisk ansvar for servere, arbeidsstasjoner, nettverk og den daglige infrastrukturen – før jeg egentlig var ferdig med utdanningen.</p><p>Et av de første moderniseringsprosjektene startet med strømforbruket. Klasserommene hadde fortsatt CRT-skjermer og lange brukstider – enkelte dager var lokalene i bruk helt frem mot kl. 22. På BKK.no fant jeg en energiberegning der vi kunne sammenligne strømforbruket til eksisterende utstyr med nye LCD-skjermer, som jeg husker lå rundt 45 watt.</p><p>Regnestykket viste en overraskende stor forskjell. Jeg husker ikke lenger alle forutsetningene vi la inn i kalkylen – blant annet om vi regnet med faktisk brukstid eller kontinuerlig drift. Det er tross alt mer enn tjue år siden. <strong>Men jeg husker resultatet: beregningen viste en tilbakebetalingstid på under to år, og skolen valgte å kjøpe inn komplette klassesett.</strong></p><p>Da utstyret kom, måtte det også settes effektivt i drift. Sammen med Norton Ghost brukte jeg imaging til å «tanke opp» hele klasserom med standardiserte installasjoner, fremfor å installere hver enkelt PC fra bunnen av.</p><p>Det ble en tidlig erfaring med to prinsipper som har fulgt meg videre: <strong>Mål før du bestemmer deg – og standardiser det som kan standardiseres.</strong></p><div class="tech"><span>BTF</span><span>CRT → LCD</span><span>Energiøkonomi</span><span>Imaging</span><span>Standardisering</span><span>IT-drift</span></div></div></div></article></div>
-<div class="era"><div class="year">2005</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2005-virtualisering.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2005-virtualisering.jpg" alt="Illustrasjon til En feil pekte mot en helt ny måte å bygge IT på." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">DET FØRSTE STORE SKIFTET</p><h2>En feil pekte mot en helt ny måte å bygge IT på.</h2><p>Hos itslearning møtte jeg et sikkerhetsproblem knyttet til DCOM i den eksisterende serverinfrastrukturen. I stedet for bare å reparere problemet anbefalte jeg å virtualisere de interne serverne med VMware.</p><p>Det avgjørende var ikke bare å få færre fysiske bokser. Vi kunne ta et kontrollert utgangspunkt før oppgraderinger og patching, standardisere miljøene og komme raskere tilbake dersom noe gikk galt. Plutselig var en server ikke nødvendigvis en maskin.</p><div class="tech"><span>VMware</span><span>Active Directory</span><span>Fil/print</span><span>SAN</span><span>Virtualisering</span></div></div></div></article></div>
-<div class="era"><div class="year">2006</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2006-infrastruktur.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2006-infrastruktur.jpg" alt="Illustrasjon til Fra noen servere til hel infrastruktur." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">NÅ MÅTTE DET SKALERE</p><h2>Fra noen servere til hel infrastruktur.</h2><p>itslearning vokste, og infrastrukturen måtte vokse med selskapet. Jeg arbeidet med design av nettverk, serverrom, kjøling, lagring og samband – og med planleggingen av en fysisk flytting der også e-postsystemet skulle over med svært begrenset nedetid.</p><p>Her ble det tydelig at IT ikke bare handler om serveren. Strøm, kjøling, nettverk, leverandører, risiko, mennesker og tidspunkt må virke sammen.</p><div class="tech"><span>Serverrom</span><span>Nettverk</span><span>Kjøling</span><span>On-prem e-post</span><span>Driftsplanlegging</span></div></div></div></article></div>
-<div class="era"><div class="year">2011–20</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2011-2020-datasenter-sky.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2011-2020-datasenter-sky.jpg" alt="Illustrasjon til IT flyttet gradvis ut av rommet." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">FRA SERVERROM TIL TJENESTER</p><h2>IT flyttet gradvis ut av rommet.</h2><p>De neste årene ble reisen en blanding av migreringer, virtualisering, terminalservere, datasentre og etter hvert skytjenester. Office 365 kom tidlig inn i bildet. E-post ble flyttet fra Domino til Exchange. Kundemiljøer ble flyttet til datasenter. VMware var blitt hverdagsverktøy.</p><p>Teknologien endret seg, men arbeidet handlet stadig mer om overgangen mellom gammelt og nytt – uten at virksomheten kunne stoppe mens vi gjorde det.</p><div class="tech"><span>Office 365</span><span>Exchange</span><span>VMware</span><span>RDS</span><span>Active Directory</span><span>Datasenter</span></div></div></div></article></div>
-<div class="era"><div class="year">2020–25</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2020-2026-hybrid-cloud.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2020-2026-hybrid-cloud.jpg" alt="Illustrasjon til Skyen erstattet ikke alt. Den koblet seg på alt." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">HYBRID BLIR NORMALEN</p><h2>Skyen erstattet ikke alt. Den koblet seg på alt.</h2><p>Arbeidet ble stadig mer hybrid: on-prem, Azure, Microsoft 365, identitet, MFA, Conditional Access, sikkerhet og automasjon. Nye tjenester måtte spille sammen med eksisterende systemer – ofte i miljøer der stabilitet og sikkerhet var viktigere enn å bruke det nyeste for enhver pris.</p><p>I denne perioden arbeidet jeg også med virksomhetskritiske løsninger rundt fysisk handel i kraftmarkedet. Det gjorde koblingen mellom digital infrastruktur, sikker drift og den fysiske energiverdenen tydeligere.</p><div class="tech"><span>Azure</span><span>Microsoft 365</span><span>MFA</span><span>Conditional Access</span><span>Hybrid infrastruktur</span><span>Energi</span></div></div></div></article></div>
-<div class="era"><div class="year">2026</div><article class="story featured"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2026-azure-local.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2026-azure-local.jpg" alt="Illustrasjon av moderne Azure Local-infrastruktur med tre noder, redundant nettverk og Azure-integrasjon" loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">SKYEN KOMMER TILBAKE TIL DATASENTERET</p><h2>Moderne lokal infrastruktur – styrt som en del av skyen.</h2><p>I et av mine siste prosjekter arbeidet jeg med design og workshopgrunnlag for en Azure Local-løsning: lokal compute, lagring og nettverk kombinert med styring, sikkerhet og tjenester gjennom Azure.</p><p>Det interessante er hvordan reisen på mange måter binder seg sammen. Fra fysiske servere, via virtualisering og offentlig sky, til en moderne hybrid plattform der lokal infrastruktur igjen står sentralt – men nå med skyens styringsmodell rundt seg.</p><div class="tech"><span>Azure Local</span><span>Azure Arc</span><span>Hyper-V</span><span>Cluster</span><span>MLAG</span><span>SMB Direct</span><span>Hybrid infrastruktur</span></div></div></div></article></div>
-<div class="era"><div class="year">2026</div><article class="story"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2026-energi-kraftnett.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2026-energi-kraftnett.jpg" alt="Illustrasjon av hybrid infrastruktur, backup og disaster recovery." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">TILBAKE TIL GRUNNMUREN</p><h2>Hybrid infrastruktur, backup og disaster recovery.</h2><p>Det siste året i konsulentrollen førte meg også tilbake til selve infrastrukturen: virtualisering, backup, gjenoppretting, nettverk og beredskap. Jeg arbeidet med en hybrid løsning der produksjon, lokal backup, offsite-kopi og disaster recovery måtte ses som én sammenhengende kjede.</p><p>En eksisterende VMware-plattform ble brukt som midlertidig DR-mål, samtidig som veien videre ble planlagt mot en moderne Hyper-V-basert løsning. Parallelt arbeidet jeg med nettverkssegmentering og tydeligere skille mellom produksjon, klienter, infrastruktur og andre soner.</p><p class="learning"><strong>Faglig påfyll i 2026:</strong> AZ-104 · AZ-800 · AZ-801 – Azure-administrasjon og hybride Windows Server-miljøer.</p><div class="tech"><span>Hyper-V</span><span>VMware</span><span>Disaster Recovery</span><span>Backup</span><span>Azure</span><span>Nettverkssegmentering</span></div></div></div></article></div>
-<div class="era"><div class="year">2026 →</div><article class="story featured"><div class="story-grid"><div class="story-media"><a href="/assets/reise/reise-2026-kraftsystem-planlegging.jpg" target="_blank" rel="noopener" aria-label="Åpne bildet i full størrelse"><img src="/assets/reise/reise-2026-kraftsystem-planlegging.jpg" alt="Illustrasjon av kraftsystem, transmisjonsnett og planlegging." loading="lazy" decoding="async"></a></div><div class="story-copy"><p class="ey">ET NYTT KAPITTEL</p><h2>Fra infrastrukturen bak systemene til infrastrukturen bak samfunnet.</h2><p>1. oktober 2026 begynner jeg som Planner i Statnett. Etter mange år med IT-infrastruktur, sky og løsninger rundt energimarkedet går reisen nærmere selve kraftsystemet.</p><p>Det føles ikke som å forlate teknologien. Snarere som å følge den helt ned til grunnmuren: Datakraft trenger energi. Energi trenger nett. Og kapasitet må planlegges før den kan brukes.</p><div class="tech"><span>Planlegging</span><span>Kraftsystem</span><span>Infrastruktur</span><span>Læring</span></div></div></div></article></div>
-</section>
-<section class="jwrap"><div class="turn"><blockquote>Det største skiftet er kanskje ikke hva teknologien kan gjøre – men hva én person kan skape med den.</blockquote><p>Fra fysiske servere og virtualisering til hybrid infrastruktur, kraftsystemer og KI-assistert utvikling.</p></div></section>
-
-<section class="jwrap ai-finale">
-  <div class="ai-hero">
-    <div class="ai-copy">
-      <p class="ey">OG SÅ KOM KI</p>
-      <h2>Nå flyttes grensen<br>én gang til.</h2>
-      <p class="big">Jeg har sett fysiske servere bli virtuelle. Serverrom bli datasentre. Datasentre bli sky. Manuelle installasjoner bli automatisering. Men KI oppleves annerledes: teknologien kan nå være med i selve tanke- og skapelsesprosessen.</p>
-    </div>
-    <div class="ai-visual" aria-label="Fra idé via KI og kode til fungerende løsning">
-      <div class="ai-flow">
-        <div class="ai-node"><div class="ico">💡</div><strong>Idé</strong></div>
-        <div class="ai-arrow">→</div>
-        <div class="ai-node"><div class="ico">🧠</div><strong>Dialog med KI</strong></div>
-        <div class="ai-arrow">→</div>
-        <div class="ai-node"><div class="ico">⌨️</div><strong>Bygge &amp; teste</strong></div>
-        <div class="ai-arrow">→</div>
-        <div class="ai-node"><div class="ico">🚀</div><strong>Fungerende løsning</strong></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="then-now">
-    <article class="epoch">
-      <span class="year-big">2003</span>
-      <p class="path">🖥️ Måle → beregne → modernisere → drifte</p>
-      <p class="question">«Hva bruker teknologien – og lønner det seg å gjøre dette på en bedre måte?»</p>
-    </article>
-    <div class="time-bridge"><span>23 år</span><b>→</b></div>
-    <article class="epoch">
-      <span class="year-big">2026</span>
-      <p class="path">💡 Idé → dialog med KI → bygge → teste → publisere</p>
-      <p class="question">«Kan jeg beskrive ideen, diskutere den med KI – og bygge løsningen selv?»</p>
-    </article>
-  </div>
-
-  <div class="ians-finale">
-    <p class="ey">DERFOR FINNES IANS</p>
-    <h3>Et sted der ideer får lov til å bli virkelige.</h3>
-    <p>IANS er mitt personlige laboratorium. Her kan en idé bli til kode, en nettside, et verktøy, en analyse eller et helt lite prosjekt. ChatGPT er en del av arbeidsmåten – ikke fordi KI gjør alt, men fordi avstanden fra idé til læring, utprøving og fungerende løsning har blitt dramatisk kortere.</p>
-    <div class="mantra"><span>Prøve.</span><span>Bygge.</span><span>Lære.</span><span>Dele.</span></div>
-    <p>Jeg vet ikke nøyaktig hvor dette ender. Det er nettopp derfor det er interessant å utforske.</p>
-    <div class="actions">
-      <a class="button primary" href="/prosjekter.html">Se hva vi har bygget →</a>
-      <a class="button" href="/plattformen.html">Utforsk teknologiskiftet →</a>
-      <a class="button" href="/veien-videre.html">Veien videre →</a>
-    </div>
-    <div class="ians-orb" aria-hidden="true"><span>🤖</span></div>
-  </div>
-
-  <p class="note">Dette er en personlig fortelling basert på min yrkesreise og utvalgte prosjekter. Den er bevisst skrevet som historie, ikke som en fullstendig CV. IANS er et personlig prosjekt og er uavhengig av nåværende og tidligere arbeidsgivere.</p>
-</section>
-</main>
-<footer class="jwrap jfoot"><p>IANS · Et personlig prosjekt av Henrik Bergfjord</p><p><a href="/">Hjem</a> · <a href="/prosjekter.html">Prosjekter</a> · <a href="/teknisk.html">Teknisk</a></p></footer>
-</div>
-</body></html>
+  </body>
+</html>
