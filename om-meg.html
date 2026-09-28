@@ -893,6 +893,103 @@
         .back { display:none; }
       }
 
+
+      /* Widescreen V1 – compact desktop presentation */
+      @media (min-width: 1100px) {
+        .journey-page {
+          --max: 1400px;
+        }
+
+        .jhero-v2 {
+          padding-top: 58px;
+          padding-bottom: 68px;
+          grid-template-columns: minmax(0, 0.9fr) minmax(500px, 1.1fr);
+          gap: 48px;
+        }
+
+        .jhero-v2 h1 {
+          font-size: clamp(3.5rem, 5.3vw, 5.8rem);
+        }
+
+        .jhero-v2 .lead {
+          font-size: 1.05rem;
+          line-height: 1.55;
+        }
+
+        .jhero-journey {
+          padding: 26px 12px;
+        }
+
+        .opening-bridge .opening {
+          max-width: 1100px;
+          padding: 22px 28px;
+        }
+
+        .timeline {
+          padding-bottom: 48px;
+        }
+
+        .era {
+          grid-template-columns: 78px 1fr;
+          gap: 38px;
+        }
+
+        .story {
+          padding: 17px 22px;
+        }
+
+        .story-grid {
+          grid-template-columns: minmax(330px, 36%) 1fr;
+          gap: 26px;
+          align-items: start;
+        }
+
+        .story h2 {
+          font-size: clamp(1.35rem, 2vw, 1.85rem);
+        }
+
+        .story p {
+          font-size: 0.94rem;
+          line-height: 1.55;
+        }
+
+        .story .learning {
+          font-size: 0.84rem;
+          padding: 8px 11px;
+        }
+
+        .story .tech span {
+          font-size: 0.7rem;
+          padding: 4px 8px;
+        }
+
+        .ai-finale {
+          padding-top: 58px;
+          padding-bottom: 62px;
+        }
+
+        .ai-hero {
+          gap: 38px;
+        }
+
+        .ai-copy h2 {
+          font-size: clamp(2.5rem, 4.5vw, 4.4rem);
+        }
+
+        .then-now {
+          margin-top: 38px;
+        }
+
+        .epoch {
+          padding: 22px 24px;
+        }
+
+        .ians-finale {
+          padding-top: 32px;
+          padding-bottom: 32px;
+        }
+      }
+
     </style>
     <script type="application/ld+json">
       {
