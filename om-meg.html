@@ -894,99 +894,234 @@
       }
 
 
-      /* Widescreen V1 – compact desktop presentation */
+      /* Widescreen V2 – true widescreen desktop layout */
       @media (min-width: 1100px) {
         .journey-page {
-          --max: 1400px;
+          --max: 1640px;
         }
 
+        /* HERO – cleaner, lower and more clearly separated */
         .jhero-v2 {
-          padding-top: 58px;
-          padding-bottom: 68px;
-          grid-template-columns: minmax(0, 0.9fr) minmax(500px, 1.1fr);
-          gap: 48px;
+          padding-top: 44px;
+          padding-bottom: 54px;
+          grid-template-columns: minmax(0, 0.82fr) minmax(520px, 1.18fr);
+          gap: 64px;
+          align-items: center;
+        }
+
+        .jhero-copy {
+          max-width: 650px;
         }
 
         .jhero-v2 h1 {
-          font-size: clamp(3.5rem, 5.3vw, 5.8rem);
+          font-size: clamp(3.25rem, 4.4vw, 5rem);
+          line-height: .93;
         }
 
         .jhero-v2 .lead {
-          font-size: 1.05rem;
+          max-width: 620px;
+          font-size: .98rem;
           line-height: 1.55;
         }
 
         .jhero-journey {
-          padding: 26px 12px;
+          padding: 22px 14px;
+          min-height: 190px;
+        }
+
+        /* Opening becomes a clear bridge between hero and timeline */
+        .opening-bridge {
+          margin-top: 0;
+          margin-bottom: 54px;
         }
 
         .opening-bridge .opening {
-          max-width: 1100px;
-          padding: 22px 28px;
+          max-width: 1280px;
+          padding: 20px 26px;
         }
 
-        .timeline {
-          padding-bottom: 48px;
-        }
-
-        .era {
-          grid-template-columns: 78px 1fr;
-          gap: 38px;
-        }
-
-        .story {
-          padding: 17px 22px;
-        }
-
-        .story-grid {
-          grid-template-columns: minmax(330px, 36%) 1fr;
-          gap: 26px;
-          align-items: start;
-        }
-
-        .story h2 {
-          font-size: clamp(1.35rem, 2vw, 1.85rem);
-        }
-
-        .story p {
-          font-size: 0.94rem;
+        .opening-bridge .opening p {
+          font-size: .94rem;
           line-height: 1.55;
         }
 
+        /* TIMELINE – use the width instead of the height */
+        .timeline {
+          padding-top: 0;
+          padding-bottom: 44px;
+        }
+
+        .era {
+          grid-template-columns: 72px minmax(0, 1fr);
+          gap: 34px;
+          margin-bottom: 18px;
+        }
+
+        .year {
+          font-size: .92rem;
+        }
+
+        .story {
+          padding: 16px 20px;
+        }
+
+        .story-grid {
+          grid-template-columns: minmax(300px, 31%) minmax(0, 1fr);
+          gap: 28px;
+          align-items: start;
+        }
+
+        .story-media {
+          align-self: start;
+        }
+
+        .story-media img,
+        .story.featured .story-media img {
+          width: 100%;
+          max-height: 250px;
+          object-fit: cover;
+        }
+
+        .story h2 {
+          font-size: clamp(1.28rem, 1.55vw, 1.72rem);
+          line-height: 1.15;
+          margin-bottom: 10px;
+        }
+
+        .story p {
+          font-size: .88rem;
+          line-height: 1.5;
+          margin-top: 8px;
+          margin-bottom: 8px;
+        }
+
+        .story .ey {
+          font-size: .66rem;
+          margin-bottom: 8px;
+        }
+
         .story .learning {
-          font-size: 0.84rem;
-          padding: 8px 11px;
+          font-size: .79rem;
+          line-height: 1.45;
+          padding: 7px 10px;
+          margin-top: 10px;
+        }
+
+        .story .tech {
+          gap: 5px;
+          margin-top: 10px;
         }
 
         .story .tech span {
-          font-size: 0.7rem;
-          padding: 4px 8px;
+          font-size: .65rem;
+          padding: 4px 7px;
         }
 
+        /* Transition statement */
+        .turn {
+          padding: 28px 32px;
+        }
+
+        .turn h2 {
+          font-size: clamp(1.55rem, 2.4vw, 2.35rem);
+          line-height: 1.08;
+          max-width: 1050px;
+        }
+
+        /* AI FINALE – same visual scale as the timeline */
         .ai-finale {
-          padding-top: 58px;
-          padding-bottom: 62px;
+          padding-top: 48px;
+          padding-bottom: 50px;
         }
 
         .ai-hero {
-          gap: 38px;
+          grid-template-columns: minmax(0, 1fr) minmax(420px, .85fr);
+          gap: 54px;
+          align-items: center;
+        }
+
+        .ai-copy {
+          max-width: 720px;
         }
 
         .ai-copy h2 {
-          font-size: clamp(2.5rem, 4.5vw, 4.4rem);
+          font-size: clamp(2.35rem, 3.6vw, 3.75rem);
+          line-height: .98;
         }
 
+        .ai-copy .big {
+          font-size: 1rem;
+          line-height: 1.55;
+          max-width: 680px;
+        }
+
+        .ai-visual {
+          max-width: 620px;
+          justify-self: end;
+        }
+
+        .ai-node {
+          padding: 12px;
+        }
+
+        .ai-node .ico {
+          font-size: 1.75rem;
+        }
+
+        /* 2003 → 2026 */
         .then-now {
-          margin-top: 38px;
+          margin-top: 30px;
+          grid-template-columns: 1fr 70px 1fr;
+          gap: 14px;
         }
 
         .epoch {
-          padding: 22px 24px;
+          padding: 20px 22px;
         }
 
+        .year-big {
+          font-size: 1.65rem;
+        }
+
+        .epoch .path {
+          font-size: .9rem;
+        }
+
+        .epoch .question {
+          font-size: .86rem;
+        }
+
+        /* IANS finale */
         .ians-finale {
-          padding-top: 32px;
-          padding-bottom: 32px;
+          margin-top: 28px;
+          padding: 28px 150px 28px 30px;
+        }
+
+        .ians-finale h2 {
+          font-size: clamp(1.75rem, 2.7vw, 2.55rem);
+          line-height: 1.08;
+        }
+
+        .ians-finale p {
+          font-size: .9rem;
+          line-height: 1.5;
+        }
+
+        .ians-finale .mantra {
+          margin-top: 12px;
+        }
+
+        .ians-finale .actions {
+          margin-top: 16px;
+        }
+
+        .ians-orb {
+          width: 100px;
+          height: 100px;
+        }
+
+        .ians-orb span {
+          font-size: 2.7rem;
         }
       }
 
