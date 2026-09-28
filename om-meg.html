@@ -1812,6 +1812,22 @@
         }
       }
 
+    
+      /* Interactive technology tags */
+      .story .tech span { cursor:pointer; transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease; }
+      .story .tech span:hover,.story .tech span:focus-visible { transform:translateY(-1px); border-color:rgba(32,199,232,.62); background:rgba(32,199,232,.14); box-shadow:0 0 0 3px rgba(32,199,232,.07); outline:none; }
+      .story .tech span.tech-related { border-color:rgba(32,199,232,.72); background:rgba(32,199,232,.17); }
+      .tech-dialog { width:min(620px,calc(100vw - 32px)); border:1px solid rgba(32,199,232,.28); border-radius:22px; padding:0; color:#eef8fb; background:linear-gradient(145deg,rgba(10,25,34,.98),rgba(6,15,22,.99)); box-shadow:0 28px 90px rgba(0,0,0,.55); }
+      .tech-dialog::backdrop { background:rgba(1,7,11,.72); backdrop-filter:blur(6px); }
+      .tech-dialog-inner { padding:28px; position:relative; }
+      .tech-dialog-kicker { margin:0 46px 7px 0; color:#20c7e8; font-size:.73rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+      .tech-dialog h2 { margin:0 46px 12px 0; font-size:clamp(1.55rem,4vw,2.25rem); letter-spacing:-.035em; }
+      .tech-dialog p { color:#c4d3dd; line-height:1.65; }
+      .tech-dialog-years { margin-top:18px; padding-top:16px; border-top:1px solid rgba(255,255,255,.09); font-size:.86rem; }
+      .tech-dialog-years strong { color:#eef8fb; }
+      .tech-dialog-close { position:absolute; top:18px; right:18px; width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); color:#eef8fb; font-size:1.35rem; cursor:pointer; }
+      .tech-dialog-close:hover,.tech-dialog-close:focus-visible { background:rgba(32,199,232,.14); border-color:rgba(32,199,232,.5); outline:none; }
+
     </style>
     <script type="application/ld+json">
       {
@@ -2498,5 +2514,86 @@
 })();
 </script>
 
-  </body>
+  
+    <dialog class="tech-dialog" id="tech-dialog" aria-labelledby="tech-dialog-title">
+      <div class="tech-dialog-inner">
+        <button class="tech-dialog-close" type="button" aria-label="Lukk">×</button>
+        <p class="tech-dialog-kicker" id="tech-dialog-kicker">TEKNOLOGI I REISEN</p>
+        <h2 id="tech-dialog-title"></h2>
+        <p id="tech-dialog-text"></p>
+        <p class="tech-dialog-years" id="tech-dialog-years"></p>
+      </div>
+    </dialog>
+
+<script>
+/* Interactive technology tags · IANS */
+(function () {
+  const INFO = {
+    "BTF": ["Bergen Tekniske Fagskole – utgangspunktet for reisen, der teori raskt ble koblet til praktisk ansvar for skolens IT-miljø.", "Bergen Technical College – the starting point of the journey, where theory quickly became connected to hands-on responsibility for the school's IT environment."],
+    "CRT → LCD": ["Overgangen fra CRT- til LCD-skjermer ble et tidlig moderniseringsprosjekt der energibruk og tilbakebetalingstid ble en del av teknologivalget.", "The move from CRT to LCD displays became an early modernization project where energy use and payback time became part of the technology decision."],
+    "Energiøkonomi": ["Å måle strømforbruk og regne på gevinsten før investering – et tidlig eksempel på å koble teknologi, drift og økonomi.", "Measuring power consumption and calculating the benefit before investing – an early example of connecting technology, operations and economics."],
+    "Imaging": ["Standardiserte PC-installasjoner ble rullet ut med imaging og Norton Ghost i stedet for å installere hver maskin manuelt.", "Standardized PC installations were deployed with imaging and Norton Ghost instead of installing every machine manually."],
+    "Standardisering": ["Like oppsett gjør utrulling, drift, feilsøking og gjenoppretting enklere – et prinsipp som følger hele teknologireisen.", "Consistent configurations make deployment, operations, troubleshooting and recovery easier – a principle that runs through the entire technology journey."],
+    "IT-drift": ["Den praktiske hverdagen rundt servere, klienter, nettverk, tilgjengelighet og brukere – grunnlaget for de senere stegene i reisen.", "The practical day-to-day work around servers, clients, networks, availability and users – the foundation for the later stages of the journey."],
+    "VMware": ["Virtualisering skilte serveren fra den fysiske maskinen og ga nye muligheter for standardisering, endringer og raskere gjenoppretting.", "Virtualization separated the server from the physical machine and opened new possibilities for standardization, change and faster recovery."],
+    "Active Directory": ["Microsofts katalog- og identitetstjeneste for brukere, maskiner, grupper og tilgang i Windows-baserte miljøer.", "Microsoft's directory and identity service for users, computers, groups and access in Windows-based environments."],
+    "Fil/print": ["Klassiske sentrale infrastrukturtjenester for fildeling og utskrift – typiske arbeidslaster i de tidlige virtualiserte miljøene.", "Classic centralized infrastructure services for file sharing and printing – typical workloads in early virtualized environments."],
+    "SAN": ["Delt blokkbasert lagring som gjorde det mulig for flere servere å bruke sentral lagringsinfrastruktur og støttet mer fleksible virtuelle miljøer.", "Shared block storage that allowed multiple servers to use centralized storage infrastructure and supported more flexible virtual environments."],
+    "Virtualisering": ["Teknikken som gjør at flere logiske servere kan kjøre uavhengig på den samme fysiske infrastrukturen.", "The technology that allows multiple logical servers to run independently on the same physical infrastructure."],
+    "Serverrom": ["Den fysiske grunnmuren: rack, servere, strøm, kabling, lagring og miljøet rundt systemene.", "The physical foundation: racks, servers, power, cabling, storage and the environment surrounding the systems."],
+    "Nettverk": ["Forbindelsen mellom systemer og tjenester – fra lokal switching og ruting til stadig mer distribuerte og hybride miljøer.", "The connection between systems and services – from local switching and routing to increasingly distributed and hybrid environments."],
+    "Kjøling": ["Kritisk datasenterinfrastruktur som holder fysisk IT-utstyr innenfor riktige temperatur- og driftsgrenser.", "Critical data-center infrastructure that keeps physical IT equipment within the correct temperature and operating limits."],
+    "On-prem e-post": ["E-posttjenester driftet på egen lokal infrastruktur før stadig flere tjenester ble flyttet til leverandørens sky.", "Email services operated on local infrastructure before more services moved to provider cloud platforms."],
+    "Driftsplanlegging": ["Å planlegge kapasitet, endringer, vedlikehold og tilgjengelighet slik at infrastrukturen kan utvikles uten å stoppe virksomheten.", "Planning capacity, changes, maintenance and availability so infrastructure can evolve without stopping the business."],
+    "Office 365": ["Microsofts tidlige skybaserte produktivitetsplattform, som flyttet blant annet e-post og samarbeid fra lokale systemer til tjenester.", "Microsoft's cloud productivity platform, moving services such as email and collaboration from local systems to hosted services."],
+    "Exchange": ["Microsofts plattform for e-post og kalender – i reisen både som lokal teknologi og som del av overgangen mot skytjenester.", "Microsoft's email and calendar platform – appearing in the journey both on-premises and as part of the transition toward cloud services."],
+    "RDS": ["Remote Desktop Services gir sentral tilgang til Windows-sesjoner og applikasjoner uten at alt må kjøre lokalt på klienten.", "Remote Desktop Services provides centralized access to Windows sessions and applications without everything running locally on the client."],
+    "Datasenter": ["Et mer industrialisert miljø for datakraft, lagring, nettverk, strøm, kjøling og redundans enn det tradisjonelle serverrommet.", "A more industrialized environment for compute, storage, networking, power, cooling and redundancy than the traditional server room."],
+    "Azure": ["Microsofts skyplattform for datakraft, nettverk, lagring, identitet og en lang rekke plattformtjenester.", "Microsoft's cloud platform for compute, networking, storage, identity and a wide range of platform services."],
+    "Microsoft 365": ["Skybaserte produktivitets-, samarbeids-, identitets- og sikkerhetstjenester som inngår i moderne Microsoft-miljøer.", "Cloud-based productivity, collaboration, identity and security services used in modern Microsoft environments."],
+    "MFA": ["Flerfaktorautentisering krever mer enn én bekreftelse av identitet og reduserer risikoen ved stjålne passord.", "Multi-factor authentication requires more than one proof of identity and reduces the risk associated with stolen passwords."],
+    "Conditional Access": ["Policybasert tilgangskontroll som kan vurdere blant annet bruker, enhet, sted og risiko før tilgang gis.", "Policy-based access control that can evaluate factors such as user, device, location and risk before granting access."],
+    "Hybrid infrastruktur": ["Lokale systemer og skytjenester kobles sammen og forvaltes som ett miljø – ikke som to separate verdener.", "On-premises systems and cloud services are connected and managed as one environment rather than two separate worlds."],
+    "Energi": ["Den fysiske forutsetningen bak all digital infrastruktur – og en stadig tydeligere del av reisen mot kraftsystemet.", "The physical prerequisite behind all digital infrastructure – and an increasingly visible part of the journey toward the power system."],
+    "Azure Local": ["Microsofts plattform for å kjøre moderne lokal, virtualisert infrastruktur med tett integrasjon mot Azure.", "Microsoft's platform for running modern on-premises virtualized infrastructure with close Azure integration."],
+    "Azure Arc": ["Et styringslag som utvider Azure-modellen til ressurser som kjører utenfor selve Azure-skyen.", "A management layer that extends the Azure model to resources running outside the Azure cloud itself."],
+    "Hyper-V": ["Microsofts hypervisor for virtualisering av Windows- og Linux-arbeidslaster på fysisk serverinfrastruktur.", "Microsoft's hypervisor for virtualizing Windows and Linux workloads on physical server infrastructure."],
+    "Cluster": ["Flere noder arbeider sammen for å gi kapasitet og tilgjengelighet, slik at én enkelt server ikke trenger å være et kritisk enkeltpunkt.", "Multiple nodes work together for capacity and availability so a single server does not have to be a critical single point of failure."],
+    "MLAG": ["Multi-Chassis Link Aggregation kobler nettverksforbindelser mot flere switcher for både kapasitet og redundans.", "Multi-Chassis Link Aggregation connects network links across multiple switches for both capacity and redundancy."],
+    "SMB Direct": ["SMB over RDMA gir svært effektiv dataoverføring med lav latenstid og lav CPU-belastning i moderne lagrings- og clustermiljøer.", "SMB over RDMA provides highly efficient data transfer with low latency and low CPU overhead in modern storage and cluster environments."],
+    "Disaster Recovery": ["Planer, kopier og testede prosedyrer for å få kritiske systemer tilbake etter større feil eller bortfall av primær infrastruktur.", "Plans, copies and tested procedures for restoring critical systems after major failures or loss of primary infrastructure."],
+    "Backup": ["Uavhengige kopier av data og systemer som gjør det mulig å gjenopprette etter feil, sletting, skade eller andre hendelser.", "Independent copies of data and systems that make recovery possible after failure, deletion, damage or other incidents."],
+    "Nettverkssegmentering": ["Å dele nettverket i separate soner eller VLAN for å styre trafikk, redusere feilflater og forbedre sikkerheten.", "Dividing the network into separate zones or VLANs to control traffic, reduce failure domains and improve security."],
+    "Planlegging": ["Å se behov, kapasitet, avhengigheter og konsekvenser før endringer gjennomføres – nå flyttet nærmere kraftsystemets infrastruktur.", "Understanding needs, capacity, dependencies and consequences before changes are made – now moving closer to power-system infrastructure."],
+    "Kraftsystem": ["Systemet som binder sammen produksjon, transmisjon, distribusjon og forbruk av elektrisk energi.", "The system connecting generation, transmission, distribution and consumption of electrical energy."],
+    "Infrastruktur": ["Grunnlaget andre tjenester er avhengige av – enten det handler om servere, nettverk, sky eller kraftnett.", "The foundation other services depend on – whether servers, networks, cloud or the power grid."],
+    "Læring": ["Den røde tråden i reisen: prøve, forstå, bygge, evaluere og bruke erfaringen videre i neste teknologiskifte.", "The recurring theme of the journey: try, understand, build, evaluate and carry the experience into the next technology shift."]
+  };
+  const dialog=document.getElementById('tech-dialog');
+  if(!dialog) return;
+  const title=document.getElementById('tech-dialog-title'), text=document.getElementById('tech-dialog-text'), years=document.getElementById('tech-dialog-years'), kicker=document.getElementById('tech-dialog-kicker'), close=dialog.querySelector('.tech-dialog-close');
+  const tags=[...document.querySelectorAll('.story .tech span')];
+  const yearFor=t=>t.closest('.era')?.querySelector('.year')?.textContent.trim()||'';
+  const same=(a,b)=>a.textContent.trim()===b;
+  tags.forEach(tag=>{
+    tag.setAttribute('role','button'); tag.setAttribute('tabindex','0');
+    const open=()=>{
+      const name=tag.textContent.trim(), lang=document.documentElement.lang==='en'?'en':'no', idx=lang==='en'?1:0;
+      const matches=tags.filter(t=>same(t,name)), ys=[...new Set(matches.map(yearFor).filter(Boolean))];
+      title.textContent=name; text.textContent=(INFO[name]||["Teknologi fra denne delen av reisen.","Technology from this part of the journey."])[idx];
+      kicker.textContent=lang==='en'?'TECHNOLOGY IN THE JOURNEY':'TEKNOLOGI I REISEN';
+      years.innerHTML='<strong>'+(lang==='en'?'Appears in the journey: ':'Vises i reisen: ')+'</strong>'+ys.join(' · ');
+      close.setAttribute('aria-label',lang==='en'?'Close':'Lukk');
+      tags.forEach(t=>t.classList.toggle('tech-related',same(t,name)));
+      dialog.showModal();
+    };
+    tag.addEventListener('click',open); tag.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+  });
+  const shut=()=>{dialog.close();tags.forEach(t=>t.classList.remove('tech-related'));};
+  close.addEventListener('click',shut);
+  dialog.addEventListener('click',e=>{if(e.target===dialog) shut();});
+  dialog.addEventListener('close',()=>tags.forEach(t=>t.classList.remove('tech-related')));
+})();
+</script>
+</body>
 </html>
