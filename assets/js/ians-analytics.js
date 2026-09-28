@@ -34,6 +34,10 @@
 
   if (excluded.some((rule) => rule.test(path))) return;
 
+  const sentKey = Symbol.for("ians.analytics.page-view-sent");
+  if (window[sentKey]) return;
+  window[sentKey] = true;
+
   fetch("/api/page-view", {
     method: "POST",
     headers: {

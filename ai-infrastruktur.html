@@ -136,4 +136,5 @@ const no=document.getElementById("no"),en=document.getElementById("en");
 function setLang(l){document.body.classList.toggle("en",l==="en");no.classList.toggle("active",l==="no");en.classList.toggle("active",l==="en");document.documentElement.lang=l==="en"?"en":"nb";localStorage.setItem("ians-platform-lang",l)}
 no.onclick=()=>setLang("no");en.onclick=()=>setLang("en");setLang(localStorage.getItem("ians-platform-lang")||"no");
 </script>
+<script src="/assets/js/ians-analytics.js"></script>
 </body></html>
