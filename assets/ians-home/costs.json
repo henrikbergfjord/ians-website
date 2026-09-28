@@ -1,9 +1,22 @@
 {
-  "status": "unavailable",
-  "amountNok": null,
-  "periodStart": null,
-  "periodEnd": null,
-  "updatedAt": null,
-  "includes": [],
-  "excludes": []
+  "status": "available",
+  "currency": "NOK",
+  "periodStart": "2026-09-01",
+  "periodEnd": "2026-09-28",
+  "updatedAt": "2026-09-28T09:08:54Z",
+  "staticWebApps": {
+    "iansNok": 0,
+    "sogodNok": 0
+  },
+  "azureTotalNok": 0.02,
+  "includes": [
+    "IANS Static Web App",
+    "SOGOD Static Web App",
+    "Andre Azure-tjenester i samme billing scope kan inngå i Azure-totalen"
+  ],
+  "excludes": [
+    "Domener",
+    "OpenAI og andre eksterne AI-tjenester",
+    "Andre kostnader utenfor Azure, med mindre de senere legges inn eksplisitt"
+  ]
 }
