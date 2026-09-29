@@ -10,7 +10,7 @@
     />
     <meta name="author" content="Henrik Bergfjord" />
     <meta name="robots" content="index,follow,max-image-preview:large" />
-    <link rel="canonical" href="https://www.ians.no/om-meg.html" />
+    <link rel="canonical" href="https://www.ians.no/om-meg.html" /><link rel="alternate" hreflang="nb-NO" href="https://www.ians.no/om-meg.html" /><link rel="alternate" hreflang="en" href="https://www.ians.no/en/om-meg.html" />
     <meta property="og:type" content="profile" />
     <meta property="og:locale" content="nb_NO" />
     <meta property="og:site_name" content="IANS" />
@@ -2506,10 +2506,10 @@
     const no = document.getElementById("lang-no");
     const en = document.getElementById("lang-en");
     if (no) no.addEventListener("click", () => apply("no"));
-    if (en) en.addEventListener("click", () => apply("en"));
+    if (en) en.addEventListener("click", () => location.href="/en/om-meg.html"+location.hash);
     let saved = "no";
     try { saved = localStorage.getItem("ians-language") || "no"; } catch(e) {}
-    apply(saved);
+    apply("no");
   });
 })();
 </script>
