@@ -25,6 +25,7 @@ INCLUDE = (
     "en/ki-sikkerhet-kapplop.html",
     "en/teknologi-med-ansvar.html",
     "en/prosjekter.html",
+    "en/plattformen.html",
     "en/veien-videre.html",
     "en/index.html",
     "iphone-50-tips.html",
