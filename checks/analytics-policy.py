@@ -19,6 +19,7 @@ INCLUDE = (
     "galleri.html",
     "index.html",
     "ios-27.html",
+    "ki-sikkerhet-kapplop.html",
     "iphone-50-tips.html",
     "iphone-compare.html",
     "kalender.html",
