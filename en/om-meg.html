@@ -1,0 +1,2599 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#03101b" />
+    <meta
+      name="description"
+      content="Henrik Bergfjord’s journey from server rooms, virtualisation and cloud to energy systems, AI and IANS. A personal technology history from 2003 to 2026."
+    />
+    <meta name="author" content="Henrik Bergfjord" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://www.ians.no/en/om-meg.html" /><link rel="alternate" hreflang="nb-NO" href="https://www.ians.no/om-meg.html" /><link rel="alternate" hreflang="en" href="https://www.ians.no/en/om-meg.html" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="IANS" />
+    <meta property="og:title" content="Henrik Bergfjord · My journey · IANS" />
+    <meta
+      property="og:description"
+      content="From server rooms and virtualisation to cloud, energy systems and AI – the story behind Henrik Bergfjord and IANS."
+    />
+    <meta property="og:url" content="https://www.ians.no/en/om-meg.html" />
+    <meta property="profile:first_name" content="Henrik" />
+    <meta property="profile:last_name" content="Bergfjord" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Henrik Bergfjord · My journey · IANS</title>
+    <link rel="stylesheet" href="/assets/ians-home/home.css?v=20260926a" />
+    <script src="/assets/js/ians-analytics.js" defer></script>
+    <style>
+      :root {
+        --bg: #03101b;
+        --panel: #081a29;
+        --panel2: #0b2234;
+        --text: #f4f8fb;
+        --muted: #a9bdcb;
+        --cyan: #20c7e8;
+        --line: rgba(255, 255, 255, 0.13);
+        --max: 1420px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: #03101b;
+        color: var(--text);
+        font:
+          16px/1.65 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+      }
+      .journey-page {
+        min-height: 100vh;
+        background:
+          radial-gradient(
+            circle at 75% 8%,
+            rgba(32, 199, 232, 0.14),
+            transparent 28%
+          ),
+          linear-gradient(180deg, rgba(3, 16, 27, 0.55), #03101b 36%),
+          url("/assets/plattformen-bg.jpg") center top/100% auto no-repeat;
+      }
+      .jwrap {
+        width: min(var(--max), calc(100% - 40px));
+        margin: auto;
+      }
+      .jnav {
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+      }
+      .jnav .brand {
+        font-weight: 900;
+        letter-spacing: 0.28em;
+        text-decoration: none;
+      }
+      .back {
+        color: var(--muted);
+        text-decoration: none;
+        font-weight: 700;
+      }
+      .back:hover {
+        color: var(--cyan);
+      }
+      .jhero {
+        padding: 110px 0 95px;
+        max-width: 900px;
+      }
+      .ey {
+        color: var(--cyan);
+        font-size: 0.75rem;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .jhero h1 {
+        font-size: clamp(3.2rem, 8vw, 7rem);
+        line-height: 0.92;
+        letter-spacing: -0.06em;
+        margin: 0.18em 0;
+      }
+      .jhero h1 span {
+        color: var(--cyan);
+      }
+      .jhero .lead {
+        max-width: 780px;
+        font-size: clamp(1.12rem, 2vw, 1.42rem);
+        color: #d4e0e8;
+      }
+      .opening {
+        max-width: 780px;
+        margin: 0 0 70px;
+        padding: 28px 30px;
+        background: rgba(8, 26, 41, 0.82);
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--cyan);
+        border-radius: 0 16px 16px 0;
+        font-size: 1.08rem;
+      }
+      .timeline {
+        position: relative;
+        padding: 10px 0 70px;
+      }
+      .timeline:before {
+        content: "";
+        position: absolute;
+        left: 119px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(var(--cyan), rgba(32, 199, 232, 0.12));
+      }
+      .era {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 58px;
+        position: relative;
+        margin: 0 0 26px;
+      }
+      .era:before {
+        content: "";
+        position: absolute;
+        left: 111px;
+        top: 34px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--cyan);
+        border: 4px solid #dffaff;
+        box-shadow: 0 0 24px rgba(32, 199, 232, 0.45);
+      }
+      .year {
+        padding-top: 28px;
+        text-align: right;
+        color: var(--cyan);
+        font-weight: 900;
+        font-size: 1.05rem;
+      }
+      .story {
+        background: linear-gradient(
+          145deg,
+          rgba(11, 34, 52, 0.96),
+          rgba(6, 22, 34, 0.94)
+        );
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 28px;
+      }
+      .story h2 {
+        margin: 0 0 8px;
+        font-size: clamp(1.45rem, 3vw, 2.25rem);
+        letter-spacing: -0.035em;
+      }
+      .story p {
+        color: #c4d3dd;
+        margin: 0.65em 0;
+      }
+      .story .tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 18px;
+      }
+      .story .tech span {
+        font-size: 0.76rem;
+        color: #cfe8ef;
+        border: 1px solid rgba(32, 199, 232, 0.25);
+        background: rgba(32, 199, 232, 0.07);
+        border-radius: 999px;
+        padding: 5px 9px;
+      }
+      .turn {
+        margin: 40px 0 80px;
+        padding: 44px;
+        background: linear-gradient(135deg, #0b2a3d, #071927);
+        border: 1px solid rgba(32, 199, 232, 0.3);
+        border-radius: 22px;
+      }
+      .turn blockquote {
+        margin: 0;
+        font-size: clamp(1.5rem, 3.5vw, 2.7rem);
+        font-weight: 800;
+        line-height: 1.18;
+        letter-spacing: -0.035em;
+      }
+      .turn p {
+        color: var(--muted);
+        margin-bottom: 0;
+      }
+      .now {
+        padding: 85px 0;
+        border-top: 1px solid var(--line);
+      }
+      .now h2 {
+        font-size: clamp(2.7rem, 6vw, 5.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.055em;
+        margin: 0.15em 0;
+      }
+      .now .big {
+        max-width: 850px;
+        font-size: 1.2rem;
+        color: #d0dde5;
+      }
+      .contrast {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin: 38px 0;
+      }
+      .contrast article {
+        padding: 28px;
+        border-radius: 16px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+      }
+      .contrast b {
+        display: block;
+        color: var(--cyan);
+        font-size: 2rem;
+      }
+      .ians-box {
+        margin-top: 45px;
+        padding: 38px;
+        border-radius: 20px;
+        background: linear-gradient(
+          135deg,
+          rgba(32, 199, 232, 0.13),
+          rgba(8, 26, 41, 0.92)
+        );
+        border: 1px solid rgba(32, 199, 232, 0.28);
+      }
+      .ians-box h3 {
+        font-size: 2rem;
+        margin: 0 0 10px;
+      }
+      .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 18px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        text-decoration: none;
+        font-weight: 800;
+      }
+      .button.primary {
+        background: var(--cyan);
+        color: #03111b;
+        border-color: var(--cyan);
+      }
+      .note {
+        color: var(--muted);
+        font-size: 0.82rem;
+        margin-top: 26px;
+      }
+      .jfoot {
+        border-top: 1px solid var(--line);
+        padding: 30px 0 45px;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .jfoot a {
+        color: inherit;
+      }
+      @media (max-width: 700px) {
+        .journey-page {
+          background-size: auto 650px;
+        }
+        .jhero {
+          padding: 70px 0 65px;
+        }
+        .timeline:before {
+          left: 8px;
+        }
+        .era {
+          grid-template-columns: 1fr;
+          gap: 6px;
+          padding-left: 34px;
+        }
+        .era:before {
+          left: 0;
+          top: 34px;
+        }
+        .year {
+          text-align: left;
+          padding-top: 18px;
+        }
+        .story {
+          padding: 22px;
+        }
+        .turn {
+          padding: 28px;
+        }
+        .contrast {
+          grid-template-columns: 1fr;
+        }
+        .jfoot {
+          display: block;
+        }
+        .jnav .back {
+          font-size: 0.85rem;
+        }
+      }
+
+      /* REISEBILDER · 27.09.2026 */
+      .story-grid {
+        display: grid;
+        grid-template-columns: minmax(360px, 40%) 1fr;
+        gap: 30px;
+        align-items: center;
+      }
+      .story-media {
+        width: 100%;
+        aspect-ratio: 16/9;
+        min-height: 0;
+        border-radius: 13px;
+        overflow: hidden;
+        border: 1px solid rgba(32, 199, 232, 0.18);
+        background: #061522;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+      }
+      .story-media a {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-in;
+      }
+      .story-media img {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        max-height: none;
+        display: block;
+        object-fit: contain;
+        object-position: center;
+        border-radius: 8px;
+        transition:
+          transform 0.2s ease,
+          filter 0.2s ease;
+      }
+      .story-media a:hover img {
+        transform: scale(1.015);
+        filter: brightness(1.06);
+      }
+      .story-copy {
+        min-width: 0;
+      }
+      .story .learning {
+        margin-top: 14px;
+        padding: 10px 13px;
+        border-left: 3px solid var(--cyan);
+        background: rgba(32, 199, 232, 0.055);
+        border-radius: 0 8px 8px 0;
+        font-size: 0.9rem;
+      }
+      .story.featured {
+        border-color: rgba(32, 199, 232, 0.55);
+        box-shadow: 0 0 38px rgba(32, 199, 232, 0.08);
+      }
+      .story.featured .story-media {
+        min-height: 0;
+      }
+      .story.featured .story-media img {
+        min-height: 0;
+        max-height: none;
+      }
+      @media (max-width: 850px) {
+        .story-grid {
+          grid-template-columns: 1fr;
+        }
+        .story-media,
+        .story.featured .story-media {
+          width: 100%;
+          aspect-ratio: 16/9;
+          min-height: 0;
+        }
+        .story-media img,
+        .story.featured .story-media img {
+          min-height: 0;
+          max-height: none;
+          object-position: center;
+        }
+      }
+
+      /* FINALE · KI + IANS · 27.09.2026 */
+      .ai-finale {
+        position: relative;
+        overflow: hidden;
+        padding: 84px 0 88px;
+        border-top: 1px solid var(--line);
+      }
+      .ai-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+        gap: 56px;
+        align-items: center;
+      }
+      .ai-copy h2 {
+        font-size: clamp(3rem, 6vw, 5.6rem);
+        line-height: 0.94;
+        letter-spacing: -0.055em;
+        margin: 0.14em 0 0.28em;
+      }
+      .ai-copy .big {
+        max-width: 760px;
+        font-size: 1.16rem;
+        color: #d0dde5;
+      }
+      .ai-visual {
+        min-height: 310px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .ai-flow {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 34px 1fr 34px 1fr 34px 1fr;
+        align-items: center;
+      }
+      .ai-node {
+        min-height: 118px;
+        border: 1px solid rgba(32, 199, 232, 0.28);
+        background: linear-gradient(
+          145deg,
+          rgba(11, 34, 52, 0.94),
+          rgba(6, 22, 34, 0.92)
+        );
+        border-radius: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 16px;
+        box-shadow: 0 0 35px rgba(32, 199, 232, 0.055);
+      }
+      .ai-node .ico {
+        font-size: 2.15rem;
+        line-height: 1;
+        margin-bottom: 10px;
+      }
+      .ai-node strong {
+        font-size: 0.88rem;
+      }
+      .ai-arrow {
+        text-align: center;
+        color: var(--cyan);
+        font-size: 1.5rem;
+        font-weight: 900;
+      }
+      .ai-visual:before {
+        content: "";
+        position: absolute;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(32, 199, 232, 0.13),
+          transparent 67%
+        );
+        filter: blur(2px);
+        pointer-events: none;
+      }
+      .then-now {
+        display: grid;
+        grid-template-columns: 1fr 90px 1fr;
+        align-items: stretch;
+        gap: 16px;
+        margin: 48px 0 58px;
+      }
+      .epoch {
+        position: relative;
+        padding: 28px 30px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: linear-gradient(
+          145deg,
+          rgba(11, 34, 52, 0.94),
+          rgba(6, 22, 34, 0.9)
+        );
+      }
+      .epoch .year-big {
+        display: block;
+        color: var(--cyan);
+        font-size: 2rem;
+        font-weight: 900;
+        margin-bottom: 14px;
+      }
+      .epoch .path {
+        color: #dce8ee;
+        font-weight: 750;
+        font-size: 1.03rem;
+        margin: 0 0 15px;
+      }
+      .epoch .question {
+        color: var(--muted);
+        margin: 0;
+      }
+      .time-bridge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--cyan);
+        font-weight: 900;
+        text-align: center;
+      }
+      .time-bridge span {
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .time-bridge b {
+        font-size: 2rem;
+        line-height: 1;
+      }
+      .ians-finale {
+        position: relative;
+        overflow: hidden;
+        margin-top: 12px;
+        padding: 42px 210px 42px 42px;
+        border-radius: 22px;
+        background:
+          radial-gradient(
+            circle at 88% 45%,
+            rgba(32, 199, 232, 0.18),
+            transparent 23%
+          ),
+          linear-gradient(135deg, rgba(8, 49, 67, 0.98), rgba(6, 24, 37, 0.96));
+        border: 1px solid rgba(32, 199, 232, 0.36);
+      }
+      .ians-finale h3 {
+        font-size: clamp(2rem, 4vw, 3.15rem);
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+        margin: 0.15em 0 0.35em;
+      }
+      .ians-finale .mantra {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 20px 0 6px;
+      }
+      .ians-finale .mantra span {
+        border: 1px solid rgba(32, 199, 232, 0.3);
+        background: rgba(32, 199, 232, 0.08);
+        border-radius: 999px;
+        padding: 6px 11px;
+        color: #dff9ff;
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+      .ians-orb {
+        position: absolute;
+        right: 44px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 126px;
+        height: 126px;
+        border-radius: 50%;
+        border: 1px solid rgba(32, 199, 232, 0.36);
+        display: grid;
+        place-items: center;
+        background: radial-gradient(
+          circle,
+          rgba(32, 199, 232, 0.2),
+          rgba(4, 19, 30, 0.9) 66%
+        );
+        box-shadow: 0 0 55px rgba(32, 199, 232, 0.16);
+      }
+      .ians-orb span {
+        font-size: 3.5rem;
+        filter: drop-shadow(0 0 14px rgba(32, 199, 232, 0.45));
+      }
+      @media (max-width: 900px) {
+        .ai-hero {
+          grid-template-columns: 1fr;
+        }
+        .ai-visual {
+          min-height: 220px;
+        }
+        .then-now {
+          grid-template-columns: 1fr;
+        }
+        .time-bridge {
+          min-height: 70px;
+        }
+        .time-bridge b {
+          transform: rotate(90deg);
+        }
+        .ians-finale {
+          padding: 34px;
+        }
+        .ians-orb {
+          position: relative;
+          right: auto;
+          top: auto;
+          transform: none;
+          margin: 28px 0 0;
+          width: 90px;
+          height: 90px;
+        }
+        .ians-orb span {
+          font-size: 2.7rem;
+        }
+      }
+      @media (max-width: 620px) {
+        .ai-flow {
+          grid-template-columns: 1fr;
+        }
+        .ai-arrow {
+          transform: rotate(90deg);
+          padding: 7px;
+        }
+        .ai-node {
+          min-height: 96px;
+        }
+        .ai-finale {
+          padding-top: 60px;
+        }
+      }
+
+      /* HERO V2 · 27.09.2026 */
+      .journey-page {
+        background:
+          radial-gradient(
+            circle at 78% 10%,
+            rgba(32, 199, 232, 0.13),
+            transparent 27%
+          ),
+          linear-gradient(
+            90deg,
+            rgba(3, 16, 27, 0.84) 0%,
+            rgba(3, 16, 27, 0.6) 43%,
+            rgba(3, 16, 27, 0.22) 72%,
+            rgba(3, 16, 27, 0.48) 100%
+          ),
+          linear-gradient(180deg, rgba(3, 16, 27, 0.18), #03101b 38%),
+          url("/assets/plattformen-bg.jpg") center top/100% auto no-repeat;
+      }
+      .jhero-v2 {
+        min-height: 560px;
+        padding: 92px 0 105px;
+        display: grid;
+        grid-template-columns: minmax(0, 0.94fr) minmax(430px, 1.06fr);
+        gap: 72px;
+        align-items: center;
+      }
+      .jhero-copy {
+        max-width: 820px;
+      }
+      .jhero-v2 h1 {
+        font-size: clamp(4rem, 7vw, 7.3rem);
+        line-height: 0.88;
+        letter-spacing: -0.065em;
+        margin: 0.16em 0 0.24em;
+        text-shadow: 0 10px 42px rgba(0, 0, 0, 0.34);
+      }
+      .jhero-v2 h1 span {
+        color: var(--cyan);
+        text-shadow: 0 0 28px rgba(32, 199, 232, 0.24);
+      }
+      .jhero-v2 .lead {
+        max-width: 760px;
+        font-size: clamp(1.08rem, 1.55vw, 1.34rem);
+        line-height: 1.62;
+        color: #d8e5ec;
+      }
+      .jhero-journey {
+        position: relative;
+        min-height: 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 36px 14px;
+      }
+      .jhero-journey:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 52% 50%,
+          rgba(32, 199, 232, 0.11),
+          transparent 54%
+        );
+        filter: blur(3px);
+        pointer-events: none;
+      }
+      .jhero-years {
+        display: flex;
+        justify-content: space-between;
+        color: var(--cyan);
+        font-weight: 900;
+        font-size: 0.78rem;
+        letter-spacing: 0.14em;
+        position: relative;
+        z-index: 2;
+        margin: 0 3px 15px;
+      }
+      .jhero-track {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        position: relative;
+        align-items: start;
+        z-index: 2;
+      }
+      .jhero-track:before {
+        content: "";
+        position: absolute;
+        left: 9%;
+        right: 9%;
+        top: 23px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          rgba(32, 199, 232, 0.35),
+          var(--cyan),
+          rgba(32, 199, 232, 0.35)
+        );
+        box-shadow: 0 0 15px rgba(32, 199, 232, 0.3);
+      }
+      .jhero-step {
+        text-align: center;
+        position: relative;
+        color: #c9dce6;
+      }
+      .jhero-dot {
+        width: 46px;
+        height: 46px;
+        margin: 0 auto 13px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(32, 199, 232, 0.48);
+        background: rgba(4, 20, 32, 0.86);
+        box-shadow: 0 0 24px rgba(32, 199, 232, 0.11);
+        font-size: 1.15rem;
+      }
+      .jhero-step strong {
+        display: block;
+        font-size: 0.76rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .jhero-step small {
+        display: block;
+        margin-top: 4px;
+        color: #7795a7;
+        font-size: 0.67rem;
+      }
+      .jhero-scroll {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 28px;
+        color: #b9d4df;
+        text-decoration: none;
+        font-size: 0.76rem;
+        font-weight: 850;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .jhero-scroll span {
+        width: 30px;
+        height: 30px;
+        border: 1px solid rgba(32, 199, 232, 0.3);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        color: var(--cyan);
+      }
+      .opening-bridge {
+        position: relative;
+        z-index: 5;
+        margin-top: -58px;
+        margin-bottom: 68px;
+      }
+      .opening-bridge .opening {
+        max-width: 920px;
+        margin: 0;
+        padding: 28px 32px;
+        background: linear-gradient(
+          135deg,
+          rgba(8, 31, 46, 0.92),
+          rgba(5, 22, 34, 0.88)
+        );
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-left: 4px solid var(--cyan);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+        border-radius: 0 18px 18px 0;
+      }
+      @media (max-width: 980px) {
+        .jhero-v2 {
+          grid-template-columns: 1fr;
+          gap: 30px;
+          padding-top: 70px;
+          min-height: auto;
+        }
+        .jhero-journey {
+          min-height: 210px;
+          padding-top: 8px;
+        }
+        .opening-bridge {
+          margin-top: -28px;
+        }
+      }
+      @media (max-width: 620px) {
+        .jhero-v2 {
+          padding: 55px 0 78px;
+        }
+        .jhero-v2 h1 {
+          font-size: clamp(3.5rem, 17vw, 5.4rem);
+        }
+        .jhero-journey {
+          display: none;
+        }
+        .opening-bridge {
+          margin-top: -34px;
+          margin-bottom: 52px;
+        }
+        .opening-bridge .opening {
+          padding: 22px 22px;
+        }
+      }
+    
+      /* NO / EN language switch */
+      .jnav-right { display:flex; align-items:center; gap:18px; }
+      .lang-switch {
+        display:inline-flex; align-items:center; gap:3px;
+        padding:3px; border:1px solid rgba(255,255,255,.16);
+        border-radius:999px; background:rgba(3,16,27,.68);
+        backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+      }
+      .lang-switch button {
+        appearance:none; border:0; background:transparent; color:#a9bdcb;
+        min-width:42px; height:30px; padding:0 10px; border-radius:999px;
+        font:800 .72rem/1 system-ui,-apple-system,"Segoe UI",sans-serif;
+        letter-spacing:.08em; cursor:pointer;
+      }
+      .lang-switch button:hover { color:#f4f8fb; }
+      .lang-switch button.active {
+        background:#20c7e8; color:#03111b;
+        box-shadow:0 0 18px rgba(32,199,232,.18);
+      }
+      @media (max-width:620px) {
+        .jnav { height:auto; min-height:72px; gap:12px; }
+        .jnav-right { gap:10px; }
+        .back { display:none; }
+      }
+
+
+      /* Widescreen V2 – true widescreen desktop layout */
+      @media (min-width: 1100px) {
+        .journey-page {
+          --max: 1640px;
+        }
+
+        /* HERO – cleaner, lower and more clearly separated */
+        .jhero-v2 {
+          padding-top: 44px;
+          padding-bottom: 54px;
+          grid-template-columns: minmax(0, 0.82fr) minmax(520px, 1.18fr);
+          gap: 64px;
+          align-items: center;
+        }
+
+        .jhero-copy {
+          max-width: 650px;
+        }
+
+        .jhero-v2 h1 {
+          font-size: clamp(3.25rem, 4.4vw, 5rem);
+          line-height: .93;
+        }
+
+        .jhero-v2 .lead {
+          max-width: 620px;
+          font-size: .98rem;
+          line-height: 1.55;
+        }
+
+        .jhero-journey {
+          padding: 22px 14px;
+          min-height: 190px;
+        }
+
+        /* Opening becomes a clear bridge between hero and timeline */
+        .opening-bridge {
+          margin-top: 0;
+          margin-bottom: 54px;
+        }
+
+        .opening-bridge .opening {
+          max-width: 1280px;
+          padding: 20px 26px;
+        }
+
+        .opening-bridge .opening p {
+          font-size: .94rem;
+          line-height: 1.55;
+        }
+
+        /* TIMELINE – use the width instead of the height */
+        .timeline {
+          padding-top: 0;
+          padding-bottom: 44px;
+        }
+
+        .era {
+          grid-template-columns: 72px minmax(0, 1fr);
+          gap: 34px;
+          margin-bottom: 18px;
+        }
+
+        .year {
+          font-size: .92rem;
+        }
+
+        .story {
+          padding: 16px 20px;
+        }
+
+        .story-grid {
+          grid-template-columns: minmax(300px, 31%) minmax(0, 1fr);
+          gap: 28px;
+          align-items: start;
+        }
+
+        .story-media {
+          align-self: start;
+        }
+
+        .story-media img,
+        .story.featured .story-media img {
+          width: 100%;
+          max-height: 250px;
+          object-fit: cover;
+        }
+
+        .story h2 {
+          font-size: clamp(1.28rem, 1.55vw, 1.72rem);
+          line-height: 1.15;
+          margin-bottom: 10px;
+        }
+
+        .story p {
+          font-size: .88rem;
+          line-height: 1.5;
+          margin-top: 8px;
+          margin-bottom: 8px;
+        }
+
+        .story .ey {
+          font-size: .66rem;
+          margin-bottom: 8px;
+        }
+
+        .story .learning {
+          font-size: .79rem;
+          line-height: 1.45;
+          padding: 7px 10px;
+          margin-top: 10px;
+        }
+
+        .story .tech {
+          gap: 5px;
+          margin-top: 10px;
+        }
+
+        .story .tech span {
+          font-size: .65rem;
+          padding: 4px 7px;
+        }
+
+        /* Transition statement */
+        .turn {
+          padding: 28px 32px;
+        }
+
+        .turn h2 {
+          font-size: clamp(1.55rem, 2.4vw, 2.35rem);
+          line-height: 1.08;
+          max-width: 1050px;
+        }
+
+        /* AI FINALE – same visual scale as the timeline */
+        .ai-finale {
+          padding-top: 48px;
+          padding-bottom: 50px;
+        }
+
+        .ai-hero {
+          grid-template-columns: minmax(0, 1fr) minmax(420px, .85fr);
+          gap: 54px;
+          align-items: center;
+        }
+
+        .ai-copy {
+          max-width: 720px;
+        }
+
+        .ai-copy h2 {
+          font-size: clamp(2.35rem, 3.6vw, 3.75rem);
+          line-height: .98;
+        }
+
+        .ai-copy .big {
+          font-size: 1rem;
+          line-height: 1.55;
+          max-width: 680px;
+        }
+
+        .ai-visual {
+          max-width: 620px;
+          justify-self: end;
+        }
+
+        .ai-node {
+          padding: 12px;
+        }
+
+        .ai-node .ico {
+          font-size: 1.75rem;
+        }
+
+        /* 2003 → 2026 */
+        .then-now {
+          margin-top: 30px;
+          grid-template-columns: 1fr 70px 1fr;
+          gap: 14px;
+        }
+
+        .epoch {
+          padding: 20px 22px;
+        }
+
+        .year-big {
+          font-size: 1.65rem;
+        }
+
+        .epoch .path {
+          font-size: .9rem;
+        }
+
+        .epoch .question {
+          font-size: .86rem;
+        }
+
+        /* IANS finale */
+        .ians-finale {
+          margin-top: 28px;
+          padding: 28px 150px 28px 30px;
+        }
+
+        .ians-finale h2 {
+          font-size: clamp(1.75rem, 2.7vw, 2.55rem);
+          line-height: 1.08;
+        }
+
+        .ians-finale p {
+          font-size: .9rem;
+          line-height: 1.5;
+        }
+
+        .ians-finale .mantra {
+          margin-top: 12px;
+        }
+
+        .ians-finale .actions {
+          margin-top: 16px;
+        }
+
+        .ians-orb {
+          width: 100px;
+          height: 100px;
+        }
+
+        .ians-orb span {
+          font-size: 2.7rem;
+        }
+      }
+
+
+
+      /* =====================================================
+         WIDESCREEN V3 · 28.09.2026
+         Unified hero + compact journey + compact finale
+         ===================================================== */
+
+      .jhero-v3 {
+        position: relative;
+      }
+
+      .jhero-v3 h1 span {
+        color: var(--cyan);
+      }
+
+      .journey-summary {
+        position: relative;
+      }
+
+      .journey-range {
+        color: var(--cyan);
+      }
+
+      .journey-line {
+        position: relative;
+      }
+
+      .journey-step {
+        position: relative;
+        text-align: center;
+      }
+
+      .journey-step strong,
+      .journey-step small {
+        display: block;
+      }
+
+      .journey-start {
+        color: #bfd4de;
+        text-decoration: none;
+        font-weight: 850;
+      }
+
+
+      @media (min-width: 1100px) {
+
+        /* ---------- PAGE WIDTH ---------- */
+
+        .journey-page {
+          --max: 1640px;
+        }
+
+
+        /* ---------- HERO V3 ---------- */
+
+        .jhero-v3 {
+          min-height: 500px;
+          padding: 58px 0 38px;
+
+          display: grid;
+          grid-template-columns:
+            minmax(420px, .78fr)
+            minmax(620px, 1.22fr);
+
+          grid-template-rows: 1fr auto;
+
+          column-gap: 86px;
+          row-gap: 36px;
+
+          align-items: center;
+        }
+
+        .jhero-v3-copy {
+          max-width: 640px;
+        }
+
+        .jhero-v3 h1 {
+          margin: 10px 0 22px;
+
+          font-size: clamp(3.55rem, 4.55vw, 5.15rem);
+          line-height: .91;
+          letter-spacing: -.06em;
+
+          text-shadow: 0 12px 42px rgba(0,0,0,.35);
+        }
+
+        .jhero-v3 h1 span {
+          text-shadow: 0 0 28px rgba(32,199,232,.24);
+        }
+
+        .hero-intro {
+          max-width: 610px;
+          margin: 0;
+
+          color: #d5e2e9;
+
+          font-size: .96rem;
+          line-height: 1.62;
+        }
+
+
+        /* ---------- HERO JOURNEY ---------- */
+
+        .journey-summary {
+          width: 100%;
+          max-width: 830px;
+          justify-self: end;
+        }
+
+        .journey-range {
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
+          align-items: center;
+
+          margin: 0 7% 17px;
+
+          font-size: .73rem;
+          font-weight: 900;
+          letter-spacing: .13em;
+          text-transform: uppercase;
+        }
+
+        .journey-range span:nth-child(2) {
+          color: #91a9b7;
+          font-size: .61rem;
+          letter-spacing: .15em;
+        }
+
+        .journey-range span:last-child {
+          text-align: right;
+        }
+
+        .journey-line {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          align-items: start;
+        }
+
+        .journey-line::before {
+          content: "";
+          position: absolute;
+
+          left: 10%;
+          right: 10%;
+          top: 23px;
+
+          height: 2px;
+
+          background:
+            linear-gradient(
+              90deg,
+              rgba(32,199,232,.18),
+              var(--cyan),
+              rgba(32,199,232,.18)
+            );
+
+          box-shadow: 0 0 16px rgba(32,199,232,.25);
+        }
+
+        .journey-step {
+          z-index: 2;
+        }
+
+        .journey-dot {
+          width: 42px;
+          height: 42px;
+
+          margin: 0 auto 10px;
+
+          display: grid;
+          place-items: center;
+
+          border-radius: 50%;
+          border: 1px solid rgba(32,199,232,.48);
+
+          background: rgba(3,18,29,.9);
+
+          color: #eafcff;
+          font-size: .98rem;
+
+          box-shadow:
+            0 0 0 5px rgba(3,16,27,.55),
+            0 0 22px rgba(32,199,232,.10);
+        }
+
+        .journey-step strong {
+          color: #e8f2f6;
+
+          font-size: .68rem;
+          font-weight: 850;
+
+          letter-spacing: .1em;
+          text-transform: uppercase;
+        }
+
+        .journey-step small {
+          margin-top: 3px;
+
+          color: #718d9d;
+          font-size: .61rem;
+        }
+
+
+        /* ---------- START JOURNEY ---------- */
+
+        .journey-start {
+          grid-column: 1 / -1;
+          justify-self: center;
+
+          display: inline-flex;
+          align-items: center;
+          gap: 9px;
+
+          font-size: .68rem;
+          letter-spacing: .13em;
+          text-transform: uppercase;
+        }
+
+        .journey-start span {
+          width: 28px;
+          height: 28px;
+
+          display: grid;
+          place-items: center;
+
+          border: 1px solid rgba(32,199,232,.32);
+          border-radius: 50%;
+
+          color: var(--cyan);
+        }
+
+        .journey-start:hover {
+          color: var(--cyan);
+        }
+
+
+        /* =====================================================
+           JOURNEY CARDS
+           Approx. 20% more compact than current presentation
+           ===================================================== */
+
+        #reisen {
+          padding-top: 18px;
+          padding-bottom: 38px;
+        }
+
+        .timeline:before {
+          left: 95px;
+        }
+
+        .era {
+          grid-template-columns: 62px minmax(0,1fr);
+          gap: 31px;
+          margin-bottom: 14px;
+        }
+
+        .era:before {
+          left: 87px;
+          top: 27px;
+
+          width: 14px;
+          height: 14px;
+
+          border-width: 3px;
+        }
+
+        .year {
+          padding-top: 22px;
+
+          font-size: .82rem;
+        }
+
+        .story {
+          padding: 13px 17px;
+          border-radius: 15px;
+        }
+
+        .story-grid {
+          grid-template-columns:
+            minmax(260px, 29%)
+            minmax(0,1fr);
+
+          gap: 23px;
+          align-items: start;
+        }
+
+        .story-media {
+          border-radius: 11px;
+          padding: 4px;
+        }
+
+        .story-media img,
+        .story.featured .story-media img {
+          width: 100%;
+          max-height: 205px;
+
+          object-fit: cover;
+        }
+
+        .story .ey {
+          margin-top: 1px;
+          margin-bottom: 5px;
+
+          font-size: .59rem;
+        }
+
+        .story h2 {
+          margin-top: 0;
+          margin-bottom: 7px;
+
+          font-size: clamp(1.12rem, 1.3vw, 1.46rem);
+          line-height: 1.13;
+        }
+
+        .story p {
+          margin-top: 6px;
+          margin-bottom: 6px;
+
+          font-size: .79rem;
+          line-height: 1.46;
+        }
+
+        .story .learning {
+          margin-top: 8px;
+          padding: 6px 9px;
+
+          font-size: .71rem;
+          line-height: 1.4;
+        }
+
+        .story .tech {
+          gap: 4px;
+          margin-top: 8px;
+        }
+
+        .story .tech span {
+          padding: 3px 6px;
+
+          font-size: .59rem;
+        }
+
+
+        /* ---------- TRANSITION ---------- */
+
+        .turn {
+          margin-top: 28px;
+          margin-bottom: 44px;
+
+          padding: 24px 28px;
+          border-radius: 18px;
+        }
+
+        .turn blockquote {
+          max-width: 1200px;
+
+          font-size: clamp(1.45rem, 2.2vw, 2.15rem);
+          line-height: 1.12;
+        }
+
+        .turn p {
+          font-size: .82rem;
+        }
+
+
+        /* =====================================================
+           AI / IANS FINALE
+           Approx. 25–30% more compact
+           ===================================================== */
+
+        .ai-finale {
+          padding-top: 34px;
+          padding-bottom: 38px;
+        }
+
+        .ai-hero {
+          grid-template-columns:
+            minmax(0,1fr)
+            minmax(390px,.82fr);
+
+          gap: 42px;
+        }
+
+        .ai-copy {
+          max-width: 680px;
+        }
+
+        .ai-copy h2 {
+          margin-bottom: .2em;
+
+          font-size: clamp(2rem, 3vw, 3.15rem);
+          line-height: .98;
+        }
+
+        .ai-copy .big {
+          max-width: 650px;
+
+          font-size: .88rem;
+          line-height: 1.5;
+        }
+
+        .ai-visual {
+          min-height: 210px;
+          max-width: 600px;
+
+          justify-self: end;
+        }
+
+        .ai-flow {
+          grid-template-columns:
+            1fr 27px
+            1fr 27px
+            1fr 27px
+            1fr;
+        }
+
+        .ai-node {
+          min-height: 88px;
+          padding: 10px;
+          border-radius: 14px;
+        }
+
+        .ai-node .ico {
+          margin-bottom: 7px;
+
+          font-size: 1.5rem;
+        }
+
+        .ai-node strong {
+          font-size: .72rem;
+        }
+
+        .ai-arrow {
+          font-size: 1.15rem;
+        }
+
+
+        /* ---------- 2003 -> 2026 ---------- */
+
+        .then-now {
+          margin-top: 24px;
+          margin-bottom: 34px;
+
+          grid-template-columns: 1fr 60px 1fr;
+          gap: 12px;
+        }
+
+        .epoch {
+          padding: 16px 19px;
+          border-radius: 15px;
+        }
+
+        .epoch .year-big {
+          margin-bottom: 8px;
+
+          font-size: 1.45rem;
+        }
+
+        .epoch .path {
+          margin-bottom: 9px;
+
+          font-size: .79rem;
+        }
+
+        .epoch .question {
+          font-size: .76rem;
+          line-height: 1.45;
+        }
+
+        .time-bridge span {
+          font-size: .58rem;
+        }
+
+        .time-bridge b {
+          font-size: 1.55rem;
+        }
+
+
+        /* ---------- IANS ---------- */
+
+        .ians-finale {
+          margin-top: 20px;
+
+          padding: 23px 125px 23px 26px;
+
+          border-radius: 18px;
+        }
+
+        .ians-finale h3 {
+          margin-bottom: .25em;
+
+          font-size: clamp(1.6rem, 2.35vw, 2.25rem);
+        }
+
+        .ians-finale p {
+          margin-top: 7px;
+          margin-bottom: 7px;
+
+          font-size: .79rem;
+          line-height: 1.45;
+        }
+
+        .ians-finale .mantra {
+          gap: 6px;
+          margin: 10px 0 5px;
+        }
+
+        .ians-finale .mantra span {
+          padding: 4px 8px;
+
+          font-size: .68rem;
+        }
+
+        .ians-finale .actions {
+          margin-top: 12px;
+        }
+
+        .ians-finale .button {
+          padding: 9px 13px;
+
+          font-size: .74rem;
+        }
+
+        .ians-orb {
+          right: 30px;
+
+          width: 82px;
+          height: 82px;
+        }
+
+        .ians-orb span {
+          font-size: 2.2rem;
+        }
+
+        .note {
+          margin-top: 18px;
+
+          font-size: .72rem;
+        }
+      }
+
+
+      /* =====================================================
+         V3 TABLET / MOBILE
+         Keep the existing mobile experience simple
+         ===================================================== */
+
+      @media (max-width: 1099px) {
+
+        .jhero-v3 {
+          padding: 70px 0 58px;
+        }
+
+        .jhero-v3 h1 {
+          margin: .16em 0 .24em;
+
+          font-size: clamp(3.5rem, 10vw, 5.5rem);
+          line-height: .9;
+          letter-spacing: -.055em;
+        }
+
+        .hero-intro {
+          max-width: 700px;
+
+          color: #d5e2e9;
+          line-height: 1.65;
+        }
+
+        .journey-summary {
+          margin-top: 46px;
+        }
+
+        .journey-range {
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
+
+          margin-bottom: 15px;
+
+          font-size: .7rem;
+          font-weight: 900;
+        }
+
+        .journey-range span:nth-child(2) {
+          color: var(--muted);
+          text-align: center;
+        }
+
+        .journey-range span:last-child {
+          text-align: right;
+        }
+
+        .journey-line {
+          display: grid;
+          grid-template-columns: repeat(5,1fr);
+        }
+
+        .journey-line::before {
+          content: "";
+
+          position: absolute;
+
+          left: 10%;
+          right: 10%;
+          top: 21px;
+
+          height: 2px;
+
+          background: rgba(32,199,232,.35);
+        }
+
+        .journey-step {
+          z-index: 2;
+        }
+
+        .journey-dot {
+          width: 40px;
+          height: 40px;
+
+          margin: auto;
+
+          display: grid;
+          place-items: center;
+
+          border-radius: 50%;
+          border: 1px solid rgba(32,199,232,.4);
+
+          background: #061522;
+        }
+
+        .journey-step strong {
+          margin-top: 8px;
+
+          font-size: .65rem;
+        }
+
+        .journey-step small {
+          color: var(--muted);
+
+          font-size: .59rem;
+        }
+
+        .journey-start {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+
+          margin-top: 34px;
+
+          font-size: .72rem;
+        }
+      }
+
+
+      @media (max-width: 620px) {
+
+        .jhero-v3 {
+          padding: 52px 0 48px;
+        }
+
+        .journey-range span:nth-child(2) {
+          display: none;
+        }
+
+        .journey-summary {
+          margin-top: 38px;
+          overflow: hidden;
+        }
+
+        .journey-dot {
+          width: 34px;
+          height: 34px;
+
+          font-size: .78rem;
+        }
+
+        .journey-line::before {
+          top: 18px;
+        }
+
+        .journey-step strong {
+          font-size: .55rem;
+        }
+
+        .journey-step small {
+          display: none;
+        }
+      }
+
+    
+      /* Interactive technology tags */
+      .story .tech span { cursor:pointer; transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease; }
+      .story .tech span:hover,.story .tech span:focus-visible { transform:translateY(-1px); border-color:rgba(32,199,232,.62); background:rgba(32,199,232,.14); box-shadow:0 0 0 3px rgba(32,199,232,.07); outline:none; }
+      .story .tech span.tech-related { border-color:rgba(32,199,232,.72); background:rgba(32,199,232,.17); }
+      .tech-dialog { width:min(620px,calc(100vw - 32px)); border:1px solid rgba(32,199,232,.28); border-radius:22px; padding:0; color:#eef8fb; background:linear-gradient(145deg,rgba(10,25,34,.98),rgba(6,15,22,.99)); box-shadow:0 28px 90px rgba(0,0,0,.55); }
+      .tech-dialog::backdrop { background:rgba(1,7,11,.72); backdrop-filter:blur(6px); }
+      .tech-dialog-inner { padding:28px; position:relative; }
+      .tech-dialog-kicker { margin:0 46px 7px 0; color:#20c7e8; font-size:.73rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+      .tech-dialog h2 { margin:0 46px 12px 0; font-size:clamp(1.55rem,4vw,2.25rem); letter-spacing:-.035em; }
+      .tech-dialog p { color:#c4d3dd; line-height:1.65; }
+      .tech-dialog-years { margin-top:18px; padding-top:16px; border-top:1px solid rgba(255,255,255,.09); font-size:.86rem; }
+      .tech-dialog-years strong { color:#eef8fb; }
+      .tech-dialog-close { position:absolute; top:18px; right:18px; width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); color:#eef8fb; font-size:1.35rem; cursor:pointer; }
+      .tech-dialog-close:hover,.tech-dialog-close:focus-visible { background:rgba(32,199,232,.14); border-color:rgba(32,199,232,.5); outline:none; }
+
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://www.ians.no/om-meg.html#henrik-bergfjord",
+        "name": "Henrik Bergfjord",
+        "url": "https://www.ians.no/en/om-meg.html",
+        "mainEntityOfPage": "https://www.ians.no/en/om-meg.html",
+        "description": "Henrik Bergfjord – technology professional, infrastructure- og skybakgrunn, med interesse for KI, energi, læring og praktisk utvikling.",
+        "knowsAbout": [
+          "IT-infrastruktur",
+          "Virtualisering",
+          "Microsoft Azure",
+          "Microsoft 365",
+          "Kunstig intelligens",
+          "Energisystemer",
+          "Kraftsystem"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="journey-page">
+      <header class="jwrap jnav">
+        <a class="brand" href="/en/">IANS</a
+        ><div class="jnav-right">
+          <div class="lang-switch" role="group" aria-label="Språk / Language">
+            <button type="button" id="lang-no" class="active" aria-pressed="true">NO</button>
+            <button type="button" id="lang-en" aria-pressed="false">EN</button>
+          </div>
+          <a class="back" href="/en/">← Tilbake til forsiden</a>
+        </div>
+      </header>
+      <main>
+        <section class="jwrap jhero-v3">
+          <div class="jhero-v3-copy">
+            <p class="ey">OM MEG · MIN REISE</p>
+
+            <h1>Fra serverrom<br />til <span>KI.</span></h1>
+
+            <p class="hero-intro">
+              Jeg begynte med teknologi du kunne ta på. Servere som måtte bæres
+              inn, installeres og holdes i live. Mer enn tjue år senere kan en
+              idé bli til en fungerende løsning på en kveld. Mellom disse
+              ytterpunktene ligger historien om hvordan teknologi har endret
+              seg – og hvordan den har formet måten jeg arbeider, lærer og
+              bygger på.
+            </p>
+          </div>
+
+          <div
+            class="journey-summary"
+            aria-label="Teknologireisen fra 2003 til 2026"
+          >
+            <div class="journey-range">
+              <span>2003</span>
+              <span>23 år med teknologiskifte</span>
+              <span>2026</span>
+            </div>
+
+            <div class="journey-line">
+              <div class="journey-step">
+                <span class="journey-dot">▣</span>
+                <strong>Server</strong>
+                <small>fysisk</small>
+              </div>
+
+              <div class="journey-step">
+                <span class="journey-dot">◇</span>
+                <strong>VM</strong>
+                <small>virtuelt</small>
+              </div>
+
+              <div class="journey-step">
+                <span class="journey-dot">☁</span>
+                <strong>Sky</strong>
+                <small>tjenester</small>
+              </div>
+
+              <div class="journey-step">
+                <span class="journey-dot">∞</span>
+                <strong>Hybrid</strong>
+                <small>koblet</small>
+              </div>
+
+              <div class="journey-step">
+                <span class="journey-dot">✦</span>
+                <strong>KI</strong>
+                <small>skape</small>
+              </div>
+            </div>
+          </div>
+
+          <a class="journey-start" href="#reisen">
+            <span>↓</span>
+            Start reisen
+          </a>
+        </section>
+        <section class="jwrap timeline" id="reisen">
+          <div class="era">
+            <div class="year">2003–04</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2004-serverrom.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2004-serverrom.jpg"
+                      alt="Illustrasjon av IT-miljøet ved starten av teknologireisen, med CRT-skjermer, arbeidsstasjoner og servere."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">DET BEGYNTE SOM ELEV</p>
+                  <h2>Fra skolebenken til ansvar for skolens IT-drift.</h2>
+                  <p>
+                    Mens jeg var elev ved Bergen Tekniske Fagskole i 2003–04
+                    begynte jeg å drifte skolens IT-miljø på de to studiestedene
+                    i Strandgaten 193 og Margaretastredet. Det ga meg tidlig
+                    praktisk ansvar for servere, arbeidsstasjoner, nettverk og
+                    den daglige infrastrukturen – før jeg egentlig var ferdig
+                    med utdanningen.
+                  </p>
+                  <p>
+                    Et av de første moderniseringsprosjektene startet med
+                    strømforbruket. Klasserommene hadde fortsatt CRT-skjermer og
+                    lange brukstider – enkelte dager var lokalene i bruk helt
+                    frem mot kl. 22. På BKK.no fant jeg en energiberegning der
+                    vi kunne sammenligne strømforbruket til eksisterende utstyr
+                    med nye LCD-skjermer, som jeg husker lå rundt 45 watt.
+                  </p>
+                  <p>
+                    Regnestykket viste en overraskende stor forskjell. Jeg
+                    husker ikke lenger alle forutsetningene vi la inn i kalkylen
+                    – blant annet om vi regnet med faktisk brukstid eller
+                    kontinuerlig drift. Det er tross alt mer enn tjue år siden.
+                    <strong
+                      >Men jeg husker resultatet: beregningen viste en
+                      tilbakebetalingstid på under to år, og skolen valgte å
+                      kjøpe inn komplette klassesett.</strong
+                    >
+                  </p>
+                  <p>
+                    Da utstyret kom, måtte det også settes effektivt i drift.
+                    Sammen med Norton Ghost brukte jeg imaging til å «tanke opp»
+                    hele klasserom med standardiserte installasjoner, fremfor å
+                    installere hver enkelt PC fra bunnen av.
+                  </p>
+                  <p>
+                    Det ble en tidlig erfaring med to prinsipper som har fulgt
+                    meg videre:
+                    <strong
+                      >Mål før du bestemmer deg – og standardiser det som kan
+                      standardiseres.</strong
+                    >
+                  </p>
+                  <div class="tech">
+                    <span>BTF</span><span>CRT → LCD</span
+                    ><span>Energiøkonomi</span><span>Imaging</span
+                    ><span>Standardisering</span><span>IT-drift</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2005</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2005-virtualisering.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2005-virtualisering.jpg"
+                      alt="Illustrasjon til En feil pekte mot en helt ny måte å bygge IT på."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">DET FØRSTE STORE SKIFTET</p>
+                  <h2>En feil pekte mot en helt ny måte å bygge IT på.</h2>
+                  <p>
+                    Hos itslearning møtte jeg et sikkerhetsproblem knyttet til
+                    DCOM i den eksisterende serverinfrastrukturen. I stedet for
+                    bare å reparere problemet anbefalte jeg å virtualisere de
+                    interne serverne med VMware.
+                  </p>
+                  <p>
+                    Det avgjørende var ikke bare å få færre fysiske bokser. Vi
+                    kunne ta et kontrollert utgangspunkt før oppgraderinger og
+                    patching, standardisere miljøene og komme raskere tilbake
+                    dersom noe gikk galt. Plutselig var en server ikke
+                    nødvendigvis en maskin.
+                  </p>
+                  <div class="tech">
+                    <span>VMware</span><span>Active Directory</span
+                    ><span>Fil/print</span><span>SAN</span
+                    ><span>Virtualisering</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2006</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2006-infrastruktur.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2006-infrastruktur.jpg"
+                      alt="Illustrasjon til Fra noen servere til hel infrastruktur."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">NÅ MÅTTE DET SKALERE</p>
+                  <h2>Fra noen servere til hel infrastruktur.</h2>
+                  <p>
+                    itslearning vokste, og infrastrukturen måtte vokse med
+                    selskapet. Jeg arbeidet med design av nettverk, serverrom,
+                    kjøling, lagring og samband – og med planleggingen av en
+                    fysisk flytting der også e-postsystemet skulle over med
+                    svært begrenset nedetid.
+                  </p>
+                  <p>
+                    Her ble det tydelig at IT ikke bare handler om serveren.
+                    Strøm, kjøling, nettverk, leverandører, risiko, mennesker og
+                    tidspunkt må virke sammen.
+                  </p>
+                  <div class="tech">
+                    <span>Serverrom</span><span>Nettverk</span
+                    ><span>Kjøling</span><span>On-prem e-post</span
+                    ><span>Driftsplanlegging</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2011–20</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2011-2020-datasenter-sky.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2011-2020-datasenter-sky.jpg"
+                      alt="Illustrasjon til IT flyttet gradvis ut av rommet."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">FRA SERVERROM TIL TJENESTER</p>
+                  <h2>IT flyttet gradvis ut av rommet.</h2>
+                  <p>
+                    De neste årene ble reisen en blanding av migreringer,
+                    virtualisering, terminalservere, datasentre og etter hvert
+                    skytjenester. Office 365 kom tidlig inn i bildet. E-post ble
+                    flyttet fra Domino til Exchange. Kundemiljøer ble flyttet
+                    til datasenter. VMware var blitt hverdagsverktøy.
+                  </p>
+                  <p>
+                    Teknologien endret seg, men arbeidet handlet stadig mer om
+                    overgangen mellom gammelt og nytt – uten at virksomheten
+                    kunne stoppe mens vi gjorde det.
+                  </p>
+                  <div class="tech">
+                    <span>Office 365</span><span>Exchange</span
+                    ><span>VMware</span><span>RDS</span
+                    ><span>Active Directory</span><span>Datasenter</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2020–25</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2020-2026-hybrid-cloud.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2020-2026-hybrid-cloud.jpg"
+                      alt="Illustrasjon til Skyen erstattet ikke alt. Den koblet seg på alt."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">HYBRID BLIR NORMALEN</p>
+                  <h2>Skyen erstattet ikke alt. Den koblet seg på alt.</h2>
+                  <p>
+                    Arbeidet ble stadig mer hybrid: on-prem, Azure, Microsoft
+                    365, identitet, MFA, Conditional Access, sikkerhet og
+                    automasjon. Nye tjenester måtte spille sammen med
+                    eksisterende systemer – ofte i miljøer der stabilitet og
+                    sikkerhet var viktigere enn å bruke det nyeste for enhver
+                    pris.
+                  </p>
+                  <p>
+                    I denne perioden arbeidet jeg også med virksomhetskritiske
+                    løsninger rundt fysisk handel i kraftmarkedet. Det gjorde
+                    koblingen mellom digital infrastruktur, sikker drift og den
+                    fysiske energiverdenen tydeligere.
+                  </p>
+                  <div class="tech">
+                    <span>Azure</span><span>Microsoft 365</span><span>MFA</span
+                    ><span>Conditional Access</span
+                    ><span>Hybrid infrastruktur</span><span>Energi</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2026</div>
+            <article class="story featured">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2026-azure-local.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2026-azure-local.jpg"
+                      alt="Illustrasjon av moderne Azure Local-infrastruktur med tre noder, redundant nettverk og Azure-integrasjon"
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">SKYEN KOMMER TILBAKE TIL DATASENTERET</p>
+                  <h2>
+                    Moderne lokal infrastruktur – styrt som en del av skyen.
+                  </h2>
+                  <p>
+                    I et av mine siste prosjekter arbeidet jeg med design og
+                    workshopgrunnlag for en Azure Local-løsning: lokal compute,
+                    lagring og nettverk kombinert med styring, sikkerhet og
+                    tjenester gjennom Azure.
+                  </p>
+                  <p>
+                    Det interessante er hvordan reisen på mange måter binder seg
+                    sammen. Fra fysiske servere, via virtualisering og offentlig
+                    sky, til en moderne hybrid plattform der lokal infrastruktur
+                    igjen står sentralt – men nå med skyens styringsmodell rundt
+                    seg.
+                  </p>
+                  <div class="tech">
+                    <span>Azure Local</span><span>Azure Arc</span
+                    ><span>Hyper-V</span><span>Cluster</span><span>MLAG</span
+                    ><span>SMB Direct</span><span>Hybrid infrastruktur</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2026</div>
+            <article class="story">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2026-energi-kraftnett.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2026-energi-kraftnett.jpg"
+                      alt="Illustrasjon av hybrid infrastruktur, backup og disaster recovery."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">TILBAKE TIL GRUNNMUREN</p>
+                  <h2>Hybrid infrastruktur, backup og disaster recovery.</h2>
+                  <p>
+                    Det siste året i konsulentrollen førte meg også tilbake til
+                    selve infrastrukturen: virtualisering, backup,
+                    gjenoppretting, nettverk og beredskap. Jeg arbeidet med en
+                    hybrid løsning der produksjon, lokal backup, offsite-kopi og
+                    disaster recovery måtte ses som én sammenhengende kjede.
+                  </p>
+                  <p>
+                    En eksisterende VMware-plattform ble brukt som midlertidig
+                    DR-mål, samtidig som veien videre ble planlagt mot en
+                    moderne Hyper-V-basert løsning. Parallelt arbeidet jeg med
+                    nettverkssegmentering og tydeligere skille mellom
+                    produksjon, klienter, infrastruktur og andre soner.
+                  </p>
+                  <p class="learning">
+                    <strong>Faglig påfyll i 2026:</strong> AZ-104 · AZ-800 ·
+                    AZ-801 – Azure-administrasjon og hybride Windows
+                    Server-miljøer.
+                  </p>
+                  <div class="tech">
+                    <span>Hyper-V</span><span>VMware</span
+                    ><span>Disaster Recovery</span><span>Backup</span
+                    ><span>Azure</span><span>Nettverkssegmentering</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="era">
+            <div class="year">2026 →</div>
+            <article class="story featured">
+              <div class="story-grid">
+                <div class="story-media">
+                  <a
+                    href="/assets/reise/reise-2026-kraftsystem-planlegging.jpg"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Åpne bildet i full størrelse"
+                    ><img
+                      src="/assets/reise/reise-2026-kraftsystem-planlegging.jpg"
+                      alt="Illustrasjon av kraftsystem, transmisjonsnett og planlegging."
+                      loading="lazy"
+                      decoding="async"
+                  /></a>
+                </div>
+                <div class="story-copy">
+                  <p class="ey">ET NYTT KAPITTEL</p>
+                  <h2>
+                    Fra infrastrukturen bak systemene til infrastrukturen bak
+                    samfunnet.
+                  </h2>
+                  <p>
+                    1. oktober 2026 begynner jeg som Planner i Statnett. Etter
+                    mange år med IT-infrastruktur, sky og løsninger rundt
+                    energimarkedet går reisen nærmere selve kraftsystemet.
+                  </p>
+                  <p>
+                    Det føles ikke som å forlate teknologien. Snarere som å
+                    følge den helt ned til grunnmuren: Datakraft trenger energi.
+                    Energi trenger nett. Og kapasitet må planlegges før den kan
+                    brukes.
+                  </p>
+                  <div class="tech">
+                    <span>Planlegging</span><span>Kraftsystem</span
+                    ><span>Infrastruktur</span><span>Læring</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section class="jwrap">
+          <div class="turn">
+            <blockquote>
+              Det største skiftet er kanskje ikke hva teknologien kan gjøre –
+              men hva én person kan skape med den.
+            </blockquote>
+            <p>
+              Fra fysiske servere og virtualisering til hybrid infrastruktur,
+              kraftsystemer og KI-assistert utvikling.
+            </p>
+          </div>
+        </section>
+
+        <section class="jwrap ai-finale">
+          <div class="ai-hero">
+            <div class="ai-copy">
+              <p class="ey">OG SÅ KOM KI</p>
+              <h2>Nå flyttes grensen<br />én gang til.</h2>
+              <p class="big">
+                Jeg har sett fysiske servere bli virtuelle. Serverrom bli
+                datasentre. Datasentre bli sky. Manuelle installasjoner bli
+                automatisering. Men KI oppleves annerledes: teknologien kan nå
+                være med i selve tanke- og skapelsesprosessen.
+              </p>
+            </div>
+            <div
+              class="ai-visual"
+              aria-label="Fra idé via KI og kode til fungerende løsning"
+            >
+              <div class="ai-flow">
+                <div class="ai-node">
+                  <div class="ico">💡</div>
+                  <strong>Idé</strong>
+                </div>
+                <div class="ai-arrow">→</div>
+                <div class="ai-node">
+                  <div class="ico">🧠</div>
+                  <strong>Dialog med KI</strong>
+                </div>
+                <div class="ai-arrow">→</div>
+                <div class="ai-node">
+                  <div class="ico">⌨️</div>
+                  <strong>Bygge &amp; teste</strong>
+                </div>
+                <div class="ai-arrow">→</div>
+                <div class="ai-node">
+                  <div class="ico">🚀</div>
+                  <strong>Fungerende løsning</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="then-now">
+            <article class="epoch">
+              <span class="year-big">2003</span>
+              <p class="path">🖥️ Måle → beregne → modernisere → drifte</p>
+              <p class="question">
+                «Hva bruker teknologien – og lønner det seg å gjøre dette på en
+                bedre måte?»
+              </p>
+            </article>
+            <div class="time-bridge"><span>23 år</span><b>→</b></div>
+            <article class="epoch">
+              <span class="year-big">2026</span>
+              <p class="path">
+                💡 Idé → dialog med KI → bygge → teste → publisere
+              </p>
+              <p class="question">
+                «Kan jeg beskrive ideen, diskutere den med KI – og bygge
+                løsningen selv?»
+              </p>
+            </article>
+          </div>
+
+          <div class="ians-finale">
+            <p class="ey">DERFOR FINNES IANS</p>
+            <h3>Et sted der ideer får lov til å bli virkelige.</h3>
+            <p>
+              IANS er mitt personlige laboratorium. Her kan en idé bli til kode,
+              en nettside, et verktøy, en analyse eller et helt lite prosjekt.
+              ChatGPT er en del av arbeidsmåten – ikke fordi KI gjør alt, men
+              fordi avstanden fra idé til læring, utprøving og fungerende
+              løsning har blitt dramatisk kortere.
+            </p>
+            <div class="mantra">
+              <span>Prøve.</span><span>Bygge.</span><span>Lære.</span
+              ><span>Dele.</span>
+            </div>
+            <p>
+              Jeg vet ikke nøyaktig hvor dette ender. Det er nettopp derfor det
+              er interessant å utforske.
+            </p>
+            <div class="actions">
+              <a class="button primary" href="/en/prosjekter.html"
+                >Se hva vi har bygget →</a
+              >
+              <a class="button" href="/en/plattformen.html"
+                >Utforsk teknologiskiftet →</a
+              >
+              <a class="button" href="/en/veien-videre.html">Veien videre →</a>
+            </div>
+            <div class="ians-orb" aria-hidden="true"><span>🤖</span></div>
+          </div>
+
+          <p class="note">
+            Dette er en personlig fortelling basert på min yrkesreise og
+            utvalgte prosjekter. Den er bevisst skrevet som historie, ikke som
+            en fullstendig CV. IANS er et personlig prosjekt og er uavhengig av
+            nåværende og tidligere arbeidsgivere.
+          </p>
+        </section>
+      </main>
+      <footer class="jwrap jfoot">
+        <p>IANS · Et personlig prosjekt av Henrik Bergfjord</p>
+        <p>
+          <a href="/en/">Hjem</a> · <a href="/en/prosjekter.html">Prosjekter</a> ·
+          <a href="/teknisk.html">Teknisk</a>
+        </p>
+      </footer>
+    </div>
+  
+<script>
+/* COMPLETE NO/EN LANGUAGE LAYER · rebuilt from intact om-megno.html */
+(function () {
+  const EN = {"← Tilbake til forsiden": "← Back to home", "MIN REISE · 2003 → 2026": "MY JOURNEY · 2003 → 2026", "Fra serverrom": "From server rooms", "til": "to", "KI.": "AI.", "Scroll reisen": "Explore the journey", "Teknologireisen fra 2003 til 2026": "The technology journey from 2003 to 2026", "fysisk": "physical", "virtuelt": "virtual", "Sky": "Cloud", "tjenester": "services", "koblet": "connected", "skape": "create", "DET BEGYNTE SOM ELEV": "IT STARTED AS A STUDENT", "Fra skolebenken til ansvar for skolens IT-drift.": "From the classroom to responsibility for the school's IT operations.", "DET FØRSTE STORE SKIFTET": "THE FIRST MAJOR SHIFT", "En feil pekte mot en helt ny måte å bygge IT på.": "A fault pointed toward an entirely new way of building IT.", "NÅ MÅTTE DET SKALERE": "NOW IT HAD TO SCALE", "Fra noen servere til hel infrastruktur.": "From a few servers to complete infrastructure.", "FRA SERVERROM TIL TJENESTER": "FROM SERVER ROOMS TO SERVICES", "IT flyttet gradvis ut av rommet.": "IT gradually moved out of the room.", "HYBRID BLIR NORMALEN": "HYBRID BECOMES THE NORM", "Skyen erstattet ikke alt. Den koblet seg på alt.": "The cloud did not replace everything. It connected to everything.", "SKYEN KOMMER TILBAKE TIL DATASENTERET": "THE CLOUD RETURNS TO THE DATA CENTER", "Moderne lokal infrastruktur – styrt som en del av skyen.": "Modern local infrastructure – managed as part of the cloud.", "TILBAKE TIL GRUNNMUREN": "BACK TO THE FOUNDATION", "Hybrid infrastruktur, backup og disaster recovery.": "Hybrid infrastructure, backup and disaster recovery.", "ET NYTT KAPITTEL": "A NEW CHAPTER", "Fra infrastrukturen bak systemene til infrastrukturen bak samfunnet.": "From the infrastructure behind systems to the infrastructure behind society.", "OG SÅ KOM KI": "AND THEN CAME AI", "Nå flyttes grensen": "Now the boundary moves", "én gang til.": "once again.", "Idé": "Idea", "Dialog med KI": "Dialogue with AI", "Bygge & teste": "Build & test", "Fungerende løsning": "Working solution", "23 år": "23 years", "DERFOR FINNES IANS": "WHY IANS EXISTS", "Et sted der ideer får lov til å bli virkelige.": "A place where ideas are allowed to become real.", "Prøve.": "Try.", "Bygge.": "Build.", "Lære.": "Learn.", "Dele.": "Share.", "Planlegging": "Planning", "Kraftsystem": "Power system", "Infrastruktur": "Infrastructure", "Læring": "Learning", "Serverrom": "Server room", "Nettverk": "Network", "Kjøling": "Cooling", "Driftsplanlegging": "Operations planning", "Datasenter": "Data center", "Hybrid infrastruktur": "Hybrid infrastructure", "Energi": "Energy", "Nettverkssegmentering": "Network segmentation", "Energiøkonomi": "Energy economics", "Standardisering": "Standardization", "IT-drift": "IT operations", "Fil/print": "File/print", "Virtualisering": "Virtualization", "Mer enn tjue år med teknologi har lært meg én ting: Det som virker stort og nytt i dag, blir fort grunnmuren vi bygger videre på i morgen. Dette er ikke hele CV-en min. Det er historien om noen av skiftene som formet måten jeg tenker på – og hvorfor IANS finnes.": "More than twenty years in technology have taught me one thing: what feels big and new today quickly becomes the foundation we build on tomorrow. This is not my complete CV. It is the story of some of the shifts that shaped how I think – and why IANS exists.", "Da jeg startet i IT, var infrastrukturen noe du kunne ta på.": "When I started in IT, infrastructure was something you could physically touch.", "Servere skulle bestilles, bæres inn, monteres, installeres og holdes i live. I dag kan jeg sitte med en idé, diskutere den med KI og bygge noe fungerende på en kveld. Mellom de to ytterpunktene ligger en ganske interessant reise.": "Servers had to be ordered, carried in, mounted, installed and kept alive. Today I can sit with an idea, discuss it with AI and build something that works in an evening. Between those two extremes lies a rather interesting journey.", "Mens jeg var elev ved Bergen Tekniske Fagskole i 2003–04 begynte jeg å drifte skolens IT-miljø på de to studiestedene i Strandgaten 193 og Margaretastredet. Det ga meg tidlig praktisk ansvar for servere, arbeidsstasjoner, nettverk og den daglige infrastrukturen – før jeg egentlig var ferdig med utdanningen.": "While I was a student at Bergen Technical College in 2003–04, I began operating the school's IT environment at its two campuses in Strandgaten 193 and Margaretastredet. It gave me hands-on responsibility for servers, workstations, networks and day-to-day infrastructure before I had even finished my education.", "Et av de første moderniseringsprosjektene startet med strømforbruket. Klasserommene hadde fortsatt CRT-skjermer og lange brukstider – enkelte dager var lokalene i bruk helt frem mot kl. 22. På BKK.no fant jeg en energiberegning der vi kunne sammenligne strømforbruket til eksisterende utstyr med nye LCD-skjermer, som jeg husker lå rundt 45 watt.": "One of the first modernization projects started with power consumption. The classrooms still had CRT monitors and long operating hours – on some days the rooms were in use until around 10 p.m. On BKK.no I found an energy calculator that let us compare the electricity use of the existing equipment with new LCD monitors, which I remember were rated at around 45 watts.", "Regnestykket viste en overraskende stor forskjell. Jeg husker ikke lenger alle forutsetningene vi la inn i kalkylen – blant annet om vi regnet med faktisk brukstid eller kontinuerlig drift. Det er tross alt mer enn tjue år siden.": "The calculation showed a surprisingly large difference. I no longer remember every assumption we entered – including whether we used actual operating hours or continuous operation. After all, it was more than twenty years ago.", "Men jeg husker resultatet: beregningen viste en tilbakebetalingstid på under to år, og skolen valgte å kjøpe inn komplette klassesett.": "But I remember the result: the calculation showed a payback period of less than two years, and the school decided to purchase complete classroom sets.", "Da utstyret kom, måtte det også settes effektivt i drift. Sammen med Norton Ghost brukte jeg imaging til å «tanke opp» hele klasserom med standardiserte installasjoner, fremfor å installere hver enkelt PC fra bunnen av.": "When the equipment arrived, it also had to be deployed efficiently. Using Norton Ghost, I used imaging to provision entire classrooms with standardized installations instead of installing every PC from scratch.", "Det ble en tidlig erfaring med to prinsipper som har fulgt meg videre:": "It became an early lesson in two principles that have stayed with me:", "Mål før du bestemmer deg – og standardiser det som kan standardiseres.": "Measure before you decide – and standardize what can be standardized.", "Hos itslearning møtte jeg et sikkerhetsproblem knyttet til DCOM i den eksisterende serverinfrastrukturen. I stedet for bare å reparere problemet anbefalte jeg å virtualisere de interne serverne med VMware.": "At itslearning I encountered a security problem related to DCOM in the existing server infrastructure. Instead of simply repairing the problem, I recommended virtualizing the internal servers with VMware.", "Det avgjørende var ikke bare å få færre fysiske bokser. Vi kunne ta et kontrollert utgangspunkt før oppgraderinger og patching, standardisere miljøene og komme raskere tilbake dersom noe gikk galt. Plutselig var en server ikke nødvendigvis en maskin.": "The key benefit was not simply having fewer physical boxes. We could create a controlled starting point before upgrades and patching, standardize environments and recover faster if something went wrong. Suddenly, a server was no longer necessarily a machine.", "itslearning vokste, og infrastrukturen måtte vokse med selskapet. Jeg arbeidet med design av nettverk, serverrom, kjøling, lagring og samband – og med planleggingen av en fysisk flytting der også e-postsystemet skulle over med svært begrenset nedetid.": "itslearning was growing, and the infrastructure had to grow with the company. I worked on the design of networks, server rooms, cooling, storage and connectivity – and planned a physical relocation in which the email system also had to move with very limited downtime.", "Her ble det tydelig at IT ikke bare handler om serveren. Strøm, kjøling, nettverk, leverandører, risiko, mennesker og tidspunkt må virke sammen.": "This made it clear that IT is about more than the server. Power, cooling, networks, suppliers, risk, people and timing all have to work together.", "De neste årene ble reisen en blanding av migreringer, virtualisering, terminalservere, datasentre og etter hvert skytjenester. Office 365 kom tidlig inn i bildet. E-post ble flyttet fra Domino til Exchange. Kundemiljøer ble flyttet til datasenter. VMware var blitt hverdagsverktøy.": "Over the following years, the journey became a mix of migrations, virtualization, terminal servers, data centers and eventually cloud services. Office 365 entered the picture early. Email moved from Domino to Exchange. Customer environments moved into data centers. VMware had become an everyday tool.", "Teknologien endret seg, men arbeidet handlet stadig mer om overgangen mellom gammelt og nytt – uten at virksomheten kunne stoppe mens vi gjorde det.": "The technology changed, but the work increasingly centered on the transition between old and new – without the business being able to stop while we made that transition.", "Arbeidet ble stadig mer hybrid: on-prem, Azure, Microsoft 365, identitet, MFA, Conditional Access, sikkerhet og automasjon. Nye tjenester måtte spille sammen med eksisterende systemer – ofte i miljøer der stabilitet og sikkerhet var viktigere enn å bruke det nyeste for enhver pris.": "The work became increasingly hybrid: on-premises, Azure, Microsoft 365, identity, MFA, Conditional Access, security and automation. New services had to work with existing systems – often in environments where stability and security mattered more than using the newest technology at any cost.", "I denne perioden arbeidet jeg også med virksomhetskritiske løsninger rundt fysisk handel i kraftmarkedet. Det gjorde koblingen mellom digital infrastruktur, sikker drift og den fysiske energiverdenen tydeligere.": "During this period I also worked with business-critical solutions supporting physical trading in the power market. It made the connection between digital infrastructure, reliable operations and the physical energy world much clearer.", "I et av mine siste prosjekter arbeidet jeg med design og workshopgrunnlag for en Azure Local-løsning: lokal compute, lagring og nettverk kombinert med styring, sikkerhet og tjenester gjennom Azure.": "In one of my final projects, I worked on design and workshop material for an Azure Local solution: local compute, storage and networking combined with management, security and services through Azure.", "Det interessante er hvordan reisen på mange måter binder seg sammen. Fra fysiske servere, via virtualisering og offentlig sky, til en moderne hybrid plattform der lokal infrastruktur igjen står sentralt – men nå med skyens styringsmodell rundt seg.": "What is interesting is how the journey comes full circle in many ways. From physical servers, through virtualization and public cloud, to a modern hybrid platform where local infrastructure is central again – now surrounded by the cloud's management model.", "Det siste året i konsulentrollen førte meg også tilbake til selve infrastrukturen: virtualisering, backup, gjenoppretting, nettverk og beredskap. Jeg arbeidet med en hybrid løsning der produksjon, lokal backup, offsite-kopi og disaster recovery måtte ses som én sammenhengende kjede.": "My final year in consulting also brought me back to infrastructure itself: virtualization, backup, recovery, networking and preparedness. I worked with a hybrid solution where production, local backup, an offsite copy and disaster recovery had to be treated as one continuous chain.", "En eksisterende VMware-plattform ble brukt som midlertidig DR-mål, samtidig som veien videre ble planlagt mot en moderne Hyper-V-basert løsning. Parallelt arbeidet jeg med nettverkssegmentering og tydeligere skille mellom produksjon, klienter, infrastruktur og andre soner.": "An existing VMware platform was used as a temporary DR target while the path forward was planned toward a modern Hyper-V-based solution. In parallel, I worked on network segmentation and clearer separation between production, clients, infrastructure and other zones.", "Faglig påfyll i 2026:": "Professional development in 2026:", "AZ-104 · AZ-800 · AZ-801 – Azure-administrasjon og hybride Windows Server-miljøer.": "AZ-104 · AZ-800 · AZ-801 – Azure administration and hybrid Windows Server environments.", "1. oktober 2026 begynner jeg som Planner i Statnett. Etter mange år med IT-infrastruktur, sky og løsninger rundt energimarkedet går reisen nærmere selve kraftsystemet.": "On 1 October 2026 I begin as a Planner at Statnett. After many years of IT infrastructure, cloud technology and solutions around the energy market, the journey moves closer to the power system itself.", "Det føles ikke som å forlate teknologien. Snarere som å følge den helt ned til grunnmuren: Datakraft trenger energi. Energi trenger nett. Og kapasitet må planlegges før den kan brukes.": "It does not feel like leaving technology. Rather, it feels like following it all the way down to the foundation: computing power needs energy. Energy needs a grid. And capacity must be planned before it can be used.", "Det største skiftet er kanskje ikke hva teknologien kan gjøre – men hva én person kan skape med den.": "Perhaps the biggest shift is not what technology can do – but what one person can create with it.", "Fra fysiske servere og virtualisering til hybrid infrastruktur, kraftsystemer og KI-assistert utvikling.": "From physical servers and virtualization to hybrid infrastructure, power systems and AI-assisted development.", "Jeg har sett fysiske servere bli virtuelle. Serverrom bli datasentre. Datasentre bli sky. Manuelle installasjoner bli automatisering. Men KI oppleves annerledes: teknologien kan nå være med i selve tanke- og skapelsesprosessen.": "I have seen physical servers become virtual. Server rooms become data centers. Data centers become cloud. Manual installations become automation. But AI feels different: technology can now take part in the thinking and creation process itself.", "🖥️ Måle → beregne → modernisere → drifte": "🖥️ Measure → calculate → modernize → operate", "«Hva bruker teknologien – og lønner det seg å gjøre dette på en bedre måte?»": "“What does the technology consume – and does it pay to do this in a better way?”", "💡 Idé → dialog med KI → bygge → teste → publisere": "💡 Idea → dialogue with AI → build → test → publish", "«Kan jeg beskrive ideen, diskutere den med KI – og bygge løsningen selv?»": "“Can I describe the idea, discuss it with AI – and build the solution myself?”", "IANS er mitt personlige laboratorium. Her kan en idé bli til kode, en nettside, et verktøy, en analyse eller et helt lite prosjekt. ChatGPT er en del av arbeidsmåten – ikke fordi KI gjør alt, men fordi avstanden fra idé til læring, utprøving og fungerende løsning har blitt dramatisk kortere.": "IANS is my personal laboratory. Here an idea can become code, a website, a tool, an analysis or an entire small project. ChatGPT is part of the way I work – not because AI does everything, but because the distance from idea to learning, experimentation and a working solution has become dramatically shorter.", "Åpne bildet i full størrelse": "Open image full size", "Illustrasjon av IT-miljøet ved starten av teknologireisen, med CRT-skjermer, arbeidsstasjoner og servere.": "Illustration of the IT environment at the start of the technology journey, with CRT monitors, workstations and servers.", "Illustrasjon til En feil pekte mot en helt ny måte å bygge IT på.": "Illustration for a fault pointing toward an entirely new way of building IT.", "Illustrasjon til Fra noen servere til hel infrastruktur.": "Illustration of the transition from a few servers to complete infrastructure.", "Illustrasjon til IT flyttet gradvis ut av rommet.": "Illustration of IT gradually moving out of the server room.", "Illustrasjon til Skyen erstattet ikke alt. Den koblet seg på alt.": "Illustration of the cloud connecting to existing infrastructure rather than replacing everything.", "Illustrasjon av moderne Azure Local-infrastruktur med tre noder, redundant nettverk og Azure-integrasjon": "Illustration of modern Azure Local infrastructure with three nodes, redundant networking and Azure integration", "Illustrasjon av hybrid infrastruktur, backup og disaster recovery.": "Illustration of hybrid infrastructure, backup and disaster recovery.", "Illustrasjon av kraftsystem, transmisjonsnett og planlegging.": "Illustration of the power system, transmission grid and planning.", "Fra idé via KI og kode til fungerende løsning": "From idea through AI and code to a working solution", "Server": "Server", "VM": "VM", "Hybrid": "Hybrid", "KI": "AI", "Jeg vet ikke nøyaktig hvor dette ender. Det er nettopp derfor det er interessant å utforske.": "I do not know exactly where this will end. That is precisely why it is interesting to explore.", "Se hva vi har bygget →": "See what we have built →", "Utforsk teknologiskiftet →": "Explore the technology shift →", "Veien videre →": "What comes next →", "Dette er en personlig fortelling basert på min yrkesreise og utvalgte prosjekter. Den er bevisst skrevet som historie, ikke som en fullstendig CV. IANS er et personlig prosjekt og er uavhengig av nåværende og tidligere arbeidsgivere.": "This is a personal story based on my professional journey and selected projects. It is deliberately written as a story, not as a complete CV. IANS is a personal project and is independent of current and former employers.", "IANS · Et personlig prosjekt av Henrik Bergfjord": "IANS · A personal project by Henrik Bergfjord", "Hjem": "Home", "Prosjekter": "Projects", "Teknisk": "Technical"};
+  const ATTRS = ["aria-label","alt","title"];
+  const originalText = new WeakMap();
+  const originalAttrs = new WeakMap();
+
+  function norm(s) { return (s || "").replace(/\s+/g," ").trim(); }
+
+  function remember() {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let n;
+    while ((n = walker.nextNode())) {
+      if (norm(n.nodeValue)) originalText.set(n, n.nodeValue);
+    }
+    document.querySelectorAll("*").forEach(el => {
+      const vals = {};
+      ATTRS.forEach(a => { if (el.hasAttribute(a)) vals[a] = el.getAttribute(a); });
+      if (Object.keys(vals).length) originalAttrs.set(el, vals);
+    });
+  }
+
+  function translateRaw(raw) {
+    const key = norm(raw);
+    if (EN[key]) {
+      const lead = (raw.match(/^\s*/) || [""])[0];
+      const tail = (raw.match(/\s*$/) || [""])[0];
+      return lead + EN[key] + tail;
+    }
+    return raw;
+  }
+
+  function setEnglish() {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let n;
+    while ((n = walker.nextNode())) {
+      const raw = originalText.get(n) ?? n.nodeValue;
+      n.nodeValue = translateRaw(raw);
+    }
+    document.querySelectorAll("*").forEach(el => {
+      const vals = originalAttrs.get(el) || {};
+      ATTRS.forEach(a => {
+        const raw = vals[a];
+        if (raw && EN[norm(raw)]) el.setAttribute(a, EN[norm(raw)]);
+      });
+    });
+    document.documentElement.lang = "en";
+    document.title = "Henrik Bergfjord · My journey · IANS";
+  }
+
+  function setNorwegian() {
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    let n;
+    while ((n = walker.nextNode())) {
+      if (originalText.has(n)) n.nodeValue = originalText.get(n);
+    }
+    document.querySelectorAll("*").forEach(el => {
+      const vals = originalAttrs.get(el);
+      if (vals) Object.entries(vals).forEach(([a,v]) => el.setAttribute(a,v));
+    });
+    document.documentElement.lang = "nb";
+    document.title = "Henrik Bergfjord · Min reise · IANS";
+  }
+
+  function apply(lang) {
+    lang = lang === "en" ? "en" : "no";
+    if (lang === "en") setEnglish(); else setNorwegian();
+    const no = document.getElementById("lang-no");
+    const en = document.getElementById("lang-en");
+    if (no && en) {
+      no.classList.toggle("active", lang === "no");
+      en.classList.toggle("active", lang === "en");
+      no.setAttribute("aria-pressed", lang === "no" ? "true" : "false");
+      en.setAttribute("aria-pressed", lang === "en" ? "true" : "false");
+    }
+    try { localStorage.setItem("ians-language", lang); } catch(e) {}
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    remember();
+    const no = document.getElementById("lang-no");
+    const en = document.getElementById("lang-en");
+    if (no) no.addEventListener("click", () => location.href="/om-meg.html"+location.hash);
+    if (en) en.addEventListener("click", () => apply("en"));
+    let saved = "no";
+    try { saved = localStorage.getItem("ians-language") || "no"; } catch(e) {}
+    apply("en");
+  });
+})();
+</script>
+
+  
+    <dialog class="tech-dialog" id="tech-dialog" aria-labelledby="tech-dialog-title">
+      <div class="tech-dialog-inner">
+        <button class="tech-dialog-close" type="button" aria-label="Lukk">×</button>
+        <p class="tech-dialog-kicker" id="tech-dialog-kicker">TEKNOLOGI I REISEN</p>
+        <h2 id="tech-dialog-title"></h2>
+        <p id="tech-dialog-text"></p>
+        <p class="tech-dialog-years" id="tech-dialog-years"></p>
+      </div>
+    </dialog>
+
+<script>
+/* Interactive technology tags · IANS */
+(function () {
+  const INFO = {
+    "BTF": ["Bergen Tekniske Fagskole – utgangspunktet for reisen, der teori raskt ble koblet til praktisk ansvar for skolens IT-miljø.", "Bergen Technical College – the starting point of the journey, where theory quickly became connected to hands-on responsibility for the school's IT environment."],
+    "CRT → LCD": ["Overgangen fra CRT- til LCD-skjermer ble et tidlig moderniseringsprosjekt der energibruk og tilbakebetalingstid ble en del av teknologivalget.", "The move from CRT to LCD displays became an early modernization project where energy use and payback time became part of the technology decision."],
+    "Energiøkonomi": ["Å måle strømforbruk og regne på gevinsten før investering – et tidlig eksempel på å koble teknologi, drift og økonomi.", "Measuring power consumption and calculating the benefit before investing – an early example of connecting technology, operations and economics."],
+    "Imaging": ["Standardiserte PC-installasjoner ble rullet ut med imaging og Norton Ghost i stedet for å installere hver maskin manuelt.", "Standardized PC installations were deployed with imaging and Norton Ghost instead of installing every machine manually."],
+    "Standardisering": ["Like oppsett gjør utrulling, drift, feilsøking og gjenoppretting enklere – et prinsipp som følger hele teknologireisen.", "Consistent configurations make deployment, operations, troubleshooting and recovery easier – a principle that runs through the entire technology journey."],
+    "IT-drift": ["Den praktiske hverdagen rundt servere, klienter, nettverk, tilgjengelighet og brukere – grunnlaget for de senere stegene i reisen.", "The practical day-to-day work around servers, clients, networks, availability and users – the foundation for the later stages of the journey."],
+    "VMware": ["Virtualisering skilte serveren fra den fysiske maskinen og ga nye muligheter for standardisering, endringer og raskere gjenoppretting.", "Virtualization separated the server from the physical machine and opened new possibilities for standardization, change and faster recovery."],
+    "Active Directory": ["Microsofts katalog- og identitetstjeneste for brukere, maskiner, grupper og tilgang i Windows-baserte miljøer.", "Microsoft's directory and identity service for users, computers, groups and access in Windows-based environments."],
+    "Fil/print": ["Klassiske sentrale infrastrukturtjenester for fildeling og utskrift – typiske arbeidslaster i de tidlige virtualiserte miljøene.", "Classic centralized infrastructure services for file sharing and printing – typical workloads in early virtualized environments."],
+    "SAN": ["Delt blokkbasert lagring som gjorde det mulig for flere servere å bruke sentral lagringsinfrastruktur og støttet mer fleksible virtuelle miljøer.", "Shared block storage that allowed multiple servers to use centralized storage infrastructure and supported more flexible virtual environments."],
+    "Virtualisering": ["Teknikken som gjør at flere logiske servere kan kjøre uavhengig på den samme fysiske infrastrukturen.", "The technology that allows multiple logical servers to run independently on the same physical infrastructure."],
+    "Serverrom": ["Den fysiske grunnmuren: rack, servere, strøm, kabling, lagring og miljøet rundt systemene.", "The physical foundation: racks, servers, power, cabling, storage and the environment surrounding the systems."],
+    "Nettverk": ["Forbindelsen mellom systemer og tjenester – fra lokal switching og ruting til stadig mer distribuerte og hybride miljøer.", "The connection between systems and services – from local switching and routing to increasingly distributed and hybrid environments."],
+    "Kjøling": ["Kritisk datasenterinfrastruktur som holder fysisk IT-utstyr innenfor riktige temperatur- og driftsgrenser.", "Critical data-center infrastructure that keeps physical IT equipment within the correct temperature and operating limits."],
+    "On-prem e-post": ["E-posttjenester driftet på egen lokal infrastruktur før stadig flere tjenester ble flyttet til leverandørens sky.", "Email services operated on local infrastructure before more services moved to provider cloud platforms."],
+    "Driftsplanlegging": ["Å planlegge kapasitet, endringer, vedlikehold og tilgjengelighet slik at infrastrukturen kan utvikles uten å stoppe virksomheten.", "Planning capacity, changes, maintenance and availability so infrastructure can evolve without stopping the business."],
+    "Office 365": ["Microsofts tidlige skybaserte produktivitetsplattform, som flyttet blant annet e-post og samarbeid fra lokale systemer til tjenester.", "Microsoft's cloud productivity platform, moving services such as email and collaboration from local systems to hosted services."],
+    "Exchange": ["Microsofts plattform for e-post og kalender – i reisen både som lokal teknologi og som del av overgangen mot skytjenester.", "Microsoft's email and calendar platform – appearing in the journey both on-premises and as part of the transition toward cloud services."],
+    "RDS": ["Remote Desktop Services gir sentral tilgang til Windows-sesjoner og applikasjoner uten at alt må kjøre lokalt på klienten.", "Remote Desktop Services provides centralized access to Windows sessions and applications without everything running locally on the client."],
+    "Datasenter": ["Et mer industrialisert miljø for datakraft, lagring, nettverk, strøm, kjøling og redundans enn det tradisjonelle serverrommet.", "A more industrialized environment for compute, storage, networking, power, cooling and redundancy than the traditional server room."],
+    "Azure": ["Microsofts skyplattform for datakraft, nettverk, lagring, identitet og en lang rekke plattformtjenester.", "Microsoft's cloud platform for compute, networking, storage, identity and a wide range of platform services."],
+    "Microsoft 365": ["Skybaserte produktivitets-, samarbeids-, identitets- og sikkerhetstjenester som inngår i moderne Microsoft-miljøer.", "Cloud-based productivity, collaboration, identity and security services used in modern Microsoft environments."],
+    "MFA": ["Flerfaktorautentisering krever mer enn én bekreftelse av identitet og reduserer risikoen ved stjålne passord.", "Multi-factor authentication requires more than one proof of identity and reduces the risk associated with stolen passwords."],
+    "Conditional Access": ["Policybasert tilgangskontroll som kan vurdere blant annet bruker, enhet, sted og risiko før tilgang gis.", "Policy-based access control that can evaluate factors such as user, device, location and risk before granting access."],
+    "Hybrid infrastruktur": ["Lokale systemer og skytjenester kobles sammen og forvaltes som ett miljø – ikke som to separate verdener.", "On-premises systems and cloud services are connected and managed as one environment rather than two separate worlds."],
+    "Energi": ["Den fysiske forutsetningen bak all digital infrastruktur – og en stadig tydeligere del av reisen mot kraftsystemet.", "The physical prerequisite behind all digital infrastructure – and an increasingly visible part of the journey toward the power system."],
+    "Azure Local": ["Microsofts plattform for å kjøre moderne lokal, virtualisert infrastruktur med tett integrasjon mot Azure.", "Microsoft's platform for running modern on-premises virtualized infrastructure with close Azure integration."],
+    "Azure Arc": ["Et styringslag som utvider Azure-modellen til ressurser som kjører utenfor selve Azure-skyen.", "A management layer that extends the Azure model to resources running outside the Azure cloud itself."],
+    "Hyper-V": ["Microsofts hypervisor for virtualisering av Windows- og Linux-arbeidslaster på fysisk serverinfrastruktur.", "Microsoft's hypervisor for virtualizing Windows and Linux workloads on physical server infrastructure."],
+    "Cluster": ["Flere noder arbeider sammen for å gi kapasitet og tilgjengelighet, slik at én enkelt server ikke trenger å være et kritisk enkeltpunkt.", "Multiple nodes work together for capacity and availability so a single server does not have to be a critical single point of failure."],
+    "MLAG": ["Multi-Chassis Link Aggregation kobler nettverksforbindelser mot flere switcher for både kapasitet og redundans.", "Multi-Chassis Link Aggregation connects network links across multiple switches for both capacity and redundancy."],
+    "SMB Direct": ["SMB over RDMA gir svært effektiv dataoverføring med lav latenstid og lav CPU-belastning i moderne lagrings- og clustermiljøer.", "SMB over RDMA provides highly efficient data transfer with low latency and low CPU overhead in modern storage and cluster environments."],
+    "Disaster Recovery": ["Planer, kopier og testede prosedyrer for å få kritiske systemer tilbake etter større feil eller bortfall av primær infrastruktur.", "Plans, copies and tested procedures for restoring critical systems after major failures or loss of primary infrastructure."],
+    "Backup": ["Uavhengige kopier av data og systemer som gjør det mulig å gjenopprette etter feil, sletting, skade eller andre hendelser.", "Independent copies of data and systems that make recovery possible after failure, deletion, damage or other incidents."],
+    "Nettverkssegmentering": ["Å dele nettverket i separate soner eller VLAN for å styre trafikk, redusere feilflater og forbedre sikkerheten.", "Dividing the network into separate zones or VLANs to control traffic, reduce failure domains and improve security."],
+    "Planlegging": ["Å se behov, kapasitet, avhengigheter og konsekvenser før endringer gjennomføres – nå flyttet nærmere kraftsystemets infrastruktur.", "Understanding needs, capacity, dependencies and consequences before changes are made – now moving closer to power-system infrastructure."],
+    "Kraftsystem": ["Systemet som binder sammen produksjon, transmisjon, distribusjon og forbruk av elektrisk energi.", "The system connecting generation, transmission, distribution and consumption of electrical energy."],
+    "Infrastruktur": ["Grunnlaget andre tjenester er avhengige av – enten det handler om servere, nettverk, sky eller kraftnett.", "The foundation other services depend on – whether servers, networks, cloud or the power grid."],
+    "Læring": ["Den røde tråden i reisen: prøve, forstå, bygge, evaluere og bruke erfaringen videre i neste teknologiskifte.", "The recurring theme of the journey: try, understand, build, evaluate and carry the experience into the next technology shift."]
+  };
+  const dialog=document.getElementById('tech-dialog');
+  if(!dialog) return;
+  const title=document.getElementById('tech-dialog-title'), text=document.getElementById('tech-dialog-text'), years=document.getElementById('tech-dialog-years'), kicker=document.getElementById('tech-dialog-kicker'), close=dialog.querySelector('.tech-dialog-close');
+  const tags=[...document.querySelectorAll('.story .tech span')];
+  const yearFor=t=>t.closest('.era')?.querySelector('.year')?.textContent.trim()||'';
+  const same=(a,b)=>a.textContent.trim()===b;
+  tags.forEach(tag=>{
+    tag.setAttribute('role','button'); tag.setAttribute('tabindex','0');
+    const open=()=>{
+      const name=tag.textContent.trim(), lang=document.documentElement.lang==='en'?'en':'no', idx=lang==='en'?1:0;
+      const matches=tags.filter(t=>same(t,name)), ys=[...new Set(matches.map(yearFor).filter(Boolean))];
+      title.textContent=name; text.textContent=(INFO[name]||["Teknologi fra denne delen av reisen.","Technology from this part of the journey."])[idx];
+      kicker.textContent=lang==='en'?'TECHNOLOGY IN THE JOURNEY':'TEKNOLOGI I REISEN';
+      years.innerHTML='<strong>'+(lang==='en'?'Appears in the journey: ':'Vises i reisen: ')+'</strong>'+ys.join(' · ');
+      close.setAttribute('aria-label',lang==='en'?'Close':'Lukk');
+      tags.forEach(t=>t.classList.toggle('tech-related',same(t,name)));
+      dialog.showModal();
+    };
+    tag.addEventListener('click',open); tag.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+  });
+  const shut=()=>{dialog.close();tags.forEach(t=>t.classList.remove('tech-related'));};
+  close.addEventListener('click',shut);
+  dialog.addEventListener('click',e=>{if(e.target===dialog) shut();});
+  dialog.addEventListener('close',()=>tags.forEach(t=>t.classList.remove('tech-related')));
+})();
+</script>
+</body>
+</html>
