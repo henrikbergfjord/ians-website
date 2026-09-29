@@ -168,9 +168,10 @@ document.getElementById("playBtn").onclick=startGame;document.getElementById("ag
 document.getElementById("soundBtn").onclick=e=>{sound=!sound;e.currentTarget.textContent=sound?"🔊":"🔇"};
 document.querySelectorAll(".mobile-controls button").forEach(b=>{
  const map=b.dataset.key;
- const down=e=>{e.preventDefault();if(map==="left")keys.left=true;if(map==="right")keys.right=true;if(map==="jump")keys.jump=true;if(map==="use")keys.use=true};
+ const down=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);if(map==="left")keys.left=true;if(map==="right")keys.right=true;if(map==="jump")keys.jump=true;if(map==="use")keys.use=true};
  const up=e=>{e.preventDefault();if(map==="left")keys.left=false;if(map==="right")keys.right=false};
  b.addEventListener("pointerdown",down);b.addEventListener("pointerup",up);b.addEventListener("pointercancel",up);b.addEventListener("pointerleave",up);
 });
+addEventListener("blur",()=>Object.keys(keys).forEach(k=>keys[k]=false));
 reset();draw();
 })();

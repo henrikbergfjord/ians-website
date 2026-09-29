@@ -185,9 +185,10 @@ canvas.addEventListener("mouseleave",()=>lookOffset=0);
 
 document.querySelectorAll(".mobile-controls button").forEach(b=>{
  const a=b.dataset.action;
- const down=e=>{e.preventDefault();if(a==="left")keys.left=true;if(a==="right")keys.right=true;if(a==="jump")keys.jump=true;if(a==="use")keys.use=true;if(a==="kick")keys.kick=true};
+ const down=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);if(a==="left")keys.left=true;if(a==="right")keys.right=true;if(a==="jump")keys.jump=true;if(a==="use")keys.use=true;if(a==="kick")keys.kick=true};
  const up=e=>{e.preventDefault();if(a==="left")keys.left=false;if(a==="right")keys.right=false};
  b.addEventListener("pointerdown",down);b.addEventListener("pointerup",up);b.addEventListener("pointercancel",up);
 });
+addEventListener("blur",()=>Object.keys(keys).forEach(k=>keys[k]=false));
 resetWorld("school");draw();
 })();
