@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#06111d">
-<title>AI-infrastruktur · IANS</title>
+<meta name="description" content="The physical infrastructure behind AI: chips, memory, data centres, electricity and grids, with sourced figures and scenarios."><link rel="canonical" href="https://www.ians.no/ai-infrastruktur.html"><link rel="alternate" hreflang="nb-NO" href="https://www.ians.no/ai-infrastruktur.html"><link rel="alternate" hreflang="en" href="https://www.ians.no/en/ai-infrastruktur.html"><title>AI-infrastruktur · IANS</title>
 <style>
 :root{--bg:#06111d;--p:#0b1b2a;--p2:#102638;--t:#f4f8fb;--m:#a8bac8;--c:#20c7e8;--l:rgba(255,255,255,.12);--max:1180px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#06111d;color:var(--t);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -134,7 +134,7 @@ h1,h2{letter-spacing:-.045em;line-height:.98}h1{font-size:clamp(3rem,7vw,6.4rem)
 <script>
 const no=document.getElementById("no"),en=document.getElementById("en");
 function setLang(l){document.body.classList.toggle("en",l==="en");no.classList.toggle("active",l==="no");en.classList.toggle("active",l==="en");document.documentElement.lang=l==="en"?"en":"nb";localStorage.setItem("ians-platform-lang",l)}
-no.onclick=()=>setLang("no");en.onclick=()=>setLang("en");setLang(localStorage.getItem("ians-platform-lang")||"no");
+no.onclick=()=>setLang("no");en.onclick=()=>location.href="/en/ai-infrastruktur.html"+location.hash;setLang("no");
 </script>
 <script src="/assets/js/ians-analytics.js"></script>
 </body></html>
