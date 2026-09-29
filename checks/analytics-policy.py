@@ -20,6 +20,8 @@ INCLUDE = (
     "index.html",
     "ios-27.html",
     "ki-sikkerhet-kapplop.html",
+    "ki-kritisk-infrastruktur.html",
+    "en/ki-kritisk-infrastruktur.html",
     "en/ki-sikkerhet-kapplop.html",
     "en/teknologi-med-ansvar.html",
     "en/index.html",
