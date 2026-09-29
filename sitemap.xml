@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://ians.no/</loc><priority>1.0</priority></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<url><loc>https://www.ians.no/</loc><lastmod>2026-09-29</lastmod><xhtml:link rel="alternate" hreflang="nb-NO" href="https://www.ians.no/"/><xhtml:link rel="alternate" hreflang="en" href="https://www.ians.no/en/"/></url>
 <url><loc>https://ians.no/SameieNett.html</loc><priority>0.9</priority></url>
 <url><loc>https://ians.no/strom.html</loc></url><url><loc>https://ians.no/dns-sjekk.html</loc></url><url><loc>https://ians.no/kalender.html</loc></url><url><loc>https://ians.no/volvo-c40.html</loc></url><url><loc>https://ians.no/maimyra.html</loc></url><url><loc>https://ians.no/galleri.html</loc></url><url><loc>https://ians.no/academy/index.html</loc></url>
-  <url><loc>https://www.ians.no/en/</loc></url>
+  <url><loc>https://www.ians.no/en/</loc><lastmod>2026-09-29</lastmod><xhtml:link rel="alternate" hreflang="nb-NO" href="https://www.ians.no/"/><xhtml:link rel="alternate" hreflang="en" href="https://www.ians.no/en/"/></url>
   <url><loc>https://www.ians.no/se/</loc></url>
   <url><loc>https://www.ians.no/dk/</loc></url>
   <url><loc>https://www.ians.no/fi/</loc></url>
@@ -18,6 +18,8 @@
   <url>
     <loc>https://www.ians.no/academy/kids/roblox/</loc>
   </url>
-  <url><loc>https://www.ians.no/teknologi-med-ansvar.html</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://www.ians.no/ki-sikkerhet-kapplop.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://www.ians.no/teknologi-med-ansvar.html</loc><lastmod>2026-09-29</lastmod><xhtml:link rel="alternate" hreflang="nb-NO" href="https://www.ians.no/teknologi-med-ansvar.html"/><xhtml:link rel="alternate" hreflang="en" href="https://www.ians.no/en/teknologi-med-ansvar.html"/></url>
+  <url><loc>https://www.ians.no/ki-sikkerhet-kapplop.html</loc><lastmod>2026-09-29</lastmod><xhtml:link rel="alternate" hreflang="nb-NO" href="https://www.ians.no/ki-sikkerhet-kapplop.html"/><xhtml:link rel="alternate" hreflang="en" href="https://www.ians.no/en/ki-sikkerhet-kapplop.html"/></url>
+<url><loc>https://www.ians.no/en/teknologi-med-ansvar.html</loc><lastmod>2026-09-29</lastmod><xhtml:link rel="alternate" hreflang="nb-NO" href="https://www.ians.no/teknologi-med-ansvar.html"/><xhtml:link rel="alternate" hreflang="en" href="https://www.ians.no/en/teknologi-med-ansvar.html"/></url>
+<url><loc>https://www.ians.no/en/ki-sikkerhet-kapplop.html</loc><lastmod>2026-09-29</lastmod><xhtml:link rel="alternate" hreflang="nb-NO" href="https://www.ians.no/ki-sikkerhet-kapplop.html"/><xhtml:link rel="alternate" hreflang="en" href="https://www.ians.no/en/ki-sikkerhet-kapplop.html"/></url>
 </urlset>
