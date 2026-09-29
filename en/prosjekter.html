@@ -1,0 +1,90 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#06111d"><meta name="description" content="IANS projects: tools and experiments that grew from practical needs. Henrik Bergfjord shares what he has built and learned along the way."><link rel="canonical" href="https://www.ians.no/en/prosjekter.html"><link rel="alternate" hreflang="nb-NO" href="https://www.ians.no/prosjekter.html"><link rel="alternate" hreflang="en" href="https://www.ians.no/en/prosjekter.html"><link rel="alternate" hreflang="x-default" href="https://www.ians.no/prosjekter.html"><meta name="author" content="Henrik Bergfjord"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:site_name" content="IANS"><meta property="og:title" content="Projects · IANS"><meta property="og:description" content="Tools and experiments that grew from practical needs."><meta property="og:url" content="https://www.ians.no/en/prosjekter.html"><title>Projects · IANS</title>
+<style>:root{--b:#06111d;--p:#0b2131;--t:#f4f8fb;--m:#a6bac8;--c:#20c7e8;--l:rgba(255,255,255,.12);--max:1220px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--b);color:var(--t);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}.wrap{width:min(var(--max),calc(100% - 40px));margin:auto}header{height:70px;display:flex;align-items:center;justify-content:space-between;border-bottom:0}header a{color:inherit;text-decoration:none}.brand{font-weight:950;letter-spacing:.3em}nav{display:flex;gap:18px}nav a{color:var(--m);font-size:.9rem}.hero{padding:95px 0 75px;background:radial-gradient(circle at 78% 18%,rgba(32,199,232,.2),transparent 36%)}.ey{color:var(--c);font-size:.71rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase}h1,h2{letter-spacing:-.05em;line-height:.98}h1{font-size:clamp(3.5rem,8vw,7.5rem);margin:.15em 0}h2{font-size:clamp(2.4rem,5vw,4.5rem);margin:.2em 0}.hero p,.intro{max-width:820px;color:#c8d7e0;font-size:1.15rem}.btn{display:inline-block;margin-top:20px;padding:11px 16px;border-radius:9px;background:var(--c);color:#03131d;text-decoration:none;font-weight:900}section{padding:68px 0;border-top:0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}.card{min-height:270px;padding:25px;border:1px solid var(--l);border-radius:18px;background:linear-gradient(145deg,#0e293c,#071722);display:flex;flex-direction:column}.card h3{font-size:1.45rem;margin:.45em 0}.card p{color:var(--m);font-size:.93rem}.card a{margin-top:auto;color:var(--c);font-weight:850;text-decoration:none}.process{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:28px}.phase{padding:22px;border:1px solid var(--l);border-radius:15px;background:var(--p)}.phase b{display:block;color:var(--c);font-size:1.8rem}.phase p{color:var(--m)}.cost{margin-top:28px;padding:30px;border:1px solid var(--l);border-radius:18px;background:linear-gradient(135deg,#0d293c,#071722)}.cost strong{display:block;color:var(--c);font-size:clamp(2.3rem,5vw,4.5rem)}footer{padding:30px 0;border-top:0;color:var(--m)}@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.process{grid-template-columns:repeat(2,1fr)}}@media(max-width:580px){.grid,.process{grid-template-columns:1fr}nav a:not(:last-child){display:none}.wrap{width:calc(100% - 26px)}}</style>
+<style>
+/* IANS-PAGE-HERO-20261003 */
+
+/* Stor visuell inngang til siden */
+body {
+    background-color: #03101b;
+    background-image:
+        linear-gradient(
+            to bottom,
+            rgba(3,16,27,.42) 0%,
+            rgba(3,16,27,.62) 38%,
+            rgba(3,16,27,.74) 72%,
+            rgba(3,16,27,.82) 100%
+        ),
+        url("/assets/prosjekter-bg.jpg");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* Litt mer dybde uten å redusere lesbarheten */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(3,16,27,.30),
+            transparent 45%,
+            rgba(3,16,27,.12)
+        );
+    z-index: -1;
+}
+
+@media (max-width: 800px) {
+    body {
+        background-size: auto 720px;
+        background-position: center top;
+    }
+}
+
+/* Keep the backdrop visible throughout the page */
+main, section, footer { background: transparent; }
+section { position: relative; }
+.card, .phase, .cost {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+@media (max-width: 800px) {
+    body {
+        background-size: cover;
+        background-position: center top;
+        background-attachment: fixed;
+    }
+}
+</style>
+
+</head>
+<body><header class="wrap"><a class="brand" href="/en/">IANS</a><nav><a href="#prosjekter">Projects</a><a href="#kostnad">Costs</a><a href="/plattformen.html">Technology shift</a><a href="/prosjekter.html" lang="nb" hreflang="nb-NO">Norsk</a></nav></header>
+<main><div class="hero"><div class="wrap"><div class="ey">IANS · PROJECTS · 2026</div><h1>Small needs became projects.</h1><p>IANS is a place to try ideas in practice. Some projects are tools I use myself; others are experiments that are still changing. I share what prompted them and what I learned along the way, with ChatGPT as a development partner.</p><a class="btn" href="#prosjekter">See the projects ↓</a></div></div>
+<section id="prosjekter"><div class="wrap"><div class="ey">PROJECTS</div><h2>The needs came first.<br>The tools followed.</h2><p class="intro">From files and personal finance to residential management, learning, booking, food, administration and analytics. Each card explains why the project exists.</p><div class="grid">
+<article class="card"><div class="ey">TOOL</div><h3>File Commander</h3><p>A browser-based file manager for local files and folders. It explores how much of a traditional file commander can work in a browser.</p><a href="/tools/file-commander/">View project →</a></article>
+<article class="card"><div class="ey">ONEDRIVE · DATA</div><h3>OneDrive Command</h3><p>I needed better ways to work with very large OneDrive archives. This tool explores mapping, file operations, duplicate checks, organisation, recovery, resuming, checkpoints and verification.</p><a href="/tools/onedrive-organizer/">View project →</a></article>
+<article class="card"><div class="ey">FINANCE</div><h3>Money Planner</h3><p>A budgeting tool that grew to include shared finances, saving, saving for children, reports, charts and AI-assisted analysis.</p><a href="/tools/money-planner/">View project →</a></article>
+<article class="card"><div class="ey">WEB</div><h3>Website Builder</h3><p>Light and Pro explore how a few details and choices can become a preview and an exportable website.</p><a href="/tools/website-builder-pro/">View project →</a></article>
+<article class="card"><div class="ey">PLANNING</div><h3>Kalender</h3><p>A web tool for dates, activities and planning, and a building block for other IANS services.</p><a href="/kalender.html">View project →</a></article>
+<article class="card"><div class="ey">LEARNING</div><h3>Quiz Studio</h3><p>A tool for making and using question sets, connecting development, courses and interactive learning.</p><a href="/tools/quiz-studio/">View project →</a></article>
+<article class="card"><div class="ey">INFRASTRUCTURE</div><h3>SameieNett</h3><p>How might networks, digital services, distribution and administration for residential associations fit into one platform?</p><a href="/SameieNett.html">View project →</a></article>
+<article class="card"><div class="ey">BOOKING</div><h3>Sprinkler inspection</h3><p>A practical operational need became a booking tool: residents can choose a time instead of managing appointments through long message threads.</p><a href="/booking.html">View project →</a></article>
+<article class="card"><div class="ey">SAFETY</div><h3>Fire and safety inspection</h3><p>Information and appointment booking in one place, intended to make safety inspections easier for residents and administrators.</p><a href="/brannkontroll-booking.html">View project →</a></article>
+<article class="card"><div class="ey">BOARD WORK</div><h3>Annual planner</h3><p>Deadlines, recurring activities and maintenance made visible for planning and follow-up throughout the year.</p><a href="/sameie-aarshjul/">View project →</a></article>
+<article class="card"><div class="ey">DIGITAL SCHOOL</div><h3>Henrik Academy</h3><p>Courses, quizzes, a glossary, sources, notes and learning paths brought together in a digital learning space.</p><a href="/academy/">View project →</a></article>
+<article class="card"><div class="ey">CHILDREN · TECHNOLOGY</div><h3>Academy Kids</h3><p>Technology and digital judgment presented to younger users through lessons and activities.</p><a href="/academy/kids/">View project →</a></article>
+<article class="card"><div class="ey">GAMES</div><h3>IANS Games</h3><p>Small games and experiments used to learn programming, logic, design and interaction.</p><a href="/games/">View project →</a></article>
+<article class="card"><div class="ey">FOOD · AI</div><h3>What's for dinner?</h3><p>Dinner ideas, recipes and shopping lists in one everyday tool, with the option of AI-assisted suggestions and planning.</p><a href="/middag.html">View project →</a></article>
+<article class="card"><div class="ey">HOME</div><h3>Maimyra</h3><p>A real housing project where choices, designs, images and lessons can be documented.</p><a href="/maimyra.html">View project →</a></article>
+<article class="card"><div class="ey">CAR · ENERGY</div><h3>Volvo C40</h3><p>A personal technology project about a car, charging and the connection between transport, electricity and digital services.</p><a href="/volvo-c40.html">View project →</a></article>
+<article class="card"><div class="ey">IMAGES</div><h3>Gallery</h3><p>Visual documentation from projects, gathered as part of the story of what I am building.</p><a href="/galleri.html">View project →</a></article>
+<article class="card"><div class="ey">ADMINISTRATION</div><h3>IANS Admin</h3><p>As IANS grew, I needed ways to manage access, requests, services, costs and operations. Features have been added when a need arose.</p><a href="/teknisk.html">View project →</a></article>
+<article class="card"><div class="ey">ANALYTICS</div><h3>IANS Analytics</h3><p>Visitor statistics help me understand how the site is used and what may be worth improving.</p><a href="/ians-analytics.html">View project →</a></article>
+</div></div></section>
+<section><div class="wrap"><div class="ey">THE PROCESS</div><h2>Idea → build → test → learn.</h2><div class="process"><div class="phase"><b>01</b><h3>Notice a need</h3><p>A problem, an irritation or a question becomes the starting point.</p></div><div class="phase"><b>02</b><h3>Build something</h3><p>Make a working version and see what it can do.</p></div><div class="phase"><b>03</b><h3>Use it</h3><p>Real use reveals what is missing and what should change.</p></div><div class="phase"><b>04</b><h3>Keep developing</h3><p>New needs lead to new features, and the lessons carry forward.</p></div></div></div></section>
+<section id="kostnad"><div class="wrap"><div class="ey">WHAT DOES IT COST?</div><h2>What does it cost to run IANS?</h2><div class="cost"><strong>Running costs</strong><p class="intro">GitHub, Azure and web technology form the foundation. The home page shows the recorded Azure cost for the period. Domain, equipment and any API or AI services may add to that, so the figure is not the total project cost.</p><a class="btn" href="/en/#kostnader">See the Azure cost →</a></div></div></section></main>
+<footer><div class="wrap"><strong>IANS</strong> · Ideas. Technology. Opportunities. · Projects 2026</div></footer><script src="/assets/js/ians-analytics.js"></script>
+</body></html>
