@@ -20,6 +20,8 @@ export function renderCosts(data, root = document) {
   const date = day => new Intl.DateTimeFormat(locale, {day:'numeric',month:'short',timeZone:'Europe/Oslo'}).format(new Date(day));
   const money = amount => new Intl.NumberFormat(locale,{style:'currency',currency:value.currency,minimumFractionDigits:2,maximumFractionDigits:2}).format(amount);
   root.querySelector('#cost-amount').textContent = money(value.azureTotalNok);
+  const heading = root.querySelector('#cost-heading');
+  if (heading) heading.textContent = isEnglish ? 'Azure total · recorded period' : 'Azure totalt · registrert periode';
   root.querySelector('#cost-period').hidden = false;
   root.querySelector('#cost-period').textContent = `${date(value.periodStart)}–${date(value.periodEnd)}${value.stale?(isEnglish?' · Older reading':' · Eldre måling'):''}`;
   root.querySelector('#cost-ians').textContent = money(value.staticWebApps.iansNok);
