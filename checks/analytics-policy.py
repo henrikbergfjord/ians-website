@@ -39,6 +39,8 @@ INCLUDE = (
     "om-meg.html",
     "teknisk.html",
     "plattformen.html",
+    "refleksjoner.html",
+    "en/refleksjoner.html",
     "prosjekter.html",
     "sameienett-boliger.html",
     "sameienett-core.html",
