@@ -69,3 +69,10 @@ body[data-ians-home="v2"] .footer{color:#c3d4e0}
 .future-teaser a:hover{text-decoration:underline}
 @media(min-width:1000px) and (min-height:660px) and (max-height:800px){.future-teaser{padding:18px;width:315px}.future-teaser h2{font-size:24px}.future-teaser p:not(.eyebrow){font-size:14px;margin-bottom:12px}}
 @media(max-width:760px){body[data-ians-home="v2"] .hero-inner{gap:30px;min-height:0;padding-bottom:32px}.future-teaser{justify-self:start;width:100%;max-width:500px;padding:22px}.future-teaser h2{font-size:26px}.intro{padding-bottom:0!important}}
+
+/* Let narrow homepage columns shrink around English headings and long labels. */
+@media(max-width:760px){
+ .hero-inner{grid-template-columns:minmax(0,1fr)}
+ .intro,.future-teaser{min-width:0;max-width:100%}
+ .intro h1{font-size:clamp(36px,8.6vw,53px);overflow-wrap:anywhere}
+}

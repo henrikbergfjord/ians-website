@@ -4,3 +4,9 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 @media(min-width:761px){#boligen{padding-top:64px}.hero-inner{padding-left:28px}.hero h2{font-weight:650}.location .photo{height:302px}}
+
+/* Technology labels need room to wrap on small phones. */
+.tech-grid{grid-template-columns:repeat(8,minmax(0,1fr))}
+.tech{min-width:0;overflow-wrap:anywhere}
+@media(max-width:760px){.tech-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:380px){.tech-grid,.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}

@@ -51,35 +51,38 @@
 @media(min-width:1600px){.space-home .hero-inner{min-height:530px}.space-home .feature{height:235px}}
 @media(max-width:1180px){.space-home .header{padding:18px 24px}.space-home .nav{gap:14px;font-size:11px}.space-home .hero-inner{padding:24px;gap:14px;grid-template-columns:minmax(0,1fr) minmax(330px,1.3fr) minmax(0,.8fr)}.space-home .intro h1{font-size:36px}.space-home .lead{font-size:13px}.space-home .future-teaser h2{font-size:23px}.space-home .costbar{margin-left:24px;margin-right:24px;gap:16px}.space-home .cards{padding-left:24px;padding-right:24px}.space-home .button{padding:10px 12px;gap:12px}.space-home .feature{height:205px}}
 @media(max-width:1000px){.space-home .hero-inner{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:26px;min-height:0}.space-home .future-teaser{grid-column:1/-1;max-width:none;display:grid;grid-template-columns:1fr 1fr;column-gap:30px;padding:18px 0}.future-teaser .eyebrow,.space-home .future-teaser h2{grid-column:1}.space-home .future-teaser p:not(.eyebrow){grid-column:2;grid-row:1/3;margin:0}.space-home .future-teaser a{grid-column:2}.space-home .intro h1{font-size:43px}.space-home .costbar{grid-template-columns:1fr 1fr auto}.cost-context{display:none}.space-home .cards{grid-template-columns:repeat(2,minmax(0,1fr))}.space-home .feature{height:230px}.space-home .feature .copy{min-height:90px}.space-home .feature p{font-size:12px}}
-@media(max-width:760px){.space-home{background-attachment:scroll;background-position:center top;background-size:auto 1050px;background-color:#020e1c}.space-home .header{height:74px;padding:16px 22px}.space-home .menu{display:block}.space-home .nav{top:68px;font-size:14px}.space-home .hero-inner{padding:28px 22px 12px;grid-template-columns:1fr;gap:20px;background:none}.space-home .intro{max-width:520px}.space-home .intro h1{font-size:clamp(36px,8.6vw,53px)}.space-home .lead{font-size:14px;max-width:none}.space-home .eyebrow{font-size:9px;letter-spacing:1.3px}.universe{max-width:420px;width:100%;margin:8px 0 22px}.satellite span{font-size:10px}.space-home .future-teaser{grid-column:auto;display:block;padding:20px 0 5px;width:100%;max-width:none}.space-home .future-teaser h2{font-size:27px;max-width:340px}.space-home .future-teaser p:not(.eyebrow){margin-bottom:15px;font-size:14px}.space-home .costbar{margin:16px 16px 0;padding:15px;grid-template-columns:1fr 1fr;gap:16px}.space-home .costbar .cost-details{grid-column:1/-1;text-align:center;width:auto;margin:0}.space-home .cards{padding:14px 16px;gap:12px}.space-home .feature{height:235px}.space-home .feature h2{font-size:19px}.space-home .feature .copy{padding:12px;min-height:116px}.space-home .feature p{font-size:12px}.space-home .feature .link{font-size:10px}.space-home .footer{padding:15px 22px;line-height:1.7;gap:6px}}
+@media(max-width:760px){.space-home{background-attachment:scroll;background-position:center top;background-size:auto 1050px;background-color:#020e1c}.space-home .header{height:74px;padding:16px 22px}.space-home .menu{display:block}.space-home .nav{top:68px;font-size:14px}.space-home .hero-inner{padding:28px 22px 12px;grid-template-columns:1fr;gap:20px;background:none}.space-home .intro{max-width:520px}.space-home .intro h1{font-size:clamp(36px,8.6vw,53px)}.space-home .lead{font-size:14px;max-width:none}.space-home .eyebrow{font-size:9px;letter-spacing:1.3px}.universe{max-width:420px;width:100%;margin:8px 0 22px}.satellite span{font-size:10px}.space-home .future-teaser{grid-column:auto;display:block;padding:20px 0 5px;width:100%;max-width:none}.space-home .future-teaser h2{font-size:27px;max-width:340px}.space-home .future-teaser p:not(.eyebrow){margin-bottom:15px;font-size:14px}.space-home .costbar{margin:16px 16px 0;padding:15px;grid-template-columns:1fr 1fr;gap:16px}.space-home .costbar .cost-details{grid-column:1/-1;text-align:center;width:auto;margin:0}.space-home .cards{padding:14px 16px;gap:12px}.space-home .feature{height:235px}.space-home .feature h2{font-size:19px}.space-home .feature .copy{padding:12px;min-height:116px}.space-home .feature p{font-size:12px}.space-home .feature .link{font-size:12px}.space-home .footer{padding:15px 22px;line-height:1.7;gap:6px}}
 @media(max-width:380px){.space-home .cards{grid-template-columns:1fr}.space-home .feature{height:250px}.space-home .feature .copy{min-height:95px}.cost-metric{padding-left:12px}.space-home .costbar{gap:12px}}
 @media(prefers-reduced-motion:reduce){.satellite-track,.satellite{animation:none}.orbit-toggle{display:none}.space-home .feature:hover{transform:none}}
 /* Keep the scene compact like the selected reference, with readable live copy. */
 .satellite-track{pointer-events:none}
 .satellite{pointer-events:auto}
 @media(min-width:1001px){
-.space-home{--page-width:1176px;background-size:cover}
+.space-home{--page-width:1600px;--scene-size:clamp(280px,min(30vw,43svh),470px);background-size:cover}
 .space-home .header{height:56px;padding:10px 24px;background:#02101a99}
-.space-home .hero-inner{min-height:310px;padding:16px 24px;grid-template-columns:1fr 1.2fr 1fr;gap:24px}
-.universe{max-width:310px}
-.space-home .intro h1{font-size:34px;margin-bottom:12px}
+.space-home .hero-inner{min-height:calc(var(--scene-size) + 48px);padding:24px clamp(24px,3vw,48px);grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);gap:clamp(20px,2vw,36px)}
+.universe{max-width:var(--scene-size)}
+.space-home .intro h1{font-size:clamp(34px,3vw,50px);margin-bottom:16px}
 .space-home .eyebrow{font-size:8px;margin-bottom:10px;letter-spacing:1.4px}
-.space-home .lead{font-size:12px;line-height:1.55}
-.space-home .lead strong{font-size:11px}
+.space-home .lead{font-size:clamp(13px,1vw,16px);line-height:1.6;max-width:42ch}
+.space-home .lead strong{font-size:inherit}
 .space-home .actions{margin-top:14px;gap:8px}
 .space-home .button{font-size:11px;padding:9px 12px;gap:12px}
 .space-home .future-teaser{padding:15px 0 10px;background:#02101a99}
-.space-home .future-teaser h2{font-size:24px;margin-bottom:12px}
-.space-home .future-teaser p:not(.eyebrow){font-size:12px;line-height:1.55}
-.space-home .costbar{max-width:1128px;min-height:62px;margin-top:6px;padding:10px 14px;gap:16px}
+.space-home .future-teaser h2{font-size:clamp(24px,2vw,30px);margin-bottom:12px}
+.space-home .future-teaser p:not(.eyebrow){font-size:clamp(13px,1vw,16px);line-height:1.6}
+.space-home .costbar{width:calc(100% - 48px);max-width:calc(var(--page-width) - 48px);min-height:62px;margin-top:6px;padding:10px 14px;gap:16px}
 .space-home .cards{padding:10px 24px;gap:12px}
 .space-home .feature{height:135px}
 .space-home .feature .copy{padding:8px 10px;min-height:72px}
-.space-home .feature h2{font-size:17px;margin-bottom:4px}
-.space-home .feature p{font-size:10px;margin-bottom:5px}
-.space-home .feature .link{font-size:10px}
+.space-home .feature h2{font-size:clamp(18px,1.4vw,22px);margin-bottom:4px}
+.space-home .feature p{font-size:12px;margin-bottom:5px}
+.space-home .feature .link{font-size:12px}
 .space-home .footer{padding:0 24px 10px;font-size:9px}
 }
-@media(min-width:1001px){.satellite span{font-size:8px;padding:4px 0}.space-home .feature{height:170px}.space-home .feature img{object-position:center 35%}}
+@media(min-width:1001px){.satellite span{font-size:8px;padding:4px 0}.space-home .feature{height:clamp(190px,25svh,270px)}.space-home .feature img{object-position:center 35%}}
 /* Rotating invisible tracks must not expand the mobile page width. */
 .satellites{overflow:clip;overflow-clip-margin:6px}
+
+/* Keep desktop copy readable when a browser window is wide but short. */
+@media(min-width:1001px) and (max-height:700px){.space-home{--scene-size:280px}.space-home .hero-inner{padding-top:18px;padding-bottom:24px}.space-home .intro h1{font-size:34px}.space-home .lead,.space-home .future-teaser p:not(.eyebrow){font-size:13px}}
