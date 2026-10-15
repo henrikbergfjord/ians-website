@@ -4,22 +4,12 @@
   },
   "routes": [
     {
-      "route": "/tools/website-builder-light",
-      "redirect": "/tools/website-builder/",
-      "statusCode": 301
-    },
-    {
       "route": "/tools/website-builder-light/",
       "redirect": "/tools/website-builder/",
       "statusCode": 301
     },
     {
       "route": "/tools/website-builder-light/index.html",
-      "redirect": "/tools/website-builder/",
-      "statusCode": 301
-    },
-    {
-      "route": "/tools/website-builder-pro",
       "redirect": "/tools/website-builder/",
       "statusCode": 301
     },
