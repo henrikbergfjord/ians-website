@@ -8,6 +8,7 @@ ROOT = Path.cwd()
 ANALYTICS_SRC = "/assets/js/ians-analytics.js"
 
 INCLUDE = (
+    "website-builder.html",
     "SameieNett.html",
     "academy/index.html",
     "academy/kilder.html",
@@ -101,11 +102,12 @@ INCLUDE = (
     "tools/onedrive-organizer/scan.html",
     "tools/onedrive-organizer/workspace.html",
     "tools/quiz-studio/index.html",
-    "tools/website-builder-light/index.html",
-    "tools/website-builder-pro/index.html",
 )
 
 EXCLUDE = (
+    "tools/website-builder-light/index.html",
+    "tools/website-builder-pro/index.html",
+    "tools/website-builder/index.html",
     ".money-planner-backup/20260822-084754/tools/money-planner/index.html",
     ".money-planner-backup/20260822-091746/tools/money-planner/index.html",
     ".money-planner-backup/20260822-094337/tools/money-planner/index.html",
