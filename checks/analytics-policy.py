@@ -40,6 +40,8 @@ INCLUDE = (
     "teknisk.html",
     "plattformen.html",
     "refleksjoner.html",
+    "ki-uten-avknapp.html",
+    "lokal-ki.html",
     "en/refleksjoner.html",
     "prosjekter.html",
     "sameienett-boliger.html",
