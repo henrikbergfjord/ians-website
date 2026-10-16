@@ -1,15 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="no">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Middag | Henrik Bergfjord</title>
-  <meta
-    name="description"
-    content="Middagsgenerator med norsk og filippinsk middagsinspirasjon, ingredienser, fremgangsmåte, favoritt og ukemeny."
-  />
-  <link rel="stylesheet" href="assets/styles.css" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Middag | Henrik Bergfjord</title>
+<meta content="Middagsgenerator med norsk og filippinsk middagsinspirasjon, ingredienser, fremgangsmåte, favoritt og ukemeny." name="description"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<style>
     .dinner-hero-card{
       overflow:hidden;
       border-radius:22px;
@@ -339,141 +337,121 @@
       }
     }
   </style>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="/assets/css/language.css">
-<link rel="stylesheet" href="assets/css/ians-next.css">
-</head>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="/assets/css/language.css" rel="stylesheet"/>
+<link href="assets/css/ians-next.css" rel="stylesheet"/>
+<link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/><link href="https://www.ians.no/middag.html" rel="canonical"/><meta content="Middag | Henrik Bergfjord" property="og:title"/><meta content="Middagsgenerator med norsk og filippinsk middagsinspirasjon, ingredienser, fremgangsmåte, favoritt og ukemeny." property="og:description"/><meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/></head>
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <a class="brand" href="index.html">
-        <span class="brand-mark"></span>
-        <span>Henrik Bergfjord</span>
-      </a>
-
-      <nav class="nav-links" aria-label="Sidenavigasjon"><a href="/">IANS</a><a href="/teknisk.html#personlig">Alle områder</a><a href="/middag.html" aria-current="page" class="active">Middag</a><a href="/dessert.html">Dessert</a><a href="/boller.html">Bakst</a><a href="/tools/dinner-planner/index.html">Dinner Planner</a></nav>
-
-      <button class="button primary" id="generateTop" type="button">Ny middag</button>
-    </div>
-  </header>
-
-  <main>
-    <section class="page-header">
-      <div class="container card dinner-hero-card">
-        <div class="dinner-hero-image" id="heroImage">
-          <div class="dinner-hero-overlay"></div>
-          <div class="dinner-hero-content">
-            <div class="dinner-eyebrow">🍽️ Norsk + filippinsk inspirasjon</div>
-            <h1>Dinner Creator</h1>
-            <p>
+<header class="topbar">
+<div class="container nav">
+<a class="brand" href="index.html">
+<span class="brand-mark"></span>
+<span>Henrik Bergfjord</span>
+</a>
+<nav aria-label="Sidenavigasjon" class="nav-links"><a href="/">IANS</a><a href="/teknisk.html#personlig">Alle områder</a><a aria-current="page" class="active" href="/middag.html">Middag</a><a href="/dessert.html">Dessert</a><a href="/boller.html">Bakst</a><a href="/tools/dinner-planner/index.html">Dinner Planner</a></nav>
+<button class="button primary" id="generateTop" type="button">Ny middag</button>
+</div>
+</header>
+<main>
+<section class="page-header">
+<div class="container card dinner-hero-card">
+<div class="dinner-hero-image" id="heroImage">
+<div class="dinner-hero-overlay"></div>
+<div class="dinner-hero-content">
+<div class="dinner-eyebrow">🍽️ Norsk + filippinsk inspirasjon</div>
+<p class="site-status">Oppskriftsverktøy · middagsinspirasjon, ikke personlig kostholdsplan</p><h1>Dinner Creator</h1>
+<p>
               Få én rask middagsidé med bilde, ingredienser, fremgangsmåte og inspirasjon. For komplett uke, budsjett og handleliste bruker du Dinner Planner.
             </p>
-            <div class="dinner-hero-actions">
-              <button class="button primary" id="generateHero" type="button">Generer middag</button>
-              <a class="button secondary" href="/tools/dinner-planner/index.html">📅 Lag ukesplan i Dinner Planner</a>
-              <button class="button secondary" type="button" onclick="window.print()">Skriv ut oppskrift</button>
-              <a class="button secondary" href="dessert.html">Dessert</a>
-              <a class="button secondary" href="boller.html">Boller</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="container dinner-layout">
-        <section class="card dinner-main" id="dinner-card">
-          <div class="dish-image" id="dishImage"></div>
-          <div class="dinner-main-inner">
-            <div class="dish-meta">
-              <span class="pill" id="dishOrigin">Opprinnelse</span>
-              <span class="pill" id="dishType">Type</span>
-              <span class="pill" id="dishTime">Tid</span>
-            </div>
-
-            <h2 class="dish-title" id="dishName">Middagsidé lastes...</h2>
-            <p class="dish-desc" id="dishDescription">En middag vises her om et øyeblikk.</p>
-
-            <div class="dinner-content-grid">
-              <article class="inner-card">
-                <h3>Ingredienser for 4 personer</h3>
-                <ul id="ingredientsList"></ul>
-              </article>
-
-              <article class="inner-card">
-                <h3>Slik lager du retten</h3>
-                <ol id="instructionsList"></ol>
-              </article>
-
-              <article class="inner-card">
-                <h3>Om retten</h3>
-                <p id="dishStory"></p>
-              </article>
-
-              <article class="inner-card">
-                <h3>Historikk</h3>
-                <p id="dishHistory"></p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <aside class="card dinner-side">
-          <div class="small-card">
-            <h3>Hurtigvalg</h3>
-            <p>
+<div class="dinner-hero-actions">
+<button class="button primary" id="generateHero" type="button">Generer middag</button>
+<a class="button secondary" href="/tools/dinner-planner/index.html">📅 Lag ukesplan i Dinner Planner</a>
+<button class="button secondary" onclick="window.print()" type="button">Skriv ut oppskrift</button>
+<a class="button secondary" href="dessert.html">Dessert</a>
+<a class="button secondary" href="boller.html">Boller</a>
+</div>
+</div>
+</div>
+</div>
+<div class="container dinner-layout">
+<section class="card dinner-main" id="dinner-card">
+<div class="dish-image" id="dishImage"></div>
+<div class="dinner-main-inner">
+<div class="dish-meta">
+<span class="pill" id="dishOrigin">Opprinnelse</span>
+<span class="pill" id="dishType">Type</span>
+<span class="pill" id="dishTime">Tid</span>
+</div>
+<h2 class="dish-title" id="dishName">Middagsidé lastes...</h2>
+<p class="dish-desc" id="dishDescription">En middag vises her om et øyeblikk.</p>
+<div class="dinner-content-grid">
+<article class="inner-card">
+<h3>Ingredienser for 4 personer</h3>
+<ul id="ingredientsList"></ul>
+</article>
+<article class="inner-card">
+<h3>Slik lager du retten</h3>
+<ol id="instructionsList"></ol>
+</article>
+<article class="inner-card">
+<h3>Om retten</h3>
+<p id="dishStory"></p>
+</article>
+<article class="inner-card">
+<h3>Historikk</h3>
+<p id="dishHistory"></p>
+</article>
+</div>
+</div>
+</section>
+<aside class="card dinner-side">
+<div class="small-card">
+<h3>Hurtigvalg</h3>
+<p>
               Generer en ny middag, skriv ut oppskriften, lagre favoritt og sett opp en enkel ukemeny.
             </p>
-          </div>
-
-          <div class="small-card">
-            <h3>Favoritt</h3>
-            <p id="favoriteText">Ingen favoritt valgt ennå.</p>
-            <div style="margin-top:12px;">
-              <button class="button secondary" id="favoriteBtn" type="button">Lagre som favoritt</button>
-            </div>
-          </div>
-
-          <div class="history-note" id="historyNote">
+</div>
+<div class="small-card">
+<h3>Favoritt</h3>
+<p id="favoriteText">Ingen favoritt valgt ennå.</p>
+<div style="margin-top:12px;">
+<button class="button secondary" id="favoriteBtn" type="button">Lagre som favoritt</button>
+</div>
+</div>
+<div class="history-note" id="historyNote">
             Mange kjente retter er del av en større matkultur og ikke nødvendigvis oppfunnet av én dokumentert person.
           </div>
-
-          <div class="small-card">
-            <h3>Serveringstips</h3>
-            <p id="servingTip">Et serveringstips vises her.</p>
-          </div>
-
-          <div class="small-card">
-            <h3>Handleliste</h3>
-            <div class="shopping-list" id="shoppingList"></div>
-          </div>
-
-          <div class="small-card">
-            <h3>Ukemeny</h3>
-            <div style="margin-bottom:12px;">
-              <button class="button secondary" id="generateWeekBtn" type="button">Generer ukeplan</button>
-            </div>
-            <div class="week-grid" id="weekPlan"></div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="container">
-      <div class="coming-soon">
-        <h3>Neste nivå</h3>
-        <p>
-          En senere versjon kan få handleliste per uke, budsjettmodus, familiefilter, raske middager og kobling mot dessert- og boller-sidene.
-        </p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
+<div class="small-card">
+<h3>Serveringstips</h3>
+<p id="servingTip">Et serveringstips vises her.</p>
+</div>
+<div class="small-card">
+<h3>Handleliste</h3>
+<div class="shopping-list" id="shoppingList"></div>
+</div>
+<div class="small-card">
+<h3>Ukemeny</h3>
+<div style="margin-bottom:12px;">
+<button class="button secondary" id="generateWeekBtn" type="button">Generer ukeplan</button>
+</div>
+<div class="week-grid" id="weekPlan"></div>
+</div>
+</aside>
+</div>
+</section>
+<section class="container">
+<div class="coming-soon">
+<h3>Når du bruker oppskriften</h3>
+<p>Oppskriftene er middagsinspirasjon. Kontroller porsjoner, allergener og trygg tilberedning. For flere dager, budsjett og samlet handleliste bruker du Dinner Planner.</p>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="container">
       Henrik Bergfjord · Middagsgenerator · Norsk og filippinsk middagsinspirasjon
     </div>
-  </footer>
-
-  <script>
+</footer>
+<script>
     const dinners = [
       {
         name: "Fårikål",
@@ -626,7 +604,6 @@
       generateWeekPlan();
     });
   </script>
-    <script src="/assets/js/language.js?v=20260925b" defer></script>
-
+<script defer="" src="/assets/js/language.js?v=20260925b"></script>
 <script src="/assets/js/ians-analytics.js"></script></body>
 </html>

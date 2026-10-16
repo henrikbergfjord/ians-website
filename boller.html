@@ -1,15 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="no">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boller | Henrik Bergfjord</title>
-  <meta
-    name="description"
-    content="Bolle- og bakegenerator med norske og filippinske bakerifavoritter, ingredienser, fremgangsmåte og historikk."
-  />
-  <link rel="stylesheet" href="assets/styles.css" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Boller | Henrik Bergfjord</title>
+<meta content="Bolle- og bakegenerator med norske og filippinske bakerifavoritter, ingredienser, fremgangsmåte og historikk." name="description"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<style>
     .boller-hero-card{
       overflow:hidden;
       border-radius:22px;
@@ -288,117 +286,98 @@
       }
     }
   </style>
-    <link rel="stylesheet" href="/assets/css/language.css">
-<link rel="stylesheet" href="assets/css/ians-next.css">
-</head>
+<link href="/assets/css/language.css" rel="stylesheet"/>
+<link href="assets/css/ians-next.css" rel="stylesheet"/>
+<link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/><link href="https://www.ians.no/boller.html" rel="canonical"/><meta content="Boller | Henrik Bergfjord" property="og:title"/><meta content="Bolle- og bakegenerator med norske og filippinske bakerifavoritter, ingredienser, fremgangsmåte og historikk." property="og:description"/><meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/></head>
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <a class="brand" href="index.html">
-        <span class="brand-mark"></span>
-        <span>Henrik Bergfjord</span>
-      </a>
-
-      <nav class="nav-links" aria-label="Sidenavigasjon"><a href="/">IANS</a><a href="/teknisk.html#personlig">Alle områder</a><a href="/middag.html">Middag</a><a href="/dessert.html">Dessert</a><a href="/boller.html" aria-current="page" class="active">Bakst</a><a href="/tools/dinner-planner/index.html">Dinner Planner</a></nav>
-
-      <button class="button primary" id="generateTop" type="button">Nye boller</button>
-    </div>
-  </header>
-
-  <main>
-    <section class="page-header">
-      <div class="container card boller-hero-card">
-        <div class="boller-hero-image" id="heroImage">
-          <div class="boller-hero-overlay"></div>
-          <div class="boller-hero-content">
-            <div class="boller-eyebrow">🥐 Norsk + filippinsk bakeinspirasjon</div>
-            <h1>Bolle- og bakegenerator</h1>
-            <p>
+<header class="topbar">
+<div class="container nav">
+<a class="brand" href="index.html">
+<span class="brand-mark"></span>
+<span>Henrik Bergfjord</span>
+</a>
+<nav aria-label="Sidenavigasjon" class="nav-links"><a href="/">IANS</a><a href="/teknisk.html#personlig">Alle områder</a><a href="/middag.html">Middag</a><a href="/dessert.html">Dessert</a><a aria-current="page" class="active" href="/boller.html">Bakst</a><a href="/tools/dinner-planner/index.html">Dinner Planner</a></nav>
+<button class="button primary" id="generateTop" type="button">Nye boller</button>
+</div>
+</header>
+<main>
+<section class="page-header">
+<div class="container card boller-hero-card">
+<div class="boller-hero-image" id="heroImage">
+<div class="boller-hero-overlay"></div>
+<div class="boller-hero-content">
+<div class="boller-eyebrow">🥐 Norsk + filippinsk bakeinspirasjon</div>
+<p class="site-status">Oppskriftsverktøy · kontroller allergener og tilpass porsjoner</p><h1>Bolle- og bakegenerator</h1>
+<p>
               Finn en ny favoritt med bilde, tidsbruk, ingredienser, fremgangsmåte og litt historikk fra norsk og filippinsk bakerikultur.
             </p>
-            <div class="boller-hero-actions">
-              <button class="button primary" id="generateHero" type="button">Generer bakst</button>
-              <button class="button secondary" type="button" onclick="window.print()">Skriv ut</button>
-              <a class="button secondary" href="middag.html">Middag</a>
-              <a class="button secondary" href="dessert.html">Dessert</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="container boller-layout">
-        <section class="card boller-main">
-          <div class="boller-image-wrap">
-            <img id="image" class="boller-image" alt="Bilde av bakst" />
-          </div>
-
-          <div class="boller-main-inner">
-            <div class="boller-meta">
-              <span class="pill">Bakst</span>
-              <span class="pill" id="time">Tid</span>
-            </div>
-
-            <h2 class="boller-title" id="title">Bakst lastes...</h2>
-            <p class="boller-desc" id="desc">En bolle eller bakefavoritt vises her om et øyeblikk.</p>
-
-            <div class="boller-content-grid">
-              <article class="inner-card">
-                <h3>Ingredienser</h3>
-                <ul id="ingredients"></ul>
-              </article>
-
-              <article class="inner-card">
-                <h3>Slik lager du den</h3>
-                <ol id="instructions"></ol>
-              </article>
-
-              <article class="inner-card" style="grid-column:1 / -1;">
-                <h3>Historikk</h3>
-                <p id="history"></p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <aside class="card boller-side">
-          <div class="small-card">
-            <h3>Hurtigvalg</h3>
-            <p>
+<div class="boller-hero-actions">
+<button class="button primary" id="generateHero" type="button">Generer bakst</button>
+<button class="button secondary" onclick="window.print()" type="button">Skriv ut</button>
+<a class="button secondary" href="middag.html">Middag</a>
+<a class="button secondary" href="dessert.html">Dessert</a>
+</div>
+</div>
+</div>
+</div>
+<div class="container boller-layout">
+<section class="card boller-main">
+<div class="boller-image-wrap">
+<img alt="Bilde av bakst" class="boller-image" id="image"/>
+</div>
+<div class="boller-main-inner">
+<div class="boller-meta">
+<span class="pill">Bakst</span>
+<span class="pill" id="time">Tid</span>
+</div>
+<h2 class="boller-title" id="title">Bakst lastes...</h2>
+<p class="boller-desc" id="desc">En bolle eller bakefavoritt vises her om et øyeblikk.</p>
+<div class="boller-content-grid">
+<article class="inner-card">
+<h3>Ingredienser</h3>
+<ul id="ingredients"></ul>
+</article>
+<article class="inner-card">
+<h3>Slik lager du den</h3>
+<ol id="instructions"></ol>
+</article>
+<article class="inner-card" style="grid-column:1 / -1;">
+<h3>Historikk</h3>
+<p id="history"></p>
+</article>
+</div>
+</div>
+</section>
+<aside class="card boller-side">
+<div class="small-card">
+<h3>Hurtigvalg</h3>
+<p>
               Generer en ny bakst, skriv ut oppskriften eller hopp videre til middag og dessert.
             </p>
-          </div>
-
-          <div class="boller-note">
+</div>
+<div class="boller-note">
             Norske boller og filippinsk bakst viser to ulike bakekulturer, men begge handler mye om samvær, tradisjon og noe godt til kaffen eller merienda.
           </div>
-
-          <div class="small-card">
-            <h3>Neste nivå</h3>
-            <p>
-              Senere kan denne siden få favoritter, søk, kategorier og kobling mot middag og dessert i samme familieportal.
-            </p>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="container">
-      <div class="coming-soon">
-        <h3>Videre utvikling</h3>
-        <p>
-          En senere versjon kan foreslå bakst til helg, høytider eller gjester, og koble oppskrifter sammen med dessert- og middagssiden.
-        </p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
+<div class="small-card">
+<h3>Når du baker</h3>
+<p>Les oppskriften før du starter. Hevetid og steketid varierer med romtemperatur, deigstørrelse og ovn.</p>
+</div>
+</aside>
+</div>
+</section>
+<section class="container">
+<div class="coming-soon">
+<h3>Planlegg serveringen</h3>
+<p>Bruk menyen til å se middag og dessert, eller åpne Dinner Planner for en samlet plan. Kontroller allergener før du handler og serverer.</p>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="container">
       Henrik Bergfjord · Bolle- og bakegenerator · Norske og filippinske bakerifavoritter
     </div>
-  </footer>
-
-  <script>
+</footer>
+<script>
     const boller = [
       {
         title:"Hveteboller",
@@ -706,7 +685,6 @@
 
     window.addEventListener("load", generate);
   </script>
-    <script src="/assets/js/language.js?v=20260925b" defer></script>
-
+<script defer="" src="/assets/js/language.js?v=20260925b"></script>
 <script src="/assets/js/ians-analytics.js"></script></body>
 </html>

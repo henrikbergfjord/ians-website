@@ -4,6 +4,11 @@
   },
   "routes": [
     {
+      "route": "/om-megoo.html",
+      "redirect": "/om-meg.html",
+      "statusCode": 301
+    },
+    {
       "route": "/tools/website-builder-light/",
       "redirect": "/tools/website-builder/",
       "statusCode": 301

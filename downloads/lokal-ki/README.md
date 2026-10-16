@@ -1,5 +1,5 @@
-# IANS lokal KI – startpakke 1.0
-Publisert 15. oktober 2026. Koden bruker Python 3.10+ og Ollama.
+# IANS lokal KI – startpakke 1.1
+Oppdatert 16. oktober 2026. Koden bruker Python 3.10+ og Ollama.
 Dette er en liten tekstchat med en ferdigtrent modell, ikke trening av egen grunnmodell.
 Ingen API-nokkel, pip-avhengigheter eller abonnement er nodvendig for denne lokale chatten.
 Modellene har egne lisensvilkar: https://ai.google.dev/gemma/terms
@@ -81,3 +81,20 @@ https://docs.ollama.com/linux
 ## Lisens
 Pakkens egen Python-/startkode kan brukes, endres og deles under MIT-lisensen i LICENSE.txt.
 Modeller, Ollama og Python har egne vilkar. Ingen modellvekter er inkludert i ZIP-filen.
+
+## 7. Valgfritt lokalt alternativ - Llama 3.2
+Hvis du allerede har llama3.2:latest installert i Ollama:
+    python3 ians_chat.py --model llama3.2:latest
+Dette er et tredje, eksplisitt tillatt lokalt modellnavn. Ingen vilkarlig modelladresse eller sky-tag godtas.
+Ollamas register oppgir latest som 3B og omtrent 2,0 GB ved kontroll 16.10.2026.
+En latest-tag kan endres; kontroller registeret og modellens egne lisensvilkar for nedlasting eller kommersiell bruk:
+https://ollama.com/library/llama3.2
+Norsk er ikke blant leverandorens oppgitte, offisielt stottede sprak for denne modellen.
+Bruk alternativet til enkel testing, ikke som garanti for norsk svarkvalitet.
+
+## 8. Teststatus 16.10.2026
+1.1 er funksjonstestet mot en simulert lokal API og smoke-testet pa fysisk Apple Silicon Mac
+med allerede installert Llama 3.2. En kort foresporsel ga et tekstsvar gjennom IANS-klienten.
+Ingen modeller ble lastet ned og ingen Ollama-innstillinger ble endret i smoke-testen.
+Dette er ikke en ytelsesmaling, full sikkerhetstest eller dokumentasjon av Gemma-generering.
+Windows og Linux er ikke fysisk funksjonstestet.

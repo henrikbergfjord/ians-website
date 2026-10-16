@@ -1,8 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="no">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>IANS Dinner Planner V6.1</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -11,29 +12,29 @@
 @media(max-width:1100px){.grid{grid-template-columns:350px 1fr}.days{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.top{align-items:flex-start}.wrap{width:94%;margin:18px auto}.hero h1{font-size:2.45rem}.grid{grid-template-columns:1fr}.side{position:static}.card{padding:15px}.days{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr}.shoprow{grid-template-columns:1fr 90px}.have{grid-column:1/-1}.btn{width:100%}.actions .btn{width:100%}.topnav a{font-size:12px;padding:6px 8px}}
 </style>
-</head>
+<link href="https://www.ians.no/tools/dinner-planner/" rel="canonical"/><meta content="Planlegg middager, oppskrifter og handleliste med veiledende prisestimat. KI er valgfritt; reserveplan merkes tydelig." name="description"/><meta content="IANS Dinner Planner V6.1" property="og:title"/><meta content="Planlegg middager, oppskrifter og handleliste med veiledende prisestimat. KI er valgfritt; reserveplan merkes tydelig." property="og:description"/><meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/><link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/><style>.btn:not(.alt){color:#06131f;background:#6cd4f0}</style></head>
 <body>
 <header class="top"><div class="brand">IANS · DINNER PLANNER V6.1</div><nav class="topnav"><a href="/middag.html">Dinner Creator</a><a href="/tools/dinner-planner/index.html">Dinner Planner</a><a href="/teknisk.html">IANS Teknisk</a></nav></header>
 <main class="wrap">
 <section class="hero"><div class="eyebrow">AI MEAL · PANTRY · BUDGET · SHOPPING</div><h1>Middag, oppskrifter, budsjett og handleliste.</h1><p>Planlegg flere dager, bruk det dere allerede har hjemme, analyser kjøleskapsbilde med AI og kontroller estimert handlekurv før PDF-en lages.</p></section>
 <div class="grid">
 <aside class="card side">
-<h2>Lag planen</h2><div id="aiHealth" class="status warn">Kontrollerer AI-tilkobling…</div><div id="aiDebug" class="debug" hidden></div>
-<label>Matpreg</label><div class="checks cuisine"><label><input type="checkbox" value="Filippinsk" checked>Filippinsk</label><label><input type="checkbox" value="Europeisk" checked>Europeisk</label><label><input type="checkbox" value="Italiensk">Italiensk</label><label><input type="checkbox" value="Britisk">Britisk</label><label><input type="checkbox" value="Amerikansk">Amerikansk</label><label><input type="checkbox" value="Nordisk" checked>Nordisk</label></div>
-<label>Antall dager</label><select id="days"><option>3</option><option>5</option><option selected>7</option><option>10</option><option>14</option></select>
-<label>Voksne</label><input id="adults" type="number" min="1" max="10" value="2"><label>Barn</label><input id="children" type="number" min="0" max="10" value="1">
-<label>Prioritet</label><select id="priority"><option>Sunt og økonomisk</option><option>Ekstra sunt</option><option>Mest økonomisk</option></select>
-<label>Ukens matbudsjett (kr)</label><input id="weeklyBudget" type="number" min="0" max="20000" step="100" value="1800">
-<label>Ekstra denne uken</label><div class="checks"><label><input id="dessert" type="checkbox">Dessert</label><label><input id="baking" type="checkbox">Boller / bakst</label></div>
-<label>Hva har dere allerede hjemme?</label><textarea id="pantry" rows="4" placeholder="F.eks. 8 egg, tomater, gulrøtter, ris, laks i fryseren..."></textarea>
-<label>Bilde av kjøleskap / matvarer</label><input id="photoInput" type="file" accept="image/*"><img id="photoPreview" class="photo"><p class="muted">Bildet sendes kun når du aktivt lager AI-plan. Ikke last opp bilder med personer eller sensitiv informasjon.</p>
+<h2>Lag planen</h2><div class="status warn" id="aiHealth">Kontrollerer AI-tilkobling…</div><div class="debug" hidden="" id="aiDebug"></div>
+<label>Matpreg</label><div class="checks cuisine"><label><input checked="" type="checkbox" value="Filippinsk"/>Filippinsk</label><label><input checked="" type="checkbox" value="Europeisk"/>Europeisk</label><label><input type="checkbox" value="Italiensk"/>Italiensk</label><label><input type="checkbox" value="Britisk"/>Britisk</label><label><input type="checkbox" value="Amerikansk"/>Amerikansk</label><label><input checked="" type="checkbox" value="Nordisk"/>Nordisk</label></div>
+<label>Antall dager</label><select aria-label="Antall dager" id="days"><option>3</option><option>5</option><option selected="">7</option><option>10</option><option>14</option></select>
+<label>Voksne</label><input aria-label="Antall voksne" id="adults" max="10" min="1" type="number" value="2"/><label>Barn</label><input aria-label="Antall barn" id="children" max="10" min="0" type="number" value="1"/>
+<label>Prioritet</label><select aria-label="Prioritet" id="priority"><option>Sunt og økonomisk</option><option>Ekstra sunt</option><option>Mest økonomisk</option></select>
+<label>Ukens matbudsjett (kr)</label><input aria-label="Matbudsjett i kroner" id="weeklyBudget" max="20000" min="0" step="100" type="number" value="1800"/>
+<label>Ekstra denne uken</label><div class="checks"><label><input id="dessert" type="checkbox"/>Dessert</label><label><input id="baking" type="checkbox"/>Boller / bakst</label></div>
+<label>Hva har dere allerede hjemme?</label><textarea aria-label="Matvarer dere har hjemme" id="pantry" placeholder="F.eks. 8 egg, tomater, gulrøtter, ris, laks i fryseren..." rows="4"></textarea>
+<label>Bilde av kjøleskap / matvarer</label><input accept="image/*" aria-label="Velg bilde av matvarer" id="photoInput" type="file"/><img class="photo" id="photoPreview"/><p class="muted">Bildet sendes kun når du aktivt lager AI-plan. Ikke last opp bilder med personer eller sensitiv informasjon.</p>
 <button class="btn" id="aiBtn">Lag plan med IANS AI</button><button class="btn alt" id="retryHealth">Test AI-tilkobling på nytt</button>
-<div class="favbox"><b>Mine favoritter</b><div id="favList" class="muted">Ingen favoritter ennå.</div></div>
+<div class="favbox"><b>Mine favoritter</b><div class="muted" id="favList">Ingen favoritter ennå.</div></div>
 </aside>
 <section class="card" id="out"><div class="empty"><div><h2>Klar når du er</h2><p>Velg preferanser og lag en plan. Budsjett og estimert handlekurv vises før du skriver ut.</p></div></div></section>
 </div>
 <div class="foot">IANS Dinner Planner · Veiledende matplanlegging og prisestimat. Kontroller allergier, holdbarhet, butikkpris og trygg tilberedning. Teknisk ansvarlig for denne siden: Henrik Bergfjord · ians.no</div>
-</main>
+<p class="ians-privacy-note">Valgfri KI sender opplysninger til IANS-backend og OpenAI. <a href="/personvern.html#ki">Se data, mottakere og lagring før du bruker KI</a>.</p></main>
 <script>
 const $=s=>document.querySelector(s);let current=null,imageData=null,aiStatus=null;
 const priceCatalog={kylling:109,kyllingfilet:119,laks:159,'hvit fisk':119,kjøttdeig:89,svinefilet:129,svinekjøttdeig:79,kjøttkaker:89,middagspølser:55,poteter:39,jasminris:55,ris:49,spaghetti:25,pasta:25,makaroni:24,brokkoli:29,gulrot:29,gulrøtter:29,paprika:39,tomat:35,tomater:35,løk:25,hvitløk:18,sitron:12,mais:18,ost:55,parmesan:45,melk:27,smør:49,hvetemel:24,havregryn:26,gjær:16,epler:39,salat:29,'hakkede tomater':18,matfløte:28,erter:25,'burgerbrød':35};

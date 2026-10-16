@@ -1,20 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>iPhone Pro Compare 2022–2026 | iPhone 14 Pro to 18 Pro | IANS</title>
-
-<meta name="description" content="Compare five generations of iPhone Pro: iPhone 14 Pro, 15 Pro, 16 Pro, 17 Pro and 18 Pro. Camera, performance, battery, design, AI and upgrade advice.">
-
-<link rel="canonical" href="https://www.ians.no/iphone-compare.html">
-
-<meta property="og:title" content="5 Years of iPhone Pro | IANS">
-<meta property="og:description" content="iPhone 14 Pro to iPhone 18 Pro. See what actually changed across five generations.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.ians.no/iphone-compare.html">
-
+<meta content="Compare five generations of iPhone Pro: iPhone 14 Pro, 15 Pro, 16 Pro, 17 Pro and 18 Pro. Camera, performance, battery, design, AI and upgrade advice." name="description"/>
+<link href="https://www.ians.no/iphone-compare.html" rel="canonical"/>
+<meta content="5 Years of iPhone Pro | IANS" property="og:title"/>
+<meta content="iPhone 14 Pro to iPhone 18 Pro. See what actually changed across five generations." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://www.ians.no/iphone-compare.html" property="og:url"/>
 <style>
 :root{
  --bg:#06111a;
@@ -766,568 +762,481 @@ footer{
  .compare-button{width:100%}
 }
 </style>
-</head>
-
+<meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/><link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/></head>
 <body>
-
 <header class="wrap top">
- <a class="brand" href="/teknisk.html">IANS TEKNISK</a>
- <a class="back" href="/ios-27.html">← iOS 27 Guide</a>
+<a class="brand" href="/teknisk.html">IANS TEKNISK</a>
+<a class="back" href="/ios-27.html">← iOS 27 Guide</a>
 </header>
-
 <main class="wrap">
-
 <section class="hero">
- <div class="eyebrow">IANS · IPHONE PRO EVOLUTION</div>
- <h1>Five years.<br>Five Pro generations.</h1>
- <p>
+<div class="eyebrow">IANS · IPHONE PRO EVOLUTION</div>
+<h1>Five years.<br/>Five Pro generations.</h1>
+<p>
    From iPhone 14 Pro to iPhone 18 Pro. Explore the moments that changed
    the iPhone, compare any two generations and see whether an upgrade
    would actually make a difference.
  </p>
-
- <div class="hero-actions">
-   <a class="hero-btn" href="#compare-builder">⚔️ Compare two</a>
-   <a class="hero-btn" href="#full-table">📊 Show all 5</a>
-   <a class="hero-btn" href="#how-far">🚀 14 Pro → 18 Pro</a>
- </div>
-</section>
-
-<section class="timeline-wrap" aria-label="iPhone Pro timeline">
- <div class="timeline">
-
-   <div class="timeline-item" data-model="14">
-     <div class="dot"></div>
-     <div class="timeline-year">2022</div>
-     <div class="timeline-name">14 Pro</div>
-     <div class="milestone">✨ Dynamic Island</div>
-   </div>
-
-   <div class="timeline-item" data-model="15">
-     <div class="dot"></div>
-     <div class="timeline-year">2023</div>
-     <div class="timeline-name">15 Pro</div>
-     <div class="milestone">🔌 USB-C + Titanium</div>
-   </div>
-
-   <div class="timeline-item" data-model="16">
-     <div class="dot"></div>
-     <div class="timeline-year">2024</div>
-     <div class="timeline-name">16 Pro</div>
-     <div class="milestone">🎛 Camera Control</div>
-   </div>
-
-   <div class="timeline-item" data-model="17">
-     <div class="dot"></div>
-     <div class="timeline-year">2025</div>
-     <div class="timeline-name">17 Pro</div>
-     <div class="milestone">📷 48 MP Pro Fusion</div>
-   </div>
-
-   <div class="timeline-item selected" data-model="18">
-     <div class="dot"></div>
-     <div class="timeline-year">2026</div>
-     <div class="timeline-name">18 Pro</div>
-     <div class="milestone">⚡ A20 Pro</div>
-   </div>
-
- </div>
-</section>
-
-<section class="builder" id="compare-builder">
-
- <div class="builder-head">
-   <div class="eyebrow">HEAD TO HEAD</div>
-   <h2>How big is your upgrade?</h2>
-   <p>Choose the iPhone you have and the one you're considering.</p>
- </div>
-
- <div class="selectors">
-
-   <div class="selector">
-     <label>I HAVE</label>
-     <select id="fromPhone">
-       <option value="14" selected>iPhone 14 Pro</option>
-       <option value="15">iPhone 15 Pro</option>
-       <option value="16">iPhone 16 Pro</option>
-       <option value="17">iPhone 17 Pro</option>
-     </select>
-   </div>
-
-   <div class="vs">VS</div>
-
-   <div class="selector">
-     <label>COMPARE WITH</label>
-     <select id="toPhone">
-       <option value="15">iPhone 15 Pro</option>
-       <option value="16">iPhone 16 Pro</option>
-       <option value="17">iPhone 17 Pro</option>
-       <option value="18" selected>iPhone 18 Pro</option>
-     </select>
-   </div>
-
-   <button class="compare-button" id="compareBtn">Compare →</button>
-
- </div>
-
- <div class="compare-result show" id="compareResult">
-   <div class="result-title" id="resultTitle">iPhone 14 Pro → iPhone 18 Pro</div>
-   <div class="generations" id="generationText">4 generations later</div>
-
-   <div class="score-grid" id="scoreGrid"></div>
-
-   <div class="final-verdict" id="finalVerdict"></div>
- </div>
-
-</section>
-
-<div class="filters" aria-label="Specification filters">
- <button class="chip active" data-filter="all">All</button>
- <button class="chip" data-filter="display">Display</button>
- <button class="chip" data-filter="performance">Performance</button>
- <button class="chip" data-filter="camera">Camera</button>
- <button class="chip" data-filter="battery">Battery</button>
- <button class="chip" data-filter="design">Design</button>
- <button class="chip" data-filter="connectivity">Connectivity</button>
+<div class="hero-actions">
+<a class="hero-btn" href="#compare-builder">⚔️ Compare two</a>
+<a class="hero-btn" href="#full-table">📊 Show all 5</a>
+<a class="hero-btn" href="#how-far">🚀 14 Pro → 18 Pro</a>
 </div>
-
-<section class="section">
- <div class="section-head">
-   <div>
-     <div class="eyebrow">2022 → 2026</div>
-     <h2>The Pro family</h2>
-   </div>
-   <p>Five generations show just how quickly some parts of the iPhone evolved — and how little others needed to change.</p>
- </div>
-
- <div class="phones">
-
-   <article class="phone">
-     <div class="year">2022</div>
-     <h3>iPhone 14 Pro</h3>
-     <div class="sub">The Dynamic Island generation.</div>
-     <div class="phone-visual"></div>
-     <div class="quick">
-       <div><b>A16 Bionic</b><span>6-core CPU</span></div>
-       <div><b>6.1″</b><span>120 Hz OLED</span></div>
-       <div><b>23 h</b><span>video playback</span></div>
-       <div><b>206 g</b><span>stainless steel</span></div>
-     </div>
-     <div class="badge">THE MODERN START</div><br>
-     <a class="apple" href="https://support.apple.com/no-no/111849" target="_blank" rel="noopener"> Apple specs ↗</a>
-   </article>
-
-   <article class="phone">
-     <div class="year">2023</div>
-     <h3>iPhone 15 Pro</h3>
-     <div class="sub">USB-C, titanium and A17 Pro.</div>
-     <div class="phone-visual"></div>
-     <div class="quick">
-       <div><b>A17 Pro</b><span>6-core GPU</span></div>
-       <div><b>6.1″</b><span>120 Hz OLED</span></div>
-       <div><b>23 h</b><span>video playback</span></div>
-       <div><b>187 g</b><span>titanium</span></div>
-     </div>
-     <div class="badge">BIG DESIGN SHIFT</div><br>
-     <a class="apple" href="https://support.apple.com/no-no/111829" target="_blank" rel="noopener"> Apple specs ↗</a>
-   </article>
-
-   <article class="phone">
-     <div class="year">2024</div>
-     <h3>iPhone 16 Pro</h3>
-     <div class="sub">Bigger display and Camera Control.</div>
-     <div class="phone-visual"></div>
-     <div class="quick">
-       <div><b>A18 Pro</b><span>6-core GPU</span></div>
-       <div><b>6.3″</b><span>120 Hz OLED</span></div>
-       <div><b>27 h</b><span>video playback</span></div>
-       <div><b>199 g</b><span>titanium</span></div>
-     </div>
-     <div class="badge">STRONG VALUE</div><br>
-     <a class="apple" href="https://support.apple.com/no-no/121031" target="_blank" rel="noopener"> Apple specs ↗</a>
-   </article>
-
-   <article class="phone">
-     <div class="year">2025</div>
-     <h3>iPhone 17 Pro</h3>
-     <div class="sub">Camera and sustained-performance leap.</div>
-     <div class="phone-visual"></div>
-     <div class="quick">
-       <div><b>A19 Pro</b><span>Neural Accelerators</span></div>
-       <div><b>6.3″</b><span>3000 nit outdoors</span></div>
-       <div><b>31 h</b><span>video playback</span></div>
-       <div><b>204 g</b><span>aluminium</span></div>
-     </div>
-     <div class="badge">CAMERA LEAP</div><br>
-     <a class="apple" href="https://support.apple.com/en-us/125090" target="_blank" rel="noopener"> Apple specs ↗</a>
-   </article>
-
-   <article class="phone latest">
-     <div class="year">2026 · LATEST</div>
-     <h3>iPhone 18 Pro</h3>
-     <div class="sub">The most complete generation here.</div>
-     <div class="phone-visual"></div>
-     <div class="quick">
-       <div><b>A20 Pro</b><span>7-core GPU</span></div>
-       <div><b>6.3″</b><span>3000 nit outdoors</span></div>
-       <div><b>34 h</b><span>video playback</span></div>
-       <div><b>211 g</b><span>aluminium</span></div>
-     </div>
-     <div class="badge">IANS · BEST OVERALL</div><br>
-     <a class="apple" href="https://www.apple.com/no/iphone-18-pro/specs/" target="_blank" rel="noopener"> Apple specs ↗</a>
-   </article>
-
- </div>
 </section>
-
-<section class="section">
-
- <div class="section-head">
-   <div>
-     <div class="eyebrow">THE BIG MOMENTS</div>
-     <h2>When iPhone Pro really changed.</h2>
-   </div>
- </div>
-
- <div class="big-moments">
-
-   <article class="moment">
-     <div class="icon">✨</div>
-     <div class="m-year">2022 · 14 PRO</div>
-     <h3>Dynamic Island arrives</h3>
-     <p>The notch era changed direction, while the first 48 MP main camera created a new baseline for Pro photography.</p>
-   </article>
-
-   <article class="moment">
-     <div class="icon">🔌</div>
-     <div class="m-year">2023 · 15 PRO</div>
-     <h3>Goodbye Lightning</h3>
-     <p>USB-C, titanium, the Action button and A17 Pro made this one of the clearest physical transitions.</p>
-   </article>
-
-   <article class="moment">
-     <div class="icon">🎛</div>
-     <div class="m-year">2024 · 16 PRO</div>
-     <h3>Camera Control</h3>
-     <p>The Pro grew to 6.3 inches, gained Camera Control and brought the A18 Pro generation.</p>
-   </article>
-
-   <article class="moment">
-     <div class="icon">📷</div>
-     <div class="m-year">2025–2026</div>
-     <h3>Camera + AI acceleration</h3>
-     <p>17 Pro and 18 Pro push further into computational photography, sustained performance and on-device intelligence.</p>
-   </article>
-
- </div>
+<section aria-label="iPhone Pro timeline" class="timeline-wrap">
+<div class="timeline">
+<div class="timeline-item" data-model="14">
+<div class="dot"></div>
+<div class="timeline-year">2022</div>
+<div class="timeline-name">14 Pro</div>
+<div class="milestone">✨ Dynamic Island</div>
+</div>
+<div class="timeline-item" data-model="15">
+<div class="dot"></div>
+<div class="timeline-year">2023</div>
+<div class="timeline-name">15 Pro</div>
+<div class="milestone">🔌 USB-C + Titanium</div>
+</div>
+<div class="timeline-item" data-model="16">
+<div class="dot"></div>
+<div class="timeline-year">2024</div>
+<div class="timeline-name">16 Pro</div>
+<div class="milestone">🎛 Camera Control</div>
+</div>
+<div class="timeline-item" data-model="17">
+<div class="dot"></div>
+<div class="timeline-year">2025</div>
+<div class="timeline-name">17 Pro</div>
+<div class="milestone">📷 48 MP Pro Fusion</div>
+</div>
+<div class="timeline-item selected" data-model="18">
+<div class="dot"></div>
+<div class="timeline-year">2026</div>
+<div class="timeline-name">18 Pro</div>
+<div class="milestone">⚡ A20 Pro</div>
+</div>
+</div>
 </section>
-
+<section class="builder" id="compare-builder">
+<div class="builder-head">
+<div class="eyebrow">HEAD TO HEAD</div>
+<h2>How big is your upgrade?</h2>
+<p>Choose the iPhone you have and the one you're considering.</p>
+</div>
+<div class="selectors">
+<div class="selector">
+<label>I HAVE</label>
+<select aria-label="Your current iPhone" id="fromPhone">
+<option selected="" value="14">iPhone 14 Pro</option>
+<option value="15">iPhone 15 Pro</option>
+<option value="16">iPhone 16 Pro</option>
+<option value="17">iPhone 17 Pro</option>
+</select>
+</div>
+<div class="vs">VS</div>
+<div class="selector">
+<label>COMPARE WITH</label>
+<select aria-label="iPhone to compare with" id="toPhone">
+<option value="15">iPhone 15 Pro</option>
+<option value="16">iPhone 16 Pro</option>
+<option value="17">iPhone 17 Pro</option>
+<option selected="" value="18">iPhone 18 Pro</option>
+</select>
+</div>
+<button class="compare-button" id="compareBtn">Compare →</button>
+</div>
+<div class="compare-result show" id="compareResult">
+<div class="result-title" id="resultTitle">iPhone 14 Pro → iPhone 18 Pro</div>
+<div class="generations" id="generationText">4 generations later</div>
+<div class="score-grid" id="scoreGrid"></div>
+<div class="final-verdict" id="finalVerdict"></div>
+</div>
+</section>
+<div aria-label="Specification filters" class="filters">
+<button class="chip active" data-filter="all">All</button>
+<button class="chip" data-filter="display">Display</button>
+<button class="chip" data-filter="performance">Performance</button>
+<button class="chip" data-filter="camera">Camera</button>
+<button class="chip" data-filter="battery">Battery</button>
+<button class="chip" data-filter="design">Design</button>
+<button class="chip" data-filter="connectivity">Connectivity</button>
+</div>
+<section class="section">
+<div class="section-head">
+<div>
+<div class="eyebrow">2022 → 2026</div>
+<h2>The Pro family</h2>
+</div>
+<p>Five generations show just how quickly some parts of the iPhone evolved — and how little others needed to change.</p>
+</div>
+<div class="phones">
+<article class="phone">
+<div class="year">2022</div>
+<h3>iPhone 14 Pro</h3>
+<div class="sub">The Dynamic Island generation.</div>
+<div class="phone-visual"></div>
+<div class="quick">
+<div><b>A16 Bionic</b><span>6-core CPU</span></div>
+<div><b>6.1″</b><span>120 Hz OLED</span></div>
+<div><b>23 h</b><span>video playback</span></div>
+<div><b>206 g</b><span>stainless steel</span></div>
+</div>
+<div class="badge">THE MODERN START</div><br/>
+<a class="apple" href="https://support.apple.com/no-no/111849" rel="noopener" target="_blank"> Apple specs ↗</a>
+</article>
+<article class="phone">
+<div class="year">2023</div>
+<h3>iPhone 15 Pro</h3>
+<div class="sub">USB-C, titanium and A17 Pro.</div>
+<div class="phone-visual"></div>
+<div class="quick">
+<div><b>A17 Pro</b><span>6-core GPU</span></div>
+<div><b>6.1″</b><span>120 Hz OLED</span></div>
+<div><b>23 h</b><span>video playback</span></div>
+<div><b>187 g</b><span>titanium</span></div>
+</div>
+<div class="badge">BIG DESIGN SHIFT</div><br/>
+<a class="apple" href="https://support.apple.com/no-no/111829" rel="noopener" target="_blank"> Apple specs ↗</a>
+</article>
+<article class="phone">
+<div class="year">2024</div>
+<h3>iPhone 16 Pro</h3>
+<div class="sub">Bigger display and Camera Control.</div>
+<div class="phone-visual"></div>
+<div class="quick">
+<div><b>A18 Pro</b><span>6-core GPU</span></div>
+<div><b>6.3″</b><span>120 Hz OLED</span></div>
+<div><b>27 h</b><span>video playback</span></div>
+<div><b>199 g</b><span>titanium</span></div>
+</div>
+<div class="badge">STRONG VALUE</div><br/>
+<a class="apple" href="https://support.apple.com/no-no/121031" rel="noopener" target="_blank"> Apple specs ↗</a>
+</article>
+<article class="phone">
+<div class="year">2025</div>
+<h3>iPhone 17 Pro</h3>
+<div class="sub">Camera and sustained-performance leap.</div>
+<div class="phone-visual"></div>
+<div class="quick">
+<div><b>A19 Pro</b><span>Neural Accelerators</span></div>
+<div><b>6.3″</b><span>3000 nit outdoors</span></div>
+<div><b>31 h</b><span>video playback</span></div>
+<div><b>204 g</b><span>aluminium</span></div>
+</div>
+<div class="badge">CAMERA LEAP</div><br/>
+<a class="apple" href="https://support.apple.com/en-us/125090" rel="noopener" target="_blank"> Apple specs ↗</a>
+</article>
+<article class="phone latest">
+<div class="year">2026 · LATEST</div>
+<h3>iPhone 18 Pro</h3>
+<div class="sub">The most complete generation here.</div>
+<div class="phone-visual"></div>
+<div class="quick">
+<div><b>A20 Pro</b><span>7-core GPU</span></div>
+<div><b>6.3″</b><span>3000 nit outdoors</span></div>
+<div><b>34 h</b><span>video playback</span></div>
+<div><b>211 g</b><span>aluminium</span></div>
+</div>
+<div class="badge">IANS · BEST OVERALL</div><br/>
+<a class="apple" href="https://www.apple.com/no/iphone-18-pro/specs/" rel="noopener" target="_blank"> Apple specs ↗</a>
+</article>
+</div>
+</section>
+<section class="section">
+<div class="section-head">
+<div>
+<div class="eyebrow">THE BIG MOMENTS</div>
+<h2>When iPhone Pro really changed.</h2>
+</div>
+</div>
+<div class="big-moments">
+<article class="moment">
+<div class="icon">✨</div>
+<div class="m-year">2022 · 14 PRO</div>
+<h3>Dynamic Island arrives</h3>
+<p>The notch era changed direction, while the first 48 MP main camera created a new baseline for Pro photography.</p>
+</article>
+<article class="moment">
+<div class="icon">🔌</div>
+<div class="m-year">2023 · 15 PRO</div>
+<h3>Goodbye Lightning</h3>
+<p>USB-C, titanium, the Action button and A17 Pro made this one of the clearest physical transitions.</p>
+</article>
+<article class="moment">
+<div class="icon">🎛</div>
+<div class="m-year">2024 · 16 PRO</div>
+<h3>Camera Control</h3>
+<p>The Pro grew to 6.3 inches, gained Camera Control and brought the A18 Pro generation.</p>
+</article>
+<article class="moment">
+<div class="icon">📷</div>
+<div class="m-year">2025–2026</div>
+<h3>Camera + AI acceleration</h3>
+<p>17 Pro and 18 Pro push further into computational photography, sustained performance and on-device intelligence.</p>
+</article>
+</div>
+</section>
 <section class="section" id="full-table">
-
- <div class="section-head">
-   <div>
-     <div class="eyebrow">SHOW ALL 5</div>
-     <h2>What actually changed?</h2>
-   </div>
-   <p>Choose a category above. On smaller screens, swipe the table horizontally.</p>
- </div>
-
- <div class="tablebox">
- <table>
- <thead>
- <tr>
-   <th>Feature</th>
-   <th>14 Pro</th>
-   <th>15 Pro</th>
-   <th>16 Pro</th>
-   <th>17 Pro</th>
-   <th>18 Pro</th>
- </tr>
- </thead>
-
- <tbody>
-
- <tr data-cat="performance">
-   <td>Chip</td>
-   <td>A16 Bionic</td>
-   <td>A17 Pro</td>
-   <td>A18 Pro</td>
-   <td>A19 Pro</td>
-   <td class="best">A20 Pro ★</td>
- </tr>
-
- <tr data-cat="performance">
-   <td>GPU</td>
-   <td>5-core</td>
-   <td>6-core</td>
-   <td>6-core</td>
-   <td>6-core + Neural Accelerators</td>
-   <td class="best">7-core + Neural Accelerators ★</td>
- </tr>
-
- <tr data-cat="display">
-   <td>Display</td>
-   <td>6.1″ OLED</td>
-   <td>6.1″ OLED</td>
-   <td>6.3″ OLED</td>
-   <td>6.3″ OLED</td>
-   <td>6.3″ OLED</td>
- </tr>
-
- <tr data-cat="display">
-   <td>ProMotion</td>
-   <td>Up to 120 Hz</td>
-   <td>Up to 120 Hz</td>
-   <td>Up to 120 Hz</td>
-   <td>Up to 120 Hz</td>
-   <td>Up to 120 Hz</td>
- </tr>
-
- <tr data-cat="display">
-   <td>Outdoor peak</td>
-   <td>2000 nit</td>
-   <td>2000 nit</td>
-   <td>2000 nit</td>
-   <td class="best">3000 nit ★</td>
-   <td class="best">3000 nit ★</td>
- </tr>
-
- <tr data-cat="camera">
-   <td>Main camera</td>
-   <td>48 MP</td>
-   <td>48 MP</td>
-   <td>48 MP Fusion</td>
-   <td>48 MP Fusion</td>
-   <td class="best">48 MP Fusion · variable aperture ★</td>
- </tr>
-
- <tr data-cat="camera">
-   <td>Ultra Wide</td>
-   <td>12 MP</td>
-   <td>12 MP</td>
-   <td>48 MP</td>
-   <td>48 MP Fusion</td>
-   <td>48 MP Fusion</td>
- </tr>
-
- <tr data-cat="camera">
-   <td>Telephoto</td>
-   <td>3×</td>
-   <td>3×</td>
-   <td>5×</td>
-   <td>48 MP · 4× / 8× optical quality</td>
-   <td class="best">48 MP Fusion tele system ★</td>
- </tr>
-
- <tr data-cat="camera">
-   <td>Front camera</td>
-   <td>12 MP</td>
-   <td>12 MP</td>
-   <td>12 MP</td>
-   <td>18 MP Center Stage</td>
-   <td class="best">18 MP Center Stage + Pro controls ★</td>
- </tr>
-
- <tr data-cat="battery">
-   <td>Video playback</td>
-   <td>Up to 23 h</td>
-   <td>Up to 23 h</td>
-   <td>Up to 27 h</td>
-   <td>Up to 31 h</td>
-   <td class="best">Up to 34 h ★</td>
- </tr>
-
- <tr data-cat="design">
-   <td>Material</td>
-   <td>Stainless steel</td>
-   <td>Titanium</td>
-   <td>Titanium</td>
-   <td>Aluminium unibody</td>
-   <td>Aluminium unibody</td>
- </tr>
-
- <tr data-cat="design">
-   <td>Weight</td>
-   <td>206 g</td>
-   <td class="best">187 g ★</td>
-   <td>199 g</td>
-   <td>204 g</td>
-   <td>211 g</td>
- </tr>
-
- <tr data-cat="design">
-   <td>Action button</td>
-   <td>—</td>
-   <td>✓</td>
-   <td>✓</td>
-   <td>✓</td>
-   <td>✓</td>
- </tr>
-
- <tr data-cat="design">
-   <td>Camera Control</td>
-   <td>—</td>
-   <td>—</td>
-   <td>✓</td>
-   <td>✓</td>
-   <td>✓</td>
- </tr>
-
- <tr data-cat="connectivity">
-   <td>Connector</td>
-   <td>Lightning</td>
-   <td>USB-C · USB 3</td>
-   <td>USB-C · USB 3</td>
-   <td>USB-C · USB 3</td>
-   <td>USB-C · USB 3</td>
- </tr>
-
- <tr data-cat="performance">
-   <td>Apple Intelligence</td>
-   <td>Not supported</td>
-   <td>Supported</td>
-   <td>Supported</td>
-   <td>Supported</td>
-   <td class="best">Supported + newest AI hardware ★</td>
- </tr>
-
- </tbody>
- </table>
- </div>
+<div class="section-head">
+<div>
+<div class="eyebrow">SHOW ALL 5</div>
+<h2>What actually changed?</h2>
+</div>
+<p>Choose a category above. On smaller screens, swipe the table horizontally.</p>
+</div>
+<div class="tablebox">
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>14 Pro</th>
+<th>15 Pro</th>
+<th>16 Pro</th>
+<th>17 Pro</th>
+<th>18 Pro</th>
+</tr>
+</thead>
+<tbody>
+<tr data-cat="performance">
+<td>Chip</td>
+<td>A16 Bionic</td>
+<td>A17 Pro</td>
+<td>A18 Pro</td>
+<td>A19 Pro</td>
+<td class="best">A20 Pro ★</td>
+</tr>
+<tr data-cat="performance">
+<td>GPU</td>
+<td>5-core</td>
+<td>6-core</td>
+<td>6-core</td>
+<td>6-core + Neural Accelerators</td>
+<td class="best">7-core + Neural Accelerators ★</td>
+</tr>
+<tr data-cat="display">
+<td>Display</td>
+<td>6.1″ OLED</td>
+<td>6.1″ OLED</td>
+<td>6.3″ OLED</td>
+<td>6.3″ OLED</td>
+<td>6.3″ OLED</td>
+</tr>
+<tr data-cat="display">
+<td>ProMotion</td>
+<td>Up to 120 Hz</td>
+<td>Up to 120 Hz</td>
+<td>Up to 120 Hz</td>
+<td>Up to 120 Hz</td>
+<td>Up to 120 Hz</td>
+</tr>
+<tr data-cat="display">
+<td>Outdoor peak</td>
+<td>2000 nit</td>
+<td>2000 nit</td>
+<td>2000 nit</td>
+<td class="best">3000 nit ★</td>
+<td class="best">3000 nit ★</td>
+</tr>
+<tr data-cat="camera">
+<td>Main camera</td>
+<td>48 MP</td>
+<td>48 MP</td>
+<td>48 MP Fusion</td>
+<td>48 MP Fusion</td>
+<td class="best">48 MP Fusion · variable aperture ★</td>
+</tr>
+<tr data-cat="camera">
+<td>Ultra Wide</td>
+<td>12 MP</td>
+<td>12 MP</td>
+<td>48 MP</td>
+<td>48 MP Fusion</td>
+<td>48 MP Fusion</td>
+</tr>
+<tr data-cat="camera">
+<td>Telephoto</td>
+<td>3×</td>
+<td>3×</td>
+<td>5×</td>
+<td>48 MP · 4× / 8× optical quality</td>
+<td class="best">48 MP Fusion tele system ★</td>
+</tr>
+<tr data-cat="camera">
+<td>Front camera</td>
+<td>12 MP</td>
+<td>12 MP</td>
+<td>12 MP</td>
+<td>18 MP Center Stage</td>
+<td class="best">18 MP Center Stage + Pro controls ★</td>
+</tr>
+<tr data-cat="battery">
+<td>Video playback</td>
+<td>Up to 23 h</td>
+<td>Up to 23 h</td>
+<td>Up to 27 h</td>
+<td>Up to 31 h</td>
+<td class="best">Up to 34 h ★</td>
+</tr>
+<tr data-cat="design">
+<td>Material</td>
+<td>Stainless steel</td>
+<td>Titanium</td>
+<td>Titanium</td>
+<td>Aluminium unibody</td>
+<td>Aluminium unibody</td>
+</tr>
+<tr data-cat="design">
+<td>Weight</td>
+<td>206 g</td>
+<td class="best">187 g ★</td>
+<td>199 g</td>
+<td>204 g</td>
+<td>211 g</td>
+</tr>
+<tr data-cat="design">
+<td>Action button</td>
+<td>—</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr data-cat="design">
+<td>Camera Control</td>
+<td>—</td>
+<td>—</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr data-cat="connectivity">
+<td>Connector</td>
+<td>Lightning</td>
+<td>USB-C · USB 3</td>
+<td>USB-C · USB 3</td>
+<td>USB-C · USB 3</td>
+<td>USB-C · USB 3</td>
+</tr>
+<tr data-cat="performance">
+<td>Apple Intelligence</td>
+<td>Not supported</td>
+<td>Supported</td>
+<td>Supported</td>
+<td>Supported</td>
+<td class="best">Supported + newest AI hardware ★</td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
-
 <section class="section" id="how-far">
-
- <div class="howfar">
-
-   <div class="howfar-top">
-     <div class="eyebrow">HOW FAR HAS IPHONE COME?</div>
-     <h2>iPhone 14 Pro → 18 Pro</h2>
-     <p>Four generations make the cumulative changes much easier to see.</p>
-   </div>
-
-   <div class="evolution">
-
-     <div class="evo-phone">
-       <h3>iPhone 14 Pro</h3>
-       <ul>
-         <li>A16 Bionic</li>
-         <li>6.1″ display</li>
-         <li>48 MP + 12 MP + 12 MP cameras</li>
-         <li>3× telephoto</li>
-         <li>12 MP front camera</li>
-         <li>Up to 23 h video</li>
-         <li>Lightning</li>
-         <li>206 g stainless steel</li>
-         <li>No Apple Intelligence</li>
-       </ul>
-     </div>
-
-     <div class="arrow">→</div>
-
-     <div class="evo-phone">
-       <h3>iPhone 18 Pro</h3>
-       <ul>
-         <li>A20 Pro</li>
-         <li>6.3″ display</li>
-         <li>48 MP Pro Fusion camera system</li>
-         <li>Advanced Fusion tele system</li>
-         <li>18 MP Center Stage front camera</li>
-         <li>Up to 34 h video</li>
-         <li>USB-C</li>
-         <li>211 g aluminium unibody</li>
-         <li>Latest Apple Intelligence hardware</li>
-       </ul>
-     </div>
-
-   </div>
-
-   <div class="jump">
-     <div><span>PERFORMANCE</span><strong>Major jump</strong></div>
-     <div><span>CAMERA</span><strong>Major jump</strong></div>
-     <div><span>BATTERY</span><strong>+11 hours*</strong></div>
-     <div><span>AI</span><strong>New capability</strong></div>
-   </div>
-
- </div>
+<div class="howfar">
+<div class="howfar-top">
+<div class="eyebrow">HOW FAR HAS IPHONE COME?</div>
+<h2>iPhone 14 Pro → 18 Pro</h2>
+<p>Four generations make the cumulative changes much easier to see.</p>
+</div>
+<div class="evolution">
+<div class="evo-phone">
+<h3>iPhone 14 Pro</h3>
+<ul>
+<li>A16 Bionic</li>
+<li>6.1″ display</li>
+<li>48 MP + 12 MP + 12 MP cameras</li>
+<li>3× telephoto</li>
+<li>12 MP front camera</li>
+<li>Up to 23 h video</li>
+<li>Lightning</li>
+<li>206 g stainless steel</li>
+<li>No Apple Intelligence</li>
+</ul>
+</div>
+<div class="arrow">→</div>
+<div class="evo-phone">
+<h3>iPhone 18 Pro</h3>
+<ul>
+<li>A20 Pro</li>
+<li>6.3″ display</li>
+<li>48 MP Pro Fusion camera system</li>
+<li>Advanced Fusion tele system</li>
+<li>18 MP Center Stage front camera</li>
+<li>Up to 34 h video</li>
+<li>USB-C</li>
+<li>211 g aluminium unibody</li>
+<li>Latest Apple Intelligence hardware</li>
+</ul>
+</div>
+</div>
+<div class="jump">
+<div><span>PERFORMANCE</span><strong>Major jump</strong></div>
+<div><span>CAMERA</span><strong>Major jump</strong></div>
+<div><span>BATTERY</span><strong>+11 hours*</strong></div>
+<div><span>AI</span><strong>New capability</strong></div>
+</div>
+</div>
 </section>
-
 <section class="section">
-
- <div class="section-head">
-   <div>
-     <div class="eyebrow">IANS PICKS</div>
-     <h2>Five generations. Different winners.</h2>
-   </div>
- </div>
-
- <div class="winners">
-
-   <article class="win">
-     <div class="icon">🏆</div>
-     <h3>Best overall</h3>
-     <p><strong>iPhone 18 Pro.</strong> The newest performance, camera and AI platform.</p>
-   </article>
-
-   <article class="win">
-     <div class="icon">🪶</div>
-     <h3>Lightest</h3>
-     <p><strong>iPhone 15 Pro.</strong> At 187 g, its titanium redesign remains remarkably light.</p>
-   </article>
-
-   <article class="win">
-     <div class="icon">💰</div>
-     <h3>Smart used-value zone</h3>
-     <p><strong>iPhone 15 Pro / 16 Pro.</strong> Modern USB-C and Apple Intelligence support without needing the newest generation.</p>
-   </article>
-
-   <article class="win">
-     <div class="icon">📷</div>
-     <h3>Big camera-era shift</h3>
-     <p><strong>17 Pro → 18 Pro.</strong> The Pro Fusion system and newer tele/front-camera hardware move photography forward.</p>
-   </article>
-
-   <article class="win">
-     <div class="icon">🔌</div>
-     <h3>Biggest everyday convenience</h3>
-     <p><strong>15 Pro.</strong> USB-C ended the need for a separate Lightning cable and brought USB 3 data transfer.</p>
-   </article>
-
-   <article class="win">
-     <div class="icon">🤖</div>
-     <h3>AI dividing line</h3>
-     <p><strong>15 Pro and newer.</strong> The 14 Pro sits on the other side of Apple's hardware requirement for Apple Intelligence.</p>
-   </article>
-
- </div>
+<div class="section-head">
+<div>
+<div class="eyebrow">IANS PICKS</div>
+<h2>Five generations. Different winners.</h2>
+</div>
+</div>
+<div class="winners">
+<article class="win">
+<div class="icon">🏆</div>
+<h3>Best overall</h3>
+<p><strong>iPhone 18 Pro.</strong> The newest performance, camera and AI platform.</p>
+</article>
+<article class="win">
+<div class="icon">🪶</div>
+<h3>Lightest</h3>
+<p><strong>iPhone 15 Pro.</strong> At 187 g, its titanium redesign remains remarkably light.</p>
+</article>
+<article class="win">
+<div class="icon">💰</div>
+<h3>Smart used-value zone</h3>
+<p><strong>iPhone 15 Pro / 16 Pro.</strong> Modern USB-C and Apple Intelligence support without needing the newest generation.</p>
+</article>
+<article class="win">
+<div class="icon">📷</div>
+<h3>Big camera-era shift</h3>
+<p><strong>17 Pro → 18 Pro.</strong> The Pro Fusion system and newer tele/front-camera hardware move photography forward.</p>
+</article>
+<article class="win">
+<div class="icon">🔌</div>
+<h3>Biggest everyday convenience</h3>
+<p><strong>15 Pro.</strong> USB-C ended the need for a separate Lightning cable and brought USB 3 data transfer.</p>
+</article>
+<article class="win">
+<div class="icon">🤖</div>
+<h3>AI dividing line</h3>
+<p><strong>15 Pro and newer.</strong> The 14 Pro sits on the other side of Apple's hardware requirement for Apple Intelligence.</p>
+</article>
+</div>
 </section>
-
 <section class="section">
- <div class="note">
-   <strong>About this comparison:</strong>
+<div class="note">
+<strong>About this comparison:</strong>
    Technical specifications are based on Apple's published specifications for the Norwegian market.
    “Best”, “Major jump”, value recommendations and upgrade verdicts are independent IANS editorial assessments.
    Battery figures are Apple's stated video-playback figures and actual battery life varies with use,
    configuration, network and other factors. Feature availability can also vary by region and software version.
  </div>
 </section>
-
 <section class="cta">
- <h2>Keep exploring iPhone.</h2>
- <p>See what's new in iOS 27 or discover 50 practical iPhone tips.</p>
- <a href="/ios-27.html">Explore iOS 27 →</a>
- <a class="secondary" href="/iphone-50-tips.html">50 Tips & Tricks →</a>
+<h2>Keep exploring iPhone.</h2>
+<p>See what's new in iOS 27 or discover 50 practical iPhone tips.</p>
+<a href="/ios-27.html">Explore iOS 27 →</a>
+<a class="secondary" href="/iphone-50-tips.html">50 Tips &amp; Tricks →</a>
 </section>
-
-</main>
-
+<section aria-label="Review status" class="ians-updates"><h2>Dates and verification</h2><p>Editorial and link review: 16 October 2026. This is independent guidance; availability can depend on hardware, software version, language and region. Check the linked supplier documentation before changing settings.</p></section></main>
 <footer>
- <div class="wrap">
-   IANS Teknisk · Independent practical technology guidance.<br>
+<div class="wrap">
+   IANS Teknisk · Independent practical technology guidance.<br/>
    Apple, iPhone and related product names are trademarks of Apple Inc.
  </div>
 </footer>
-
 <script>
 const MODELS={
  14:{name:'iPhone 14 Pro',year:2022,ai:false,battery:23,camera:1,performance:1,display:1,connectivity:1},
@@ -1458,8 +1367,6 @@ document.querySelectorAll('.timeline-item').forEach(item=>{
  });
 });
 </script>
-
-<script src="/assets/js/ians-analytics.js" defer></script>
-
+<script defer="" src="/assets/js/ians-analytics.js"></script>
 </body>
 </html>

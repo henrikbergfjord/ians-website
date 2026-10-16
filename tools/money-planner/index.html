@@ -24,7 +24,7 @@
 <link href="../../assets/css/ians-next.css" rel="stylesheet"/>
 <link href="assets/css/design-pass2.css" rel="stylesheet"/>
 <link href="assets/css/layout-fix.css?v=20261009a" rel="stylesheet"/>
-</head>
+<link href="https://www.ians.no/tools/money-planner/" rel="canonical"/><meta content="Money Planner 5.0 – din økonomi, din plan | IANS" property="og:title"/><meta content="Privat økonomiplanlegger for budsjett, sparing, lån, scenarioer og personlig økonomisk oversikt. Beregningene skjer lokalt i nettleseren." property="og:description"/><meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/><link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/></head>
 <body class="money-v4">
 <aside aria-label="Money Planner meny" class="v4-sidebar" id="v4Sidebar">
 <a class="v4-side-brand" href="../../index.html">
@@ -79,8 +79,6 @@
 <div class="hidden-compat"><strong id="heroMargin">0 kr</strong><i id="heroProgress"></i></div>
 </div>
 </section><section class="ians-next-launcher money-start"><span class="eyebrow">START HER</span><h2>Hva vil du gjøre?</h2><p>Money Planner er først og fremst verktøyet for å forstå økonomien din. Velg en retning og bygg videre derfra.</p><div class="ians-next-grid"><a class="ians-next-card" href="#planner"><b>Få oversikt</b><span>Legg inn inntekt, utgifter, lån og sparing steg for steg.</span><em>Bygg min plan →</em></a><a class="ians-next-card" href="#tools"><b>Test muligheter</b><span>Se effekten av renteendringer, mer sparing og lavere småutgifter.</span><em>Åpne scenarioer →</em></a><a class="ians-next-card" href="resources.html"><b>Finn riktige tjenester</b><span>Bank, skatt, pensjon og offentlige ressurser samlet på ett sted.</span><em>Se ressurser →</em></a></div></section>
-
-
 <section class="planner-shell" id="planner">
 <div class="form-column">
 <div class="section-head intro-head"><span class="eyebrow">MIN PLAN</span><h2>Bygg økonomien steg for steg</h2><p>Du trenger ikke ha alle svarene. Begynn med det du vet og juster senere.</p></div>
@@ -136,17 +134,10 @@
 <section class="action-section"><div class="section-title"><span class="eyebrow">FINN PENGENE</span><h2>Dine viktigste neste steg</h2><p>Prioriteres automatisk ut fra tallene dine.</p></div><div class="action-grid" id="actionGrid"></div></section>
 <section class="ai-section" id="ai"><div><span class="eyebrow">VALGFRI AI-ANALYSE</span><h2>La AI forklare mønsteret i tallene</h2><p>Matematikken gjøres av Money Planner. AI får økonomiske nøkkeltall og mål uten navnet ditt – ikke navnet ditt – og brukes til forklaring og handlingsplan.</p><div class="privacy-note"><strong>Før du bruker AI:</strong> Navn sendes ikke. Unngå sensitive personopplysninger i eventuell fritekst. API-nøkkelen ligger på serveren, aldri i nettsiden.</div></div><div class="ai-card"><div class="ai-status"><i id="aiDot"></i><span id="aiStatus">AI klar dersom API er konfigurert</span></div><button class="btn primary" id="runAi" type="button">✨ Analyser min økonomi med AI</button><p class="small">AI er et tillegg. Resten av Money Planner virker uten AI.</p><div class="ai-result" hidden="" id="aiResult"></div></div></section>
 <section class="help-teaser" id="help"><div><span class="eyebrow">EKSTRA HJELP</span><h2>Trenger du hjelp til å rydde opp?</h2><p>Hvis økonomien har blitt vanskelig, har vi samlet første steg, 90-dagers opprydding og offentlige hjelpetjenester på en egen side.</p></div><a class="btn ghost" href="help.html">Åpne hjelpesiden →</a></section>
-
-
-
-
-
 <section class="report-section" id="report"><div class="report-copy"><span class="eyebrow">DIN RAPPORT</span><h2>Ta planen med deg videre</h2><p>Rapporten er en egen A4-presentasjon med nøkkeltall, forklaringer, scenarioer, prioriteringer og handlingsplan.</p><div class="report-actions"><button class="btn primary" id="downloadPdf" type="button">Last ned personlig PDF</button><button class="btn ghost" id="printReport" type="button">Skriv ut / lagre som PDF</button></div><p class="small" id="pdfStatus"></p></div><div class="report-preview"><div class="paper"><small>MONEY PLANNER · IANS</small><h3 id="previewTitle">Din økonomiske plan</h3><p id="previewDate"></p><div class="paper-number"><span>Månedlig margin</span><strong id="previewMargin">0 kr</strong></div><div class="paper-bars"><i></i><i></i><i></i><i></i></div><p>Små forbedringer i dag kan gi større valgfrihet senere.</p></div></div></section>
-
-
 <section class="privacy-section" id="privacy"><div><span>🔒</span><h3>Privat som standard</h3><p>Standardberegningene skjer lokalt i nettleseren. Les detaljene om AI og personvern på ressurssiden.</p></div></section>
 <section class="disclaimer">Viktig: Money Planner er et pedagogisk verktøy. Det er ikke en kredittvurdering, lånetilsagn eller personlig investerings-, skatte- eller juridisk rådgivning.</section>
-</main>
+<p class="ians-privacy-note">Valgfri KI sender opplysninger til IANS-backend og OpenAI. <a href="/personvern.html#ki">Se data, mottakere og lagring før du bruker KI</a>.</p></main>
 <div aria-hidden="true" class="report-document" id="reportDocument"></div>
 <footer><div><a class="brand footer-brand" href="../../index.html"><span class="brand-bars"><i></i><i></i><i></i><i></i></span><b>IANS</b><small>MONEY PLANNER</small></a><p>Et verktøy laget for deg som vil ta kontroll på økonomien – eller finne starten når alt føles uoversiktlig.</p></div><div><strong>Utviklet av</strong><p>Henrik Bergfjord<br/>Hobbyøkonom &amp; teknolog<br/><a href="mailto:henrik.bergfjord@outlook.com">henrik.bergfjord@outlook.com</a></p></div><div><strong>Personvern</strong><p>Ingen konto. Ingen budsjett-database. Standardberegningene skjer lokalt hos deg.</p></div><div><strong>Versjon</strong><p>Money Planner 5.0<br/>Din økonomi. Din plan. Dine muligheter.</p></div></footer>
 <div class="ians-next-badge">IANS Next · MP 5.0</div>

@@ -105,6 +105,8 @@ INCLUDE = (
 )
 
 EXCLUDE = (
+    "personvern.html",
+    "brannkontroll-personvern.html",
     "tools/website-builder-light/index.html",
     "tools/website-builder-pro/index.html",
     "tools/website-builder/index.html",

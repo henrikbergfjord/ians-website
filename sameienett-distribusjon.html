@@ -1,21 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="no">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>SameieNett Distribusjon | Henrik Bergfjord</title>
-
-    <meta
-        name="description"
-        content="Distribusjonslaget knytter Core sammen med tekniske rom, boliger og felles tjenester. Strukturert fiber, PoE og switching gjør infrastrukturen skalerbar og enklere å dokumentere."
-    >
-
-    <link rel="stylesheet" href="assets/styles.css">
-    <link rel="stylesheet" href="assets/sameienett.css?v=20260925b">
-
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SameieNett Distribusjon | Henrik Bergfjord</title>
+<meta content="Distribusjonslaget knytter Core sammen med tekniske rom, boliger og felles tjenester. Strukturert fiber, PoE og switching gjør infrastrukturen skalerbar og enklere å dokumentere." name="description"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<link href="assets/sameienett.css?v=20260925b" rel="stylesheet"/>
+<style>
         .depth-page {
             min-height: 100vh;
             background:
@@ -1624,844 +1617,283 @@
         .port-legend .p-idle { background: #6f7f8c; }
 
     </style>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="/assets/css/language.css">
-<link rel="stylesheet" href="assets/css/ians-next.css">
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="/assets/css/language.css" rel="stylesheet"/>
+<link href="assets/css/ians-next.css" rel="stylesheet"/>
 <style>/* Navigation audit: narrow-screen layout. */
 .depth-orbit{overflow:clip}.sn-hero>*{min-width:0}
-</style></head>
-
+</style><link href="https://www.ians.no/sameienett-distribusjon.html" rel="canonical"/><meta content="SameieNett Distribusjon | Henrik Bergfjord" property="og:title"/><meta content="Distribusjonslaget knytter Core sammen med tekniske rom, boliger og felles tjenester. Strukturert fiber, PoE og switching gjør infrastrukturen skalerbar og enklere å dokumentere." property="og:description"/><meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/><link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/></head>
 <body class="sn-page depth-page">
-
-    <header class="topbar">
-        <div class="container nav">
-
-            <a class="brand" href="index.html">
-                <span class="brand-mark"></span>
-                <span>Henrik Bergfjord</span>
-            </a>
-
-            <nav class="nav-links">
-                <a href="SameieNett.html">SameieNett</a>
-                <a class="active" href="sameienett-distribusjon.html">02 · Distribusjon</a>
-            </nav>
-
-            <a class="button secondary" href="SameieNett.html#arkitektur">
+<header class="topbar">
+<div class="container nav">
+<a class="brand" href="index.html">
+<span class="brand-mark"></span>
+<span>Henrik Bergfjord</span>
+</a>
+<nav class="nav-links">
+<a href="SameieNett.html">SameieNett</a>
+<a class="active" href="sameienett-distribusjon.html">02 · Distribusjon</a>
+</nav>
+<a class="button secondary" href="SameieNett.html#arkitektur">
                 ← Arkitekturen
             </a>
-
-        </div>
-    </header>
-
-    <main>
-
-        <section class="depth-hero">
-            <div class="sn-shell depth-grid">
-
-                <div class="depth-copy">
-
-                    <div class="sn-kicker">
+</div>
+</header>
+<main>
+<section class="depth-hero">
+<div class="sn-shell depth-grid">
+<div class="depth-copy">
+<div class="sn-kicker">
                         SAMEIENETT · DISTRIBUTION · BACKBONE
                     </div>
-
-                    <h1>
+<h1>
                         Fiber og switching som bærer bygget.
                     </h1>
-
-                    <p>
+<p>
                         Distribusjonslaget knytter Core sammen med tekniske rom, boliger og felles tjenester. Strukturert fiber, PoE og switching gjør infrastrukturen skalerbar og enklere å dokumentere.
                     </p>
-
-                    <div class="sn-actions">
-                        <a class="sn-btn primary" href="#detaljer">
+<div class="sn-actions">
+<a class="sn-btn primary" href="#detaljer">
                             Gå i dybden ↓
                         </a>
-
-                        <a class="sn-btn ghost" href="SameieNett.html#arkitektur">
+<a class="sn-btn ghost" href="SameieNett.html#arkitektur">
                             Tilbake til 01–04
                         </a>
-                    </div>
-
-                </div>
-
-                <div class="depth-orbit">
-
-                    <div class="depth-ring r1"></div>
-                    <div class="depth-ring r2"></div>
-                    <div class="depth-ring r3"></div>
-
-                    <div class="depth-center">
-                        <div>
-                            <strong>DISTRIBUSJON</strong>
-                            <small>02 · SAMEIENETT</small>
-                        </div>
-                    </div>
-
-                        <span class="depth-node dn1">
-                            <strong>Fiber</strong>
-                            <small>Backbone</small>
-                        </span>
-                        <span class="depth-node dn2">
-                            <strong>PoE</strong>
-                            <small>Power</small>
-                        </span>
-                        <span class="depth-node dn3">
-                            <strong>Switch</strong>
-                            <small>Layer 2/3</small>
-                        </span>
-                        <span class="depth-node dn4">
-                            <strong>Uplink</strong>
-                            <small>Capacity</small>
-                        </span>
-                        <span class="depth-node dn5">
-                            <strong>Patch</strong>
-                            <small>Structure</small>
-                        </span>
-                        <span class="depth-node dn6">
-                            <strong>Rooms</strong>
-                            <small>Nodes</small>
-                        </span>
-
-                </div>
-
-            </div>
-        </section>
-
-
-        <section class="tech-visual-section">
-            <div class="sn-shell">
-
-                <div class="tech-visual-head">
-                    <div>
-                        <div class="sn-kicker">TEKNISK VISUALISERING</div>
-                        <h2>Fiber, switching og tekniske rom</h2>
-                    </div>
-
-                    <p>
+</div>
+</div>
+<div class="depth-orbit">
+<div class="depth-ring r1"></div>
+<div class="depth-ring r2"></div>
+<div class="depth-ring r3"></div>
+<div class="depth-center">
+<div>
+<strong>DISTRIBUSJON</strong>
+<small>02 · SAMEIENETT</small>
+</div>
+</div>
+<span class="depth-node dn1">
+<strong>Fiber</strong>
+<small>Backbone</small>
+</span>
+<span class="depth-node dn2">
+<strong>PoE</strong>
+<small>Power</small>
+</span>
+<span class="depth-node dn3">
+<strong>Switch</strong>
+<small>Layer 2/3</small>
+</span>
+<span class="depth-node dn4">
+<strong>Uplink</strong>
+<small>Capacity</small>
+</span>
+<span class="depth-node dn5">
+<strong>Patch</strong>
+<small>Structure</small>
+</span>
+<span class="depth-node dn6">
+<strong>Rooms</strong>
+<small>Nodes</small>
+</span>
+</div>
+</div>
+</section>
+<section class="tech-visual-section">
+<div class="sn-shell">
+<div class="tech-visual-head">
+<div>
+<div class="sn-kicker">TEKNISK VISUALISERING</div>
+<h2>Fiber, switching og tekniske rom</h2>
+</div>
+<p>
                         Distribusjonslaget er byggets digitale ryggrad. Her vises en forenklet
                         topologi med sentral uplink, fiber til fordelingspunkter og PoE-switching
                         videre mot boliger og felles tjenester.
                     </p>
-                </div>
-
-                <div class="tech-canvas distribution-tech">
-
-                    <div class="port-legend" aria-label="Portstatus forklaring">
-                        <span><b class="p-uplink"></b> Uplink</span>
-                        <span><b class="p-ap"></b> AP</span>
-                        <span><b class="p-camera"></b> Kamera</span>
-                        <span><b class="p-access"></b> Adgang</span>
-                        <span><b class="p-idle"></b> Ledig</span>
-                    </div>
-
-                    <div class="tech-hint">Klikk på utstyr for status</div>
-
-                    <div class="tech-device rack-core"
-                        data-device
-                        data-name="Core Switch"
-                        data-type="DISTRIBUTION · CORE SWITCH"
-                        data-status="Online · redundant uplink"
-                        data-ip="10.10.1.2"
-                        data-vlan="10 · MGMT"
-                        data-link="10 Gbps fiber"
-                        data-poe="0 W"
-                        data-desc="Sentralt switchpunkt som transporterer VLAN og kapasitet videre til byggets tekniske rom.">
-                        <div class="rack-face">
-                            <span>CORE UPLINK</span>
-                            <div class="rack-ports">
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="uplink"
-                                data-port-number="1"
-                                data-port-name="Core Uplink"
-                                data-port-switch="Core Switch"
-                                data-status="Trunk"
-                                data-link="10 Gbps"
-                                data-poe="—"
-                                data-vlan="10 · MGMT"
-                                data-ip="10.10.1.2"
-                                data-desc="Fiber uplink mot SameieNett Core."
-                                title="Port 1 · Core Uplink"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="ap"
-                                data-port-number="2"
-                                data-port-name="AP bolig 087"
-                                data-port-switch="Core Switch"
-                                data-status="Online"
-                                data-link="2.5 Gbps"
-                                data-poe="14.2 W"
-                                data-vlan="187 · BOLIG"
-                                data-ip="10.10.30.87"
-                                data-desc="Profesjonelt aksesspunkt i bolig 087."
-                                title="Port 2 · AP bolig 087"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="camera"
-                                data-port-number="3"
-                                data-port-name="Camera U1"
-                                data-port-switch="Core Switch"
-                                data-status="Recording"
-                                data-link="1 Gbps"
-                                data-poe="8.4 W"
-                                data-vlan="60 · IOT/KAMERA"
-                                data-ip="10.60.0.41"
-                                data-desc="4K kamera i fellesareal U1."
-                                title="Port 3 · Camera U1"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="access"
-                                data-port-number="4"
-                                data-port-name="Access Garage"
-                                data-port-switch="Core Switch"
-                                data-status="Online"
-                                data-link="1 Gbps"
-                                data-poe="5.8 W"
-                                data-vlan="60 · IOT/KAMERA"
-                                data-ip="10.60.0.51"
-                                data-desc="Adgangsleser for garasje."
-                                title="Port 4 · Access Garage"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="ap"
-                                data-port-number="5"
-                                data-port-name="AP bolig 088"
-                                data-port-switch="Core Switch"
-                                data-status="Online"
-                                data-link="2.5 Gbps"
-                                data-poe="13.8 W"
-                                data-vlan="188 · BOLIG"
-                                data-ip="10.10.30.88"
-                                data-desc="Aksesspunkt i bolig 088."
-                                title="Port 5 · AP bolig 088"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="access"
-                                data-port-number="6"
-                                data-port-name="Garage Controller"
-                                data-port-switch="Core Switch"
-                                data-status="Online"
-                                data-link="1 Gbps"
-                                data-poe="6.1 W"
-                                data-vlan="50 · DRIFT"
-                                data-ip="10.50.0.31"
-                                data-desc="Kontroller for garasjeport."
-                                title="Port 6 · Garage Controller"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="idle"
-                                data-port-number="7"
-                                data-port-name="Service Port"
-                                data-port-switch="Core Switch"
-                                data-status="Idle"
-                                data-link="1 Gbps capable"
-                                data-poe="0 W"
-                                data-vlan="70 · SERVICE"
-                                data-ip="—"
-                                data-desc="Reservert serviceport."
-                                title="Port 7 · Service Port"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="idle"
-                                data-port-number="8"
-                                data-port-name="Spare"
-                                data-port-switch="Core Switch"
-                                data-status="Idle"
-                                data-link="1 Gbps capable"
-                                data-poe="0 W"
-                                data-vlan="—"
-                                data-ip="—"
-                                data-desc="Ledig port."
-                                title="Port 8 · Spare"
-                            ></i>
-                            </div>
-                        </div>
-                        <div class="device-title">CORE SWITCH</div>
-                    </div>
-
-                    <div class="tech-device rack-a"
-                        data-device
-                        data-name="PoE Switch · Tech Room A"
-                        data-type="DISTRIBUTION · ACCESS SWITCH"
-                        data-status="Online · 22 porter aktive"
-                        data-ip="10.10.1.11"
-                        data-vlan="10 · MGMT"
-                        data-link="10 Gbps fiber"
-                        data-poe="286 W / 600 W"
-                        data-desc="PoE-switch for AP-er, kamera, adgang og andre endepunkter i denne delen av bygget.">
-                        <div class="rack-face">
-                            <span>TECH ROOM A</span>
-                            <div class="rack-ports">
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="uplink"
-                                data-port-number="1"
-                                data-port-name="Fiber Uplink"
-                                data-port-switch="Tech Room A"
-                                data-status="Online"
-                                data-link="10 Gbps"
-                                data-poe="—"
-                                data-vlan="10 · MGMT"
-                                data-ip="10.10.1.11"
-                                data-desc="Fiberuplink til core switch."
-                                title="Port 1 · Fiber Uplink"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="ap"
-                                data-port-number="2"
-                                data-port-name="AP bolig 041"
-                                data-port-switch="Tech Room A"
-                                data-status="Online"
-                                data-link="2.5 Gbps"
-                                data-poe="12.7 W"
-                                data-vlan="141 · BOLIG"
-                                data-ip="10.10.20.41"
-                                data-desc="AP i bolig 041."
-                                title="Port 2 · AP bolig 041"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="ap"
-                                data-port-number="3"
-                                data-port-name="AP bolig 042"
-                                data-port-switch="Tech Room A"
-                                data-status="Online"
-                                data-link="2.5 Gbps"
-                                data-poe="13.0 W"
-                                data-vlan="142 · BOLIG"
-                                data-ip="10.10.20.42"
-                                data-desc="AP i bolig 042."
-                                title="Port 3 · AP bolig 042"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="camera"
-                                data-port-number="4"
-                                data-port-name="Camera Entrance"
-                                data-port-switch="Tech Room A"
-                                data-status="Recording"
-                                data-link="1 Gbps"
-                                data-poe="7.9 W"
-                                data-vlan="60 · IOT/KAMERA"
-                                data-ip="10.60.0.12"
-                                data-desc="Kamera ved hovedinngang."
-                                title="Port 4 · Camera Entrance"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="access"
-                                data-port-number="5"
-                                data-port-name="Access Entrance"
-                                data-port-switch="Tech Room A"
-                                data-status="Online"
-                                data-link="1 Gbps"
-                                data-poe="5.2 W"
-                                data-vlan="60 · IOT/KAMERA"
-                                data-ip="10.60.0.13"
-                                data-desc="Adgangskontroll hovedinngang."
-                                title="Port 5 · Access Entrance"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="camera"
-                                data-port-number="6"
-                                data-port-name="IoT Sensor"
-                                data-port-switch="Tech Room A"
-                                data-status="Online"
-                                data-link="1 Gbps"
-                                data-poe="3.1 W"
-                                data-vlan="60 · IOT/KAMERA"
-                                data-ip="10.60.0.21"
-                                data-desc="Sensor i fellesareal."
-                                title="Port 6 · IoT Sensor"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="idle"
-                                data-port-number="7"
-                                data-port-name="Spare"
-                                data-port-switch="Tech Room A"
-                                data-status="Idle"
-                                data-link="1 Gbps capable"
-                                data-poe="0 W"
-                                data-vlan="—"
-                                data-ip="—"
-                                data-desc="Ledig port."
-                                title="Port 7 · Spare"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="idle"
-                                data-port-number="8"
-                                data-port-name="Spare"
-                                data-port-switch="Tech Room A"
-                                data-status="Idle"
-                                data-link="1 Gbps capable"
-                                data-poe="0 W"
-                                data-vlan="—"
-                                data-ip="—"
-                                data-desc="Ledig port."
-                                title="Port 8 · Spare"
-                            ></i>
-                            </div>
-                        </div>
-                        <div class="device-title">PoE SWITCH</div>
-                    </div>
-
-                    <div class="tech-device rack-b"
-                        data-device
-                        data-name="PoE Switch · Tech Room B"
-                        data-type="DISTRIBUTION · ACCESS SWITCH"
-                        data-status="Online · 19 porter aktive"
-                        data-ip="10.10.1.12"
-                        data-vlan="10 · MGMT"
-                        data-link="10 Gbps fiber"
-                        data-poe="241 W / 600 W"
-                        data-desc="Distribuerer nett og PoE videre til lokale endepunkter og transporterer segmenterte VLAN.">
-                        <div class="rack-face">
-                            <span>TECH ROOM B</span>
-                            <div class="rack-ports">
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="uplink"
-                                data-port-number="1"
-                                data-port-name="Fiber Uplink"
-                                data-port-switch="Tech Room B"
-                                data-status="Online"
-                                data-link="10 Gbps"
-                                data-poe="—"
-                                data-vlan="10 · MGMT"
-                                data-ip="10.10.1.12"
-                                data-desc="Fiberuplink til core switch."
-                                title="Port 1 · Fiber Uplink"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="ap"
-                                data-port-number="2"
-                                data-port-name="AP bolig 101"
-                                data-port-switch="Tech Room B"
-                                data-status="Online"
-                                data-link="2.5 Gbps"
-                                data-poe="13.9 W"
-                                data-vlan="201 · BOLIG"
-                                data-ip="10.10.40.101"
-                                data-desc="AP i bolig 101."
-                                title="Port 2 · AP bolig 101"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="ap"
-                                data-port-number="3"
-                                data-port-name="AP bolig 102"
-                                data-port-switch="Tech Room B"
-                                data-status="Online"
-                                data-link="2.5 Gbps"
-                                data-poe="14.1 W"
-                                data-vlan="202 · BOLIG"
-                                data-ip="10.10.40.102"
-                                data-desc="AP i bolig 102."
-                                title="Port 3 · AP bolig 102"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="camera"
-                                data-port-number="4"
-                                data-port-name="Camera Hallway"
-                                data-port-switch="Tech Room B"
-                                data-status="Recording"
-                                data-link="1 Gbps"
-                                data-poe="8.1 W"
-                                data-vlan="60 · IOT/KAMERA"
-                                data-ip="10.60.0.31"
-                                data-desc="Kamera i felles korridor."
-                                title="Port 4 · Camera Hallway"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="camera"
-                                data-port-number="5"
-                                data-port-name="Energy Meter"
-                                data-port-switch="Tech Room B"
-                                data-status="Online"
-                                data-link="100 Mbps"
-                                data-poe="—"
-                                data-vlan="50 · DRIFT"
-                                data-ip="10.50.0.21"
-                                data-desc="Energimåler for teknisk drift."
-                                title="Port 5 · Energy Meter"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="access"
-                                data-port-number="6"
-                                data-port-name="Access Storage"
-                                data-port-switch="Tech Room B"
-                                data-status="Online"
-                                data-link="1 Gbps"
-                                data-poe="5.0 W"
-                                data-vlan="60 · IOT/KAMERA"
-                                data-ip="10.60.0.33"
-                                data-desc="Adgang til bodområde."
-                                title="Port 6 · Access Storage"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="idle"
-                                data-port-number="7"
-                                data-port-name="Spare"
-                                data-port-switch="Tech Room B"
-                                data-status="Idle"
-                                data-link="1 Gbps capable"
-                                data-poe="0 W"
-                                data-vlan="—"
-                                data-ip="—"
-                                data-desc="Ledig port."
-                                title="Port 7 · Spare"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="idle"
-                                data-port-number="8"
-                                data-port-name="Spare"
-                                data-port-switch="Tech Room B"
-                                data-status="Idle"
-                                data-link="1 Gbps capable"
-                                data-poe="0 W"
-                                data-vlan="—"
-                                data-ip="—"
-                                data-desc="Ledig port."
-                                title="Port 8 · Spare"
-                            ></i>
-                            </div>
-                        </div>
-                        <div class="device-title">PoE SWITCH</div>
-                    </div>
-
-                    <div class="tech-device rack-c"
-                        data-device
-                        data-name="PoE Switch · Tech Room C"
-                        data-type="DISTRIBUTION · ACCESS SWITCH"
-                        data-status="Online · 24 porter aktive"
-                        data-ip="10.10.1.13"
-                        data-vlan="10 · MGMT"
-                        data-link="10 Gbps fiber"
-                        data-poe="318 W / 600 W"
-                        data-desc="Lokalt fordelingspunkt for nettverk, strøm via PoE og videre tilkobling mot boliger og felles tjenester.">
-                        <div class="rack-face">
-                            <span>TECH ROOM C</span>
-                            <div class="rack-ports">
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="uplink"
-                                data-port-number="1"
-                                data-port-name="Fiber Uplink"
-                                data-port-switch="Tech Room C"
-                                data-status="Online"
-                                data-link="10 Gbps"
-                                data-poe="—"
-                                data-vlan="10 · MGMT"
-                                data-ip="10.10.1.13"
-                                data-desc="Fiberuplink til core switch."
-                                title="Port 1 · Fiber Uplink"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="ap"
-                                data-port-number="2"
-                                data-port-name="AP bolig 161"
-                                data-port-switch="Tech Room C"
-                                data-status="Online"
-                                data-link="2.5 Gbps"
-                                data-poe="13.4 W"
-                                data-vlan="261 · BOLIG"
-                                data-ip="10.10.50.161"
-                                data-desc="AP i bolig 161."
-                                title="Port 2 · AP bolig 161"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="ap"
-                                data-port-number="3"
-                                data-port-name="AP bolig 162"
-                                data-port-switch="Tech Room C"
-                                data-status="Online"
-                                data-link="2.5 Gbps"
-                                data-poe="13.5 W"
-                                data-vlan="262 · BOLIG"
-                                data-ip="10.10.50.162"
-                                data-desc="AP i bolig 162."
-                                title="Port 3 · AP bolig 162"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="camera"
-                                data-port-number="4"
-                                data-port-name="Camera Garage"
-                                data-port-switch="Tech Room C"
-                                data-status="Recording"
-                                data-link="1 Gbps"
-                                data-poe="8.6 W"
-                                data-vlan="60 · IOT/KAMERA"
-                                data-ip="10.60.0.61"
-                                data-desc="Kamera i garasje."
-                                title="Port 4 · Camera Garage"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="access"
-                                data-port-number="5"
-                                data-port-name="Access Garage B"
-                                data-port-switch="Tech Room C"
-                                data-status="Online"
-                                data-link="1 Gbps"
-                                data-poe="5.7 W"
-                                data-vlan="60 · IOT/KAMERA"
-                                data-ip="10.60.0.62"
-                                data-desc="Adgangsleser garasje B."
-                                title="Port 5 · Access Garage B"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="idle"
-                                data-port-number="6"
-                                data-port-name="Vendor Service"
-                                data-port-switch="Tech Room C"
-                                data-status="Restricted"
-                                data-link="1 Gbps"
-                                data-poe="0 W"
-                                data-vlan="70 · SERVICE"
-                                data-ip="10.70.0.10"
-                                data-desc="Kontrollert serviceport for leverandør."
-                                title="Port 6 · Vendor Service"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="idle"
-                                data-port-number="7"
-                                data-port-name="Spare"
-                                data-port-switch="Tech Room C"
-                                data-status="Idle"
-                                data-link="1 Gbps capable"
-                                data-poe="0 W"
-                                data-vlan="—"
-                                data-ip="—"
-                                data-desc="Ledig port."
-                                title="Port 7 · Spare"
-                            ></i>
-                                <i
-                                class="port-hit"
-                                data-port
-                                data-port-status="idle"
-                                data-port-number="8"
-                                data-port-name="Spare"
-                                data-port-switch="Tech Room C"
-                                data-status="Idle"
-                                data-link="1 Gbps capable"
-                                data-poe="0 W"
-                                data-vlan="—"
-                                data-ip="—"
-                                data-desc="Ledig port."
-                                title="Port 8 · Spare"
-                            ></i>
-                            </div>
-                        </div>
-                        <div class="device-title">PoE SWITCH</div>
-                    </div>
-
-                    <div class="fiber-path fp1"></div>
-                    <div class="fiber-path fp2"></div>
-                    <div class="fiber-path fp3"></div>
-
-                    <div class="tech-label dist-fiber">
-                        <strong>Fiber backbone</strong>
-                        <small>10G ready principle</small>
-                    </div>
-
-                    <div class="tech-label dist-poe">
-                        <strong>PoE</strong>
-                        <small>AP · camera · access</small>
-                    </div>
-
-                    <div class="tech-label dist-vlan">
-                        <strong>VLAN trunk</strong>
-                        <small>Segment transport</small>
-                    </div>
-
-                </div>
-
-                <div class="tech-kpi-row">
-                    <div class="tech-kpi">
-                        <small>BACKBONE</small>
-                        <strong>Fiber mellom noder</strong>
-                    </div>
-
-                    <div class="tech-kpi">
-                        <small>ACCESS</small>
-                        <strong>PoE-switching</strong>
-                    </div>
-
-                    <div class="tech-kpi">
-                        <small>STRUCTURE</small>
-                        <strong>Tekniske rom</strong>
-                    </div>
-
-                    <div class="tech-kpi">
-                        <small>TRANSPORT</small>
-                        <strong>VLAN trunking</strong>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-
-        <section class="depth-content" id="detaljer">
-            <div class="sn-shell">
-
-                <div class="depth-card-grid">
-                    <article class="depth-card">
-                        <span>02A</span>
-                        <h2>Fiber backbone</h2>
-                        <p>Høy kapasitet mellom sentrale og lokale fordelingspunkter.</p>
-                    </article>
-                    <article class="depth-card">
-                        <span>02B</span>
-                        <h2>PoE-switching</h2>
-                        <p>Data og strøm til AP-er, kamera og andre endepunkter.</p>
-                    </article>
-                    <article class="depth-card">
-                        <span>02C</span>
-                        <h2>VLAN transport</h2>
-                        <p>Segmenter transporteres kontrollert gjennom infrastrukturen.</p>
-                    </article>
-                    <article class="depth-card">
-                        <span>02D</span>
-                        <h2>Dokumentasjon</h2>
-                        <p>Porter, uplinks og tekniske rom får en kjent struktur.</p>
-                    </article>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-
-
-    <!-- =========================================================
+</div>
+<div class="tech-canvas distribution-tech">
+<div aria-label="Portstatus forklaring" class="port-legend">
+<span><b class="p-uplink"></b> Uplink</span>
+<span><b class="p-ap"></b> AP</span>
+<span><b class="p-camera"></b> Kamera</span>
+<span><b class="p-access"></b> Adgang</span>
+<span><b class="p-idle"></b> Ledig</span>
+</div>
+<div class="tech-hint">Klikk på utstyr for status</div>
+<div class="tech-device rack-core" data-desc="Sentralt switchpunkt som transporterer VLAN og kapasitet videre til byggets tekniske rom." data-device="" data-ip="10.10.1.2" data-link="10 Gbps fiber" data-name="Core Switch" data-poe="0 W" data-status="Online · redundant uplink" data-type="DISTRIBUTION · CORE SWITCH" data-vlan="10 · MGMT">
+<div class="rack-face">
+<span>CORE UPLINK</span>
+<div class="rack-ports">
+<i class="port-hit" data-desc="Fiber uplink mot SameieNett Core." data-ip="10.10.1.2" data-link="10 Gbps" data-poe="—" data-port="" data-port-name="Core Uplink" data-port-number="1" data-port-status="uplink" data-port-switch="Core Switch" data-status="Trunk" data-vlan="10 · MGMT" title="Port 1 · Core Uplink"></i>
+<i class="port-hit" data-desc="Profesjonelt aksesspunkt i bolig 087." data-ip="10.10.30.87" data-link="2.5 Gbps" data-poe="14.2 W" data-port="" data-port-name="AP bolig 087" data-port-number="2" data-port-status="ap" data-port-switch="Core Switch" data-status="Online" data-vlan="187 · BOLIG" title="Port 2 · AP bolig 087"></i>
+<i class="port-hit" data-desc="4K kamera i fellesareal U1." data-ip="10.60.0.41" data-link="1 Gbps" data-poe="8.4 W" data-port="" data-port-name="Camera U1" data-port-number="3" data-port-status="camera" data-port-switch="Core Switch" data-status="Recording" data-vlan="60 · IOT/KAMERA" title="Port 3 · Camera U1"></i>
+<i class="port-hit" data-desc="Adgangsleser for garasje." data-ip="10.60.0.51" data-link="1 Gbps" data-poe="5.8 W" data-port="" data-port-name="Access Garage" data-port-number="4" data-port-status="access" data-port-switch="Core Switch" data-status="Online" data-vlan="60 · IOT/KAMERA" title="Port 4 · Access Garage"></i>
+<i class="port-hit" data-desc="Aksesspunkt i bolig 088." data-ip="10.10.30.88" data-link="2.5 Gbps" data-poe="13.8 W" data-port="" data-port-name="AP bolig 088" data-port-number="5" data-port-status="ap" data-port-switch="Core Switch" data-status="Online" data-vlan="188 · BOLIG" title="Port 5 · AP bolig 088"></i>
+<i class="port-hit" data-desc="Kontroller for garasjeport." data-ip="10.50.0.31" data-link="1 Gbps" data-poe="6.1 W" data-port="" data-port-name="Garage Controller" data-port-number="6" data-port-status="access" data-port-switch="Core Switch" data-status="Online" data-vlan="50 · DRIFT" title="Port 6 · Garage Controller"></i>
+<i class="port-hit" data-desc="Reservert serviceport." data-ip="—" data-link="1 Gbps capable" data-poe="0 W" data-port="" data-port-name="Service Port" data-port-number="7" data-port-status="idle" data-port-switch="Core Switch" data-status="Idle" data-vlan="70 · SERVICE" title="Port 7 · Service Port"></i>
+<i class="port-hit" data-desc="Ledig port." data-ip="—" data-link="1 Gbps capable" data-poe="0 W" data-port="" data-port-name="Spare" data-port-number="8" data-port-status="idle" data-port-switch="Core Switch" data-status="Idle" data-vlan="—" title="Port 8 · Spare"></i>
+</div>
+</div>
+<div class="device-title">CORE SWITCH</div>
+</div>
+<div class="tech-device rack-a" data-desc="PoE-switch for AP-er, kamera, adgang og andre endepunkter i denne delen av bygget." data-device="" data-ip="10.10.1.11" data-link="10 Gbps fiber" data-name="PoE Switch · Tech Room A" data-poe="286 W / 600 W" data-status="Online · 22 porter aktive" data-type="DISTRIBUTION · ACCESS SWITCH" data-vlan="10 · MGMT">
+<div class="rack-face">
+<span>TECH ROOM A</span>
+<div class="rack-ports">
+<i class="port-hit" data-desc="Fiberuplink til core switch." data-ip="10.10.1.11" data-link="10 Gbps" data-poe="—" data-port="" data-port-name="Fiber Uplink" data-port-number="1" data-port-status="uplink" data-port-switch="Tech Room A" data-status="Online" data-vlan="10 · MGMT" title="Port 1 · Fiber Uplink"></i>
+<i class="port-hit" data-desc="AP i bolig 041." data-ip="10.10.20.41" data-link="2.5 Gbps" data-poe="12.7 W" data-port="" data-port-name="AP bolig 041" data-port-number="2" data-port-status="ap" data-port-switch="Tech Room A" data-status="Online" data-vlan="141 · BOLIG" title="Port 2 · AP bolig 041"></i>
+<i class="port-hit" data-desc="AP i bolig 042." data-ip="10.10.20.42" data-link="2.5 Gbps" data-poe="13.0 W" data-port="" data-port-name="AP bolig 042" data-port-number="3" data-port-status="ap" data-port-switch="Tech Room A" data-status="Online" data-vlan="142 · BOLIG" title="Port 3 · AP bolig 042"></i>
+<i class="port-hit" data-desc="Kamera ved hovedinngang." data-ip="10.60.0.12" data-link="1 Gbps" data-poe="7.9 W" data-port="" data-port-name="Camera Entrance" data-port-number="4" data-port-status="camera" data-port-switch="Tech Room A" data-status="Recording" data-vlan="60 · IOT/KAMERA" title="Port 4 · Camera Entrance"></i>
+<i class="port-hit" data-desc="Adgangskontroll hovedinngang." data-ip="10.60.0.13" data-link="1 Gbps" data-poe="5.2 W" data-port="" data-port-name="Access Entrance" data-port-number="5" data-port-status="access" data-port-switch="Tech Room A" data-status="Online" data-vlan="60 · IOT/KAMERA" title="Port 5 · Access Entrance"></i>
+<i class="port-hit" data-desc="Sensor i fellesareal." data-ip="10.60.0.21" data-link="1 Gbps" data-poe="3.1 W" data-port="" data-port-name="IoT Sensor" data-port-number="6" data-port-status="camera" data-port-switch="Tech Room A" data-status="Online" data-vlan="60 · IOT/KAMERA" title="Port 6 · IoT Sensor"></i>
+<i class="port-hit" data-desc="Ledig port." data-ip="—" data-link="1 Gbps capable" data-poe="0 W" data-port="" data-port-name="Spare" data-port-number="7" data-port-status="idle" data-port-switch="Tech Room A" data-status="Idle" data-vlan="—" title="Port 7 · Spare"></i>
+<i class="port-hit" data-desc="Ledig port." data-ip="—" data-link="1 Gbps capable" data-poe="0 W" data-port="" data-port-name="Spare" data-port-number="8" data-port-status="idle" data-port-switch="Tech Room A" data-status="Idle" data-vlan="—" title="Port 8 · Spare"></i>
+</div>
+</div>
+<div class="device-title">PoE SWITCH</div>
+</div>
+<div class="tech-device rack-b" data-desc="Distribuerer nett og PoE videre til lokale endepunkter og transporterer segmenterte VLAN." data-device="" data-ip="10.10.1.12" data-link="10 Gbps fiber" data-name="PoE Switch · Tech Room B" data-poe="241 W / 600 W" data-status="Online · 19 porter aktive" data-type="DISTRIBUTION · ACCESS SWITCH" data-vlan="10 · MGMT">
+<div class="rack-face">
+<span>TECH ROOM B</span>
+<div class="rack-ports">
+<i class="port-hit" data-desc="Fiberuplink til core switch." data-ip="10.10.1.12" data-link="10 Gbps" data-poe="—" data-port="" data-port-name="Fiber Uplink" data-port-number="1" data-port-status="uplink" data-port-switch="Tech Room B" data-status="Online" data-vlan="10 · MGMT" title="Port 1 · Fiber Uplink"></i>
+<i class="port-hit" data-desc="AP i bolig 101." data-ip="10.10.40.101" data-link="2.5 Gbps" data-poe="13.9 W" data-port="" data-port-name="AP bolig 101" data-port-number="2" data-port-status="ap" data-port-switch="Tech Room B" data-status="Online" data-vlan="201 · BOLIG" title="Port 2 · AP bolig 101"></i>
+<i class="port-hit" data-desc="AP i bolig 102." data-ip="10.10.40.102" data-link="2.5 Gbps" data-poe="14.1 W" data-port="" data-port-name="AP bolig 102" data-port-number="3" data-port-status="ap" data-port-switch="Tech Room B" data-status="Online" data-vlan="202 · BOLIG" title="Port 3 · AP bolig 102"></i>
+<i class="port-hit" data-desc="Kamera i felles korridor." data-ip="10.60.0.31" data-link="1 Gbps" data-poe="8.1 W" data-port="" data-port-name="Camera Hallway" data-port-number="4" data-port-status="camera" data-port-switch="Tech Room B" data-status="Recording" data-vlan="60 · IOT/KAMERA" title="Port 4 · Camera Hallway"></i>
+<i class="port-hit" data-desc="Energimåler for teknisk drift." data-ip="10.50.0.21" data-link="100 Mbps" data-poe="—" data-port="" data-port-name="Energy Meter" data-port-number="5" data-port-status="camera" data-port-switch="Tech Room B" data-status="Online" data-vlan="50 · DRIFT" title="Port 5 · Energy Meter"></i>
+<i class="port-hit" data-desc="Adgang til bodområde." data-ip="10.60.0.33" data-link="1 Gbps" data-poe="5.0 W" data-port="" data-port-name="Access Storage" data-port-number="6" data-port-status="access" data-port-switch="Tech Room B" data-status="Online" data-vlan="60 · IOT/KAMERA" title="Port 6 · Access Storage"></i>
+<i class="port-hit" data-desc="Ledig port." data-ip="—" data-link="1 Gbps capable" data-poe="0 W" data-port="" data-port-name="Spare" data-port-number="7" data-port-status="idle" data-port-switch="Tech Room B" data-status="Idle" data-vlan="—" title="Port 7 · Spare"></i>
+<i class="port-hit" data-desc="Ledig port." data-ip="—" data-link="1 Gbps capable" data-poe="0 W" data-port="" data-port-name="Spare" data-port-number="8" data-port-status="idle" data-port-switch="Tech Room B" data-status="Idle" data-vlan="—" title="Port 8 · Spare"></i>
+</div>
+</div>
+<div class="device-title">PoE SWITCH</div>
+</div>
+<div class="tech-device rack-c" data-desc="Lokalt fordelingspunkt for nettverk, strøm via PoE og videre tilkobling mot boliger og felles tjenester." data-device="" data-ip="10.10.1.13" data-link="10 Gbps fiber" data-name="PoE Switch · Tech Room C" data-poe="318 W / 600 W" data-status="Online · 24 porter aktive" data-type="DISTRIBUTION · ACCESS SWITCH" data-vlan="10 · MGMT">
+<div class="rack-face">
+<span>TECH ROOM C</span>
+<div class="rack-ports">
+<i class="port-hit" data-desc="Fiberuplink til core switch." data-ip="10.10.1.13" data-link="10 Gbps" data-poe="—" data-port="" data-port-name="Fiber Uplink" data-port-number="1" data-port-status="uplink" data-port-switch="Tech Room C" data-status="Online" data-vlan="10 · MGMT" title="Port 1 · Fiber Uplink"></i>
+<i class="port-hit" data-desc="AP i bolig 161." data-ip="10.10.50.161" data-link="2.5 Gbps" data-poe="13.4 W" data-port="" data-port-name="AP bolig 161" data-port-number="2" data-port-status="ap" data-port-switch="Tech Room C" data-status="Online" data-vlan="261 · BOLIG" title="Port 2 · AP bolig 161"></i>
+<i class="port-hit" data-desc="AP i bolig 162." data-ip="10.10.50.162" data-link="2.5 Gbps" data-poe="13.5 W" data-port="" data-port-name="AP bolig 162" data-port-number="3" data-port-status="ap" data-port-switch="Tech Room C" data-status="Online" data-vlan="262 · BOLIG" title="Port 3 · AP bolig 162"></i>
+<i class="port-hit" data-desc="Kamera i garasje." data-ip="10.60.0.61" data-link="1 Gbps" data-poe="8.6 W" data-port="" data-port-name="Camera Garage" data-port-number="4" data-port-status="camera" data-port-switch="Tech Room C" data-status="Recording" data-vlan="60 · IOT/KAMERA" title="Port 4 · Camera Garage"></i>
+<i class="port-hit" data-desc="Adgangsleser garasje B." data-ip="10.60.0.62" data-link="1 Gbps" data-poe="5.7 W" data-port="" data-port-name="Access Garage B" data-port-number="5" data-port-status="access" data-port-switch="Tech Room C" data-status="Online" data-vlan="60 · IOT/KAMERA" title="Port 5 · Access Garage B"></i>
+<i class="port-hit" data-desc="Kontrollert serviceport for leverandør." data-ip="10.70.0.10" data-link="1 Gbps" data-poe="0 W" data-port="" data-port-name="Vendor Service" data-port-number="6" data-port-status="idle" data-port-switch="Tech Room C" data-status="Restricted" data-vlan="70 · SERVICE" title="Port 6 · Vendor Service"></i>
+<i class="port-hit" data-desc="Ledig port." data-ip="—" data-link="1 Gbps capable" data-poe="0 W" data-port="" data-port-name="Spare" data-port-number="7" data-port-status="idle" data-port-switch="Tech Room C" data-status="Idle" data-vlan="—" title="Port 7 · Spare"></i>
+<i class="port-hit" data-desc="Ledig port." data-ip="—" data-link="1 Gbps capable" data-poe="0 W" data-port="" data-port-name="Spare" data-port-number="8" data-port-status="idle" data-port-switch="Tech Room C" data-status="Idle" data-vlan="—" title="Port 8 · Spare"></i>
+</div>
+</div>
+<div class="device-title">PoE SWITCH</div>
+</div>
+<div class="fiber-path fp1"></div>
+<div class="fiber-path fp2"></div>
+<div class="fiber-path fp3"></div>
+<div class="tech-label dist-fiber">
+<strong>Fiber backbone</strong>
+<small>10G ready principle</small>
+</div>
+<div class="tech-label dist-poe">
+<strong>PoE</strong>
+<small>AP · camera · access</small>
+</div>
+<div class="tech-label dist-vlan">
+<strong>VLAN trunk</strong>
+<small>Segment transport</small>
+</div>
+</div>
+<div class="tech-kpi-row">
+<div class="tech-kpi">
+<small>BACKBONE</small>
+<strong>Fiber mellom noder</strong>
+</div>
+<div class="tech-kpi">
+<small>ACCESS</small>
+<strong>PoE-switching</strong>
+</div>
+<div class="tech-kpi">
+<small>STRUCTURE</small>
+<strong>Tekniske rom</strong>
+</div>
+<div class="tech-kpi">
+<small>TRANSPORT</small>
+<strong>VLAN trunking</strong>
+</div>
+</div>
+</div>
+</section>
+<section class="depth-content" id="detaljer">
+<div class="sn-shell">
+<div class="depth-card-grid">
+<article class="depth-card">
+<span>02A</span>
+<h2>Fiber backbone</h2>
+<p>Høy kapasitet mellom sentrale og lokale fordelingspunkter.</p>
+</article>
+<article class="depth-card">
+<span>02B</span>
+<h2>PoE-switching</h2>
+<p>Data og strøm til AP-er, kamera og andre endepunkter.</p>
+</article>
+<article class="depth-card">
+<span>02C</span>
+<h2>VLAN transport</h2>
+<p>Segmenter transporteres kontrollert gjennom infrastrukturen.</p>
+</article>
+<article class="depth-card">
+<span>02D</span>
+<h2>Dokumentasjon</h2>
+<p>Porter, uplinks og tekniske rom får en kjent struktur.</p>
+</article>
+</div>
+</div>
+</section>
+</main>
+<!-- =========================================================
          INTERACTIVE DEVICE INSPECTOR
          Example/demo data – not live production telemetry.
          ========================================================= -->
-
-    <aside
-        class="device-inspector"
-        id="deviceInspector"
-        aria-live="polite"
-        aria-hidden="true"
-    >
-        <div class="inspector-head">
-
-            <div>
-                <div class="inspector-kicker" id="inspectorType">
+<aside aria-hidden="true" aria-live="polite" class="device-inspector" id="deviceInspector">
+<div class="inspector-head">
+<div>
+<div class="inspector-kicker" id="inspectorType">
                     DEVICE
                 </div>
-
-                <h2 class="inspector-title" id="inspectorTitle">
+<h2 class="inspector-title" id="inspectorTitle">
                     Velg en komponent
                 </h2>
-            </div>
-
-            <button
-                class="inspector-close"
-                type="button"
-                id="inspectorClose"
-                aria-label="Lukk statuspanel"
-            >
+</div>
+<button aria-label="Lukk statuspanel" class="inspector-close" id="inspectorClose" type="button">
                 ×
             </button>
-
-        </div>
-
-        <div class="inspector-body">
-
-            <div class="inspector-status">
-                <span class="inspector-status-dot"></span>
-                <span id="inspectorStatus">Online</span>
-            </div>
-
-            <div class="inspector-grid">
-
-                <div class="inspector-cell">
-                    <small>IP</small>
-                    <strong id="inspectorIp">—</strong>
-                </div>
-
-                <div class="inspector-cell">
-                    <small>VLAN</small>
-                    <strong id="inspectorVlan">—</strong>
-                </div>
-
-                <div class="inspector-cell">
-                    <small>Link</small>
-                    <strong id="inspectorLink">—</strong>
-                </div>
-
-                <div class="inspector-cell">
-                    <small>Power / PoE</small>
-                    <strong id="inspectorPoe">—</strong>
-                </div>
-
-            </div>
-
-            <p class="inspector-desc" id="inspectorDesc">
+</div>
+<div class="inspector-body">
+<div class="inspector-status">
+<span class="inspector-status-dot"></span>
+<span id="inspectorStatus">Online</span>
+</div>
+<div class="inspector-grid">
+<div class="inspector-cell">
+<small>IP</small>
+<strong id="inspectorIp">—</strong>
+</div>
+<div class="inspector-cell">
+<small>VLAN</small>
+<strong id="inspectorVlan">—</strong>
+</div>
+<div class="inspector-cell">
+<small>Link</small>
+<strong id="inspectorLink">—</strong>
+</div>
+<div class="inspector-cell">
+<small>Power / PoE</small>
+<strong id="inspectorPoe">—</strong>
+</div>
+</div>
+<p class="inspector-desc" id="inspectorDesc">
                 Klikk på en komponent i visualiseringen.
             </p>
-
-        </div>
-    </aside>
-
-
-
-    <script>
+</div>
+</aside>
+<script>
         (function () {
             const inspector = document.getElementById("deviceInspector");
 
@@ -2533,10 +1965,7 @@
             });
         })();
     </script>
-
-
-
-    <script>
+<script>
         (function () {
             const inspector = document.getElementById("deviceInspector");
 
@@ -2608,10 +2037,7 @@
             });
         })();
     </script>
-
-
-    <script src="/assets/js/language.js?v=20260925b" defer></script>
+<script defer="" src="/assets/js/language.js?v=20260925b"></script>
 <div class="ians-next-badge">IANS Next · Master</div>
 <script src="/assets/js/ians-analytics.js"></script></body>
-
 </html>

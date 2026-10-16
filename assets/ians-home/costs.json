@@ -1,22 +1,33 @@
 {
   "status": "available",
   "currency": "NOK",
-  "periodStart": "2026-09-01",
-  "periodEnd": "2026-09-28",
-  "updatedAt": "2026-09-28T09:08:54Z",
+  "periodStart": "2026-10-01",
+  "periodEnd": "2026-10-15",
+  "updatedAt": "2026-10-16T15:10:12.264107+00:00",
   "staticWebApps": {
     "iansNok": 0,
     "sogodNok": 0
   },
-  "azureTotalNok": 0.02,
+  "azureTotalNok": 0.0,
   "includes": [
-    "IANS Static Web App",
-    "SOGOD Static Web App",
-    "Andre Azure-tjenester i samme billing scope kan inngå i Azure-totalen"
+    "Azure-forbruk i det valgte abonnementet, også tjenester utover IANS og SOGOD",
+    "IANS og SOGOD Static Web Apps som egne delsummer"
   ],
   "excludes": [
     "Domener",
-    "OpenAI og andre eksterne AI-tjenester",
-    "Andre kostnader utenfor Azure, med mindre de senere legges inn eksplisitt"
-  ]
+    "OpenAI og andre eksterne KI-tjenester",
+    "Kostnader utenfor det valgte Azure-abonnementet"
+  ],
+  "includesEn": [
+    "Azure usage in the selected subscription, including services beyond IANS and SOGOD",
+    "IANS and SOGOD Static Web Apps as separate subtotals"
+  ],
+  "excludesEn": [
+    "Domains",
+    "OpenAI and other external AI services",
+    "Costs outside the selected Azure subscription"
+  ],
+  "noteEn": "Recorded Azure usage may be delayed. This is not a final invoice.",
+  "source": "Azure Cost Management Query API, ActualCost",
+  "note": "Registrert Azure-forbruk; siste døgn kan være forsinket. Ikke en sluttfaktura."
 }

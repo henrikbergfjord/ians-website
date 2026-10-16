@@ -1,21 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="no">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>SameieNett Core | Henrik Bergfjord</title>
-
-    <meta
-        name="description"
-        content="Core-laget samler WAN, gateway, brannmur, controller, policy og overvåking. Det er her plattformen får ett sentralt kontrollpunkt og tydelige sikkerhetsgrenser."
-    >
-
-    <link rel="stylesheet" href="assets/styles.css">
-    <link rel="stylesheet" href="assets/sameienett.css?v=20260925b">
-
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SameieNett Core | Henrik Bergfjord</title>
+<meta content="Core-laget samler WAN, gateway, brannmur, controller, policy og overvåking. Det er her plattformen får ett sentralt kontrollpunkt og tydelige sikkerhetsgrenser." name="description"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<link href="assets/sameienett.css?v=20260925b" rel="stylesheet"/>
+<style>
         .depth-page {
             min-height: 100vh;
             background:
@@ -1529,343 +1522,238 @@
         }
 
     </style>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="/assets/css/language.css">
-<link rel="stylesheet" href="assets/css/ians-next.css">
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="/assets/css/language.css" rel="stylesheet"/>
+<link href="assets/css/ians-next.css" rel="stylesheet"/>
 <style>/* Navigation audit: narrow-screen layout. */
 .depth-orbit{overflow:clip}.sn-hero>*{min-width:0}
-</style></head>
-
+</style><link href="https://www.ians.no/sameienett-core.html" rel="canonical"/><meta content="SameieNett Core | Henrik Bergfjord" property="og:title"/><meta content="Core-laget samler WAN, gateway, brannmur, controller, policy og overvåking. Det er her plattformen får ett sentralt kontrollpunkt og tydelige sikkerhetsgrenser." property="og:description"/><meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/><link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/></head>
 <body class="sn-page depth-page">
-
-    <header class="topbar">
-        <div class="container nav">
-
-            <a class="brand" href="index.html">
-                <span class="brand-mark"></span>
-                <span>Henrik Bergfjord</span>
-            </a>
-
-            <nav class="nav-links">
-                <a href="SameieNett.html">SameieNett</a>
-                <a class="active" href="sameienett-core.html">01 · Core</a>
-            </nav>
-
-            <a class="button secondary" href="SameieNett.html#arkitektur">
+<header class="topbar">
+<div class="container nav">
+<a class="brand" href="index.html">
+<span class="brand-mark"></span>
+<span>Henrik Bergfjord</span>
+</a>
+<nav class="nav-links">
+<a href="SameieNett.html">SameieNett</a>
+<a class="active" href="sameienett-core.html">01 · Core</a>
+</nav>
+<a class="button secondary" href="SameieNett.html#arkitektur">
                 ← Arkitekturen
             </a>
-
-        </div>
-    </header>
-
-    <main>
-
-        <section class="depth-hero">
-            <div class="sn-shell depth-grid">
-
-                <div class="depth-copy">
-
-                    <div class="sn-kicker">
+</div>
+</header>
+<main>
+<section class="depth-hero">
+<div class="sn-shell depth-grid">
+<div class="depth-copy">
+<div class="sn-kicker">
                         SAMEIENETT · CORE · CONTROL PLANE
                     </div>
-
-                    <h1>
+<h1>
                         Hjernen i plattformen.
                     </h1>
-
-                    <p>
+<p>
                         Core-laget samler WAN, gateway, brannmur, controller, policy og overvåking. Det er her plattformen får ett sentralt kontrollpunkt og tydelige sikkerhetsgrenser.
                     </p>
-
-                    <div class="sn-actions">
-                        <a class="sn-btn primary" href="#detaljer">
+<div class="sn-actions">
+<a class="sn-btn primary" href="#detaljer">
                             Gå i dybden ↓
                         </a>
-
-                        <a class="sn-btn ghost" href="SameieNett.html#arkitektur">
+<a class="sn-btn ghost" href="SameieNett.html#arkitektur">
                             Tilbake til 01–04
                         </a>
-                    </div>
-
-                </div>
-
-                <div class="depth-orbit">
-
-                    <div class="depth-ring r1"></div>
-                    <div class="depth-ring r2"></div>
-                    <div class="depth-ring r3"></div>
-
-                    <div class="depth-center">
-                        <div>
-                            <strong>SAMEIENETT CORE</strong>
-                            <small>01 · SAMEIENETT</small>
-                        </div>
-                    </div>
-
-                        <span class="depth-node dn1">
-                            <strong>WAN</strong>
-                            <small>Internet</small>
-                        </span>
-                        <span class="depth-node dn2">
-                            <strong>Firewall</strong>
-                            <small>Policy</small>
-                        </span>
-                        <span class="depth-node dn3">
-                            <strong>Controller</strong>
-                            <small>Manage</small>
-                        </span>
-                        <span class="depth-node dn4">
-                            <strong>IDS / IPS</strong>
-                            <small>Protect</small>
-                        </span>
-                        <span class="depth-node dn5">
-                            <strong>Logging</strong>
-                            <small>Observe</small>
-                        </span>
-                        <span class="depth-node dn6">
-                            <strong>VLAN</strong>
-                            <small>Segment</small>
-                        </span>
-
-                </div>
-
-            </div>
-        </section>
-
-
-        <section class="tech-visual-section">
-            <div class="sn-shell">
-
-                <div class="tech-visual-head">
-                    <div>
-                        <div class="sn-kicker">TEKNISK VISUALISERING</div>
-                        <h2>Control plane og sikker inngang</h2>
-                    </div>
-
-                    <p>
+</div>
+</div>
+<div class="depth-orbit">
+<div class="depth-ring r1"></div>
+<div class="depth-ring r2"></div>
+<div class="depth-ring r3"></div>
+<div class="depth-center">
+<div>
+<strong>SAMEIENETT CORE</strong>
+<small>01 · SAMEIENETT</small>
+</div>
+</div>
+<span class="depth-node dn1">
+<strong>WAN</strong>
+<small>Internet</small>
+</span>
+<span class="depth-node dn2">
+<strong>Firewall</strong>
+<small>Policy</small>
+</span>
+<span class="depth-node dn3">
+<strong>Controller</strong>
+<small>Manage</small>
+</span>
+<span class="depth-node dn4">
+<strong>IDS / IPS</strong>
+<small>Protect</small>
+</span>
+<span class="depth-node dn5">
+<strong>Logging</strong>
+<small>Observe</small>
+</span>
+<span class="depth-node dn6">
+<strong>VLAN</strong>
+<small>Segment</small>
+</span>
+</div>
+</div>
+</section>
+<section class="tech-visual-section">
+<div class="sn-shell">
+<div class="tech-visual-head">
+<div>
+<div class="sn-kicker">TEKNISK VISUALISERING</div>
+<h2>Control plane og sikker inngang</h2>
+</div>
+<p>
                         Core er hjernen i SameieNett. Visualiseringen under viser prinsippet:
                         WAN inn, sentral gateway og firewall, policy, logging og videre kobling
                         mot resten av byggets infrastruktur.
                     </p>
-                </div>
-
-                <div class="tech-canvas core-tech">
-
-                    <div class="tech-hint">Klikk på utstyr for status</div>
-
-                    <div class="tech-device core-gateway"
-                        data-device
-                        data-name="SameieNett Gateway"
-                        data-type="CORE · GATEWAY / FIREWALL"
-                        data-status="Online · policy active"
-                        data-ip="10.10.0.1"
-                        data-vlan="10 · MGMT"
-                        data-link="10 Gbps uplink"
-                        data-poe="Ikke relevant"
-                        data-desc="Sentralt kontrollpunkt for WAN, firewall, routing, policy, IDS/IPS og videre trafikk inn i distribusjonslaget.">
-                        <span class="tech-led" style="top:22px;left:24px"></span>
-                        <span class="tech-led" style="top:22px;left:38px"></span>
-                        <span class="tech-led" style="top:22px;left:52px"></span>
-
-                        <div class="core-screen">
-                            <span>WAN</span>
-                            <strong>SECURE</strong>
-                            <small>IDS / IPS ACTIVE</small>
-                        </div>
-
-                        <div class="device-title">
+</div>
+<div class="tech-canvas core-tech">
+<div class="tech-hint">Klikk på utstyr for status</div>
+<div class="tech-device core-gateway" data-desc="Sentralt kontrollpunkt for WAN, firewall, routing, policy, IDS/IPS og videre trafikk inn i distribusjonslaget." data-device="" data-ip="10.10.0.1" data-link="10 Gbps uplink" data-name="SameieNett Gateway" data-poe="Ikke relevant" data-status="Online · policy active" data-type="CORE · GATEWAY / FIREWALL" data-vlan="10 · MGMT">
+<span class="tech-led" style="top:22px;left:24px"></span>
+<span class="tech-led" style="top:22px;left:38px"></span>
+<span class="tech-led" style="top:22px;left:52px"></span>
+<div class="core-screen">
+<span>WAN</span>
+<strong>SECURE</strong>
+<small>IDS / IPS ACTIVE</small>
+</div>
+<div class="device-title">
                             ENTERPRISE GATEWAY / FIREWALL
                         </div>
-                    </div>
-
-                    <div class="core-policy-ring">
-                        <span>POLICY</span>
-                    </div>
-
-                    <div class="tech-label core-wan">
-                        <strong>Internet / WAN</strong>
-                        <small>Primary uplink</small>
-                    </div>
-
-                    <div class="tech-label core-controller"
-                        data-device
-                        data-name="Network Controller"
-                        data-type="CONTROL PLANE"
-                        data-status="Online"
-                        data-ip="10.10.0.10"
-                        data-vlan="10 · MGMT"
-                        data-link="1 Gbps"
-                        data-poe="—"
-                        data-desc="Controlleren administrerer konfigurasjon, enheter, policy og sentral oversikt over infrastrukturen.">
-                        <strong>Controller</strong>
-                        <small>Configuration</small>
-                    </div>
-
-                    <div class="tech-label core-logging"
-                        data-device
-                        data-name="Logging & Observability"
-                        data-type="MONITORING"
-                        data-status="Collecting"
-                        data-ip="10.10.0.20"
-                        data-vlan="10 · MGMT"
-                        data-link="1 Gbps"
-                        data-poe="—"
-                        data-desc="Eksempel på sentral logging og observability for hendelser, kapasitetsdata og teknisk status.">
-                        <strong>Logging</strong>
-                        <small>Events & observability</small>
-                    </div>
-
-                    <div class="tech-label core-vlan">
-                        <strong>VLAN / Routing</strong>
-                        <small>Segmentation</small>
-                    </div>
-
-                    <div class="tech-label core-backbone">
-                        <strong>Building backbone</strong>
-                        <small>To distribution layer</small>
-                    </div>
-
-                    <i class="tech-line core-line-wan"></i>
-                    <i class="tech-line core-line-controller"></i>
-                    <i class="tech-line core-line-logging"></i>
-                    <i class="tech-line core-line-vlan"></i>
-                    <i class="tech-line core-line-backbone"></i>
-
-                </div>
-
-                <div class="tech-kpi-row">
-                    <div class="tech-kpi">
-                        <small>CONTROL</small>
-                        <strong>Sentral styring</strong>
-                    </div>
-
-                    <div class="tech-kpi">
-                        <small>SECURITY</small>
-                        <strong>Firewall + IDS/IPS</strong>
-                    </div>
-
-                    <div class="tech-kpi">
-                        <small>SEGMENTATION</small>
-                        <strong>VLAN / policy</strong>
-                    </div>
-
-                    <div class="tech-kpi">
-                        <small>OBSERVABILITY</small>
-                        <strong>Logging og status</strong>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-
-        <section class="depth-content" id="detaljer">
-            <div class="sn-shell">
-
-                <div class="depth-card-grid">
-                    <article class="depth-card">
-                        <span>01A</span>
-                        <h2>Gateway og WAN</h2>
-                        <p>Kontrollert inngang mot internett og leverandørforbindelser.</p>
-                    </article>
-                    <article class="depth-card">
-                        <span>01B</span>
-                        <h2>Firewall og policy</h2>
-                        <p>Trafikk mellom soner styres sentralt og dokumenterbart.</p>
-                    </article>
-                    <article class="depth-card">
-                        <span>01C</span>
-                        <h2>Controller</h2>
-                        <p>Konfigurasjon og enheter administreres fra ett kontrollpunkt.</p>
-                    </article>
-                    <article class="depth-card">
-                        <span>01D</span>
-                        <h2>Observability</h2>
-                        <p>Logging, hendelser, status og kapasitetsdata gir bedre drift.</p>
-                    </article>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-
-
-    <!-- =========================================================
+</div>
+<div class="core-policy-ring">
+<span>POLICY</span>
+</div>
+<div class="tech-label core-wan">
+<strong>Internet / WAN</strong>
+<small>Primary uplink</small>
+</div>
+<div class="tech-label core-controller" data-desc="Controlleren administrerer konfigurasjon, enheter, policy og sentral oversikt over infrastrukturen." data-device="" data-ip="10.10.0.10" data-link="1 Gbps" data-name="Network Controller" data-poe="—" data-status="Online" data-type="CONTROL PLANE" data-vlan="10 · MGMT">
+<strong>Controller</strong>
+<small>Configuration</small>
+</div>
+<div class="tech-label core-logging" data-desc="Eksempel på sentral logging og observability for hendelser, kapasitetsdata og teknisk status." data-device="" data-ip="10.10.0.20" data-link="1 Gbps" data-name="Logging &amp; Observability" data-poe="—" data-status="Collecting" data-type="MONITORING" data-vlan="10 · MGMT">
+<strong>Logging</strong>
+<small>Events &amp; observability</small>
+</div>
+<div class="tech-label core-vlan">
+<strong>VLAN / Routing</strong>
+<small>Segmentation</small>
+</div>
+<div class="tech-label core-backbone">
+<strong>Building backbone</strong>
+<small>To distribution layer</small>
+</div>
+<i class="tech-line core-line-wan"></i>
+<i class="tech-line core-line-controller"></i>
+<i class="tech-line core-line-logging"></i>
+<i class="tech-line core-line-vlan"></i>
+<i class="tech-line core-line-backbone"></i>
+</div>
+<div class="tech-kpi-row">
+<div class="tech-kpi">
+<small>CONTROL</small>
+<strong>Sentral styring</strong>
+</div>
+<div class="tech-kpi">
+<small>SECURITY</small>
+<strong>Firewall + IDS/IPS</strong>
+</div>
+<div class="tech-kpi">
+<small>SEGMENTATION</small>
+<strong>VLAN / policy</strong>
+</div>
+<div class="tech-kpi">
+<small>OBSERVABILITY</small>
+<strong>Logging og status</strong>
+</div>
+</div>
+</div>
+</section>
+<section class="depth-content" id="detaljer">
+<div class="sn-shell">
+<div class="depth-card-grid">
+<article class="depth-card">
+<span>01A</span>
+<h2>Gateway og WAN</h2>
+<p>Kontrollert inngang mot internett og leverandørforbindelser.</p>
+</article>
+<article class="depth-card">
+<span>01B</span>
+<h2>Firewall og policy</h2>
+<p>Trafikk mellom soner styres sentralt og dokumenterbart.</p>
+</article>
+<article class="depth-card">
+<span>01C</span>
+<h2>Controller</h2>
+<p>Konfigurasjon og enheter administreres fra ett kontrollpunkt.</p>
+</article>
+<article class="depth-card">
+<span>01D</span>
+<h2>Observability</h2>
+<p>Logging, hendelser, status og kapasitetsdata gir bedre drift.</p>
+</article>
+</div>
+</div>
+</section>
+</main>
+<!-- =========================================================
          INTERACTIVE DEVICE INSPECTOR
          Example/demo data – not live production telemetry.
          ========================================================= -->
-
-    <aside
-        class="device-inspector"
-        id="deviceInspector"
-        aria-live="polite"
-        aria-hidden="true"
-    >
-        <div class="inspector-head">
-
-            <div>
-                <div class="inspector-kicker" id="inspectorType">
+<aside aria-hidden="true" aria-live="polite" class="device-inspector" id="deviceInspector">
+<div class="inspector-head">
+<div>
+<div class="inspector-kicker" id="inspectorType">
                     DEVICE
                 </div>
-
-                <h2 class="inspector-title" id="inspectorTitle">
+<h2 class="inspector-title" id="inspectorTitle">
                     Velg en komponent
                 </h2>
-            </div>
-
-            <button
-                class="inspector-close"
-                type="button"
-                id="inspectorClose"
-                aria-label="Lukk statuspanel"
-            >
+</div>
+<button aria-label="Lukk statuspanel" class="inspector-close" id="inspectorClose" type="button">
                 ×
             </button>
-
-        </div>
-
-        <div class="inspector-body">
-
-            <div class="inspector-status">
-                <span class="inspector-status-dot"></span>
-                <span id="inspectorStatus">Online</span>
-            </div>
-
-            <div class="inspector-grid">
-
-                <div class="inspector-cell">
-                    <small>IP</small>
-                    <strong id="inspectorIp">—</strong>
-                </div>
-
-                <div class="inspector-cell">
-                    <small>VLAN</small>
-                    <strong id="inspectorVlan">—</strong>
-                </div>
-
-                <div class="inspector-cell">
-                    <small>Link</small>
-                    <strong id="inspectorLink">—</strong>
-                </div>
-
-                <div class="inspector-cell">
-                    <small>Power / PoE</small>
-                    <strong id="inspectorPoe">—</strong>
-                </div>
-
-            </div>
-
-            <p class="inspector-desc" id="inspectorDesc">
+</div>
+<div class="inspector-body">
+<div class="inspector-status">
+<span class="inspector-status-dot"></span>
+<span id="inspectorStatus">Online</span>
+</div>
+<div class="inspector-grid">
+<div class="inspector-cell">
+<small>IP</small>
+<strong id="inspectorIp">—</strong>
+</div>
+<div class="inspector-cell">
+<small>VLAN</small>
+<strong id="inspectorVlan">—</strong>
+</div>
+<div class="inspector-cell">
+<small>Link</small>
+<strong id="inspectorLink">—</strong>
+</div>
+<div class="inspector-cell">
+<small>Power / PoE</small>
+<strong id="inspectorPoe">—</strong>
+</div>
+</div>
+<p class="inspector-desc" id="inspectorDesc">
                 Klikk på en komponent i visualiseringen.
             </p>
-
-        </div>
-    </aside>
-
-
-
-    <script>
+</div>
+</aside>
+<script>
         (function () {
             const inspector = document.getElementById("deviceInspector");
 
@@ -1937,10 +1825,7 @@
             });
         })();
     </script>
-
-
-    <script src="/assets/js/language.js?v=20260925b" defer></script>
+<script defer="" src="/assets/js/language.js?v=20260925b"></script>
 <div class="ians-next-badge">IANS Next · Master</div>
 <script src="/assets/js/ians-analytics.js"></script></body>
-
 </html>

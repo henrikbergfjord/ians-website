@@ -1,12 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="no">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Strøm | Henrik Bergfjord</title>
-  <meta name="description" content="Strømoversikt med graf, teknisk uttrykk og plass for videre energidata.">
-  <link rel="stylesheet" href="assets/styles.css">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Strøm | Henrik Bergfjord</title>
+<meta content="Strømoversikt med graf, teknisk uttrykk og plass for videre energidata." name="description"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<style>
     .power-hero{
       padding:24px;
       position:relative;
@@ -191,125 +192,100 @@
       }
     }
   </style>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="/assets/css/language.css">
-<link rel="stylesheet" href="assets/css/ians-next.css">
-</head>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="/assets/css/language.css" rel="stylesheet"/>
+<link href="assets/css/ians-next.css" rel="stylesheet"/>
+<link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/><link href="https://www.ians.no/strom.html" rel="canonical"/><meta content="Strøm | Henrik Bergfjord" property="og:title"/><meta content="Strømoversikt med graf, teknisk uttrykk og plass for videre energidata." property="og:description"/><meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/></head>
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <a class="brand" href="index.html">
-        <span class="brand-mark"></span>
-        <span>Henrik Bergfjord</span>
-      </a>
-
-      <nav class="nav-links" aria-label="Sidenavigasjon"><a href="/">IANS</a><a href="/teknisk.html#infrastruktur">Alle områder</a><a href="/strom.html" aria-current="page" class="active">Strøm</a><a href="/dns-sjekk.html">DNS-sjekk</a></nav>
-
-      <a class="button primary" href="#energi">Se energi</a>
-    </div>
-  </header>
-
-  <main>
-    <section class="page-header">
-      <div class="container">
-        <div class="card power-hero">
-          <div class="power-kicker">Energi · analyse · mørk teknisk profil</div>
-          <h1>Strøm med graf og tydeligere energivisning</h1>
-          <p class="lead">
-            En oppdatert strøm-side med teknisk uttrykk, graf og paneler som kan bygges videre ut med spotpris,
-            lading, batteri, nettleie og sammenligning mellom perioder.
-          </p>
-
-          <div class="power-hero-actions">
-            <a class="button primary" href="#energi">Åpne oversikt</a>
-            <a class="button secondary" href="volvo-c40.html">Koble mot Volvo C40</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="energi">
-      <div class="container power-layout">
-        <div class="card chart-card">
-          <div class="chart-header">
-            <div>
-              <h2>Årsprofil</h2>
-              <div class="muted">Estimert forbruk og pris gjennom året</div>
-            </div>
-            <div class="legend">
-              <span class="line1">Forbruk</span>
-              <span class="line2">Pris</span>
-            </div>
-          </div>
-          <canvas id="energyChart" width="1000" height="360"></canvas>
-        </div>
-
-        <div class="stats-grid">
-          <div class="card tile">
-            <div class="badge">Snittforbruk</div>
-            <div class="power-metric">1 654 kWh</div>
-            <div class="power-metric-sub">månedlig estimat</div>
-          </div>
-
-          <div class="card tile">
-            <div class="badge">Snittpris</div>
-            <div class="power-metric">1,07 kr</div>
-            <div class="power-metric-sub">estimert snittpris</div>
-          </div>
-
-          <div class="card tile">
-            <h3>Teknisk bakgrunn</h3>
-            <p class="muted">
-              Siden bruker mørke flater, grid-linjer og kalde toner for å gi en tydeligere energidashboard-følelse.
-            </p>
-          </div>
-
-          <div class="card tile">
-            <h3>Klar for videre kobling</h3>
-            <p class="muted">
-              Neste naturlige steg er å koble siden mot ekte data fra Tibber, Home Assistant, CSV eller et eget endepunkt.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container grid-3">
-        <div class="card tile">
-          <h3>Hva som er nytt</h3>
-          <div class="kv">
-            <div class="kv-row"><span>Graf</span><strong>Canvas-basert visning</strong></div>
-            <div class="kv-row"><span>Profil</span><strong>Mørk teknisk stil</strong></div>
-            <div class="kv-row"><span>Paneler</span><strong>Bedre struktur</strong></div>
-            <div class="kv-row"><span>Neste nivå</span><strong>Klar for datakilder</strong></div>
-          </div>
-        </div>
-
-        <div class="card tile">
-          <h3>Videre idéer</h3>
-          <p class="muted">
-            Legg til spotpris time for time, batteri, elbilforbruk, nettleie og sammenligning mellom måneder og sesonger.
-          </p>
-        </div>
-
-        <div class="card tile">
-          <h3>Praktisk</h3>
-          <p class="muted">
-            Grafen er laget uten eksterne biblioteker, slik at siden er enkel å publisere og lett å videreutvikle som statisk løsning.
-          </p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
-      <div class="card footer-card">Strømoversikt · <span id="year"></span></div>
-    </div>
-  </footer>
-
-  <script>
+<header class="topbar">
+<div class="container nav">
+<a class="brand" href="index.html">
+<span class="brand-mark"></span>
+<span>Henrik Bergfjord</span>
+</a>
+<nav aria-label="Sidenavigasjon" class="nav-links"><a href="/">IANS</a><a href="/teknisk.html#infrastruktur">Alle områder</a><a aria-current="page" class="active" href="/strom.html">Strøm</a><a href="/dns-sjekk.html">DNS-sjekk</a></nav>
+<a class="button primary" href="#energi">Se energi</a>
+</div>
+</header>
+<main>
+<section class="page-header">
+<div class="container">
+<div class="card power-hero">
+<div class="power-kicker">Energi · analyse · mørk teknisk profil</div>
+<p class="site-status">Demonstrasjon · eksempeldata · ingen måler tilkoblet</p><h1>Strømforbruk gjennom året – et regneeksempel</h1>
+<p class="lead">Se hvordan forbruk og pris kan variere gjennom et år. Alle tallene på denne siden er eksempeldata, ikke strømregningen din eller dagens spotpris.</p>
+<div class="power-hero-actions">
+<a class="button primary" href="#energi">Åpne oversikt</a>
+<a class="button secondary" href="volvo-c40.html">Koble mot Volvo C40</a>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="energi">
+<div class="container power-layout">
+<div class="card chart-card">
+<div class="chart-header">
+<div>
+<h2>Årsprofil</h2>
+<div class="muted">Estimert forbruk og pris gjennom året</div>
+</div>
+<div class="legend">
+<span class="line1">Forbruk</span>
+<span class="line2">Pris</span>
+</div>
+</div>
+<canvas height="360" id="energyChart" width="1000"></canvas>
+</div>
+<div class="stats-grid">
+<div class="card tile">
+<div class="badge">Snittforbruk</div>
+<div class="power-metric">1 654 kWh</div>
+<div class="power-metric-sub">månedlig estimat</div>
+</div>
+<div class="card tile">
+<div class="badge">Snittpris</div>
+<div class="power-metric">1,07 kr</div>
+<div class="power-metric-sub">estimert snittpris</div>
+</div>
+<div class="card tile">
+<h3>Slik leser du grafen</h3>
+<p class="muted">Forbruk og pris har ulike enheter. Se forløpet som to illustrasjoner, ikke som en dokumentert sammenheng mellom pris og ditt eget forbruk.</p>
+</div>
+<div class="card tile">
+<h3>Ingen konto er tilkoblet</h3>
+<p class="muted">Siden henter ikke målerdata eller kontoinformasjon fra strømleverandøren din. Eksemplene er laget for å vise prinsippet.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container grid-3">
+<div class="card tile">
+<h3>Datagrunnlag</h3>
+<div class="kv">
+<div class="kv-row"><span>Graf</span><strong>Eksempelprofil</strong></div>
+<div class="kv-row"><span>Profil</span><strong>Illustrert årsprofil</strong></div>
+<div class="kv-row"><span>Paneler</span><strong>Forbruk og pris</strong></div>
+<div class="kv-row"><span>Kilde</span><strong>Eksempeldata</strong></div>
+</div>
+</div>
+<div class="card tile">
+<h3>Når du sammenligner egen strømbruk</h3>
+<p class="muted">Bruk samme periode og prisområde. Skill strømpris, nettleie og avgifter. Lading, oppvarming og vær kan endre forbruket betydelig.</p>
+</div>
+<div class="card tile">
+<h3>Praktisk</h3>
+<p class="muted">Bruk måler- eller fakturadata fra din egen leverandør når du vurderer kostnader. Denne demonstrasjonen er ikke et pristilbud.</p>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="container">
+<div class="card footer-card">Strømoversikt · <span id="year"></span></div>
+</div>
+</footer>
+<script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
     const canvas = document.getElementById("energyChart");
@@ -390,7 +366,6 @@
     drawLine(consumption, 2200, "#79a9ff", "rgba(121,169,255,.5)");
     drawLine(price.map(v => v * 1000), 2200, "#64e6c3", "rgba(100,230,195,.5)");
   </script>
-    <script src="/assets/js/language.js?v=20260925b" defer></script>
-
+<script defer="" src="/assets/js/language.js?v=20260925b"></script>
 <script src="/assets/js/ians-analytics.js"></script></body>
 </html>

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="no">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS-sjekk | Henrik Bergfjord</title>
-  <meta name="description" content="DNS-sjekk for domenenavn med A, AAAA, MX, TXT, CNAME og NS." />
-  <link rel="stylesheet" href="assets/styles.css" />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DNS-sjekk | Henrik Bergfjord</title>
+<meta content="DNS-sjekk for domenenavn med A, AAAA, MX, TXT, CNAME og NS." name="description"/>
+<link href="assets/styles.css" rel="stylesheet"/>
+<style>
     .dns-hero{
       padding:24px;
       position:relative;
@@ -232,120 +233,94 @@
       }
     }
   </style>
-    <link rel="stylesheet" href="/assets/css/language.css">
-<link rel="stylesheet" href="assets/css/ians-next.css">
-</head>
+<link href="/assets/css/language.css" rel="stylesheet"/>
+<link href="assets/css/ians-next.css" rel="stylesheet"/>
+<link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/><link href="https://www.ians.no/dns-sjekk.html" rel="canonical"/><meta content="DNS-sjekk | Henrik Bergfjord" property="og:title"/><meta content="DNS-sjekk for domenenavn med A, AAAA, MX, TXT, CNAME og NS." property="og:description"/><meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/></head>
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <a class="brand" href="index.html">
-        <span class="brand-mark"></span>
-        <span>Henrik Bergfjord</span>
-      </a>
-
-      <nav class="nav-links" aria-label="Sidenavigasjon"><a href="/">IANS</a><a href="/teknisk.html#infrastruktur">Alle områder</a><a href="/strom.html">Strøm</a><a href="/dns-sjekk.html" aria-current="page" class="active">DNS-sjekk</a></nav>
-
-      <a class="button primary" href="#oppslag">Kjør DNS-sjekk</a>
-    </div>
-  </header>
-
-  <main>
-    <section class="page-header">
-      <div class="container">
-        <div class="card dns-hero">
-          <div class="dns-kicker">DNS · domenenavn · nettverk</div>
-          <h1>Rask DNS-sjekk for domener og poster</h1>
-          <p class="lead">
+<header class="topbar">
+<div class="container nav">
+<a class="brand" href="index.html">
+<span class="brand-mark"></span>
+<span>Henrik Bergfjord</span>
+</a>
+<nav aria-label="Sidenavigasjon" class="nav-links"><a href="/">IANS</a><a href="/teknisk.html#infrastruktur">Alle områder</a><a href="/strom.html">Strøm</a><a aria-current="page" class="active" href="/dns-sjekk.html">DNS-sjekk</a></nav>
+<a class="button primary" href="#oppslag">Kjør DNS-sjekk</a>
+</div>
+</header>
+<main>
+<section class="page-header">
+<div class="container">
+<div class="card dns-hero">
+<div class="dns-kicker">DNS · domenenavn · nettverk</div>
+<p class="site-status">Aktivt oppslagsverktøy · svar fra ekstern DNS-resolver</p><h1>Rask DNS-sjekk for domener og poster</h1>
+<p class="lead">
             En ryddig side for å slå opp vanlige DNS-poster direkte i nettleseren.
             Fin for raske kontroller når du jobber med domener, web, migrering eller generell infrastruktur.
           </p>
-
-          <div class="dns-hero-actions">
-            <a class="button primary" href="#oppslag">Start oppslag</a>
-            <a class="button secondary" href="SameieNett.html">Se SameieNett</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="oppslag">
-      <div class="container">
-        <div class="card lookup-card">
-          <form class="form-row" id="dnsForm">
-            <input
-              class="input"
-              type="text"
-              id="domain"
-              name="domain"
-              value="ians.no"
-              placeholder="Skriv domenenavn, f.eks. ians.no"
-              autocomplete="off"
-            />
-
-            <select id="recordType" name="type">
-              <option value="A">A</option>
-              <option value="AAAA">AAAA</option>
-              <option value="MX">MX</option>
-              <option value="TXT">TXT</option>
-              <option value="CNAME">CNAME</option>
-              <option value="NS">NS</option>
-            </select>
-
-            <button class="button primary" type="submit">Sjekk</button>
-          </form>
-
-          <div class="dns-toolbar">
-            <div class="dns-actions">
-              <span class="badge" id="summaryBadge">Klar</span>
-              <button class="button secondary" type="button" id="loadCommonBtn">Kjør vanlige oppslag</button>
-            </div>
-            <div class="small-note">
-              Brukes for enkel kontroll. Kan senere utvides med WHOIS, SPF/DMARC-visning og sertifikatsjekk.
-            </div>
-          </div>
-
-          <div class="results" id="results">
-            <div class="empty-state">
+<div class="dns-hero-actions">
+<a class="button primary" href="#oppslag">Start oppslag</a>
+<a class="button secondary" href="SameieNett.html">Se SameieNett</a>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="oppslag">
+<div class="container">
+<div class="card lookup-card">
+<form class="form-row" id="dnsForm">
+<input aria-label="Domenenavn" autocomplete="off" class="input" id="domain" name="domain" placeholder="Skriv domenenavn, f.eks. ians.no" type="text" value="ians.no"/>
+<select aria-label="DNS-posttype" id="recordType" name="type">
+<option value="A">A</option>
+<option value="AAAA">AAAA</option>
+<option value="MX">MX</option>
+<option value="TXT">TXT</option>
+<option value="CNAME">CNAME</option>
+<option value="NS">NS</option>
+</select>
+<button class="button primary" type="submit">Sjekk</button>
+</form>
+<div class="dns-toolbar">
+<div class="dns-actions">
+<span class="badge" id="summaryBadge">Klar</span>
+<button class="button secondary" id="loadCommonBtn" type="button">Kjør vanlige oppslag</button>
+</div>
+<div class="small-note">Enkle DNS-oppslag. Domenet du søker etter sendes til DNS-resolveren; ingen innlogging er nødvendig.</div>
+</div>
+<div class="results" id="results">
+<div class="empty-state">
               Skriv inn et domenenavn og velg posttype for å hente DNS-svar.
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container tips-grid">
-        <div class="card tip-card">
-          <h3>Hva du kan sjekke</h3>
-          <p class="muted">
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container tips-grid">
+<div class="card tip-card">
+<h3>Hva du kan sjekke</h3>
+<p class="muted">
             A- og AAAA-poster for web, MX for e-post, TXT for SPF og andre tekstposter, CNAME for alias og NS for navnetjenere.
           </p>
-        </div>
-
-        <div class="card tip-card">
-          <h3>Videre utvikling</h3>
-          <p class="muted">
-            Senere kan du bygge inn visning for SPF, DKIM, DMARC, MX-prioritet, responstid og flere DNS-resolvere.
-          </p>
-        </div>
-
-        <div class="card tip-card">
-          <h3>Praktisk bruk</h3>
-          <p class="muted">
+</div>
+<div class="card tip-card">
+<h3>Dette oppslaget forteller ikke alt</h3>
+<p class="muted">Et DNS-svar er ikke en full sikkerhets- eller e-postkontroll. Mellomlagring og ulike resolvere kan gi forskjellige svar mens en endring sprer seg.</p>
+</div>
+<div class="card tip-card">
+<h3>Praktisk bruk</h3>
+<p class="muted">
             Nyttig ved migrering, validering av nye domener, feilsøking på e-post eller rask kontroll av om DNS-endringer er på plass.
           </p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
+</div>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="container">
       DNS-sjekk · Henrik Bergfjord · Portal
     </div>
-  </footer>
-
-  <script>
+</footer>
+<script>
     const dnsTypeMap = {
       A: 1,
       NS: 2,
@@ -542,7 +517,6 @@
       }
     });
   </script>
-    <script src="/assets/js/language.js?v=20260925b" defer></script>
-
+<script defer="" src="/assets/js/language.js?v=20260925b"></script>
 <script src="/assets/js/ians-analytics.js"></script></body>
 </html>

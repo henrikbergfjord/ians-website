@@ -1,7 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="no">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>Oppsett – IANS OneDrive Analyzer</title>
 <style>
 body{font-family:system-ui,-apple-system,sans-serif;max-width:900px;margin:40px auto;padding:0 20px;line-height:1.65;color:#182231}
@@ -9,8 +10,8 @@ code,pre{background:#eef2f6;border-radius:7px;padding:2px 6px}
 pre{padding:15px;overflow:auto}
 h1,h2{line-height:1.2} .box{border:1px solid #d9e2ea;border-radius:12px;padding:18px;background:#f8fafc}
 </style>
-<link rel="stylesheet" href="../../assets/css/ians-next.css">
-</head>
+<link href="../../assets/css/ians-next.css" rel="stylesheet"/>
+<link href="https://www.ians.no/tools/onedrive-organizer/README.html" rel="canonical"/><meta content="Ikke åpne index.html direkte som file:// . Åpne Terminal i mappen og kjør:" name="description"/><meta content="Oppsett – IANS OneDrive Analyzer" property="og:title"/><meta content="Ikke åpne index.html direkte som file:// . Åpne Terminal i mappen og kjør:" property="og:description"/><meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/><link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/></head>
 <body>
 <h1>IANS OneDrive Command – oppsett og tilganger</h1>
 <div class="box">
@@ -18,12 +19,10 @@ h1,h2{line-height:1.2} .box{border:1px solid #d9e2ea;border-radius:12px;padding:
 Lesemodus kan ikke flytte, skrive eller slette filer. Velger du Action Mode, ber løsningen separat om <code>Files.ReadWrite</code> og kan utføre bekreftede filendringer.
 Ingen client secret skal opprettes eller legges i HTML.
 </div>
-
 <h2>1. Kjør siden via lokal webserver</h2>
 <p>Ikke åpne <code>index.html</code> direkte som <code>file://</code>. Åpne Terminal i mappen og kjør:</p>
 <pre>python3 -m http.server 8080</pre>
 <p>Åpne deretter <code>http://localhost:8080/</code>.</p>
-
 <h2>2. Opprett appregistrering i Microsoft Entra</h2>
 <ol>
 <li>Gå til Microsoft Entra admin center → <strong>App registrations</strong> → <strong>New registration</strong>.</li>
@@ -32,7 +31,6 @@ Ingen client secret skal opprettes eller legges i HTML.
 <li>Opprett appen.</li>
 <li>Kopier <strong>Application (client) ID</strong>.</li>
 </ol>
-
 <h2>3. Legg inn Redirect URI som SPA</h2>
 <ol>
 <li>I appregistreringen: <strong>Authentication</strong> → <strong>Add a platform</strong>.</li>
@@ -40,14 +38,12 @@ Ingen client secret skal opprettes eller legges i HTML.
 <li>Legg inn <code>http://localhost:8080/</code> (eller nøyaktig adressen dashboardet viser).</li>
 <li>Lagre.</li>
 </ol>
-
 <h2>4. Microsoft Graph permissions</h2>
 <p>I <strong>API permissions</strong> → <strong>Add a permission</strong> → Microsoft Graph → Delegated permissions:</p>
 <ul>
 <li><code>Files.Read</code></li>
 </ul>
 <p>Dette er tilgangen for kartlegging. Action Mode krever separat <code>Files.ReadWrite</code>; ikke aktiver endringer før du har gjennomgått planen og tatt nødvendig sikkerhetskopi.</p>
-
 <h2>5. Start</h2>
 <ol>
 <li>Lim Client ID inn på oppsettsiden.</li>
@@ -55,7 +51,6 @@ Ingen client secret skal opprettes eller legges i HTML.
 <li>Godkjenn <strong>Files.Read</strong>.</li>
 <li>Klikk <strong>Start full kartlegging</strong>.</li>
 </ol>
-
 <h2>Hva kartleggingen leser</h2>
 <ul>
 <li>OneDrive-kvote / brukt plass</li>
@@ -68,14 +63,12 @@ Ingen client secret skal opprettes eller legges i HTML.
 <li>mulige duplikater basert på samme filnavn + størrelse; Duplicate Review bruker innholdshash når den er tilgjengelig</li>
 <li>JSON-eksport av kartleggingen</li>
 </ul>
-
 <h2>Viktig ved svært store OneDrive-kontoer</h2>
 <p>
 Kartleggingen henter metadata side for side. Den laster ikke ned selve filinnholdet.
 En konto med svært mange små filer kan likevel kreve mange Microsoft Graph-kall.
 Kartleggingen håndterer paginering og vanlige 429/503/504-throttling-svar med retry.
 </p>
-
 <p><a href="index.html">← Til dashboardet</a></p>
 <div class="ians-next-badge">IANS Next · Master</div>
 </body>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""IANS local chat v1.0, 2026-10-15. Python 3.10+, standard library only.
+"""IANS local chat v1.1, 2026-10-16. Python 3.10+, standard library only.
 No tools, shell execution of model output, file access or persistent chat log.
 """
 import argparse
@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 from urllib import request, error
 
-MODELS = ('gemma3:1b', 'gemma3:4b')
+MODELS = ('gemma3:1b', 'gemma3:4b', 'llama3.2:latest')
 BASE = 'http://127.0.0.1:11434'
 # Ignore proxy environment variables. Never follow a redirect to another server.
 class NoRedirect(request.HTTPRedirectHandler):
@@ -51,7 +51,7 @@ def setup(model):
         print('Install Ollama first: https://ollama.com/download then reopen this terminal.')
         return 1
     api('/api/tags')  # Verify the local service before starting a download.
-    print('Model:', model, '(about 0.8 GB for 1b or 3.4 GB for 4b; download sizes may change).')
+    print('Model:', model, '(download size varies; see the model registry and README).' )
     if input('Download model from the Ollama registry? [y/N] ').strip().lower() != 'y':
         print('Download cancelled.')
         return 0

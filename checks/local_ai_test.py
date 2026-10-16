@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import zipfile
+import hashlib
 from unittest.mock import patch
 from urllib import error
 
@@ -60,6 +62,17 @@ class LocalChatTests(unittest.TestCase):
     def test_connection_failure_is_explained(self):
         with patch('sys.argv',['ians_chat.py']),patch.object(app,'api',side_effect=error.URLError('offline')),patch('sys.stderr',new_callable=io.StringIO):
             self.assertEqual(app.main(),1)
+    def test_download_archive_matches_current_client_and_hash(self):
+        path=ROOT/'downloads/ians-lokal-ki-v1.1.zip'
+        expected=(ROOT/'downloads/ians-lokal-ki-v1.1.sha256').read_text().split()[0]
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),expected)
+        with zipfile.ZipFile(path) as archive:
+            self.assertIsNone(archive.testzip())
+            self.assertEqual(archive.read('ians-lokal-ki/ians_chat.py'),(ROOT/'downloads/lokal-ki/ians_chat.py').read_bytes())
+            self.assertFalse(any('__pycache__' in n for n in archive.namelist()))
+    def test_only_named_local_models_are_offered(self):
+        self.assertIn('llama3.2:latest',app.MODELS)
+        self.assertTrue(all('cloud' not in m and '://' not in m for m in app.MODELS))
     def test_interrupt_exits_cleanly(self):
         with patch('sys.argv',['ians_chat.py']),patch.object(app,'api',side_effect=KeyboardInterrupt),patch('sys.stdout',new_callable=io.StringIO):
             self.assertEqual(app.main(),0)

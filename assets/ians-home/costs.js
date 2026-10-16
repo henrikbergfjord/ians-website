@@ -28,6 +28,7 @@ export function renderCosts(data, root = document) {
   root.querySelector('#cost-sogod').textContent = money(value.staticWebApps.sogodNok);
   root.querySelector('#cost-azure-total').textContent = money(value.azureTotalNok);
   root.querySelector('#cost-description').textContent = isEnglish?`Azure total for ${value.periodStart} to ${value.periodEnd}. This may include other Azure services and is not solely IANS + SOGOD hosting. Last updated ${new Intl.DateTimeFormat(locale,{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Oslo'}).format(new Date(value.updatedAt))}.`:`Azure-total hittil i perioden ${value.periodStart} til ${value.periodEnd}. Totalen kan også inneholde andre Azure-tjenester og er derfor ikke ren hostingkostnad for IANS + SOGOD. Sist oppdatert ${new Intl.DateTimeFormat(locale,{dateStyle:'medium',timeStyle:'short',timeZone:'Europe/Oslo'}).format(new Date(value.updatedAt))}.`;
-  root.querySelector('#cost-scope').textContent = isEnglish?`Includes: ${value.includes.join('; ')}. Excludes: ${value.excludes.join('; ')}.`:`Omfatter: ${value.includes.join('; ')}. Ikke inkludert: ${value.excludes.join('; ')}.`;
+  root.querySelector('#cost-scope').textContent = isEnglish?`Includes: ${(value.includesEn||value.includes).join('; ')}. Excludes: ${(value.excludesEn||value.excludes).join('; ')}.`:`Omfatter: ${value.includes.join('; ')}. Ikke inkludert: ${value.excludes.join('; ')}.`;
+  if(value.note)root.querySelector('#cost-scope').textContent += ' '+(isEnglish?(value.noteEn||'Recorded usage may be delayed; not a final invoice.'):value.note);
 }
 if (typeof document !== 'undefined') fetch('/assets/ians-home/costs.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(data=>renderCosts(data)).catch(()=>{});

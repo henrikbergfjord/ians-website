@@ -1,14 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="no">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dessert | Henrik Bergfjord</title>
-  <meta
-    name="description"
-    content="Dessertgenerator med norske og filippinske dessertfavoritter, ingredienser, fremgangsmåte og historikk."
-  />
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dessert | Henrik Bergfjord</title>
+<meta content="Dessertgenerator med norske og filippinske dessertfavoritter, ingredienser, fremgangsmåte og historikk." name="description"/>
+<style>
     :root{
       --bg:#07111f;
       --bg2:#0b1628;
@@ -446,117 +444,98 @@
       }
     }
   </style>
-    <link rel="stylesheet" href="/assets/css/language.css">
-<link rel="stylesheet" href="assets/css/ians-next.css">
-</head>
+<link href="/assets/css/language.css" rel="stylesheet"/>
+<link href="assets/css/ians-next.css" rel="stylesheet"/>
+<link href="/assets/css/site-content-quality.css?v=20261016b" rel="stylesheet"/><link href="https://www.ians.no/dessert.html" rel="canonical"/><meta content="Dessert | Henrik Bergfjord" property="og:title"/><meta content="Dessertgenerator med norske og filippinske dessertfavoritter, ingredienser, fremgangsmåte og historikk." property="og:description"/><meta content="https://www.ians.no/images/ians-social-1200x630.png" property="og:image"/></head>
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <a class="brand" href="index.html">
-        <span class="brand-mark"></span>
-        <span>Henrik Bergfjord</span>
-      </a>
-
-      <nav class="nav-links" aria-label="Sidenavigasjon"><a href="/">IANS</a><a href="/teknisk.html#personlig">Alle områder</a><a href="/middag.html">Middag</a><a href="/dessert.html" aria-current="page" class="active">Dessert</a><a href="/boller.html">Bakst</a><a href="/tools/dinner-planner/index.html">Dinner Planner</a></nav>
-
-      <button class="button primary" id="generateTop" type="button">Ny dessert</button>
-    </div>
-  </header>
-
-  <main>
-    <section class="page-header">
-      <div class="container card dessert-hero-card">
-        <div class="dessert-hero-image" id="heroImage">
-          <div class="dessert-hero-overlay"></div>
-          <div class="dessert-hero-content">
-            <div class="dessert-eyebrow">🍰 Norsk + filippinsk dessertinspirasjon</div>
-            <h1>Dessertgenerator</h1>
-            <p>
+<header class="topbar">
+<div class="container nav">
+<a class="brand" href="index.html">
+<span class="brand-mark"></span>
+<span>Henrik Bergfjord</span>
+</a>
+<nav aria-label="Sidenavigasjon" class="nav-links"><a href="/">IANS</a><a href="/teknisk.html#personlig">Alle områder</a><a href="/middag.html">Middag</a><a aria-current="page" class="active" href="/dessert.html">Dessert</a><a href="/boller.html">Bakst</a><a href="/tools/dinner-planner/index.html">Dinner Planner</a></nav>
+<button class="button primary" id="generateTop" type="button">Ny dessert</button>
+</div>
+</header>
+<main>
+<section class="page-header">
+<div class="container card dessert-hero-card">
+<div class="dessert-hero-image" id="heroImage">
+<div class="dessert-hero-overlay"></div>
+<div class="dessert-hero-content">
+<div class="dessert-eyebrow">🍰 Norsk + filippinsk dessertinspirasjon</div>
+<p class="site-status">Oppskriftsverktøy · kontroller allergener og oppbevaring</p><h1>Dessertgenerator</h1>
+<p>
               Finn en søt favoritt med bilde, tidsbruk, ingredienser, fremgangsmåte og litt historikk.
             </p>
-            <div class="dessert-hero-actions">
-              <button class="button primary" id="generateHero" type="button">Generer dessert</button>
-              <button class="button secondary" type="button" onclick="window.print()">Skriv ut</button>
-              <a class="button secondary" href="middag.html">Middag</a>
-              <a class="button secondary" href="boller.html">Boller</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="container dessert-layout">
-        <section class="card dessert-main">
-          <div class="dessert-image-wrap">
-            <img id="image" class="dessert-image" alt="Dessertbilde" />
-          </div>
-
-          <div class="dessert-main-inner">
-            <div class="dessert-meta">
-              <span class="pill">Dessert</span>
-              <span class="pill" id="time">Tid</span>
-            </div>
-
-            <h2 class="dessert-title" id="title">Dessert lastes...</h2>
-            <p class="dessert-desc" id="desc">En søt dessert vises her om et øyeblikk.</p>
-
-            <div class="dessert-content-grid">
-              <article class="inner-card">
-                <h3>Ingredienser</h3>
-                <ul id="ingredients"></ul>
-              </article>
-
-              <article class="inner-card">
-                <h3>Slik lager du den</h3>
-                <ol id="instructions"></ol>
-              </article>
-
-              <article class="inner-card" style="grid-column:1 / -1;">
-                <h3>Historikk</h3>
-                <p id="history"></p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <aside class="card dessert-side">
-          <div class="small-card">
-            <h3>Hurtigvalg</h3>
-            <p>
+<div class="dessert-hero-actions">
+<button class="button primary" id="generateHero" type="button">Generer dessert</button>
+<button class="button secondary" onclick="window.print()" type="button">Skriv ut</button>
+<a class="button secondary" href="middag.html">Middag</a>
+<a class="button secondary" href="boller.html">Boller</a>
+</div>
+</div>
+</div>
+</div>
+<div class="container dessert-layout">
+<section class="card dessert-main">
+<div class="dessert-image-wrap">
+<img alt="Dessertbilde" class="dessert-image" id="image"/>
+</div>
+<div class="dessert-main-inner">
+<div class="dessert-meta">
+<span class="pill">Dessert</span>
+<span class="pill" id="time">Tid</span>
+</div>
+<h2 class="dessert-title" id="title">Dessert lastes...</h2>
+<p class="dessert-desc" id="desc">En søt dessert vises her om et øyeblikk.</p>
+<div class="dessert-content-grid">
+<article class="inner-card">
+<h3>Ingredienser</h3>
+<ul id="ingredients"></ul>
+</article>
+<article class="inner-card">
+<h3>Slik lager du den</h3>
+<ol id="instructions"></ol>
+</article>
+<article class="inner-card" style="grid-column:1 / -1;">
+<h3>Historikk</h3>
+<p id="history"></p>
+</article>
+</div>
+</div>
+</section>
+<aside class="card dessert-side">
+<div class="small-card">
+<h3>Hurtigvalg</h3>
+<p>
               Generer en ny dessert, skriv ut oppskriften eller hopp videre til middag og boller.
             </p>
-          </div>
-
-          <div class="dessert-note">
+</div>
+<div class="dessert-note">
             Norske og filippinske desserter viser to forskjellige matkulturer, men begge er sterke på tradisjon, feiring og familie.
           </div>
-
-          <div class="small-card">
-            <h3>Neste nivå</h3>
-            <p>
-              Senere kan denne siden få favoritter, handleliste og forslag til hva som passer etter middagen du valgte.
-            </p>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="container">
-      <div class="coming-soon">
-        <h3>Videre utvikling</h3>
-        <p>
-          En senere versjon kan koble dessertsiden til middagssiden, slik at du får forslag til dessert som passer til dagens middag eller ukemeny.
-        </p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
+<div class="small-card">
+<h3>Før du serverer</h3>
+<p>Kontroller allergener og oppbevaring, særlig for desserter med egg, melk eller krem. Tilpass porsjonene til gjestene.</p>
+</div>
+</aside>
+</div>
+</section>
+<section class="container">
+<div class="coming-soon">
+<h3>Sett sammen et måltid</h3>
+<p>Se middagssiden for en enkel rett, eller Dinner Planner for planlegging over flere dager. Skriv ut oppskriften hvis du vil ha den tilgjengelig på kjøkkenet.</p>
+</div>
+</section>
+</main>
+<footer class="footer">
+<div class="container">
       Henrik Bergfjord · Dessertgenerator · Norske og filippinske dessertfavoritter
     </div>
-  </footer>
-
-  <script>
+</footer>
+<script>
     const desserts = [
       {
         title:"Vafler",
@@ -838,7 +817,6 @@
       generate();
     });
   </script>
-    <script src="/assets/js/language.js?v=20260925b" defer></script>
-
+<script defer="" src="/assets/js/language.js?v=20260925b"></script>
 <script src="/assets/js/ians-analytics.js"></script></body>
 </html>
