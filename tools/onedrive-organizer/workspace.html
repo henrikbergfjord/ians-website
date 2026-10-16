@@ -108,8 +108,8 @@ document.addEventListener("DOMContentLoaded", function(){
         <span class="eyebrow">MICROSOFT ONEDRIVE</span>
         <h2>Kartlegg hele OneDrive uten å laste ned filene</h2>
         <p>
-          Verktøyet leser fil- og mappemetadata via Microsoft Graph. Det ber kun om
-          <strong>Files.Read</strong> og kan derfor ikke flytte, endre eller slette filer.
+          Kartlegging leser fil- og mappemetadata via Microsoft Graph med
+          <strong>Files.Read</strong>. Endringer krever separat aktivering av Action Mode og <strong>Files.ReadWrite</strong>.
         </p>
       </div>
       <button id="signInBtn" class="btn microsoft">Koble til OneDrive</button>
@@ -288,8 +288,7 @@ document.addEventListener("DOMContentLoaded", function(){
           <button id="exportBtn" class="btn ghost" disabled>Eksporter rapport (JSON)</button>
         </div>
         <p class="muted">
-          V1 bruker kun metadata og markerer filer med samme filnavn og størrelse. Den sletter ingenting.
-          Ekte hash-basert duplikatkontroll kan legges til senere.
+          Denne oversikten finner kandidater fra navn og størrelse. Duplicate Review bruker innholdshash når den finnes; kandidater uten komplett hash må vurderes manuelt. Kartlegging endrer ingen filer.
         </p>
         
 <div id="duplicatesTable" class="table-wrap empty-state">Ingen data ennå.</div>
@@ -795,7 +794,7 @@ document.addEventListener("DOMContentLoaded", function(){
 <section class="grid-2">
         <article class="panel">
           <div class="section-title"><div><span class="eyebrow">PHOTO ORGANIZER</span><h3>Forslag: År → Måned</h3></div></div>
-          <p class="muted">Planlegger struktur fra opptaksdato der den finnes. Ingen filer flyttes i V2.</p>
+          <p class="muted">Planlegger struktur fra opptaksdato der den finnes. Forslag flytter ingen filer; utføring krever Action Mode og egen bekreftelse.</p>
           <div id="photoPlan" class="empty-state">Ingen data ennå.</div>
         </article>
         <article class="panel">
@@ -809,7 +808,7 @@ document.addEventListener("DOMContentLoaded", function(){
           <div><span class="eyebrow">REVIEW QUEUE</span><h3>Bevisste handlinger <span id="reviewQueueCount" class="review-count">0 valgt</span></h3></div>
           <button id="clearReviewBtn" class="btn ghost">Tøm kø</button>
         </div>
-        <p class="muted">Marker filer for gjennomgang. V2 utfører ingen sletting eller flytting. Køen kan eksporteres som plan.</p>
+        <p class="muted">Marker filer for gjennomgang. Køen kan eksporteres som plan. Endringer utføres bare gjennom en særskilt bekreftet handling i Action Mode.</p>
         <div id="reviewQueue" class="table-wrap empty-state">Ingen filer valgt.</div>
       </section>
 
@@ -823,10 +822,10 @@ document.addEventListener("DOMContentLoaded", function(){
   </main>
 
   <footer>
-    <p>IANS OneDrive Organizer V3.31.3 Media Structure + Bulk Review · Ingen filer lastes ned under kartleggingen · Ingen skrive-/slettetilgang</p>
+    <p>IANS OneDrive Organizer V3.31.3 Media Structure + Bulk Review · Ingen filer lastes ned under kartleggingen · Endringer krever Action Mode og ekstra tilgang</p>
   </footer>
   <script src="ians-v331-runtime-reduction.js?v=331"></script>
-<script type="module" src="app.js?v=3313c"></script>
+<script type="module" src="app.js?v=20261016a"></script>
 <div class="ians-next-badge">IANS Next · Master</div>
 <script>window.addEventListener('load',()=>{if(location.hash){setTimeout(()=>{const e=document.querySelector(location.hash);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});},500)}});</script>
 

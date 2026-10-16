@@ -3360,30 +3360,6 @@ window.addEventListener("DOMContentLoaded",iansRenderWebEdition);
       folderModal.classList.remove("hidden");
       await loadFolderBrowserLevel();
     };
-    const mediaModeBtn=E("v3313OneDriveMediaMode");
-    const syncMediaModeBtn=()=>{
-      if(!mediaModeBtn)return;
-      mediaModeBtn.classList.toggle("active",v3313UseOneDriveMediaStructure);
-      mediaModeBtn.setAttribute("aria-pressed",v3313UseOneDriveMediaStructure?"true":"false");
-      mediaModeBtn.textContent=v3313UseOneDriveMediaStructure
-        ?"✓ OneDrive-struktur brukes for Bilder & Video"
-        :"Bruk OneDrive-struktur for Bilder & Video";
-    };
-    if(mediaModeBtn){
-      mediaModeBtn.onclick=()=>{
-        v3313UseOneDriveMediaStructure=!v3313UseOneDriveMediaStructure;
-        localStorage.setItem(V3313_MEDIA_MODE_KEY,v3313UseOneDriveMediaStructure?"1":"0");
-        org294=[];renderOrg294();syncMediaModeBtn();
-        if(typeof iansToast==="function") iansToast(
-          v3313UseOneDriveMediaStructure?"OneDrive media-struktur aktiv":"Standard IANS-struktur aktiv",
-          v3313UseOneDriveMediaStructure
-            ?"Velg f.eks. /Bilder/Kamerabilder som målrot. Bilder og video deler År/Måned."
-            :"Standard IANS-struktur bruker separate Bilder/Video-nivå.",
-          "success",6500
-        );
-      };
-      syncMediaModeBtn();
-    }
     E("v285OrgBuild").onclick=buildPlan;
     E("v285OrgExecute").onclick=executePlan;
   }
@@ -5175,8 +5151,35 @@ console.info("[IANS] V2.9.4.1 Action Progress Fix aktiv – papirkurv viser nå 
     });
     console.info("[IANS] OneDrive Command V2.9.4 Recovery + Review Fix aktiv");
   }
+  function bindMediaMode294(){
+    const mediaModeBtn=E("v3313OneDriveMediaMode");
+    const syncMediaModeBtn=()=>{
+      if(!mediaModeBtn)return;
+      mediaModeBtn.classList.toggle("active",v3313UseOneDriveMediaStructure);
+      mediaModeBtn.setAttribute("aria-pressed",v3313UseOneDriveMediaStructure?"true":"false");
+      mediaModeBtn.textContent=v3313UseOneDriveMediaStructure
+        ?"✓ OneDrive-struktur brukes for Bilder & Video"
+        :"Bruk OneDrive-struktur for Bilder & Video";
+    };
+    if(mediaModeBtn){
+      mediaModeBtn.onclick=()=>{
+        v3313UseOneDriveMediaStructure=!v3313UseOneDriveMediaStructure;
+        localStorage.setItem(V3313_MEDIA_MODE_KEY,v3313UseOneDriveMediaStructure?"1":"0");
+        org294=[];renderOrg294();syncMediaModeBtn();
+        if(typeof iansToast==="function") iansToast(
+          v3313UseOneDriveMediaStructure?"OneDrive media-struktur aktiv":"Standard IANS-struktur aktiv",
+          v3313UseOneDriveMediaStructure
+            ?"Velg f.eks. /Bilder/Kamerabilder som målrot. Bilder og video deler År/Måned."
+            :"Standard IANS-struktur bruker separate Bilder/Video-nivå.",
+          "success",6500
+        );
+      };
+      syncMediaModeBtn();
+    }
+  }
+
   function boot294(){
-    version294(); injectVault(); injectReviewCleaner();
+    version294(); injectVault(); injectReviewCleaner(); bindMediaMode294();
     setTimeout(()=>{injectVault();injectReviewCleaner();restoreCompleted({silent:true});},500);
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot294);else boot294();

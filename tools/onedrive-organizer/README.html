@@ -12,10 +12,10 @@ h1,h2{line-height:1.2} .box{border:1px solid #d9e2ea;border-radius:12px;padding:
 <link rel="stylesheet" href="../../assets/css/ians-next.css">
 </head>
 <body>
-<h1>IANS OneDrive Analyzer V1.2 – oppsett</h1>
+<h1>IANS OneDrive Command – oppsett og tilganger</h1>
 <div class="box">
-<strong>Sikkerhet:</strong> V1 ber kun om delegert Microsoft Graph-tillatelse <code>Files.Read</code>.
-Den kan lese den innloggede brukerens OneDrive, men kan ikke flytte, skrive eller slette filer.
+<strong>Tilganger:</strong> Kartlegging bruker delegert Microsoft Graph-tillatelse <code>Files.Read</code>.
+Lesemodus kan ikke flytte, skrive eller slette filer. Velger du Action Mode, ber løsningen separat om <code>Files.ReadWrite</code> og kan utføre bekreftede filendringer.
 Ingen client secret skal opprettes eller legges i HTML.
 </div>
 
@@ -46,7 +46,7 @@ Ingen client secret skal opprettes eller legges i HTML.
 <ul>
 <li><code>Files.Read</code></li>
 </ul>
-<p>Det er alt V1 trenger for OneDrive-kartlegging. Ikke legg inn Files.ReadWrite.</p>
+<p>Dette er tilgangen for kartlegging. Action Mode krever separat <code>Files.ReadWrite</code>; ikke aktiver endringer før du har gjennomgått planen og tatt nødvendig sikkerhetskopi.</p>
 
 <h2>5. Start</h2>
 <ol>
@@ -56,7 +56,7 @@ Ingen client secret skal opprettes eller legges i HTML.
 <li>Klikk <strong>Start full kartlegging</strong>.</li>
 </ol>
 
-<h2>Hva V1 kartlegger</h2>
+<h2>Hva kartleggingen leser</h2>
 <ul>
 <li>OneDrive-kvote / brukt plass</li>
 <li>alle mapper og filer som Graph returnerer for den innloggede OneDrive</li>
@@ -65,7 +65,7 @@ Ingen client secret skal opprettes eller legges i HTML.
 <li>største mapper og filer</li>
 <li><code>photo.takenDateTime</code> der Microsoft Graph eksponerer det</li>
 <li>opprettet dato som fallback</li>
-<li>mulige duplikater basert på samme filnavn + størrelse</li>
+<li>mulige duplikater basert på samme filnavn + størrelse; Duplicate Review bruker innholdshash når den er tilgjengelig</li>
 <li>JSON-eksport av kartleggingen</li>
 </ul>
 
@@ -73,7 +73,7 @@ Ingen client secret skal opprettes eller legges i HTML.
 <p>
 Kartleggingen henter metadata side for side. Den laster ikke ned selve filinnholdet.
 En konto med svært mange små filer kan likevel kreve mange Microsoft Graph-kall.
-V1 håndterer paginering og vanlige 429/503/504-throttling-svar med retry.
+Kartleggingen håndterer paginering og vanlige 429/503/504-throttling-svar med retry.
 </p>
 
 <p><a href="index.html">← Til dashboardet</a></p>

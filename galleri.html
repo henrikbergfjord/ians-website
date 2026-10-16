@@ -113,15 +113,15 @@
 
   <main class="gallery-page">
     <section class="gallery-header">
-      <div class="kicker">Media · Azure Blob · automatisk</div>
+      <div class="kicker">Media · utvalgte prosjektillustrasjoner</div>
       <h1>📸 Galleri</h1>
       <p>
-        Denne siden henter bilder automatisk fra Azure Blob Storage uten hardkoding.
+        Et utvalg prosjektillustrasjoner fra det offentlige Maimyra-arkivet. Illustrasjonene er fra utbyggers materiale og kan avvike fra ferdig bolig.
       </p>
     </section>
 
-    <div id="status" class="status-message">Laster bilder...</div>
-    <section id="gallery" class="gallery"></section>
+    <div id="status" class="status-message">Fem prosjektillustrasjoner fra Maimyra.</div>
+    <section id="gallery" class="gallery"><article class="gallery-card"><img src="/assets/maimyra/maimyra-66.jpg" alt="Rekkehusene – prosjektillustrasjon" loading="lazy"><div class="title">Rekkehusene – prosjektillustrasjon</div></article><article class="gallery-card"><img src="/assets/maimyra/maimyra-hero.jpg" alt="Maimyra og Brattholmen – prosjektillustrasjon" loading="lazy"><div class="title">Maimyra og Brattholmen – prosjektillustrasjon</div></article><article class="gallery-card"><img src="/assets/maimyra/maimyra-omrade.jpg" alt="Boliger og uteområde – prosjektillustrasjon" loading="lazy"><div class="title">Boliger og uteområde – prosjektillustrasjon</div></article><article class="gallery-card"><img src="/assets/maimyra/maimyra-66-2.jpg" alt="Fasader og fellesområde – prosjektillustrasjon" loading="lazy"><div class="title">Fasader og fellesområde – prosjektillustrasjon</div></article><article class="gallery-card"><img src="/assets/maimyra/maimyra-66-eksterior.jpg" alt="Eksteriør – prosjektillustrasjon" loading="lazy"><div class="title">Eksteriør – prosjektillustrasjon</div></article></section>
 
     <div class="gallery-actions">
       <a class="button secondary" href="volvo-c40.html">Se Volvo C40</a>
@@ -132,75 +132,11 @@
 
   <footer class="footer">
     <div class="container">
-      Henrik Bergfjord · Galleri · Azure Blob Storage
+      Henrik Bergfjord · Galleri · Offentlige prosjektillustrasjoner
     </div>
   </footer>
 
-  <script>
-    const storageAccount = "iansbilder";
-    const containerName = "images";
-    const listUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}?restype=container&comp=list`;
 
-    const galleryEl = document.getElementById("gallery");
-    const statusEl = document.getElementById("status");
-
-    function friendlyTitle(filename) {
-      const withoutExtension = filename.replace(/\.[^/.]+$/, "");
-      return withoutExtension
-        .replace(/[-_]/g, " ")
-        .replace(/\b\w/g, char => char.toUpperCase());
-    }
-
-    async function loadGallery() {
-      try {
-        const response = await fetch(listUrl);
-
-        if (!response.ok) {
-          throw new Error(`Kunne ikke hente bildeliste (${response.status})`);
-        }
-
-        const xmlText = await response.text();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-
-        const blobNames = Array.from(xmlDoc.getElementsByTagName("Name"))
-          .map(node => node.textContent)
-          .filter(name => /\.(jpg|jpeg|png|webp|gif)$/i.test(name));
-
-        if (blobNames.length === 0) {
-          statusEl.textContent = "Ingen bilder funnet i containeren.";
-          return;
-        }
-
-        statusEl.textContent = "";
-
-        blobNames.forEach(name => {
-          const imageUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${encodeURIComponent(name).replace(/%2F/g, "/")}`;
-
-          const card = document.createElement("article");
-          card.className = "gallery-card";
-
-          const img = document.createElement("img");
-          img.src = imageUrl;
-          img.alt = friendlyTitle(name);
-          img.loading = "lazy";
-
-          const title = document.createElement("div");
-          title.className = "title";
-          title.textContent = friendlyTitle(name);
-
-          card.appendChild(img);
-          card.appendChild(title);
-          galleryEl.appendChild(card);
-        });
-      } catch (error) {
-        console.error(error);
-        statusEl.textContent = "Kunne ikke laste bilder automatisk. Sjekk container access og filnavn.";
-      }
-    }
-
-    loadGallery();
-  </script>
     <script src="/assets/js/language.js?v=20260925b" defer></script>
 
 <script src="/assets/js/ians-analytics.js"></script></body>

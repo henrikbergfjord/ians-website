@@ -104,7 +104,7 @@
     Object.entries(d).forEach(([k,v])=>{const el=form.elements[k];if(el)el.value=v}); render(); showStep(1);
   }
   async function runAI(){
-    const btn=q('#runAi'), out=q('#aiResult'); btn.disabled=true; btn.textContent='Analyserer…'; out.hidden=false; out.textContent='Sender kun anonymiserte nøkkeltall…';
+    const btn=q('#runAi'), out=q('#aiResult'); btn.disabled=true; btn.textContent='Analyserer…'; out.hidden=false; out.textContent='Sender økonomiske nøkkeltall uten navn…';
     const payload={
       goal:state.goal,household:state.household,housing:state.housing,
       income:result.income,totalExpense:result.totalExpense,margin:result.margin,annualReserve:result.annualReserve,
