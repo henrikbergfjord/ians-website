@@ -1,0 +1,11 @@
+/* Illustrated homepage entries, matching the existing topic cards. */
+.space-home .home-reading-grid .reading-feature{display:flex;flex-direction:column;padding:0;overflow:hidden;background:#021420;border:1px solid #1687b3;border-radius:7px;text-decoration:none;transition:border-color .18s ease,box-shadow .18s ease}
+.reading-feature>img{display:block;width:100%;height:clamp(180px,20vw,260px);object-fit:cover;object-position:center 45%}
+.reading-feature .reading-copy{display:flex;flex:1;flex-direction:column;padding:18px 20px 20px;background:#02121df5}
+.reading-feature .reading-copy h3{margin:9px 0;font-size:clamp(20px,1.65vw,24px);letter-spacing:-.35px}
+.reading-feature .reading-copy p{margin-bottom:16px}
+.reading-feature .reading-copy strong{margin-top:auto}
+.space-home .home-reading-grid .reading-feature:hover{border-color:#53d5ef;box-shadow:0 0 20px #13a9d51a}
+.space-home .home-reading-grid .reading-feature:focus-visible{outline:3px solid #b8f2ff;outline-offset:4px}
+@media(max-width:760px){.reading-feature>img{height:auto;aspect-ratio:16/9}.reading-feature .reading-copy{padding:16px}.reading-feature .reading-copy h3{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.space-home .home-reading-grid .reading-feature{transition:none}}
