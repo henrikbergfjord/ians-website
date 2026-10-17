@@ -42,6 +42,7 @@ INCLUDE = (
     "plattformen.html",
     "refleksjoner.html",
     "ki-uten-avknapp.html",
+    "cybertrusler-2026-2030.html",
     "lokal-ki.html",
     "en/refleksjoner.html",
     "prosjekter.html",
