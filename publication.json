@@ -1,0 +1,35 @@
+{
+  "staticFiles": [
+    "index.html",
+    "staticwebapp.config.json",
+    "retired.html",
+    "admin/costs.html",
+    "admin/index.html",
+    "axion-grid/admin/access.html",
+    "axion-grid/admin/builder.html",
+    "axion-grid/admin/catalog.html",
+    "axion-grid/admin/customers.html",
+    "axion-grid/admin/index.html",
+    "axion-grid/admin/orders.html",
+    "axion-grid/admin/platform.html",
+    "axion-grid/admin/proposals.html",
+    "axion-grid/app/index.html",
+    "axion-grid/be-om-tilgang.html",
+    "axion-grid/customer/advisor.html",
+    "axion-grid/customer/index.html",
+    "axion-grid/index.html"
+  ],
+  "apiFiles": [
+    "api/package.json",
+    "api/package-lock.json",
+    "api/host.json",
+    "api/axion-advisor/function.json",
+    "api/axion-advisor/index.js",
+    "api/axion-proposal-send/function.json",
+    "api/axion-proposal-send/index.js",
+    "api/azure-cost/function.json",
+    "api/azure-cost/index.js",
+    "api/contact/function.json",
+    "api/contact/index.js"
+  ]
+}

@@ -3,7 +3,6 @@ name: Azure Static Web Apps CI/CD - Axion Grid
 on:
   push:
     branches:
-      - main
       - feature/entra-login
   pull_request:
     types: [opened, synchronize, reopened, closed]
@@ -24,15 +23,21 @@ jobs:
           submodules: true
           lfs: false
 
+      - name: Build reviewed Axion artifact
+        run: |
+          python3 scripts/build-publication.py
+          python3 tests/publication-security.py
+
       - name: Build And Deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ZEALOUS_POND_02B149C10 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
-          app_location: ./
-          api_location: api
+          app_location: dist-public
+          api_location: dist-api
           output_location: .
+          skip_app_build: true
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
