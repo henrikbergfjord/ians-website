@@ -4,13 +4,63 @@
   },
   "routes": [
     {
+      "route": "/SameieNettold.html",
+      "redirect": "/SameieNett.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/SameieNettold",
+      "redirect": "/SameieNett.html",
+      "statusCode": 301
+    },
+    {
       "route": "/om-megoo.html",
       "redirect": "/om-meg.html",
       "statusCode": 301
     },
     {
-      "route": "/tools/website-builder-light/",
-      "redirect": "/tools/website-builder/",
+      "route": "/om-megoo",
+      "redirect": "/om-meg.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/tools/money-planner/v01.html",
+      "redirect": "/tools/money-planner/",
+      "statusCode": 301
+    },
+    {
+      "route": "/tools/money-planner/v01",
+      "redirect": "/tools/money-planner/",
+      "statusCode": 301
+    },
+    {
+      "route": "/tools/money-planner/v02.html",
+      "redirect": "/tools/money-planner/",
+      "statusCode": 301
+    },
+    {
+      "route": "/tools/money-planner/v02",
+      "redirect": "/tools/money-planner/",
+      "statusCode": 301
+    },
+    {
+      "route": "/tools/money-planner/v03.html",
+      "redirect": "/tools/money-planner/",
+      "statusCode": 301
+    },
+    {
+      "route": "/tools/money-planner/v03",
+      "redirect": "/tools/money-planner/",
+      "statusCode": 301
+    },
+    {
+      "route": "/tools/money-planner/v04.html",
+      "redirect": "/tools/money-planner/",
+      "statusCode": 301
+    },
+    {
+      "route": "/tools/money-planner/v04",
+      "redirect": "/tools/money-planner/",
       "statusCode": 301
     },
     {
@@ -19,7 +69,12 @@
       "statusCode": 301
     },
     {
-      "route": "/tools/website-builder-pro/",
+      "route": "/tools/website-builder-light/",
+      "redirect": "/tools/website-builder/",
+      "statusCode": 301
+    },
+    {
+      "route": "/tools/website-builder-light",
       "redirect": "/tools/website-builder/",
       "statusCode": 301
     },
@@ -29,43 +84,193 @@
       "statusCode": 301
     },
     {
-      "route": "/ians-analytics.html",
+      "route": "/tools/website-builder-pro/",
+      "redirect": "/tools/website-builder/",
+      "statusCode": 301
+    },
+    {
+      "route": "/tools/website-builder-pro",
+      "redirect": "/tools/website-builder/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/planner-program.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/planner-program",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel1.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel1",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel2.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel2",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel3.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel3",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel4.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel4",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel5.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/kapittel5",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/quiz.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/quiz",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/minenotater.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/minenotater",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/ordliste.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/ordliste",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/vedtak-og-kilder.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/vedtak-og-kilder",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/academy.html",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/academy",
+      "redirect": "/academy/",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/boller.html",
+      "redirect": "/boller.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/boller",
+      "redirect": "/boller.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/dessert.html",
+      "redirect": "/dessert.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/dessert",
+      "redirect": "/dessert.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/dns-sjekk.html",
+      "redirect": "/dns-sjekk.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/academy/dns-sjekk",
+      "redirect": "/dns-sjekk.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/ians-analytics*",
       "allowedRoles": [
         "authenticated"
       ]
     },
     {
-      "route": "/api/analytics-stats",
+      "route": "/api/analytics-stats*",
       "allowedRoles": [
         "authenticated"
       ]
     },
     {
-      "route": "/booking-admin.html",
+      "route": "/booking-admin*",
       "allowedRoles": [
         "authenticated"
       ]
     },
     {
-      "route": "/brannkontroll-admin.html",
+      "route": "/brannkontroll-admin*",
       "allowedRoles": [
         "authenticated"
       ]
     },
     {
-      "route": "/sameie-dashboard.html",
+      "route": "/sameie-dashboard*",
       "allowedRoles": [
         "authenticated"
       ]
     },
     {
-      "route": "/sameie-register.html",
+      "route": "/sameie-register*",
       "allowedRoles": [
         "authenticated"
       ]
     },
     {
-      "route": "/sameie-tilgang-admin.html",
+      "route": "/sameie-tilgang-admin*",
       "allowedRoles": [
         "authenticated"
       ]
@@ -117,76 +322,6 @@
       "allowedRoles": [
         "authenticated"
       ]
-    },
-    {
-      "route": "/academy/planner-program.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/kapittel1.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/kapittel2.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/kapittel3.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/kapittel4.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/kapittel5.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/quiz.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/minenotater.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/ordliste.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/vedtak-og-kilder.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/academy.html",
-      "redirect": "/academy/",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/boller.html",
-      "redirect": "/boller.html",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/dessert.html",
-      "redirect": "/dessert.html",
-      "statusCode": 301
-    },
-    {
-      "route": "/academy/dns-sjekk.html",
-      "redirect": "/dns-sjekk.html",
-      "statusCode": 301
     }
   ]
 }

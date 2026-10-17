@@ -108,8 +108,6 @@ INCLUDE = (
 EXCLUDE = (
     "personvern.html",
     "brannkontroll-personvern.html",
-    "tools/website-builder-light/index.html",
-    "tools/website-builder-pro/index.html",
     "tools/website-builder/index.html",
     ".money-planner-backup/20260822-084754/tools/money-planner/index.html",
     ".money-planner-backup/20260822-091746/tools/money-planner/index.html",
@@ -132,29 +130,14 @@ EXCLUDE = (
     ".money-planner-backup/20260822-110036/tools/money-planner/index.html",
     ".money-planner-backup/20260822-110153/tools/money-planner/help.html",
     ".money-planner-backup/20260822-110153/tools/money-planner/index.html",
-    "SameieNettold.html",
     "academy.html",
-    "academy/academy.html",
     "academy/be-om-tilgang.html",
-    "academy/boller.html",
-    "academy/dessert.html",
-    "academy/dns-sjekk.html",
-    "academy/kapittel1.html",
-    "academy/kapittel2.html",
-    "academy/kapittel3.html",
-    "academy/kapittel4.html",
-    "academy/kapittel5.html",
     "academy/kids/family/foreldre.html",
     "academy/kids/family/index.html",
     "academy/kids/family/personvern.html",
     "academy/kids/index.html",
     "academy/kids/roblox/index.html",
-    "academy/minenotater.html",
-    "academy/ordliste.html",
     "academy/personvern.html",
-    "academy/planner-program.html",
-    "academy/quiz.html",
-    "academy/vedtak-og-kilder.html",
     "booking-admin.html",
     "booking-personvern.html",
     "booking.html",
@@ -162,7 +145,6 @@ EXCLUDE = (
     "brannkontroll-booking.html",
     "ians-analytics.html",
     "ians-booking.html",
-    "om-megoo.html",
     "sameie-aarshjul-login.html",
     "sameie-aarshjul-tilgang.html",
     "sameie-aarshjul/index.html",
@@ -172,10 +154,6 @@ EXCLUDE = (
     "sameie-registrer.html",
     "sameie-styretilgang.html",
     "sameie-tilgang-admin.html",
-    "tools/money-planner/v01.html",
-    "tools/money-planner/v02.html",
-    "tools/money-planner/v03.html",
-    "tools/money-planner/v04.html",
     "tools/onedrive-organizer/README.html",
     "tools/onedrive-organizer/auth-callback.html",
     "tools/onedrive-organizer/diagnostic.html",
@@ -214,7 +192,7 @@ def main():
     actual = {
         path.relative_to(ROOT).as_posix()
         for path in ROOT.rglob("*.html")
-        if ".git" not in path.parts
+        if ".git" not in path.parts and "dist-public" not in path.parts
     }
     manifest = include | exclude
 

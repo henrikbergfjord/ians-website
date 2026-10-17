@@ -37,7 +37,7 @@ class Page(HTMLParser):
             self.script = None
 
 def included(path):
-    return not any(part.startswith('.') or part in ('qa', 'node_modules') for part in path.parts)
+    return not any(part.startswith('.') or part in ('qa', 'node_modules', 'dist-public') for part in path.parts)
 
 pages = {}
 for path in ROOT.rglob('*.html'):

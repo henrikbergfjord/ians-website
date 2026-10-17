@@ -29,7 +29,8 @@ Ikke påstå at en automatisk jobb er i drift før den er satt opp og kontroller
 
 ## Versjoner og arkiv
 Dagens innganger er Website Studio, Money Planner-hovedsiden og OneDrive Command.
-Money Planner v01-v04 er merkede, ikke-indekserte historiske utgaver. Unødvendig om-megoo-kopi
+Money Planner v01-v04 og andre eksplisitt utgåtte HTML-sider publiseres ikke lenger; gamle adresser
+videresendes til gjeldende utgave. Kilden kan gjenfinnes i Git-historikken. om-megoo-adressen
 videresendes til dagens biografi. Eldre nedlastingspakker beholdes med sine opprinnelige hashfiler.
 
 ## Praktisk maskin- og tilgjengelighetstest
@@ -37,3 +38,9 @@ Lokal KI 1.1 har en kort fysisk Mac-test med Llama 3.2. Windows/Linux og Gemma-g
 bekreftet av den testen. Behold disse avgrensningene. Canvas-spill må testes som spill;
 automatiske tilgjengelighetsregler og skjulte overskrifter gjør dem ikke automatisk brukbare
 med skjermleser. Dokumenter begrensningene fremfor å love full universell utforming.
+
+## Kontrollert publisering (17. oktober 2026)
+Bare filene i `publication.json` lastes opp fra `dist-public/`. Nye sider og ressurser må føres inn eksplisitt.
+Prosjektrot, skjulte backupmapper, tester, skript, dokumentasjon og kildebackuper er ikke publiseringsrot.
+`python3 scripts/build-publication.py` validerer listen. Begge Azure-jobber bruker samme kontrollerte artefakt.
+Analytics-data krever en godkjent Microsoft-konto også i backend; innlogging alene er ikke tilstrekkelig.

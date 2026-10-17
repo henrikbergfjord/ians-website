@@ -31,7 +31,20 @@ function areaFor(path) {
   return 'Andre sider';
 }
 
-module.exports = async function(context) {
+function analyticsIdentity(req) {
+  try { return JSON.parse(Buffer.from(req?.headers?.['x-ms-client-principal'] || '', 'base64').toString('utf8')); }
+  catch { return null; }
+}
+
+module.exports = async function(context, req) {
+  const principal = analyticsIdentity(req);
+  if (!principal?.userId || !Array.isArray(principal.userRoles) || !principal.userRoles.includes('authenticated')) {
+    context.res = json(401, {error:'Microsoft-innlogging kreves.'}); return;
+  }
+  const admins = String(process.env.IANS_ANALYTICS_ADMIN_EMAILS || 'henrik.bergfjord@outlook.com').split(',').map(x=>x.trim().toLowerCase()).filter(Boolean);
+  if (principal.identityProvider !== 'aad' || !admins.includes(String(principal.userDetails || '').trim().toLowerCase())) {
+    context.res = json(403, {error:'Du har ikke tilgang til IANS Analytics.'}); return;
+  }
   try {
     const cs = storageConnection();
     if (!cs) throw new Error('Storage is not configured');
