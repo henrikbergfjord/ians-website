@@ -1,6 +1,8 @@
 from pathlib import Path
 import json,re,subprocess
 root=Path(__file__).resolve().parents[1];m=json.loads((root/'publication.json').read_text());cfg=json.loads((root/'staticwebapp.config.json').read_text())
+assert all(not ('rewrite' in r and 'statusCode' in r) for r in cfg['routes'])
+assert len({r['route'].rstrip('/') or '/' for r in cfg['routes']})==len(cfg['routes'])
 assert not any(x.startswith(('tools/','academy/','games/','.')) for x in m['staticFiles'])
 assert set(x.split('/')[1] for x in m['apiFiles'] if x.endswith('/function.json'))=={'azure-cost','axion-advisor','axion-proposal-send','contact'}
 def match(p):return next(r for r in cfg['routes'] if (p.startswith(r['route'][:-1]) if r['route'].endswith('*') else p==r['route']))

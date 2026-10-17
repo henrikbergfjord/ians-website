@@ -110,8 +110,12 @@
     },
     {
       "route": "/*",
-      "rewrite": "/retired.html",
       "statusCode": 404
     }
-  ]
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/retired.html"
+    }
+  }
 }
