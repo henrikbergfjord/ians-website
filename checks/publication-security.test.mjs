@@ -18,3 +18,5 @@ test('anonymous analytics request never reads storage',async()=>{const x=api(),c
 test('unapproved signed-in account never reads analytics storage',async()=>{const x=api({...p,userDetails:'other@example.com'}),c={};await x.handler(c,x.req);assert.equal(c.res.status,403);assert.equal(x.reads(),0)});
 test('non-Microsoft identity cannot impersonate approved analytics email',async()=>{const x=api({...p,identityProvider:'github'}),c={};await x.handler(c,x.req);assert.equal(c.res.status,403);assert.equal(x.reads(),0)});
 test('approved Microsoft owner can read aggregate analytics',async()=>{const x=api(p),c={log:{error(){}}};await x.handler(c,x.req);assert.equal(c.res.status,200);assert.equal(x.reads(),1)});
+
+test("Azure route normalization cannot produce duplicate routes",()=>{const normalized=config.routes.map(r=>r.route.replace(/\/$/,'')||'/');assert.equal(new Set(normalized).size,normalized.length)});
